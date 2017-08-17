@@ -153,12 +153,12 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                21
+                22
                 <span>posts</span>
             </div>
             <div class="article-info-block">
-                1
-                <span>tag</span>
+                2
+                <span>tags</span>
             </div>
         </div>
         
@@ -212,6 +212,155 @@
 
             
             <section id="main">
+    <article id="post-supervisor-server" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/04/supervisor-server/">supervisor</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/04/supervisor-server/">
+            <time datetime="2017-08-04T07:24:48.000Z" itemprop="datePublished">2017-08-04</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/server/">server</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>Linux的后台进程运行有好几种方法，例如nohup，screen等，但是，如果是一个服务程序，要可靠地在后台运行，我们就需要把它做成daemon，最好还能监控进程状态，在意外结束时能自动重启。</p>
+<p>supervisor就是用Python开发的一套通用的进程管理程序，能将一个普通的命令行进程变为后台daemon，并监控进程状态，异常退出时能自动重启。另一个进程管理工具:S6</p>
+<p>Debian / Ubuntu可以直接通过apt安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install supervisor</div></pre></td></tr></table></figure>
+<p>如果是通过pip安装的话,就需要echo_supervisord_conf程序生成supervisor的初始化配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo pip install supervisor</div><div class="line">mkdir /etc/supervisor</div><div class="line">echo_supervisord_conf &gt; /etc/supervisor/supervisord.conf</div></pre></td></tr></table></figure>
+<p>supervisor安装完成后会生成三个执行程序：supervisortd 守护进程服务,用于接收进程管理命令.supervisorctl 客户端,用于和守护进程通信，发送管理进程的指令.<br>echo_supervisord_conf 生成初始配置文件程序<br>然后，给我们自己开发的应用程序编写一个配置文件，让supervisor来管理它。每个进程的配置文件都可以单独分拆，放在/etc/supervisor/conf.d/目录下，以.conf作为扩展名</p>
+<pre><code>vim server.conf
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">[program:python8010]</div><div class="line"><span class="built_in">command</span> = /usr/bin/python3 HttpsRunner.py</div><div class="line">directory = /server/app1.6</div><div class="line">user = root</div><div class="line">redirect_stderr = <span class="literal">true</span></div><div class="line">stdout_logfile_maxbytes = 150MB</div><div class="line">stdout_logfile_backups = 20</div><div class="line">stdout_logfile = /server/app1.6/python8010.log</div><div class="line"></div><div class="line">[program:mongod]</div><div class="line">;<span class="built_in">command</span> = /mongo/mongodb-linux-x86_64-ubuntu1404-3.2.10/bin/mongod --dbpath /mnt/mongodb --auth</div><div class="line"><span class="built_in">command</span> = /mongo/mongodb-linux-x86_64-ubuntu1404-3.2.10/bin/mongod -f /server/app1.6/mongodb.conf</div><div class="line">directory = /server/app1.6</div><div class="line">user = root</div><div class="line">redirect_stderr = <span class="literal">true</span></div><div class="line">stdout_logfile_maxbytes = 150MB</div><div class="line">stdout_logfile_backups = 20</div><div class="line">stdout_logfile = /server/app1.6/mongodb.log</div></pre></td></tr></table></figure>
+<p>Supervisor只能管理非daemon的进程，也就是说Supervisor不能管理守护进程。否则提示Exited too quickly (process log may have details)异常。<br>启动Supervisor服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">supervisord -c /etc/supervisor/supervisord.conf</div></pre></td></tr></table></figure>
+<p>管理进程：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">supervisorctl status</div><div class="line">supervisorctl stop mongod</div><div class="line">supervisorctl start python8010</div><div class="line">supervisorctl restart python8001</div><div class="line"><span class="comment"># 重启所有属于名为groupworker这个分组的进程(start,restart同理)</span></div><div class="line">supervisorctl stop groupworker</div><div class="line"><span class="comment"># 停止全部进程，注：start、restart、stop都不会载入最新的配置文件</span></div><div class="line">supervisorctl stop all </div><div class="line"><span class="comment"># 载入最新的配置文件，停止原有进程并按新的配置启动、管理所有进程</span></div><div class="line">supervisorctl reread/reload</div><div class="line"><span class="comment"># 根据最新的配置文件，启动新配置或有改动的进程，配置没有改动的进程不会受影响而重启</span></div><div class="line">supervisorctl update</div><div class="line">supervisorctl tail &lt;APP_NAME&gt;</div></pre></td></tr></table></figure>
+<p>进入CLI管理台：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">supervisorctl</div></pre></td></tr></table></figure>
+<p>Web管理界面 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">vim /etc/supervisor/supervisord.conf</div><div class="line">    [inet_http_server] ; inet (TCP) server disabled by default</div><div class="line">    port=0.0.0.0:9001  ; (ip_address:port specifier, *:port <span class="keyword">for</span> all iface)</div><div class="line">    username=root      ; (default is no username (open server))</div><div class="line">    password=root      ; (default is no password (open server))</div></pre></td></tr></table></figure>
+<p>重启Supervisor服务，如果有Unlinking stale socket /var/run/supervisor.sock 执行unlink /var/run/supervisor.sock：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ps aux |grep supervisord</div><div class="line">supervisord -c /etc/supervisor/supervisord.conf</div></pre></td></tr></table></figure>
+<h5 id="开机启动Supervisor："><a href="#开机启动Supervisor：" class="headerlink" title="开机启动Supervisor："></a>开机启动Supervisor：</h5><p>方法1：<br>    Linux 在启动的时候会执行 /etc/rc.local 里面的脚本，所以只要在这里添加执行命令就可以<br>    以下内容需要添加在 exit 命令前，而且由于在执行 rc.local 脚本时，PATH 环境变量未全部初始化，因此命令需要使用绝对路径。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/bin/supervisord -c /etc/supervisor/supervisord.conf</div></pre></td></tr></table></figure></p>
+<p><a href="https://askubuntu.com/questions/765120/after-upgrade-to-16-04-lts-rc-local-is-not-executing-a-command" target="_blank" rel="external">如果是 Ubuntu 16.04 以上，rc.local 被当成了服务，而且默认是不会启动，需要手动启用一下服务</a></p>
+<p>启动rc.local服务：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo systemctl <span class="built_in">enable</span> rc-local.service</div></pre></td></tr></table></figure></p>
+<p>方法二：<br>Supervisord 默认情况下并没有被安装成服务，它本身也是一个进程。官方已经给出了脚本可以将 Supervisord 安装成服务，<br>可以参考<a href="https://github.com/Supervisor/initscripts" target="_blank" rel="external">这里</a>查看各种操作系统的安装脚本，但是我用官方这里给的 Ubuntu 脚本却无法运行。<br>安装方法可以参考<a href="https://serverfault.com/questions/96499/how-to-automatically-start-supervisord-on-linux-ubuntu" target="_blank" rel="external"> serverfault</a><br>这个脚本下载下来后，还需检查一下与我们的配置是否相符合，比如默认的配置文件路径，pid 文件路径等，如果存在不同则需要进行一些修改</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://yoursite.com/2017/08/04/supervisor-server/" data-id="cj6giljub00103g3kvqqmoc69" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="http://yoursite.com/2017/08/04/supervisor-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://yoursite.com/2017/08/04/supervisor-server/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-basic_time" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -271,7 +420,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/08/04/basic_time/" data-id="cj6cws2on0000ej3k6x0r4lxy" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://yoursite.com/2017/08/04/basic_time/" data-id="cj6giljsw00043g3k6n3scenv" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -366,9 +515,9 @@
                     <li>
                         
                         <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
-                            <p class="item-title"><a href="/2017/08/16/shadowsocks-server/" class="title">shadowsocks</a></p>
-                            <p class="item-date"><time datetime="2017-08-16T07:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
+                            <p class="item-category"><a class="article-category-link" href="/categories/linux/">linux</a></p>
+                            <p class="item-title"><a href="/2017/08/17/linux-server-process/" class="title">linux 服务与进程</a></p>
+                            <p class="item-date"><time datetime="2017-08-17T07:44:24.000Z" itemprop="datePublished">2017-08-17</time></p>
                         </div>
                     </li>
                 
@@ -377,6 +526,15 @@
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
                             <p class="item-title"><a href="/2017/08/16/CDN-server/" class="title">内容分发网络</a></p>
+                            <p class="item-date"><time datetime="2017-08-16T07:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2017/08/16/shadowsocks-server/" class="title">shadowsocks</a></p>
                             <p class="item-date"><time datetime="2017-08-16T07:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
                         </div>
                     </li>
@@ -399,15 +557,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/python3/">python3</a></p>
-                            <p class="item-title"><a href="/2017/08/14/python-fun-program/" class="title">python 函数式编程</a></p>
-                            <p class="item-date"><time datetime="2017-08-14T03:02:55.000Z" itemprop="datePublished">2017-08-14</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -417,7 +566,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">5</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">5</span></li></ul>
         </div>
     </div>
 
@@ -426,7 +575,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">21</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">22</span></li></ul>
         </div>
     </div>
 
@@ -435,7 +584,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">tags</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -444,7 +593,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">tag cloud</h3>
         <div class="widget tagcloud">
-            <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
+            <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
         </div>
     </div>
 

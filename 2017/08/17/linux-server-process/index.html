@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>linux 服务与进程 | Hexo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="linux启动流程通电 –&amp;gt;BIOS(哪个磁盘有MBR) –&amp;gt;MBR(哪个分区为要开启的OS) –&amp;gt;OS –&amp;gt;/boot(kernel) –&amp;gt;init(PID:1) –&amp;gt;/etc/rc*.d/ –&amp;gt;/etc/init.d/ –&amp;gt;用户登陆(/etc/profilc–&amp;gt;~/.profile .bash_login .bash_profile–&amp;gt">
+<meta name="keywords" content="server">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux 服务与进程">
+<meta property="og:url" content="http://yoursite.com/2017/08/17/linux-server-process/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="linux启动流程通电 –&amp;gt;BIOS(哪个磁盘有MBR) –&amp;gt;MBR(哪个分区为要开启的OS) –&amp;gt;OS –&amp;gt;/boot(kernel) –&amp;gt;init(PID:1) –&amp;gt;/etc/rc*.d/ –&amp;gt;/etc/init.d/ –&amp;gt;用户登陆(/etc/profilc–&amp;gt;~/.profile .bash_login .bash_profile–&amp;gt">
+<meta property="og:updated_time" content="2017-08-17T08:11:24.395Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux 服务与进程">
+<meta name="twitter:description" content="linux启动流程通电 –&amp;gt;BIOS(哪个磁盘有MBR) –&amp;gt;MBR(哪个分区为要开启的OS) –&amp;gt;OS –&amp;gt;/boot(kernel) –&amp;gt;init(PID:1) –&amp;gt;/etc/rc*.d/ –&amp;gt;/etc/init.d/ –&amp;gt;用户登陆(/etc/profilc–&amp;gt;~/.profile .bash_login .bash_profile–&amp;gt">
+    
+
+    
+        <link rel="alternate" href="/" title="Hexo" type="application/atom+xml" />
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Hexo</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/tags">Tags</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/4822598_105251_2.jpg" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">Tags</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/4822598_105251_2.jpg" />
+            <h2 id="name">leipengkai</h2>
+            <h3 id="title">Python Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>Shenzhen, China</span>
+            <a id="follow" target="_blank" href="https://github.com/leipengkai/">FOLLOW</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                22
+                <span>posts</span>
+            </div>
+            <div class="article-info-block">
+                2
+                <span>tags</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/leipengkai" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/femnyy" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://www.facebook.com/profile.php?id=100012089717648" target="_blank" title="facebook" class=tooltip>
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://www.instagram.com/leipengkai/" target="_blank" title="instagram" class=tooltip>
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://plus.google.com/108032606311958999451" target="_blank" title="google_plus" class=tooltip>
+                            <i class="fa fa-google_plus"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/" target="_blank" title="rss" class=tooltip>
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-linux-server-process" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            linux 服务与进程
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/17/linux-server-process/">
+            <time datetime="2017-08-17T07:44:24.000Z" itemprop="datePublished">2017-08-17</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/linux/">linux</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/server/">server</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="linux启动流程"><a href="#linux启动流程" class="headerlink" title="linux启动流程"></a><a href="http://www.ruanyifeng.com/blog/2013/08/linux_boot_process.html" target="_blank" rel="external">linux启动流程</a></h3><p>通电 –&gt;BIOS(哪个磁盘有MBR) –&gt;MBR(哪个分区为要开启的OS) –&gt;OS –&gt;/boot(kernel) –&gt;init(PID:1) –&gt;/etc/rc*.d/ –&gt;/etc/init.d/ –&gt;用户登陆(/etc/profilc–&gt;~/.profile .bash_login .bash_profile–&gt;~/.bashrc)</p>
+<h3 id="添加启动项"><a href="#添加启动项" class="headerlink" title="添加启动项"></a>添加启动项</h3><p>/etc/rc[0~6].d 这7个目录中，每个目录分别存放着对应运行级别加载时需要关闭或启动的服务，每个脚本文件都对应着/etc/init.d/目录下具体的服务</p>
+<p>K开头的脚本文件代表运行级别加载时需要关闭的，S开头的代表需要执行,数字代表执行顺序<br>因此，当我们需要开机启动自己的脚本时，只需要将可执行脚本丢在/etc/init.d目录下，然后在/etc/rc*.d中建立软链接即可</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">sudo shmod 755 /etc/init.d/ssh</div><div class="line"><span class="built_in">cd</span> /etc/init.d</div><div class="line">sudo update-rc.d ssh defaults 95 5 . <span class="comment"># 执行顺序95,加入运行级别5级中</span></div><div class="line"><span class="comment">#即在rc*.d中各建立了一个软连接，因此也可以自己手动建立软连接,如下</span></div><div class="line">ln -s /etc/init.d/ssh /etc/rc5.d/S95sshd</div><div class="line">sudo /etc/init.d/ssh start</div><div class="line">sudo service S95sshd start</div><div class="line"></div><div class="line"><span class="comment"># 开机启动</span></div><div class="line">sudo apt-get install openssh-server</div><div class="line">sudo /etc/init.d/ssh start</div><div class="line">sudo service sshd start</div></pre></td></tr></table></figure>
+<h3 id="简单的启动命令"><a href="#简单的启动命令" class="headerlink" title="简单的启动命令"></a>简单的启动命令</h3><p>Linux 在启动的时候会执行 /etc/rc.local 里面的脚本，所以只要在这里添加执行命令就可以</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">vim /etc/rc.loca</div><div class="line">/usr/bin/supervisord -c /etc/supervisor/supervisord.conf</div><div class="line"><span class="comment"># 如果是 Ubuntu 16.04 以上，rc.local 被当成了服务，而且默认是不会启动，需要手动启用一下服务</span></div><div class="line"><span class="comment"># 启动rc.local服务：</span></div><div class="line">sudo systemctl <span class="built_in">enable</span> rc-local.service</div></pre></td></tr></table></figure>
+<h3 id="定时任务"><a href="#定时任务" class="headerlink" title="定时任务"></a>定时任务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">vim /etc/crontab </div><div class="line"><span class="comment"># 权限要一致,且要可执行</span></div><div class="line"><span class="comment"># 分　时　日　月　周　命令</span></div><div class="line"><span class="comment"># 每天11点执行</span></div><div class="line">0 11 * * *  root  sh /home/python/xx.sh </div><div class="line"></div><div class="line"><span class="comment"># 每两个小时 </span></div><div class="line">0 */2 * * * <span class="built_in">echo</span> <span class="string">"Have a break now."</span> &gt;&gt; /tmp/test.txt</div><div class="line"></div><div class="line"><span class="comment"># 晚上11点到早上8点之间每两个小时和早上八点 </span></div><div class="line">0 23-7/2，8 * * * <span class="built_in">echo</span> <span class="string">"Have a good dream"</span> &gt;&gt; /tmp/test.txt</div><div class="line"></div><div class="line"><span class="comment"># 保存退出即生效(刚添加的任务会到2-3分钟后才开始生效)</span></div></pre></td></tr></table></figure>
+<h3 id="查看服务是否启动"><a href="#查看服务是否启动" class="headerlink" title="查看服务是否启动"></a>查看服务是否启动</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ubuntu centos</span></div><div class="line">service sshd status/stop/restart <span class="comment"># service 在rc*.d/的名字</span></div><div class="line"></div><div class="line">systemctl start docker <span class="comment">#centos启动服务</span></div><div class="line">systemctl <span class="built_in">enable</span> docker <span class="comment"># 开机启动</span></div><div class="line">systemctl status nginx</div><div class="line">systemctl start firewalld.service</div><div class="line">systemctl <span class="built_in">enable</span> firewalld.service</div><div class="line">systemctl daemon-reload <span class="comment"># 修改启动参数时的 </span></div><div class="line">systemctl restart docker</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># redhat 操作系统下</span></div><div class="line">chkconfig 命令</div><div class="line">chkconfig --list sshd</div></pre></td></tr></table></figure>
+<h3 id="进程有关的"><a href="#进程有关的" class="headerlink" title="进程有关的"></a>进程有关的</h3><p>“衍生出来的进程”正是 Linux 的父子进程的概念。当我们登录系统后，会取得一个 bash shell，然后我们利用这个 bash 提供的接口去执行另一个命令，<br>例如 bash 或者 ps 等。那些另外执行的命令也会被触发成为 PID，那个后来执行的命令产生的 PID 就是“子进程”，而原本的 bash 环境下，就称为“父进程”了<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">bash</div><div class="line">ps -o pid,ppid,comm</div><div class="line">    PID  PPID COMMAND</div><div class="line">    11285 11003 bash</div><div class="line">    11295 11285 bash</div><div class="line">    11305 11295 ps</div></pre></td></tr></table></figure></p>
+<p>我所做的操作是在原来的 bash shell 中执行了 bash 命令，然后又执行了 ps -o pid,ppid,comm命令。我们可以看到<br>，第二个进程 bash 是第一个进程 bash 的子进程，而第三个进程ps是第二个进程的子进程</p>
+<p>新的进程要通过老的进程复制自身得到，这就是 fork。fork 是一个系统调用。进程存活于内存中。<br>每个进程都在内存中分配有属于自己的一片空间 (内存空间，包含栈、堆、全局静态区、文本常量区、程序代码区)。<br>当一个程序调用 fork 的时候，实际上就是将上面的内存空间，又复制出来一个，构成一个新的进程，<br>并在内核中为该进程创建新的附加信息 (比如新的 PID，而 PPID 为原进程的 PID)。此后，两个进程分别地继续运行下去。<br>新的进程和原有进程有相同的运行状态(相同的变量值，相同的指令…)。我们只能通过进程的附加信息来区分两者。</p>
+<h4 id="工作管理（job-control）"><a href="#工作管理（job-control）" class="headerlink" title="工作管理（job control）"></a>工作管理（job control）</h4><p> 是用在 bash 环境下的，也就是说，当我们登录系统取得 bash shell 之后，在单一终端机下可以同时进行多个工作的行为管理。</p>
+<p> 假如我们只有一个终端，因此在可以出现提示符让你操作的环境就成为前台（foreground），至于其他工作就可以放在后台（background）去暂停或运行<br>程序调用 exec 的时候，进程清空自身的内存空间，并根据新的程序文件重建程序代码、文本常量、全局静态、堆和栈(此时堆和栈大小都为 0)，并开始运行。</p>
+<h4 id="直接将命令放到后台执行-amp"><a href="#直接将命令放到后台执行-amp" class="headerlink" title="直接将命令放到后台执行 ( &amp;)"></a>直接将命令放到后台执行 ( &amp;)</h4><h4 id="将目前工作放到后台并暂停-ctrl-z"><a href="#将目前工作放到后台并暂停-ctrl-z" class="headerlink" title="将目前工作放到后台并暂停(ctrl+z)"></a>将目前工作放到后台并暂停(ctrl+z)</h4><h4 id="将后台工作拿到前台来处理-fg-工作序号"><a href="#将后台工作拿到前台来处理-fg-工作序号" class="headerlink" title="将后台工作拿到前台来处理(fg %工作序号)"></a>将后台工作拿到前台来处理(fg %工作序号)</h4><h3 id="进程管理命令"><a href="#进程管理命令" class="headerlink" title="进程管理命令"></a>进程管理命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">top <span class="comment"># 动态显示进程 q 退出, M 内存占用降序排序,P 按CPU占用降序排序 </span></div><div class="line">[top使用说明](http://www.linuxidc.com/Linux/2011-03/33582.htm)</div><div class="line">ssserver内存占用随时间升高</div><div class="line">free -m <span class="comment"># 内在的使用情况</span></div><div class="line"><span class="comment"># 查看目前进程正在实际被使用的内存，是used-(buffers+cache)</span></div><div class="line">htop <span class="comment"># 更加友好的显示top</span></div><div class="line"></div><div class="line"><span class="comment"># 仅仅得到本机的程序名相关的进程</span></div><div class="line">ps -ef <span class="comment"># 所有进程</span></div><div class="line">ps -efH <span class="comment"># 把输出的进程组成一个层级的格式 树状 </span></div><div class="line">ps aux <span class="comment"># 可以对系统进程更加全面的了解</span></div><div class="line">ps axjf  <span class="comment"># 树状视图</span></div><div class="line">ps -ef | grep python3 | cut -c 10-15 | xargs <span class="built_in">kill</span> -9 (Kill 某个用户或命令的所有进程)</div><div class="line"><span class="comment"># 单单得到PID</span></div><div class="line">ps aux |grep ssserver <span class="comment">#程序名(命令名)  得到PID  -ef</span></div><div class="line">ps axjf |grep nginx</div><div class="line">pgrep nginx <span class="comment"># 单单的得到PID,和其子进程号</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 端口 PID</span></div><div class="line"><span class="comment"># 会牵扯到此程序 相关联的socket服务，或其它的网络相接进程(网络是双向的)</span></div><div class="line">netstat -anp |grep ssh <span class="comment">#程序名  得到PID 端口号</span></div><div class="line">netstat -lnp |grep 8388  <span class="comment">#端口号 得到PID，进程名</span></div><div class="line">sudo lsof -i :8001   <span class="comment">#查看此端口 PID,User,进程名</span></div><div class="line"></div><div class="line">ll /proc/进程号  </div><div class="line">sudo lsof -p 1609</div><div class="line">killall http* 它支持通过进程名而不是进程号来结束进程，也支持通配符。</div></pre></td></tr></table></figure>
+<h3 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h3><h3 id="sleeping"><a href="#sleeping" class="headerlink" title="sleeping"></a>sleeping</h3><p>怨妇 D(sleeping)，往往是由于 I/O(磁盘IO，网络IO，其他外设IO) 资源得不到满足，而引发等待</p>
+<p>举个例子，当 NFS 服务端关闭之时，若未事先 umount 相关目录，在 NFS 客户端执行 df 就会挂住整个登录会话，按 Ctrl+C 、Ctrl+Z 都无济于事。断开连接再登录，执行 ps axf 则看到刚才的 df 进程状态位已变成了 D ，kill -9 无法杀灭。正确的处理方式，是马上恢复 NFS 服务端，再度提供服务，刚才挂起的 df 进程发现了其苦苦等待的资源，便完成任务，自动消亡。若 NFS 服务端无法恢复服务，在 reboot 之前也应将 /etc/mtab 里的相关 NFS mount 项删除，以免 reboot 过程例行调用 netfs stop 时再次发生等待资源，导致系统重启过程挂起.</p>
+<h3 id="zombile"><a href="#zombile" class="headerlink" title="zombile"></a>zombile</h3><p>冤魂 Z(zombie) 之所以杀不死，是因为它已经死了，否则怎么叫 Zombie（僵尸）呢？冤魂不散，自然是生前有结未解之故。在UNIX/Linux中，每个进程都有一个父进程，进程号叫PID（Process ID），<br>相应地，父进程号就叫PPID（Parent PID）。当进程死亡时，它会自动关闭已打开的文件，舍弃已占用的内存、交换空间等等系统资源，然后向其父进程返回一个退出状态值，报告死讯。如果程序有 bug，就会在这最后一步出问题。儿子说我死了，老子却没听见，没有及时收棺入殓，儿子便成了僵尸。在UNIX/Linux中消灭僵尸的手段比较残忍，执行 ps axjf 找出僵尸进程的父进程号（PPID，第一列），先杀其父，然后再由进程天子 init（其PID为1，PPID为0）来一起收拾父子僵尸，超度亡魂，往生极乐。注意，子进程变成僵尸只是碍眼而已，并不碍事，如果僵尸的父进程当前有要务在身，则千万不可贸然杀之.</p>
+<p>这些进程已经死亡，但没有释放系统资源，包括内存和一些一些系统表等，如果这样的进程很多，会引发系统问题。用ps -el看出的进程状态如果是Z，就是僵尸进程。</p>
+<pre><code>ps -ef|grep defunc 可以找出僵尸进程
+</code></pre><p>清除ZOMBIE（僵尸）进程可以使用如下方法：</p>
+<pre><code>kill –18 PPID （PPID是其父进程）
+# 这个信号是告诉父进程，该子进程已经死亡了，请收回分配给他的资源。
+</code></pre><p>如果不行则看能否终止其父进程（如果其父进程不需要的话）。先看其父进程又无其他子进程，如果有，可能需要先kill其他子进程，也就是兄弟进程。方法是：</p>
+<pre><code>kill –15 PID1 PID2 # (PID1,PID2是僵尸进程的父进程的其它子进程)。
+kill –15 PPID  # 然后再kill父进程,这样僵尸进程就可能被完全杀掉了。 )``
+</code></pre>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://yoursite.com/2017/08/17/linux-server-process/" data-id="cj6giljtm000i3g3kt73guzjf" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="http://yoursite.com/2017/08/17/linux-server-process/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://yoursite.com/2017/08/17/linux-server-process/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2017/08/16/CDN-server/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">内容分发网络</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+        <section id="comments">
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+</section>
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">recent</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/linux/">linux</a></p>
+                            <p class="item-title"><a href="/2017/08/17/linux-server-process/" class="title">linux 服务与进程</a></p>
+                            <p class="item-date"><time datetime="2017-08-17T07:44:24.000Z" itemprop="datePublished">2017-08-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2017/08/16/CDN-server/" class="title">内容分发网络</a></p>
+                            <p class="item-date"><time datetime="2017-08-16T07:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2017/08/16/shadowsocks-server/" class="title">shadowsocks</a></p>
+                            <p class="item-date"><time datetime="2017-08-16T07:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2017/08/16/sshd-server/" class="title">sshd</a></p>
+                            <p class="item-date"><time datetime="2017-08-16T07:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2017/08/15/vps-server/" class="title">VPS搭建网站</a></p>
+                            <p class="item-date"><time datetime="2017-08-15T03:16:14.000Z" itemprop="datePublished">2017-08-15</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">5</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">22</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+                    <li>
+                        <a href="https://hub.docker.com/">Hub_docker</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 leipengkai<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_config = function () {
+        
+            this.page.url = 'http://yoursite.com/2017/08/17/linux-server-process/';
+        
+        this.page.identifier = 'linux-server-process';
+    };
+    (function() { 
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'hexo-theme-icarus' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

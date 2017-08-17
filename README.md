@@ -114,8 +114,11 @@ github每个帐号只能有一个仓库来存放个人主页，而且仓库的�
 
 2.在你的域名注册提供商那里配置DNS解析,推荐使用CNAME类型的记录
 注意是在域名提供商中修改DNS
+
    CNAME  www.femn.me leipengkai.github.io
+namecheap的修改方式
 ![](css/images/namecheap.jpg)
+name的修改方式
 ![](css/images/name-domain.jpg)
 3.添加CNAME文件
 
@@ -123,11 +126,18 @@ github每个帐号只能有一个仓库来存放个人主页，而且仓库的�
     vim CNAME
         www.femn.me
     cd ../
+或者如图修改，会自动生成CNAME文件
 ![](css/images/github-page.jpg)
- 使用git命令行部署的 效果是:当输入https://leipengkai.github.io/ 会转向到www.femnxyz.xyz这个url上，内容是github上的内容.
 
-如果在github-->setting-->sustom domain-->www.femnyy.com时，当输入https://leipengkai.github.io/ 会转向到www.femnyy.com这个网站上,内容是femnyy.com网站的内容.
+使用git命令行部署的 效果是:当输入https://leipengkai.github.io/ 会转向到www.femnxyz.xyz这个url上，内容是github上的内容.
 
+如果在github-->setting-->sustom domain-->www.femn.me时，当输入https://leipengkai.github.io/ 会转向到www.femn.me这个网站上,内容是femn.me网站的内容.
+
+4.为自定义域名的GitHub Pages添加SSL
+4.1 先去腾讯云申请免费一年的DV证书，然后配置Nginx,最后使用Cloudflare做DNS.[请参考](https://www.femn.me/2017/08/15/vps-server/)
+![](css/images/cloudflare.png)
+
+4.2 使用[Cloudflare](https://www.yicodes.com/2016/12/04/free-cloudflare-ssl-for-custom-domain/) ,但其实重定向到https中去的，好像并没有保护作用
 ### [添加disqus评论系统](https://disqus.com)翻墙之后才能看到
     
     # Qisqus – settings – Add Disqus to your site 
