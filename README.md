@@ -113,14 +113,17 @@ github每个帐号只能有一个仓库来存放个人主页，而且仓库的�
 1.[获取](https://help.github.com/articles/setting-up-an-apex-domain/)github的IP地址
 
 2.在你的域名注册提供商那里配置DNS解析,推荐使用CNAME类型的记录
-   CNAME  www.femnxyz.xyz leipengkai.github.io
-
+注意是在域名提供商中修改DNS
+   CNAME  www.femn.me leipengkai.github.io
+![](css/images/namecheap.jpg)
+![](css/images/name-domain.jpg)
 3.添加CNAME文件
 
     cd ./source
     vim CNAME
-        www.femnxyz.xyz
-    cd ../  
+        www.femn.me
+    cd ../
+![](css/images/github-page.jpg)
  使用git命令行部署的 效果是:当输入https://leipengkai.github.io/ 会转向到www.femnxyz.xyz这个url上，内容是github上的内容.
 
 如果在github-->setting-->sustom domain-->www.femnyy.com时，当输入https://leipengkai.github.io/ 会转向到www.femnyy.com这个网站上,内容是femnyy.com网站的内容.

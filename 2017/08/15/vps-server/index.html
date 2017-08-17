@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>VPS搭建网站 | Hexo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="空间(虚拟主机,虚拟空间)它是利用软件在服务器上硬盘上划分出来的一部分容量.共享的是服务器资源.没有独立的IP和操作系统.开通以后只有一个FTP权限.它所支持的程序也是在服务器上默认配置好的.空间一般都装有面板,是傻瓜化的操作由于多台虚拟主机共享一台真实主机的资源，每个用户所要承担的各类费用大幅度降低. 自从进入IT圈，以前使用国内的空间，感觉还行，速度快，但是后面的备案系统让大多数的站长跑到墙外">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VPS搭建网站">
+<meta property="og:url" content="http://yoursite.com/2017/08/15/vps-server/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="空间(虚拟主机,虚拟空间)它是利用软件在服务器上硬盘上划分出来的一部分容量.共享的是服务器资源.没有独立的IP和操作系统.开通以后只有一个FTP权限.它所支持的程序也是在服务器上默认配置好的.空间一般都装有面板,是傻瓜化的操作由于多台虚拟主机共享一台真实主机的资源，每个用户所要承担的各类费用大幅度降低. 自从进入IT圈，以前使用国内的空间，感觉还行，速度快，但是后面的备案系统让大多数的站长跑到墙外">
+<meta property="og:updated_time" content="2017-08-17T00:43:54.448Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="VPS搭建网站">
+<meta name="twitter:description" content="空间(虚拟主机,虚拟空间)它是利用软件在服务器上硬盘上划分出来的一部分容量.共享的是服务器资源.没有独立的IP和操作系统.开通以后只有一个FTP权限.它所支持的程序也是在服务器上默认配置好的.空间一般都装有面板,是傻瓜化的操作由于多台虚拟主机共享一台真实主机的资源，每个用户所要承担的各类费用大幅度降低. 自从进入IT圈，以前使用国内的空间，感觉还行，速度快，但是后面的备案系统让大多数的站长跑到墙外">
+    
+
+    
+        <link rel="alternate" href="/" title="Hexo" type="application/atom+xml" />
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Hexo</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/tags">Tags</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/4822598_105251_2.jpg" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">Tags</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/4822598_105251_2.jpg" />
+            <h2 id="name">leipengkai</h2>
+            <h3 id="title">Python Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>Shenzhen, China</span>
+            <a id="follow" target="_blank" href="https://github.com/leipengkai/">FOLLOW</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                21
+                <span>posts</span>
+            </div>
+            <div class="article-info-block">
+                1
+                <span>tag</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/leipengkai" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/femnyy" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://www.facebook.com/profile.php?id=100012089717648" target="_blank" title="facebook" class=tooltip>
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://www.instagram.com/leipengkai/" target="_blank" title="instagram" class=tooltip>
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://plus.google.com/108032606311958999451" target="_blank" title="google_plus" class=tooltip>
+                            <i class="fa fa-google_plus"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/" target="_blank" title="rss" class=tooltip>
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-vps-server" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            VPS搭建网站
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/15/vps-server/">
+            <time datetime="2017-08-15T03:16:14.000Z" itemprop="datePublished">2017-08-15</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/server/">server</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="空间-虚拟主机-虚拟空间"><a href="#空间-虚拟主机-虚拟空间" class="headerlink" title="空间(虚拟主机,虚拟空间)"></a>空间(虚拟主机,虚拟空间)</h3><p>它是利用软件在服务器上硬盘上划分出来的一部分容量.共享的是服务器资源.<br>没有独立的IP和操作系统.开通以后只有一个FTP权限.它所支持的程序也是在服务器上默认配置好的.空间一般都装有面板,是傻瓜化的操作<br>由于多台虚拟主机共享一台真实主机的资源，每个用户所要承担的各类费用大幅度降低.</p>
+<p>自从进入IT圈，以前使用国内的空间，感觉还行，速度快，但是后面的备案系统让大多数的站长跑到墙外来选择空间:<br>Godaddy、Dreamhost、Froghost、Photonvps等空间相信大多数的站长多多少少都会用过<br>但是随之而来的各种问题都让大家受到精神上的折磨，不过相信大家都是比较的喜欢捣鼓吧，从2012年开始很多的站长都选择到VPS行列中了，<br>以前高高在上的VPS现在已经沦为普通人都买得起用得起的产品了，但是想要好一点的，响应快一点的VPS主机价格还是很贵，</p>
+<p>VPS还是比较适合对网站空间要求比较高的朋友来使用的，独立IP，完全自主的控制权限这些都是一般的虚拟主机所没有的。</p>
+<p>自从2013年digitalocean把SSD的主机价格拉到5元每月之后，相信很多人都从Linode转过来了，不为什么，价格决定啊，而且性能上和高大上的Linode差别不是很多，<br>还是能得到大多数人的肯定，今年Vultr 的杀入，更是让大多数人目瞪口呆，因为价格更加便宜，而且内存上加到到768Ma，<br>而价格最优惠可以到2.5美金一个月，这样的产品绝对是对国人来说是一个杀伤力</p>
+<h3 id="VPS-Virtual-Private-Server-虚拟服务器"><a href="#VPS-Virtual-Private-Server-虚拟服务器" class="headerlink" title="VPS(Virtual Private Server)虚拟服务器"></a>VPS(Virtual Private Server)虚拟服务器</h3><p>VPS就是将一台真正的服务器主机(可以理解为独立服务器)，分为多台虚拟服务器主机。<br>但是虚拟出来的每一台服务器都有主机独立的内存、CPU、硬盘，因此在性能上相当一台真实存在的主机，但是成本却是很低，降低了初学者进入VPS主机门槛<br>VPS提供商:<br><a href="https://www.digitalocean.com/" target="_blank" rel="external">DigitalOcean</a>,<a href="https://www.linode.com/" target="_blank" rel="external">Linode</a>,<a href="https://www.vultr.com/" target="_blank" rel="external"> Vultar</a>,<a href="https://virmach.com/" target="_blank" rel="external">virmach</a>, <a href="https://bandwagonhost.com/" target="_blank" rel="external">Bandwagon</a>,<a href="https://intl.aliyun.com/" target="_blank" rel="external">国际阿里云</a></p>
+<p>VPS除了可以用来做网站的服务器，还可以建立自己的ssh，vpn，shadowsocks等进行代理翻墙,可以一键快速配置Docker,GitLab,wonCloud.WordPress等其它应用。</p>
+<p>Vultr VPS采用的是KVM虚拟化技术(openvz 还是 kvm 还是 xen 或者是 vmare )。</p>
+<h3 id="1-购买VPS"><a href="#1-购买VPS" class="headerlink" title="1.购买VPS:"></a>1.购买VPS:</h3><p><a href="https://vultr.com/" target="_blank" rel="external">vultr官网</a></p>
+<p><a href="http://www.hostloc.com" target="_blank" rel="external">全球主机交流</a></p>
+<p><a href="http://tool.chinaz.com/" target="_blank" rel="external">站长工具</a></p>
+<h3 id="2-购买域名"><a href="#2-购买域名" class="headerlink" title="2.购买域名"></a>2.购买域名</h3><p><a href="https://www.name.com" target="_blank" rel="external">name.com的域名</a> 购买域名的优惠码： privacyplease 注意:目前只支持paypal或信用卡支持，不支持支付宝</p>
+<h3 id="3-设置DNS-将此域名记录到此DNS服务器上-，并将域名指定到VPS上-域名解析成IP"><a href="#3-设置DNS-将此域名记录到此DNS服务器上-，并将域名指定到VPS上-域名解析成IP" class="headerlink" title="3.设置DNS(将此域名记录到此DNS服务器上)，并将域名指定到VPS上(域名解析成IP)"></a>3.设置DNS(将此域名记录到此DNS服务器上)，并将域名指定到VPS上(域名解析成IP)</h3><p><a href="http://www.chinaz.com/web/2013/0103/287946.shtml" target="_blank" rel="external">DNS解析</a> 可以通过My Account –&gt; My Domains –&gt;选择Quick Links这个下拉框的Manage Domain</p>
+<h3 id="推荐域名管理页面-添加解析域名记录"><a href="#推荐域名管理页面-添加解析域名记录" class="headerlink" title="推荐域名管理页面(添加解析域名记录)"></a>推荐域名管理页面(添加解析域名记录)</h3><p><a href="https://www.dnspod.cn/" target="_blank" rel="external">将购买的域名放在此下,dnspod下进行管理:</a>便于管理多个域名,只要再修改下name.com的DNS,换成dnspod的域名解析服务器，<br>以后就可以在这里添加解析自己的域名记录了</p>
+<p><a href="https://support.dnspod.cn/Kb/showarticle/tsid/177/#ChangeDomainNS" target="_blank" rel="external">修改DNS解析服务器</a></p>
+<h3 id="4-申请证书-支持泛域名"><a href="#4-申请证书-支持泛域名" class="headerlink" title="4.申请证书,支持泛域名"></a>4.申请证书,支持泛域名</h3><p><a href="http://51.ruyo.net/p/3804.html" target="_blank" rel="external">申请AlphaSSL免费证书教程</a></p>
+<p><a href="https://csr.chinassl.net/generator-csr.html" target="_blank" rel="external">1.生成CSR,KEY文件</a> # 邮箱：自己常用的邮箱 域名：*.femnyy.com</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 也可以用命令行生成</span></div><div class="line">openssl req -new -newkey rsa:2048 -nodes -keyout howsvps.key -out howsvps.csr</div><div class="line"><span class="comment">#注意在填写域名时，不需要添加二级域名:femnyy.com这样认证之后的这个证书，就可以是通配使用了</span></div><div class="line">并没有将admin@femnyy.com的链接发到我的邮箱上,如果并没有给你发邮箱的话，</div></pre></td></tr></table></figure>
+<p>2.注册域名邮箱，本人使用的是qq注册域名邮箱</p>
+<p>注意: 使用其他邮箱给 admin 邮箱发送一份邮件，能接收，说明没问题！ 不能使用QQ邮箱<br>如果不能接收，检查你的域名 MX / TXT 是否解析到其他地方了<br>别名就是主机记录，别名主机就是记录值<br>然后再加一个成员管理admin</p>
+<p><a href="https://assl.loovit.com/" target="_blank" rel="external">3.免费SSL certificates</a> # 认证的邮箱 与上面的1步骤要一致</p>
+<p>4.选择你刚刚注册的域名邮箱</p>
+<p>5.邮件确认SSL证书申请,点击 I APPROVE，之后会再来一封.crt的文件 <a href="https://doub.io/wlzy-28/" target="_blank" rel="external">安装AlphaSLL教程</a></p>
+<p>6.再将<a href="https://www.alphassl.com/support/install-root-certificate.html" target="_blank" rel="external">中级证书</a>中，SHA-256 – Orders March 31, 2014 and After的代码，复制到.crt的文件，合成最终的.crt文件</p>
+<p>7.再将.crt key文件 复制到服务器上，nginx的配置如下，同腾讯的一样配置</p>
+<p>8.有了泛域名之后，就可以在 server_name 增加 *.femnyy.com;</p>
+<h3 id="4-上面的证书没有成功的话，那就用腾讯云SSL证书-免费一年"><a href="#4-上面的证书没有成功的话，那就用腾讯云SSL证书-免费一年" class="headerlink" title="4.上面的证书没有成功的话，那就用腾讯云SSL证书 免费一年"></a>4.上面的证书没有成功的话，那就用<a href="https://console.qcloud.com/ssl" target="_blank" rel="external">腾讯云SSL证书</a> 免费一年</h3><p>csr证书请求文件–交给CA签名后形成服务端自己的证书，认证通过之后，签证机构给你crt文件 crt+key = pem </p>
+<p>cat crt key = pem<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">vim /etc/nginx/conf.d/ghost</div><div class="line">    server &#123;</div><div class="line">        listen 80;</div><div class="line">        <span class="comment">#server_name puplic IP;</span></div><div class="line">        <span class="comment">#server_name 0.0.0.0; 上面的公网IP也不行了，</span></div><div class="line">        server_name www.femnyy.com puplic_IP yy.femnyy.com;</div><div class="line">        <span class="comment">#server_name femnyy.com;</span></div><div class="line">        rewrite ^(.*) https://<span class="variable">$host</span><span class="variable">$1</span> permanent;</div><div class="line">        <span class="built_in">return</span> 301 https://<span class="variable">$server_name</span><span class="variable">$request_uri</span>;</div><div class="line">    &#125;</div><div class="line">    server&#123;</div><div class="line">        listen  443;</div><div class="line">        server_name  www.femnyy.com;</div><div class="line">        ssl on; </div><div class="line">        <span class="comment">#index index.htm index.html;</span></div><div class="line">        ssl_certificate   /etc/nginx/conf.d/Nginx_ssl/server.crt;</div><div class="line">        ssl_certificate_key  /etc/nginx/conf.d/Nginx_ssl/server.key;</div><div class="line">        ssl_session_timeout 5m; </div><div class="line">        ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</div><div class="line">        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</div><div class="line">        ssl_prefer_server_ciphers on; </div><div class="line">        location / &#123;</div><div class="line">            proxy_set_header   X-Real-IP <span class="variable">$remote_addr</span>;</div><div class="line">            proxy_set_header   Host      <span class="variable">$http_host</span>;</div><div class="line">            proxy_pass         http://127.0.0.1:2368;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">firewall-cmd --permanent --add-port=443/tcp</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure></p>
+<h3 id="推荐管理主机的状态-nodequery"><a href="#推荐管理主机的状态-nodequery" class="headerlink" title="推荐管理主机的状态 nodequery"></a>推荐管理主机的状态 <a href="https://nodequery.com/" target="_blank" rel="external">nodequery</a></h3><h3 id="统计访问量"><a href="#统计访问量" class="headerlink" title="统计访问量"></a>统计访问量</h3><p>其实在dnspod下管理域名时，就会有流量统计这个功能，但本人使用<a href="https://www.cloudflare.com/" target="_blank" rel="external">cloudflare</a>加速网页之后，就没有此功能了<br>(<a href="https://www.femnyy.com/cdn/" target="_blank" rel="external">可以看下本人的CND设置</a>)</p>
+<p>所以使用<a href="https://www.google.com/intl/zh-CN/analytics/" target="_blank" rel="external">谷歌统计访问量</a><br>注册好了之后–&gt;管理–&gt; .js跟踪信息–&gt;代码跟踪–&gt;将网站跟踪的代码复制到ghost的code injection 的Blog Footer</p>
+<p>所以就不推荐name.com的SSL购买和使用,而且只能指定一个域名的SSL证书:www.域名<br>上报工单，可能是时差原因我取消SSL certifcates的工单发了之后，几个小时都没有反应给我,也有可能周日不工作。</p>
+<p>如果有github学生礼包的话,就可以<a href="https://education.github.com/" target="_blank" rel="external">登陆</a><br><a href="https://www.caoqq.net/github-pack.html" target="_blank" rel="external">此链接</a>,是教如何使用礼包教程<br>这样就可以免费使用digitalocean VPS和namecheap域名了.</p>
+<p>使用digitalocean<br>1.gmail注册的,用paypal必须要充$5,其它支付方式，好像不需要<br>注册时比较坑的时，要等两个小时，害得我不断的去注册个人信息 我去(英语不好哈哈)！同时还比较麻烦的就是在关联paypal的时候，还会发信息给注册paypal的邮箱，并要求回复信息，认证是本人.<br>2.创建实例，居然是用Droplets这个单词</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://yoursite.com/2017/08/15/vps-server/" data-id="cj6fpw3wi0000593kzs2lu2gl" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="http://yoursite.com/2017/08/15/vps-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://yoursite.com/2017/08/15/vps-server/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2017/08/16/sshd-server/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    sshd
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2017/08/14/python-fun-program/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">python 函数式编程</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+        <section id="comments">
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+</section>
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">recent</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2017/08/16/shadowsocks-server/" class="title">shadowsocks</a></p>
+                            <p class="item-date"><time datetime="2017-08-16T07:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2017/08/16/CDN-server/" class="title">内容分发网络</a></p>
+                            <p class="item-date"><time datetime="2017-08-16T07:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2017/08/16/sshd-server/" class="title">sshd</a></p>
+                            <p class="item-date"><time datetime="2017-08-16T07:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2017/08/15/vps-server/" class="title">VPS搭建网站</a></p>
+                            <p class="item-date"><time datetime="2017-08-15T03:16:14.000Z" itemprop="datePublished">2017-08-15</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/python3/">python3</a></p>
+                            <p class="item-title"><a href="/2017/08/14/python-fun-program/" class="title">python 函数式编程</a></p>
+                            <p class="item-date"><time datetime="2017-08-14T03:02:55.000Z" itemprop="datePublished">2017-08-14</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">5</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">21</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+                    <li>
+                        <a href="https://hub.docker.com/">Hub_docker</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 leipengkai<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_config = function () {
+        
+            this.page.url = 'http://yoursite.com/2017/08/15/vps-server/';
+        
+        this.page.identifier = 'vps-server';
+    };
+    (function() { 
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'hexo-theme-icarus' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

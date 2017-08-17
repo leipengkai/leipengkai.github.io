@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>shadowsocks | Hexo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="用shadowsocks作为翻墙的工具一般的翻墙工具还有VPN,pptp是VPN的一种,我们在这里介绍的是shadowsocks翻墙工具   shadowsocks 官网  centos7 install shadowsocks 123456789101112131415161718yum install python-setuptools &amp;amp;&amp;amp; easy_install pip">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shadowsocks">
+<meta property="og:url" content="http://yoursite.com/2017/08/16/shadowsocks-server/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="用shadowsocks作为翻墙的工具一般的翻墙工具还有VPN,pptp是VPN的一种,我们在这里介绍的是shadowsocks翻墙工具   shadowsocks 官网  centos7 install shadowsocks 123456789101112131415161718yum install python-setuptools &amp;amp;&amp;amp; easy_install pip">
+<meta property="og:updated_time" content="2017-08-17T06:16:46.711Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="shadowsocks">
+<meta name="twitter:description" content="用shadowsocks作为翻墙的工具一般的翻墙工具还有VPN,pptp是VPN的一种,我们在这里介绍的是shadowsocks翻墙工具   shadowsocks 官网  centos7 install shadowsocks 123456789101112131415161718yum install python-setuptools &amp;amp;&amp;amp; easy_install pip">
+    
+
+    
+        <link rel="alternate" href="/" title="Hexo" type="application/atom+xml" />
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Hexo</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/tags">Tags</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/4822598_105251_2.jpg" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">Tags</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/4822598_105251_2.jpg" />
+            <h2 id="name">leipengkai</h2>
+            <h3 id="title">Python Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>Shenzhen, China</span>
+            <a id="follow" target="_blank" href="https://github.com/leipengkai/">FOLLOW</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                21
+                <span>posts</span>
+            </div>
+            <div class="article-info-block">
+                1
+                <span>tag</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/leipengkai" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/femnyy" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://www.facebook.com/profile.php?id=100012089717648" target="_blank" title="facebook" class=tooltip>
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://www.instagram.com/leipengkai/" target="_blank" title="instagram" class=tooltip>
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://plus.google.com/108032606311958999451" target="_blank" title="google_plus" class=tooltip>
+                            <i class="fa fa-google_plus"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/" target="_blank" title="rss" class=tooltip>
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-shadowsocks-server" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            shadowsocks
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/16/shadowsocks-server/">
+            <time datetime="2017-08-16T07:24:48.000Z" itemprop="datePublished">2017-08-16</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/server/">server</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="用shadowsocks作为翻墙的工具"><a href="#用shadowsocks作为翻墙的工具" class="headerlink" title="用shadowsocks作为翻墙的工具"></a>用shadowsocks作为翻墙的工具</h3><p>一般的翻墙工具还有VPN,pptp是VPN的一种,我们在这里介绍的是shadowsocks翻墙工具 </p>
+<p> <a href="https://shadowsocks.org/en/download/clients.html" target="_blank" rel="external">shadowsocks 官网</a></p>
+<p> <a href="https://www.loyalsoldier.me/fuck-the-gfw-with-my-own-shadowsocks-server/" target="_blank" rel="external">centos7 install shadowsocks</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">yum install python-setuptools &amp;&amp; easy_install pip  </div><div class="line">pip install shadowsocks</div><div class="line">vim /root/ss/ssserver.json</div><div class="line">    &#123;</div><div class="line">      <span class="string">"server"</span>: <span class="string">"0.0.0.0"</span>,</div><div class="line">      <span class="string">"server_port"</span>: 8388,</div><div class="line">      <span class="string">"local_address"</span>: <span class="string">"127.0.0.1"</span>,</div><div class="line">      <span class="string">"local_port"</span>: 1080,</div><div class="line">      <span class="string">"password"</span>: <span class="string">"yourpassword"</span>,</div><div class="line">      <span class="string">"timeout"</span>: 300,</div><div class="line">      <span class="string">"method"</span>: <span class="string">"aes-256-cfb"</span>,</div><div class="line">      <span class="string">"fast_open"</span>: <span class="literal">false</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">systemctl start firewalld.service</div><div class="line">systemctl <span class="built_in">enable</span> firewalld.service</div><div class="line">firewall-cmd --permanent --add-port=8388/tcp</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure>
+<p>启动 ssserver服务<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">nohup ssserver -c /root/ss/ssserver.json -d start &amp;</div></pre></td></tr></table></figure></p>
+<p>查看ssserver 有没有启动成功</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps aux |grep ssserver</div></pre></td></tr></table></figure>
+<p>如果没有成功，可能是因为/root/ss/ssserver.json 的server_ip的原因,我买了个<a href="https://intl.aliyun.com/zh" target="_blank" rel="external">国际阿里云</a>的ECS服务器，我写的是公网的IP,结果一直运行不起来<br>因为公网是通过nat IP实现的(所以在安全组中只能是选择内网进行配置)，所以改成Privaty IP就可以正常启动了，最好是设置为0.0.0.0就好。</p>
+<p>阿里云的ECS服务器上配置使用任意端口的服务后，端口会自动开启监听，但它还有一个安全组的概念，最好设置一个(内网   入  允许 全部 -1/-1   0.0.0.0/0  优先级110)<br>这样就完全可以由ECS的系统完全的操作防火墙，就像没有安全组概念一样了。</p>
+<p> <a href="https://www.vultr.com/docs/how-to-deploy-google-bbr-on-centos-7" target="_blank" rel="external">centos7 install BBR</a> 要注意下sudo grub2-set-default 0,应该是为0的,使用最新的，文档却写成了1<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># update kernet</span></div><div class="line"><span class="comment"># look current kernet</span></div><div class="line">uname -r</div><div class="line"><span class="comment"># Install the ELRepo repo:</span></div><div class="line">sudo rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org</div><div class="line">sudo rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm</div><div class="line"><span class="comment"># install newer kernet</span></div><div class="line">sudo yum --enablerepo=elrepo-kernel install kernel-ml -y</div><div class="line"><span class="comment"># look install newer kernet</span></div><div class="line">rpm -qa | grep kernel</div><div class="line">sudo egrep ^menuentry /etc/grub2.cfg | cut -f 2 -d \<span class="string">'</span></div><div class="line"><span class="string"># setting newer kernet</span></div><div class="line"><span class="string">sudo grub2-set-default 0</span></div><div class="line"><span class="string">sudo shutdown -r now</span></div><div class="line"><span class="string">uname -r</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string"># enable BBr</span></div><div class="line"><span class="string">echo '</span>net.core.default_qdisc=fq<span class="string">' | sudo tee -a /etc/sysctl.conf</span></div><div class="line"><span class="string">echo '</span>net.ipv4.tcp_congestion_control=bbr<span class="string">' | sudo tee -a /etc/sysctl.conf</span></div><div class="line"><span class="string">sudo sysctl -p</span></div><div class="line"><span class="string">sudo sysctl net.ipv4.tcp_available_congestion_control</span></div><div class="line"><span class="string">net.ipv4.tcp_available_congestion_control = bbr cubic reno</span></div><div class="line"><span class="string">sudo sysctl -n net.ipv4.tcp_congestion_control</span></div><div class="line"><span class="string">bbr</span></div><div class="line"><span class="string">lsmod |grep bbr   # output   tcp_bbr                16384  0</span></div></pre></td></tr></table></figure></p>
+<p><a href="https://github.com/shadowsocks/shadowsocks-qt5/wiki/%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97" target="_blank" rel="external">client install shadowsocks</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#ubuntu</span></div><div class="line">sudo add-apt-repository ppa:hzwhuang/ss-qt5</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install shadowsocks-qt5</div><div class="line">ss-qt5</div><div class="line"><span class="comment"># 将ssserver.json的配置，设置到ss中</span></div></pre></td></tr></table></figure>
+<h3 id="注意-一定要再去配置下代理Pxory-0-0-0-0-1080-或者用本地的-pac文件-Local-Port就必须和service-pac文件-此文件是过滤网址用的-启动的端口一致"><a href="#注意-一定要再去配置下代理Pxory-0-0-0-0-1080-或者用本地的-pac文件-Local-Port就必须和service-pac文件-此文件是过滤网址用的-启动的端口一致" class="headerlink" title="注意:一定要再去配置下代理Pxory 0.0.0.0:1080 或者用本地的.pac文件,Local Port就必须和service.pac文件(此文件是过滤网址用的)启动的端口一致."></a>注意:一定要再去配置下代理Pxory 0.0.0.0:1080 或者用本地的.pac文件,Local Port就必须和service.pac文件(此文件是过滤网址用的)启动的端口一致.</h3><p><a href="http://pac.ddcc.me/1.pac" target="_blank" rel="external">http://pac.ddcc.me/1.pac</a> == local.pac</p>
+<h4 id="在国际里云购买的ESC，配置好shadowsocks之后，在手机上能正常使用，也不需要去设置代理，但在Ubuntu下却一直用不了"><a href="#在国际里云购买的ESC，配置好shadowsocks之后，在手机上能正常使用，也不需要去设置代理，但在Ubuntu下却一直用不了" class="headerlink" title="在国际里云购买的ESC，配置好shadowsocks之后，在手机上能正常使用，也不需要去设置代理，但在Ubuntu下却一直用不了"></a>在国际里云购买的ESC，配置好shadowsocks之后，在手机上能正常使用，也不需要去设置代理，但在Ubuntu下却一直用不了</h4><p> 如果自己不想搭建服务器的话，可以按下面的操作进行翻墙:<br> <a href="https://github.com/TestSmirk/ss-ip" target="_blank" rel="external">这个是我大哥的一些ss帐号</a></p>
+<p> <a href="https://doub.io/sszhfx/" target="_blank" rel="external">Shadowsocks免费账号分享</a>,但这个网址要先翻墙才行，哈哈<br> 具体的使用：在免费账号分享的这个网址上 </p>
+<p>1.使用二维码：点击二维码会出现一个二维码的图 这里打开shadowsocks软件–&gt;点鼠标右键–&gt;add–&gt;scan QR code on screen</p>
+<p>2.使用生成二维码的url:<br>在add–&gt;选择url填入ss://Y2hhY2hhMjA6dGZLXkx5Rm49aWM1QDE5OC40Ni4yNDIuMjE2OjQ0Mw==<br>如果失败的话，可以换其它的二维码试试。</p>
+<h3 id="ubuntu-etc-resolv-conf"><a href="#ubuntu-etc-resolv-conf" class="headerlink" title="ubuntu /etc/resolv.conf"></a>ubuntu /etc/resolv.conf</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">nameserver 127.0.1.1</div><div class="line"><span class="comment"># nameserver 8.8.8.8</span></div><div class="line">search DHCP HOST</div></pre></td></tr></table></figure>
+<h3 id="加速SS的链接速度"><a href="#加速SS的链接速度" class="headerlink" title="加速SS的链接速度"></a><a href="http://vegetablefinn.github.io/2016/05/02/SS%E7%A5%9E%E5%99%A8-FinalSpeed-XSocks-%E7%AC%94%E8%AE%B0/" target="_blank" rel="external">加速SS的链接速度</a></h3>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://yoursite.com/2017/08/16/shadowsocks-server/" data-id="cj6g1z1lz0002jj3ky7mp9c0y" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="http://yoursite.com/2017/08/16/shadowsocks-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://yoursite.com/2017/08/16/shadowsocks-server/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2017/08/16/CDN-server/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">内容分发网络</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+        <section id="comments">
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+</section>
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">recent</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2017/08/16/shadowsocks-server/" class="title">shadowsocks</a></p>
+                            <p class="item-date"><time datetime="2017-08-16T07:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2017/08/16/CDN-server/" class="title">内容分发网络</a></p>
+                            <p class="item-date"><time datetime="2017-08-16T07:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2017/08/16/sshd-server/" class="title">sshd</a></p>
+                            <p class="item-date"><time datetime="2017-08-16T07:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2017/08/15/vps-server/" class="title">VPS搭建网站</a></p>
+                            <p class="item-date"><time datetime="2017-08-15T03:16:14.000Z" itemprop="datePublished">2017-08-15</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/python3/">python3</a></p>
+                            <p class="item-title"><a href="/2017/08/14/python-fun-program/" class="title">python 函数式编程</a></p>
+                            <p class="item-date"><time datetime="2017-08-14T03:02:55.000Z" itemprop="datePublished">2017-08-14</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">5</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">21</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+                    <li>
+                        <a href="https://hub.docker.com/">Hub_docker</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 leipengkai<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_config = function () {
+        
+            this.page.url = 'http://yoursite.com/2017/08/16/shadowsocks-server/';
+        
+        this.page.identifier = 'shadowsocks-server';
+    };
+    (function() { 
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'hexo-theme-icarus' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
