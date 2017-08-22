@@ -3,20 +3,22 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Hexo</title>
+    <title>Femn</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/page/3/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:title" content="Femn">
+<meta property="og:url" content="https://www.femnyy.com/page/3/index.html">
+<meta property="og:site_name" content="Femn">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="Femn">
     
 
     
-        <link rel="alternate" href="/" title="Hexo" type="application/atom+xml" />
+        <link rel="alternate" href="/atom.xml" title="Femn" type="application/atom+xml" />
     
 
+    
+        <link rel="icon" href="/css/images/favicon.ico" />
     
 
     <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
@@ -47,7 +49,7 @@
         <div class="outer">
             <a href="/" id="logo">
                 <i class="logo"></i>
-                <span class="site-title">Hexo</span>
+                <span class="site-title">Femn</span>
             </a>
             <nav id="main-nav">
                 
@@ -153,7 +155,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                22
+                26
                 <span>posts</span>
             </div>
             <div class="article-info-block">
@@ -198,7 +200,7 @@
                     </td>
                     
                     <td>
-                        <a href="/" target="_blank" title="rss" class=tooltip>
+                        <a href="/atom.xml" target="_blank" title="rss" class=tooltip>
                             <i class="fa fa-rss"></i>
                         </a>
                     </td>
@@ -212,6 +214,564 @@
 
             
             <section id="main">
+    <article id="post-docker-hub" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/04/docker-hub/">docker-hub</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/04/docker-hub/">
+            <time datetime="2017-08-04T15:24:48.000Z" itemprop="datePublished">2017-08-04</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/docker/">docker</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="新建私有镜像仓库-只有registry-2这个镜像运行时，才能push-pull私有镜像库"><a href="#新建私有镜像仓库-只有registry-2这个镜像运行时，才能push-pull私有镜像库" class="headerlink" title="新建私有镜像仓库,只有registry:2这个镜像运行时，才能push,pull私有镜像库"></a>新建私有镜像仓库,只有registry:2这个镜像运行时，才能push,pull私有镜像库</h3><p>私有镜像仓库的好处：</p>
+<p>1.上传下载速度快</p>
+<p>2.企业可自行维护镜像仓库</p>
+<p>3.需要维护镜像仓库服务器</p>
+<p>4.同步docker官方镜像到企业私有镜像仓库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">docker pull registry:2</div><div class="line"><span class="comment"># 使用官方的 registry 镜像来启动本地的私有仓库 </span></div><div class="line"><span class="comment"># 仓库会被创建在容器下/var/lib/registry下</span></div><div class="line"><span class="comment"># 将镜像文件存放在本机的指定路径/data/registry</span></div><div class="line">docker run -d -p 5000:5000 --restart=always --name registry \</div><div class="line">    -v /data/registry:/var/lib/registry registry:2</div><div class="line"><span class="comment"># 将镜像运行为容器 -d 将这个进程后台运行 -p 映射端口主机端口:容器端口     </span></div><div class="line"><span class="comment"># --restart=always当容器服务死掉之后自动重启 --name容器的名字 </span></div><div class="line"><span class="comment"># -v 映射容器的目录到宿主机下</span></div><div class="line"><span class="comment"># -m 128m 内存限制在128M</span></div><div class="line"></div><div class="line"><span class="comment"># 查看主机端口在容器的映射情况</span></div><div class="line">docker port nostalgic_morse 5000 </div><div class="line"></div><div class="line">docker pull nginx</div><div class="line"><span class="comment">#镜像的重命名 标记镜像</span></div><div class="line">docker tag nginx 47.52.94.126:5000/nginx:last  </div><div class="line">docker tag nginx 192.168.1.116:5000/nginx:last  </div><div class="line"></div><div class="line"><span class="comment"># modify docker daemon启动参数</span></div><div class="line">vim /usr/lib/systemd/system/docker.service</div><div class="line"><span class="comment"># centos   ubuntu:/lib/systemd/system/docker.service</span></div><div class="line">    ExecStart=之前的不要动加上  --insecure-registry=0.0.0.0/0</div><div class="line">systemctl daemon-reload</div><div class="line">systemctl restart docker</div><div class="line"><span class="comment"># 看参数有没有正确的添加。</span></div><div class="line">ps aux |grep docker  </div><div class="line"></div><div class="line"><span class="comment"># 上传标记镜像到私有仓库</span></div><div class="line">docker push 192.168.1.116:5000/nginx:last <span class="comment"># 本机测试的成功</span></div><div class="line">docker pull 192.168.1.116:5000/nginx:last </div><div class="line"><span class="comment"># 只要能连接上私有仓库，就可以从私有仓库中pull</span></div><div class="line"><span class="comment"># 因为本机做为私有仓库，已经有这image了，所以下载得很快</span></div><div class="line"><span class="comment"># docker push 47.52.94.126:5000/nginx:last 上传public IP失败</span></div></pre></td></tr></table></figure>
+<h3 id="镜像上传到Docker-Hub"><a href="#镜像上传到Docker-Hub" class="headerlink" title="镜像上传到Docker Hub"></a>镜像上传到Docker Hub</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">docker login <span class="comment">#输入 hub.docker.com注册时的用户名和密码</span></div><div class="line">docker pull registry</div><div class="line">docker tag   registry femn/registry:last</div><div class="line"><span class="comment"># 镜像名:femn/registry tag:last</span></div><div class="line"></div><div class="line"><span class="comment">#上传到Docker Hub 镜像名必须是 username/imagesname，才能上传</span></div><div class="line"><span class="comment"># 并且不需要提前去Docker Hub创建仓库</span></div><div class="line">docker push femn/registry </div><div class="line"><span class="comment"># 将本地镜像上传到https://hub.docker.com的个人仓库中了.</span></div></pre></td></tr></table></figure>
+<h3 id="Docker-Hub"><a href="#Docker-Hub" class="headerlink" title="Docker Hub"></a>Docker Hub</h3><p>Docker通过docer search、pull、login和push等命令提供了连接Docker Hub服务的功能.</p>
+<p>Docker Hub是一个由Docker公司负责维护的公共注册中心，它包含了超过15,000个可用来下载和构建容器的镜像，并且还提供认证、工作组结构、工作流工具（比如webhooks)<br>构建触发器以及私有工具（比如私有仓库可用于存储你并不想公开分享的镜像)</p>
+<h3 id="自动构建"><a href="#自动构建" class="headerlink" title="自动构建"></a>自动构建</h3><p>自动构建功能会自动从Github或BitBucket直接将镜像构建或更新至Docker Hub，通过为Github或Bitbucket的仓库添加一个提交的hook来实现,<br>当你推送提交的时候就会触发构建和更新,但是,你不能通过docker push推送一个自动化构建，而只能通过在Github或者BitBucket提交你的代码来管理它.<br>你可以在一个Docker的仓库中创建多个自动构建，配置它们只指定的Dockerfile或Git 分支</p>
+<h3 id="Automated-Builds的一个实例"><a href="#Automated-Builds的一个实例" class="headerlink" title="Automated Builds的一个实例"></a><a href="https://hub.docker.com/r/leno730/pause/" target="_blank" rel="external">Automated Builds的一个实例</a></h3><p>建Dockerfile的目的，就是为了使用dockerfile里面的from语法的作用，来借用github服务器新建我需要的镜像</p>
+<p>由于不能从google container上直接pull镜像，所以这里通过docker hub的Automated Builds功能从项目的dockerfile中Build到docker的官方服务器上，然后再从它们上面拉取</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 步骤2中 创建一个带有Dockerfile的Github项目</span></div><div class="line">mkdir docker_lib</div><div class="line"><span class="built_in">cd</span> docker_lib</div><div class="line">git init</div><div class="line">mkdir google-etcd-amd64</div><div class="line"><span class="built_in">cd</span> google-etcd-amd64</div><div class="line">vim Dockerfile</div><div class="line">    FROM gcr.io/google_containers/etcd:2.0.12</div><div class="line">    MAINTAINER femn2014</div><div class="line">git add .</div><div class="line">git commit -m <span class="string">'增加Dockerfile文件,解决镜像被墙的问题'</span></div><div class="line"><span class="comment"># 在github 创建一个名为docker_lib的项目</span></div><div class="line">git remote add origin https://github.com/femn2014/docker_lib.git</div><div class="line">git push -u origin master</div><div class="line"></div><div class="line"><span class="comment"># 当完成此实例的所有步骤之后，再测试下，推送提交的时候就会触发构建和更新</span></div><div class="line">vim Dockerfile</div><div class="line">    FROM nginx</div><div class="line">    MAINTAINER femn2014</div><div class="line">git add .</div><div class="line">git commit -m <span class="string">'当推送提交时触发构建和更新'</span></div><div class="line">git push -u origin master</div><div class="line"></div><div class="line"><span class="comment"># 这时 docker pull femn/etcd 时下载的将会是nginx的镜像</span></div></pre></td></tr></table></figure>
+<h3 id="总结来说-自动构建的步骤"><a href="#总结来说-自动构建的步骤" class="headerlink" title="总结来说 自动构建的步骤"></a>总结来说 自动构建的步骤</h3><p>1.创建一个Docker Hub账户并且登陆<br>2.通过create选择 create automated build创建一个项目，再选择连接一个包含Dockerfile的GitHub或者BitBucket.<br>3.给自动构建创建一个名称:etcd(相当于也就是Docker Hub的项目的镜像名称)<br>4.配置自动化构建 (click here to customize)<br>5.选择你想用于构建的分支（默认是master分支）<br>6.指定Dockerfile的路径，默认是/,也可以在github中建立个目录再创建Dockerfile文件，为了方便我们后面区分镜像包<br>7.指定一个Docker标签来构建</p>
+<p>另一个镜像管理工具<a href="https://quay.io/" target="_blank" rel="external">Quay</a></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femnyy.com/2017/08/04/docker-hub/" data-id="cj6n0lgir000908l1ccmq64it" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femnyy.com/2017/08/04/docker-hub/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/04/docker-hub/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-docker" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/04/docker/">docker容器与镜像</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/04/docker/">
+            <time datetime="2017-08-04T15:24:48.000Z" itemprop="datePublished">2017-08-04</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/docker/">docker</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="docker镜像：业务代码和运行环境进行整体的打包。"><a href="#docker镜像：业务代码和运行环境进行整体的打包。" class="headerlink" title="docker镜像：业务代码和运行环境进行整体的打包。"></a>docker镜像：业务代码和运行环境进行整体的打包。</h3><p>1.1快速创建环境(开发，测试，生产)</p>
+<p>1.2整体交付(运行环境+代码(之前只是代码))</p>
+<p>1.3可保证环境(开发，测试，生产)的一致性</p>
+<p>1.4更好的完成devops</p>
+<h4 id="镜像（Image）就是一堆只读层（read-only-layer）的统一视角"><a href="#镜像（Image）就是一堆只读层（read-only-layer）的统一视角" class="headerlink" title="镜像（Image）就是一堆只读层（read-only layer）的统一视角"></a>镜像（Image）就是一堆只读层（read-only layer）的统一视角</h4><p>这些层是Docker内部的实现细节，并且能够在主机的文件系统上访问到,统一文件系统（union file system）技术能够将不同的层整合成一个文件系统，为这些层提供了一个统一的视角，这样就隐藏了多层的存在，在用户的角度看来，只存在一个文件系统,你可以在你的主机文件系统上找到有关这些层的文件.它们存在于/var/lib/docker/aufs目录下<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo tree -L 1 /var/lib/docker/</div></pre></td></tr></table></figure></p>
+<h4 id="容器-镜像-读写层。并且容器的定义并没有提及是否要运行容器"><a href="#容器-镜像-读写层。并且容器的定义并没有提及是否要运行容器" class="headerlink" title="容器=镜像+读写层。并且容器的定义并没有提及是否要运行容器"></a>容器=镜像+读写层。并且容器的定义并没有提及是否要运行容器</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 创建容器</span></div><div class="line">docker create &lt;image_id&gt;</div><div class="line"><span class="comment"># 运行容器</span></div><div class="line">docker start &lt;image_id&gt;</div><div class="line"><span class="comment"># 上两条命令组合下如下命令</span></div><div class="line">docker run &lt;image_id&gt;</div></pre></td></tr></table></figure>
+<p>所以容器（container）的定义和镜像（image）几乎一模一样，也是一堆层的统一视角，唯一区别在于容器的最上面那一层是可读可写的.</p>
+<h4 id="镜像分层技术：AUFS-Another-UnionFS-支持将多个目录挂载到同一个虚拟目录下。已构建的镜像会设置成只读模式，read-write操作是在read-only上的一种增量操作"><a href="#镜像分层技术：AUFS-Another-UnionFS-支持将多个目录挂载到同一个虚拟目录下。已构建的镜像会设置成只读模式，read-write操作是在read-only上的一种增量操作" class="headerlink" title="镜像分层技术：AUFS (Another UnionFS)支持将多个目录挂载到同一个虚拟目录下。已构建的镜像会设置成只读模式，read-write操作是在read-only上的一种增量操作."></a>镜像分层技术：AUFS (Another UnionFS)支持将多个目录挂载到同一个虚拟目录下。已构建的镜像会设置成只读模式，read-write操作是在read-only上的一种增量操作.</h4><p>把一个镜像创造成一个容器才能往里写东西。<br>所谓UnionFS就是把不同物理位置的目录合并mount到同一个目录中。UnionFS的一个最主要的应用是，把一张CD/DVD和一个硬盘目录给联合 mount在一起<br>然后，你就可以对这个只读的CD/DVD上的文件进行修改（当然，修改的文件存于硬盘上的目录里）</p>
+<h4 id="docker容器管理技术，是内核技术-容器本身是进程-其启动程序就是容器应用进程，容器就是为了主进程而存在的-主进程退出-容器就失去了存在的意义-从而退出-其它辅助进程不是它需要关心的东西"><a href="#docker容器管理技术，是内核技术-容器本身是进程-其启动程序就是容器应用进程，容器就是为了主进程而存在的-主进程退出-容器就失去了存在的意义-从而退出-其它辅助进程不是它需要关心的东西" class="headerlink" title="docker容器管理技术，是内核技术,容器本身是进程 其启动程序就是容器应用进程，容器就是为了主进程而存在的,主进程退出,容器就失去了存在的意义,从而退出,其它辅助进程不是它需要关心的东西"></a>docker容器管理技术，是内核技术,容器本身是进程 其启动程序就是容器应用进程，容器就是为了主进程而存在的,主进程退出,容器就失去了存在的意义,从而退出,其它辅助进程不是它需要关心的东西</h4><p>它并不是虚拟技术(VM),docker最关键的点是提出了docker images标准化，image打包了应用：如nginx镜像，通过镜像启动一个nginx容器，其实就是在主机上启动了一个nignx进程。<br>容器不等于微服务，推荐只运行一个服务，如果运行多个服务，需要结合进程管理工具(supervisor,S6),<br>因为容器本身就是进程，所以数据库容器也可以运行，但需要对数据做好保护(volume)。</p>
+<p>既然是进程，那么在启动容器的时候，需要指定所运行的程序及参数。CMD 指令就是用于指定默认的容器主进程的启动命令的,<br>在运行时可以指定新的命令来替代镜像设置中的这个默认命令，比如，ubuntu 镜像默认的 CMD 是 /bin/bash，如果我们直接 docker run -it ubuntu 的话，会直接进入 bash。</p>
+<p>容器中的应用都应该以前台执行，而不是像虚拟机、物理机里面那样，用 upstart/systemd 去启动后台服务，容器内没有后台服务的概念.</p>
+<h3 id="ubuntu-install-docker"><a href="#ubuntu-install-docker" class="headerlink" title="ubuntu install docker"></a>ubuntu install docker</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">sudo apt-get update</div><div class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</div><div class="line">sudo add-apt-repository <span class="string">"deb [arch=amd64] \</span></div><div class="line"><span class="string">    https://download.docker.com/linux/ubuntu <span class="variable">$(lsb_release -cs)</span> stable"</span></div><div class="line">sudo apt-get update</div><div class="line">sudo apt-cache policy docker-ce</div><div class="line">sudo apt-get install -y docker-ce</div><div class="line">sudo systemctl status docker</div><div class="line">sudo usermod -aG docker $(whoami)</div><div class="line">service docker start</div><div class="line">docker images</div><div class="line"><span class="comment"># 虚拟机是用此方法下载 当前用户就可以使用whoami</span></div></pre></td></tr></table></figure>
+<h3 id="debain-install-docker"><a href="#debain-install-docker" class="headerlink" title="debain install docker"></a><a href="http://wiki.jikexueyuan.com/project/docker/installation/debian.html" target="_blank" rel="external">debain install docker</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 坑一</span></div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install docker.io</div><div class="line">apt-get purge docker.io*  </div><div class="line"></div><div class="line"><span class="comment"># 坑二</span></div><div class="line">apt-get dist-upgrade -y</div><div class="line">apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys \</div><div class="line">    58118E89F3A912897C070ADBF76221572C52609D</div><div class="line"><span class="built_in">echo</span> <span class="string">"deb https://apt.dockerproject.org/repo debian-jessie main"</span> | \</div><div class="line">tee /etc/apt/sources.list.d/docker.list</div><div class="line">apt-get update</div><div class="line">apt-get install docker-engine -y</div><div class="line">apt-get purge docker-engine -y </div><div class="line"></div><div class="line"><span class="comment"># 成功</span></div><div class="line">apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 \</div><div class="line">    --recv-keys 58118E89F3A912897C070ADBF76221572C52609D</div><div class="line"><span class="built_in">echo</span> <span class="string">"deb https://apt.dockerproject.org/repo ubuntu-trusty main "</span> &gt;   \</div><div class="line">    /etc/apt/sources.list.d/docker.list</div><div class="line">apt-get update </div><div class="line">apt-get install docker-engine=1.10.1-0~trusty</div><div class="line">apt install docker.io</div><div class="line">docker -v</div><div class="line"><span class="comment"># 本机是此方法下载docker 必须是root身份才能使用</span></div></pre></td></tr></table></figure>
+<h3 id="启动docker服务"><a href="#启动docker服务" class="headerlink" title="启动docker服务"></a>启动docker服务</h3><p><a href="https://hub.docker.com/explore/" target="_blank" rel="external">docker官方镜像</a> 类似AppStore 是由各自官方机构做的镜像认证后，上传到docker官方镜像的，这个仓库的地址是在国外，所以下载的速度会慢点<br>利用镜像的分层技术，如果主机上已有layer(层)存在，那只会下载新增加的layer(类似git代码提交机制)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">service docker start    </div><div class="line">docker port nostalgic_morse 5000 <span class="comment"># 查看主机端口在容器的映射情况</span></div><div class="line"><span class="comment"># modify docker daemon启动参数 Docker的配置文件 </span></div><div class="line">vim /usr/lib/systemd/system/docker.service </div><div class="line"><span class="comment"># centos   ubuntu:/lib/systemd/system/docker.service</span></div><div class="line">ExecStart=之前的不要动加上     --insecure-registry=0.0.0.0/0</div><div class="line">systemctl daemon-reload</div><div class="line">systemctl restart docker</div><div class="line">ps aux |grep docker  <span class="comment">#看参数有没有正确的添加。</span></div></pre></td></tr></table></figure>
+<h3 id="容器操作命令"><a href="#容器操作命令" class="headerlink" title="容器操作命令"></a>容器操作命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">docker run -dit -p 80:80 --name app nginx</div><div class="line"><span class="comment"># -d后台运行 -it此时的容器就有了标准的输入和输出</span></div><div class="line">docker create  -p 80:80 --name app nginx</div><div class="line"><span class="comment"># 创建容器</span></div><div class="line">docker start app <span class="comment">#运行容器</span></div><div class="line"></div><div class="line">docker commit &lt;container-id&gt;</div><div class="line"><span class="comment"># 将容器的可读写层转换为一个只读层，这样就把一个容器转换成了不可变的镜像</span></div><div class="line"><span class="comment"># 用Dockerfile 生成镜像,命名为app</span></div><div class="line">docker build -t app .</div><div class="line"></div><div class="line">docker <span class="built_in">exec</span> -it app bash    </div><div class="line"><span class="comment"># 在运行中的容器执行一个新进程</span></div><div class="line"><span class="comment"># 以bash的方式登陆到容器里面  exit 从容器中退出</span></div><div class="line">docker <span class="built_in">exec</span> -it app bash ls /tmp</div><div class="line"></div><div class="line">docker rename app new_app <span class="comment">#重命容器名</span></div><div class="line"></div><div class="line">docker stop/<span class="built_in">kill</span>/pause/unpause/restart &lt;container_id&gt;</div><div class="line"><span class="comment"># 对容器中的进程发信号</span></div><div class="line"></div><div class="line">docker inspect/stats/port/ps/top/dip/dpid &lt;container-id&gt;</div><div class="line"><span class="comment"># 查看容器状态</span></div><div class="line">docker top app  <span class="comment">#查看当前容器跑了多少进程</span></div><div class="line">docker ps <span class="comment"># 列出所有运行中的容器,这隐藏了非运行态容器的存在</span></div><div class="line">docker ps -a  <span class="comment"># 查看所有容器</span></div><div class="line">docker inspect nginx/app |grep -i memory <span class="comment"># 查看指定镜像/容器</span></div><div class="line"><span class="comment"># 会提取出容器或者镜像最顶层的元数据</span></div><div class="line">docker stats $(docker ps | awk <span class="string">'NR&gt;1 &#123;print $NF&#125;'</span>)</div><div class="line"></div><div class="line">docker update  -m 256m app <span class="comment">#更新容器信息</span></div><div class="line">docker rm  -f -v app <span class="comment"># 移除构成容器的可读写层</span></div><div class="line"><span class="comment"># -f 强制删除 -v 连同Volumes也一起删除</span></div><div class="line"><span class="comment"># -v如果这个容器有Volume这个文件存在的话，也一起删除掉</span></div><div class="line">docker copy 本地文件 容器路径 </div><div class="line">docker copy app:/usr/share/ngxin/html/index.html .</div><div class="line">docker copy index.html app:/tmp</div><div class="line">docker <span class="built_in">export</span>  app (把容器保存成tar文件)</div><div class="line">docker import app.tar (把tar文件导会到镜像列表)</div></pre></td></tr></table></figure>
+<h4 id="镜像命令"><a href="#镜像命令" class="headerlink" title="镜像命令"></a>镜像命令</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">docker commit -a admin@femnyy.com -m <span class="string">'app commit image'</span> app app:2.0</div><div class="line"><span class="comment"># -a作者 -m提交时的标记 app容器名 app:2.0镜像名</span></div><div class="line"><span class="comment"># 用容器创建镜像 推荐用Dockerfile</span></div><div class="line">docker save nginx &gt;nginx.tar</div><div class="line"><span class="comment">#  镜像 --&gt;tar包</span></div><div class="line">docker rmi nginx</div><div class="line"><span class="comment"># 删除镜像</span></div><div class="line"><span class="comment"># 1.此镜像是其他镜像的父镜像 </span></div><div class="line"><span class="comment"># 2.有容器使用镜像 镜像已经被创建为容器 不能删除本地镜像</span></div><div class="line"></div><div class="line">docker load &lt; nginx.tar</div><div class="line"><span class="comment"># tar包--导入到镜像列表中</span></div><div class="line"></div><div class="line">docker images</div><div class="line"><span class="comment"># 列出了所有顶层（top-level）镜像</span></div><div class="line">docker <span class="built_in">history</span> &lt;image_id&gt;</div><div class="line"><span class="comment"># 列出镜像的所有层</span></div><div class="line">docker pull nginx</div><div class="line"><span class="comment"># 下载镜像</span></div><div class="line">docker tag nginx 192.168.1.116:5000/nginx:last  </div><div class="line"><span class="comment"># 镜像的重命名(标记镜像)</span></div><div class="line">docker push 192.168.1.116:5000/nginx:last <span class="comment"># 本机测试的成功</span></div><div class="line"><span class="comment"># 上传镜像</span></div><div class="line">docker search nginx</div><div class="line"><span class="comment"># 查看镜像</span></div></pre></td></tr></table></figure>
+<h3 id="容器与镜像"><a href="#容器与镜像" class="headerlink" title="容器与镜像"></a>容器与镜像</h3><p>镜像不能直接访问，只有启动成容器，才可以访问。镜像和容器的关系，就像是面向对象程序设计中的类和实例一样，镜像是静态的定义，容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等。同一个 Images 可生成多个不同配置的 Container.</p>
+<h3 id="容器连接-相当于进程间的通信吧"><a href="#容器连接-相当于进程间的通信吧" class="headerlink" title="容器连接(相当于进程间的通信吧)"></a>容器连接(相当于进程间的通信吧)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">sudo docker run -d --name db training/postgres</div><div class="line"><span class="comment"># 指定了 training/webapp 镜像,并且这个镜像已经包含了简单的 Python Flask web 应用程序</span></div><div class="line"><span class="comment"># 最后，我们指定了我们容器要运行的命令： python app.py。这样我们的 web 应用就启动了</span></div><div class="line">sudo docker run -d -P --name web --link db:db training/webapp python app.py</div><div class="line">docker ps </div><div class="line"><span class="comment"># db和web，我们还在名字列中可以看到web容器也显示db/web。这告诉我们web容器和db容器是父/子关系。</span></div></pre></td></tr></table></figure>
+<h3 id="Volume-持久化容器数据，以及容器之间共享数据"><a href="#Volume-持久化容器数据，以及容器之间共享数据" class="headerlink" title="Volume(持久化容器数据，以及容器之间共享数据)"></a>Volume(持久化容器数据，以及容器之间共享数据)</h3><h3 id="保留容器的数据"><a href="#保留容器的数据" class="headerlink" title="保留容器的数据"></a>保留容器的数据</h3><p>当容器删除时,就是杀死进程，只要我们的数据在，当再启动时，数据又回来了,但我们想在容器中产生的数据保留起来 </p>
+<h4 id="容器间的数据共享-root用户下-主机巻"><a href="#容器间的数据共享-root用户下-主机巻" class="headerlink" title="容器间的数据共享(root用户下,主机巻)"></a>容器间的数据共享(root用户下,主机巻)</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">docker run -d -v /web_data:/tmp:ro --name data-container nginx</div><div class="line"><span class="built_in">cd</span> /web_data</div><div class="line">mkdir files</div><div class="line">touch test.file</div><div class="line">docker <span class="built_in">exec</span> -it data-container ls /tmp</div><div class="line"></div><div class="line"><span class="comment">#第二个容器的数据来自 第一个容器的数据</span></div><div class="line">docker run -d --volumes-from data-container --name web-container nginx</div><div class="line"></div><div class="line"><span class="comment">#第三个容器的数据来自 第一个容器的数据</span></div><div class="line">docker run -d --volumes-from data-container --name web-container-2 nginx</div><div class="line"><span class="comment"># 查看容器 有没有第一个容器中的文件</span></div><div class="line">docker <span class="built_in">exec</span> -it web-container ls /tmp</div><div class="line"><span class="comment"># 验证只读</span></div><div class="line">docker <span class="built_in">exec</span> -it web-container bash</div><div class="line"><span class="built_in">cd</span> /tmp</div><div class="line">touch a.txt</div><div class="line"><span class="built_in">exit</span></div><div class="line"><span class="comment"># 在宿主机添加一个新文件，相当于往三个容器分发信息。</span></div><div class="line"><span class="built_in">cd</span> /web_data</div><div class="line">touch a.txt</div></pre></td></tr></table></figure>
+<h3 id="Volume分为容器卷-在Dockerfile写了VOLUME-和主机卷"><a href="#Volume分为容器卷-在Dockerfile写了VOLUME-和主机卷" class="headerlink" title="Volume分为容器卷(在Dockerfile写了VOLUME)和主机卷"></a>Volume分为容器卷(在Dockerfile写了VOLUME)和主机卷</h3><p>容器卷的定义的目录，将会自动保存在宿主机的/var/lib/docker/volumes目录下<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">mkdir docker</div><div class="line"><span class="built_in">cd</span> docker &amp;&amp; vim Dockerfile</div><div class="line"></div><div class="line">FROM centos:7</div><div class="line">RUN yum -y install epel-release &amp;&amp; \ </div><div class="line">    yum -y install nginx &amp;&amp; \ </div><div class="line">    yum clean all</div><div class="line">EXPOSE 80 443</div><div class="line">VOLUME [<span class="string">"/usr/share/nginx/html"</span>]</div><div class="line">CMD [<span class="string">"nginx"</span>,<span class="string">"-g"</span>, <span class="string">"daemon off;"</span>]</div><div class="line"></div><div class="line"><span class="comment"># 用Dockerfile 生成镜像app</span></div><div class="line">docker build -t app .</div><div class="line"></div><div class="line"><span class="built_in">cd</span> /var/lib/docker/volumes</div><div class="line">docker rm -f web-container data-container</div><div class="line"></div><div class="line">docker run -d --name app app</div><div class="line">ll <span class="comment">#会有一个随机生成字符串的目录 VOLUME的东西，将会同步到这个目录下的_data目录下</span></div><div class="line">docker rm -f -v app <span class="comment"># -v</span></div></pre></td></tr></table></figure></p>
+<h4 id="主机卷-web-data-这个不仅仅会在-var-lib-docker-volumes-usr-share-nginx-html保留-双保险。"><a href="#主机卷-web-data-这个不仅仅会在-var-lib-docker-volumes-usr-share-nginx-html保留-双保险。" class="headerlink" title="主机卷(/web-data),这个不仅仅会在/var/lib/docker/volumes:/usr/share/nginx/html保留,双保险。"></a>主机卷(/web-data),这个不仅仅会在/var/lib/docker/volumes:/usr/share/nginx/html保留,双保险。</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run -d -p 80:80 --name app -v /web-data:/tmp app</div></pre></td></tr></table></figure>
+<h4 id="备份app容器中-dbdata容器巻中的数据–-gt-打包在容器中的-backup-backup-tar–-gt-将此包copy到主机的当前目录"><a href="#备份app容器中-dbdata容器巻中的数据–-gt-打包在容器中的-backup-backup-tar–-gt-将此包copy到主机的当前目录" class="headerlink" title="备份app容器中 /dbdata容器巻中的数据–&gt;打包在容器中的/backup/backup.tar–&gt;将此包copy到主机的当前目录"></a>备份app容器中 /dbdata容器巻中的数据–&gt;打包在容器中的/backup/backup.tar–&gt;将此包copy到主机的当前目录</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 通过ubuntu这个镜像生成一个容器</span></div><div class="line"><span class="comment"># --rm 这个容器退出 就把这个容器删掉</span></div><div class="line"><span class="comment"># 使用 --volumes-from 标记来创建一个加载 dbdata 容器卷的容器:app</span></div><div class="line">docker run --rm --volume-from app -v <span class="variable">$&#123;pwd&#125;</span>:/backup ubuntu \</div><div class="line">    tar cvfz /backup/backup.tar /dbdata</div><div class="line"><span class="comment"># 1.数据恢复</span></div><div class="line">docker run --rm --volume-from app -v <span class="variable">$&#123;pwd&#125;</span>:/backup busybox \</div><div class="line">    bash -c <span class="string">"cd /dbdata &amp;&amp; tar zxvf /backup/backup.tar --strip 1"</span></div><div class="line"><span class="comment"># 2</span></div><div class="line"><span class="comment"># 如果要恢复数据到一个容器，首先创建一个带有空数据卷的容器 dbdata2</span></div><div class="line">sudo docker run -v /dbdata --name dbdata2 ubuntu /bin/bash</div><div class="line"><span class="comment"># 然后创建另一个容器，挂载 dbdata2 容器卷中的数据卷</span></div><div class="line"><span class="comment"># 并使用 untar 解压备份文件到挂载的容器卷中。</span></div><div class="line">sudo docker run --volumes-from dbdata2 -v $(<span class="built_in">pwd</span>):/backup busybox tar xvf</div><div class="line">/backup/backup.tar</div><div class="line"><span class="comment">#为了查看/验证恢复的数据，可以再启动一个容器挂载同样的容器卷来查看</span></div><div class="line">sudo docker run --volumes-from dbdata2 busybox /bin/ls /dbdata</div></pre></td></tr></table></figure>
+<h3 id="Docker的网络模式-nat-host-container-none-overlay"><a href="#Docker的网络模式-nat-host-container-none-overlay" class="headerlink" title="Docker的网络模式:nat,host,container,none,overlay"></a>Docker的网络模式:nat,host,container,none,overlay</h3><p>默认启动的是nat</p>
+<h4 id="nat需要进行端口的管理-通过docker容器转发的功能，转发到宿主机的网卡上-每次启动容器的时候，它的IP会变"><a href="#nat需要进行端口的管理-通过docker容器转发的功能，转发到宿主机的网卡上-每次启动容器的时候，它的IP会变" class="headerlink" title="nat需要进行端口的管理,通过docker容器转发的功能，转发到宿主机的网卡上,每次启动容器的时候，它的IP会变:"></a>nat需要进行端口的管理,通过docker容器转发的功能，转发到宿主机的网卡上,每次启动容器的时候，它的IP会变:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">docker run -d -p 80:80 --name app nginx</div><div class="line">ps -aux |grep docker</div><div class="line"><span class="comment"># 得到如下信息</span></div><div class="line">/usr/bin/docker-proxy -proto tcp -host-ip 0.0.0.0 -host-port 80 \</div><div class="line">     -container-ip 172.17.0.3 -container-port 80</div><div class="line"><span class="comment"># 但我试了两次 IP都没有变</span></div><div class="line">docker restart app</div><div class="line">/usr/bin/docker-proxy -proto tcp -host-ip 0.0.0.0 -host-port 80 \ </div><div class="line">    -container-ip 172.17.0.3 -container-port 80</div><div class="line">docker stop app</div><div class="line">docker start app</div></pre></td></tr></table></figure>
+<h4 id="host-容器中的网卡直接与宿主机的网卡沟通-只能使用80端口-但可以固定容器的IP-攻击了容器也就相当于攻击了宿主机。"><a href="#host-容器中的网卡直接与宿主机的网卡沟通-只能使用80端口-但可以固定容器的IP-攻击了容器也就相当于攻击了宿主机。" class="headerlink" title="host:容器中的网卡直接与宿主机的网卡沟通:只能使用80端口,但可以固定容器的IP.攻击了容器也就相当于攻击了宿主机。"></a>host:容器中的网卡直接与宿主机的网卡沟通:只能使用80端口,但可以固定容器的IP.攻击了容器也就相当于攻击了宿主机。</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">docker run -d --name app2 --net=host nginx</div><div class="line">docker ps -a </div><div class="line"><span class="comment"># 查看端口是否已经冲突，如果冲突则这个容器会启动失败 状态为Exited</span></div><div class="line">docker start -a app2 <span class="comment"># 端口也占用</span></div></pre></td></tr></table></figure>
+<h4 id="container模式-用于容器之间经常通信的情况："><a href="#container模式-用于容器之间经常通信的情况：" class="headerlink" title="container模式,用于容器之间经常通信的情况："></a>container模式,用于容器之间经常通信的情况：</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">docker pull busybox</div><div class="line">docker run -it --name busybox1 busybox sh</div><div class="line">ip addr</div><div class="line">ctrl+p+q <span class="comment"># 不使用exit，让容器在后台运用</span></div><div class="line">docker run -it --name busybox2 --net=container:busybox1 busybox sh</div><div class="line">ip addr</div><div class="line"><span class="comment"># 此两个的容器的IP是一模一样的，而且还可以相互通信</span></div><div class="line">ping busybox1</div></pre></td></tr></table></figure>
+<h4 id="none模式：没有IP"><a href="#none模式：没有IP" class="headerlink" title="none模式：没有IP"></a>none模式：没有IP</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run -it --name none --net=none busybox sh</div></pre></td></tr></table></figure>
+<h4 id="overlay模式-实现跨主机的通信-docker-1-10-才有的模式。"><a href="#overlay模式-实现跨主机的通信-docker-1-10-才有的模式。" class="headerlink" title="overlay模式,实现跨主机的通信,docker:1.10+,才有的模式。"></a>overlay模式,实现跨主机的通信,docker:1.10+,才有的模式。</h4><ol>
+<li><p>约定的容器启动时 会被当作一个服务被consul发现,从而分发IP</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">vim /lib/systemd/system/docker.service</div><div class="line"><span class="comment"># 注意改自己的IP地址，和网卡的名称</span></div><div class="line"><span class="comment">#  多台也是这个的一样的配置(不需要去改变IP地址和网卡名称)</span></div><div class="line"><span class="comment"># 使用hostA做为consul的服务端 hostA的IP;192.168.1.116 网卡名称为:enp2s0</span></div><div class="line"><span class="comment"># hostA hostB都要操作</span></div><div class="line">ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2376 \</div><div class="line">    -H unix:///var/run/docker.sock --cluster-store=consul://192.168.1.116:8500 \ </div><div class="line">    --cluster-advertise=enp2s0:2376 --insecure-registry=0.0.0.0/0</div><div class="line">systemctl daemon-reload</div><div class="line">systemctl restart docker</div><div class="line">ps -aux |grep docket</div></pre></td></tr></table></figure>
+</li>
+<li><p>在consul的主机执行就可以:hostA</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">docker pull progrium/consul</div><div class="line"><span class="comment"># -h 取名 -server服务端 并把ui打开</span></div><div class="line">docker run -d -p 8400:8400 -p 8500:8500 -p 8600:53/udp -h consul progrium/consul \</div><div class="line">    -server -bootstrap -ui-dir /ui</div><div class="line">docker ps -a</div><div class="line"><span class="comment"># 在浏览器中打开</span></div><div class="line">192.168.1.116:8500</div><div class="line"><span class="comment"># 在KEY/VALUE中 会显示有多少台主机进行着通信 hostA,hostB</span></div><div class="line"></div><div class="line"><span class="comment"># create overlay network 创建IP地址池 会用consul定义一个IP地址池(如10.0.9.0/24)</span></div><div class="line">docker network ls</div><div class="line"><span class="comment"># -d overlay使用overlay驱动  --subnet 网段 edu_net为名称 </span></div><div class="line"><span class="comment">#  会同步到多台主机上(hostA,hostB)</span></div><div class="line">docker network create -d overlay --subnet=10.0.9.0/24 edu-net</div></pre></td></tr></table></figure>
+</li>
+<li><p>当约定好的主机启动容器时，consul服务就会从地址池中取得IP,给容器使用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># hostA</span></div><div class="line">docker run -d --name app1 --net=edu-net nginx</div><div class="line"><span class="comment"># 登陆进出</span></div><div class="line">docker <span class="built_in">exec</span> -it app1 bash</div><div class="line">ip addr</div><div class="line">ping www.baidu.com</div><div class="line"></div><div class="line"><span class="comment"># hostB 没有虚拟技术 所以没有实做</span></div><div class="line">docker run -d --name app2 --net=edu-net nginx</div><div class="line">docker <span class="built_in">exec</span> -it app2 bash</div><div class="line">ping app1</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><a href="https://docs.docker.com/" target="_blank" rel="external">官方文档</a></p>
+<p><a href="https://yeasy.gitbooks.io/docker_practice/content/install/centos.html" target="_blank" rel="external">一个中文的docker文档</a></p>
+<p><a href="https://juejin.im/post/58cb86bc61ff4b00601e7bfa" target="_blank" rel="external">对docker的解释</a></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femnyy.com/2017/08/04/docker/" data-id="cj6n0lgjv000l08l1b1rm1331" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femnyy.com/2017/08/04/docker/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/04/docker/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-docker-swarm" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/04/docker-swarm/">docker-swarm</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/04/docker-swarm/">
+            <time datetime="2017-08-04T15:24:48.000Z" itemprop="datePublished">2017-08-04</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/docker/">docker</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="swarm集群"><a href="#swarm集群" class="headerlink" title="swarm集群"></a>swarm集群</h3><h3 id="install-swarm"><a href="#install-swarm" class="headerlink" title="install swarm"></a>install swarm</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">docker pull swarm</div><div class="line"><span class="comment"># 查看swarm版本</span></div><div class="line">docker run --rm swarm -v</div></pre></td></tr></table></figure>
+<p><a href="https://yeasy.gitbooks.io/docker_practice/content/swarm/install.html" target="_blank" rel="external">Host_consul_ip的例子</a></p>
+<h3 id="基于-consel-服务发现后端来配置一个本地-Swarm-集群"><a href="#基于-consel-服务发现后端来配置一个本地-Swarm-集群" class="headerlink" title="基于 consel 服务发现后端来配置一个本地 Swarm 集群"></a>基于 consel 服务发现后端来配置一个本地 Swarm 集群</h3><h4 id="1-1-配置每个节点主机"><a href="#1-1-配置每个节点主机" class="headerlink" title="1.1 配置每个节点主机"></a>1.1 配置每个节点主机</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 我用的是virtualbox,ubuntu16,安装好docker并修改好如下的内容，</span></div><div class="line"><span class="comment"># reboot之后clone，clone过后的虚拟机只需要修改一下ip就行</span></div><div class="line">vim /lib/systemd/system/docker.service</div><div class="line">    ExecStart=xx  加上这句     -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock </div><div class="line">sudo systemctl daemon-reload</div><div class="line">sudo systemctl restart docker</div><div class="line">ps -aux |grep docket</div><div class="line">docker pull swarm</div></pre></td></tr></table></figure>
+<p>坑一<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">docker daemon on node is running with -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock</div><div class="line"><span class="built_in">alias</span> docker=<span class="string">"docker -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock"</span></div><div class="line"><span class="built_in">type</span> docker</div><div class="line"><span class="built_in">unalias</span> docker</div></pre></td></tr></table></figure></p>
+<p>坑二<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">docker -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --daemon=<span class="literal">true</span> --pidfile=<span class="string">"/var/run/docker_2375.pid"</span> --graph=<span class="string">"/var/lib/docker_2375"</span></div><div class="line">docker -H tcp://0.0.0.0:2375 --daemon=<span class="literal">true</span> --pidfile=<span class="string">"/var/run/docker_2375.pid"</span> --graph=<span class="string">"/var/lib/docker_2375"</span></div></pre></td></tr></table></figure></p>
+<p>坑三<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">vim /lib/systemd/system/docker.service</div><div class="line">    <span class="comment"># 成功的</span></div><div class="line">    DOCKER_OPTS=-g /usr/bin/docker -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock</div><div class="line">    <span class="comment"># 这个是失败的 </span></div><div class="line">    OPTIONS=-g /usr/bin/docker -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock</div></pre></td></tr></table></figure></p>
+<h4 id="1-2-启动集群"><a href="#1-2-启动集群" class="headerlink" title="1.2 启动集群"></a>1.2 启动集群</h4><p>1.2.1.启动 Consel 服务后端(consul_ip or token,本机ip:109)至少一个群集管理器<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># -h ==--name</span></div><div class="line">docker run -d -p 8500:8500 --name=consul progrium/consul -server -bootstrap -ui-dir /ui</div><div class="line">    <span class="comment"># 4b80d44e61d4e00510c4484cda782b7f523ddb0cbc15a5510d066c55e4bf6e06</span></div><div class="line">    <span class="comment"># sudo docker restart id # 重新启动此容器</span></div><div class="line">docker ps -a</div><div class="line"><span class="comment"># 在浏览器中打开</span></div><div class="line">192.168.1.109:8500</div></pre></td></tr></table></figure></p>
+<p>1.2.2.启动管理节点主机(manager0_ip,ip为100的虚拟主机,一个群组工作者)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">docker run -d -p 4000:4000 swarm manage -H :4000 --replication --advertise &lt;manager0_ip&gt;:4000 consul://&lt;consul_ip&gt;:8500</div><div class="line">    docker ps -a</div><div class="line">    <span class="comment"># 如果有4000端口占用的情况</span></div><div class="line">    docker rm  -f -v containter_id</div><div class="line">    docker run -d -p 4000:4000 swarm manage -H :4000 --replication --advertise 192.168.1.100:4000 consul://192.168.1.109:8500</div><div class="line">    b7a3c10f294f4718bcd0a516fbd93561627f535a4086027c182c576a0bb2226f</div><div class="line"><span class="comment"># 用户也可以启动 从管理节点</span></div><div class="line"><span class="comment"># docker run -d swarm manage -H :4000 --replication --advertise &lt;manager1_ip&gt;:4000 consul://&lt;consul_ip&gt;:8500</span></div></pre></td></tr></table></figure>
+<p>1.2.3.启动工作节点(node_ip,ip为101,102,103的虚拟主机)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">docker run -d swarm join --advertise=&lt;node_ip&gt;:2375 consul://&lt;consul_ip&gt;:8500</div><div class="line">    docker run -d swarm join --advertise=192.168.1.101:2375 consul://192.168.1.109:8500</div><div class="line">    docker run -d swarm join --advertise=192.168.1.102:2375 consul://192.168.1.109:8500</div><div class="line">    docker run -d swarm join --advertise=192.168.1.103:2375 consul://192.168.1.109:8500</div></pre></td></tr></table></figure>
+<p>节点启动后，用户可以指定 Docker 服务地址为 <manager0_ip>:4000&gt; 来测试各种 Docker 命令，可以看到整个 Swarm 集群就像一个虚拟的 Docker 主机一样正常工作。</manager0_ip></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo docker -H 192.168.1.100:4000 ps -a <span class="comment"># 第一次在主机上成功的有显示，但后面的测试一直都没有显示出来</span></div><div class="line">sudo docker -H tcp://192.168.1.100:4000 info</div><div class="line"><span class="comment"># Error: Cannot connect to the Docker    daemon at tcp://192.168.1.102:2375. Is the docker daemon running</span></div><div class="line">sudo docker ps --no-trunc</div></pre></td></tr></table></figure>
+<p>由于 Swarm 实际上是通过 agent 调用了本地的 Docker daemon 来运行容器，当 Swarm 集群服务出现故障时，无法接受新的请求，但已经运行起来的容器将不会受到影响。</p>
+<pre><code># 在集群上运行容器
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo docker -H 192.168.1.100:2375 run -d --name web1 nginx</div></pre></td></tr></table></figure>
+<h3 id="2-token的例子"><a href="#2-token的例子" class="headerlink" title="2. token的例子"></a>2. <a href="http://dockone.io/article/227" target="_blank" rel="external">token的例子</a></h3><p>ckerHub 的服务发现后端，需要各个节点能通过公网访问到 DockerHub 的服务接口</p>
+<p>在任意一台安装了 Swarm 的机器上执行 swarm create 命令来在 DockerHub 服务上进行注册</p>
+<h4 id="2-1-创建集群-id"><a href="#2-1-创建集群-id" class="headerlink" title="2.1 创建集群 id"></a>2.1 创建集群 id</h4><p>Swarm   会通过服务发现后端（此处为 DockerHub 提供）来获取一个唯一的由数字和字母组成的 token，用来标识要管理的集群<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ip_109本机执行</span></div><div class="line">sudo docker ps -a</div><div class="line">sudo docker run --rm swarm create <span class="comment"># 只需要运行一次就行了，它会一直保存着,虽然在本机docker ps -a也查看不到</span></div><div class="line">ce2f14fa5ec481170d2bf62f40f832f7</div></pre></td></tr></table></figure></p>
+<h4 id="2-2-配置集群节点"><a href="#2-2-配置集群节点" class="headerlink" title="2.2 配置集群节点"></a>2.2 配置集群节点</h4><p>添加节点A(101)、B(102)到集群,在所有要加入集群的普通节点上面执行 swarm join 命令，表示把这台机器加入指定集群当中<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ip_109本机执行</span></div><div class="line">sudo docker run --rm swarm join --addr=192.168.1.100:2375 token://ce2f14fa5ec481170d2bf62f40f832f7</div><div class="line">sudo docker run --rm swarm join --addr=192.168.1.101:2375 token://ce2f14fa5ec481170d2bf62f40f832f7</div><div class="line">sudo docker run --rm swarm join --addr=192.168.1.102:2375 token://ce2f14fa5ec481170d2bf62f40f832f7</div><div class="line"><span class="comment"># 列出节点 只需要出现一条记录之后就ctrl+c</span></div><div class="line">sudo docker run --rm swarm list token://ce2f14fa5ec481170d2bf62f40f832f7</div></pre></td></tr></table></figure></p>
+<h4 id="2-3配置管理节点"><a href="#2-3配置管理节点" class="headerlink" title="2.3配置管理节点"></a>2.3配置管理节点</h4><p>在任何一台主机A（A：192.168.1.100）B或者C上开启管理程序</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ip_100上执行</span></div><div class="line">docker run -d -p 8888:2375 swarm manage token://ce2f14fa5ec481170d2bf62f40f832f7</div><div class="line"><span class="comment"># 可以通过 docker ps 命令来查看启动的 swarm manager 服务容器</span></div><div class="line">docker ps</div><div class="line"></div><div class="line"><span class="comment"># ip_109本机上 管理集群</span></div><div class="line">sudo docker -H 192.168.1.100:8888 ps </div><div class="line"></div><div class="line"><span class="comment"># 在集群上运行容器</span></div><div class="line">sudo docker -H 192.168.1.100:8888 run -d --name web1 nginx</div></pre></td></tr></table></figure>
+<p>几个命令就将多个单机版本的 Docker daemon 变成一个 cluster，还支持了 service 概念（多个容器实例副本的抽象)</p>
+<h3 id="3-docker-machine-swarm-d-virtualbox"><a href="#3-docker-machine-swarm-d-virtualbox" class="headerlink" title="3. docker-machine swarm  -d virtualbox"></a>3. docker-machine swarm  -d virtualbox</h3><p>docker daemon是root</p>
+<p>python此用户才能在virtualbox中看到创建的dev等虚拟机，docker-machine是普通用户的命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">docker run swarm -v</div><div class="line">sid=$(sudo docker run swarm create)</div><div class="line"><span class="built_in">echo</span> <span class="variable">$sid</span></div><div class="line">docker ps -a <span class="comment">#有上面两个但状态都是Exited</span></div><div class="line">docker-machine create -d virtualbox --swarm --swarm-master --swarm-discovery token://<span class="variable">$sid</span> swarm-master</div><div class="line">    The host-only adapter is corrupted. Let<span class="string">'s stop the VM, fix the host-only adapter and restart the VM</span></div><div class="line"><span class="string">    但我没有去做操作，它自动去改了？</span></div><div class="line"><span class="string">docker-machine ls</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">docker-machine create -d virtualbox --engine-label itype=frontend --swarm --swarm-discovery token://$sid swarm-node-01</span></div><div class="line"><span class="string">docker-machine create -d virtualbox --engine-label itype=frontend --swarm --swarm-discovery token://$sid swarm-node-02</span></div><div class="line"><span class="string">docker-machine create -d virtualbox --engine-label itype=frontend --swarm --swarm-discovery token://$sid swarm-node-03</span></div><div class="line"><span class="string">docker-machine env swarm-master</span></div><div class="line"><span class="string">docker-machine env --swarm swarm-master</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">eval "$(docker-machine env --swarm swarm-master)"</span></div><div class="line"><span class="string">docker info</span></div><div class="line"><span class="string">docker run swarm list token://$sid</span></div><div class="line"><span class="string">dokcer ps -a </span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">docker-machine ls</span></div><div class="line"><span class="string">eval "$(docker-machine env  swarm-master)"</span></div><div class="line"><span class="string">docker ps -a</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">eval "$(docker-machine env --swarm swarm-master)"</span></div><div class="line"><span class="string">docker-machine ls</span></div><div class="line"><span class="string">docker ps </span></div><div class="line"><span class="string"># 进入环境了，docker run</span></div><div class="line"><span class="string">sudo docker run -itd --name engmgr ubuntu</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">sudo docker ps # 居然不是下在本机的 成功 有没有可能是主机的docker是什么权限，环境中的也是啊</span></div><div class="line"><span class="string"># swarm-node-02/engmgr 而我的是engmgr</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">for i in `seq 1 6`; do sudo docker run -itd -e constraint:itype!=frontend --name eng$i ubuntu; done</span></div><div class="line"><span class="string">sudo docker ps</span></div><div class="line"><span class="string"># swarm-node-02/eng1 等还是没有前缀名</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string"># filter</span></div><div class="line"><span class="string">sudo docker run -itd --name engmgr-c -e affinity:container==engmgr ubuntu</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">docker-machine kill $(docker-machine ls -q)</span></div><div class="line"><span class="string"># 好像就回到了本机了</span></div><div class="line"><span class="string">sudo docker images </span></div><div class="line"><span class="string"># ubuntu的镜像也在下载过来了</span></div></pre></td></tr></table></figure>
+<p>注意：您会注意到命令不能与前缀sudo 。这是因为它假设您正在使用的登录到服务器docker-machine ssh使用Docker窗机设置后命令</p>
+<h3 id="4-docker-machine-swarm-d-digital"><a href="#4-docker-machine-swarm-d-digital" class="headerlink" title="4. docker-machine swarm -d digital"></a>4. docker-machine swarm -d <a href="https://www.howtoing.com/how-to-create-a-cluster-of-docker-containers-with-docker-swarm-and-digitalocean-on-ubuntu-16-04/" target="_blank" rel="external">digital</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">DOTOKEN=9836e1b5bf2f1b0c861619aa81640fe1d4f265b69b3c642fe0cbc4f15294eb4f</div><div class="line"></div><div class="line"><span class="comment"># 生成节点</span></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> 1 2 3; <span class="keyword">do</span> docker-machine create --driver digitalocean \</div><div class="line">    --digitalocean-image  ubuntu-16-04-x64 \</div><div class="line">    --digitalocean-access-token <span class="variable">$DOTOKEN</span> node-<span class="variable">$i</span>; <span class="keyword">done</span></div><div class="line"><span class="comment"># 该开的端口，也都开了</span></div><div class="line"><span class="comment"># 命令成功完成后，您可以通过访问您的DigitalOcean仪表板或输入以下命令来验证是否已创建所有计算机：</span></div><div class="line"><span class="comment">#更新docker-machine之后执行,就如此简单的创建了主机，在控制面板就可以看到新创建出来的实例了：</span></div><div class="line"></div><div class="line">docker-machine ls </div><div class="line"><span class="built_in">eval</span> <span class="string">"<span class="variable">$(docker-machine env  node-1)</span>"</span></div><div class="line"></div><div class="line"><span class="comment"># 使节点成为集群成员，选择其中一个节点并将其作为Docker Swarm(Node-1)管理器</span></div><div class="line">docker-machine ssh node-1</div><div class="line">docker swarm init --advertise-addr 45.55.87.176</div><div class="line"><span class="comment"># 会输出如下信息</span></div><div class="line">    docker swarm join --token SWMTKN-1-0m0y2k67p3z93r4a06umvht6zuk9jcji9z8v5ufu4shwoejgjo-66q1exjficfisqh1w2fwm1f0v 45.55.87.176:2377</div><div class="line"></div><div class="line"><span class="comment"># 并将其余部分配置为Docker Swarm工作线程。 </span></div><div class="line">docker-machine ssh node-2</div><div class="line">docker swarm join --token SWMTKN-1-0m0y2k67p3z93r4a06umvht6zuk9jcji9z8v5ufu4shwoejgjo-66q1exjficfisqh1w2fwm1f0v 45.55.87.176:2377</div><div class="line"></div><div class="line">docker-machine ssh node-3</div><div class="line">docker swarm join --token SWMTKN-1-0m0y2k67p3z93r4a06umvht6zuk9jcji9z8v5ufu4shwoejgjo-66q1exjficfisqh1w2fwm1f0v 45.55.87.176:2377</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># Docker Swarm管理命令必须在管理器节点上执行</span></div><div class="line">docker-machine ssh node-1</div><div class="line">docker node ls </div><div class="line">docker node --<span class="built_in">help</span></div><div class="line"><span class="comment"># 您可以随时从群集中添加或删除节点。 此外，工作节点可以升级为管理器，并且管理器可以转换为工作器</span></div><div class="line">docker info</div><div class="line"></div><div class="line"><span class="comment"># 在Docker Swarm中运行服务 docker node命令一样， docker service命令只能在管理器节点上执行</span></div><div class="line">docker service create -p 80:80 --name webserver nginx</div><div class="line"></div><div class="line"><span class="comment"># 要查看集群上运行的服务，请键入：</span></div><div class="line">docker service ls <span class="comment"># 可以输入node-1IP到浏览器中，可以看到Nginx的默认页面.</span></div><div class="line"><span class="comment"># 您可以通过使用docker service ps后跟服务名称来确定服务正在运行的节点</span></div><div class="line">docker service ps webserver</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">docker-machine stop node-1 node-2 node-3</div><div class="line">docker swarm --<span class="built_in">help</span></div></pre></td></tr></table></figure>
+<p>大坑:</p>
+<p>-driver virtualbox </p>
+<p>docker-machine version 0.12.0 是没有问题的</p>
+<p>但 amazonec2 和 digitalocean ，都要是0.12.1版本才行，不然在创建时,会报如下错，害我找了一上午</p>
+<p>Error creating machine: Error running provisioning: ssh command error:<br>Unable to query docker version: Cannot connect to the docker engine endpoint</p>
+<h3 id="5-docker-machine-在AWS创建Docker主机-会创建一个新的实例"><a href="#5-docker-machine-在AWS创建Docker主机-会创建一个新的实例" class="headerlink" title="5. docker-machine 在AWS创建Docker主机(会创建一个新的实例)"></a>5. docker-machine 在AWS创建Docker主机(会创建一个新的实例)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># http://usyiyi.cn/documents/docker/machine/examples/aws.html</span></div><div class="line"><span class="comment"># 开放22,2376,2377,80 Docker machine的安全组</span></div><div class="line">docker-machine create --driver amazonec2 --amazonec2-access-key AKIAJY4GG2QGLNWE3KHQ --amazonec2-secret-key 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 --amazonec2-region=us-west-2  aws-01</div><div class="line"><span class="comment"># /home/python/.docker/machine/machines/aws-01</span></div><div class="line">docker-machine ssh aws-01 <span class="comment"># 虽然有下面的各种坑，但还是能进去，一直报错所以一直没有执行此命令 </span></div><div class="line">docker swarm init --advertise-addr 54.244.58.2</div><div class="line"><span class="comment"># 不像digitalocean 一样顺利，还得vim /lib/systemd/system/docker.service 然后重启，再执行就和digitalocean一样了</span></div><div class="line">    docker swarm join --token SWMTKN-1-5a7nq4wbc0a4f5q5gvq9eqqj0nqqmtogpp6vszgezq0nl7xncr-1jeqk2b6j9hr8ovkzml38q7xv 54.244.58.2:2377</div><div class="line"></div><div class="line">docker-machine create --driver amazonec2 --amazonec2-access-key AKIAJY4GG2QGLNWE3KHQ --amazonec2-secret-key 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 --amazonec2-region=us-west-2  aws02</div><div class="line">docker-machine ssh aws02 </div><div class="line">sudo docker swarm join --token SWMTKN-1-5a7nq4wbc0a4f5q5gvq9eqqj0nqqmtogpp6vszgezq0nl7xncr-1jeqk2b6j9hr8ovkzml38q7xv 54.244.58.2:2377</div><div class="line"></div><div class="line">docker-machine ssh aws-01</div><div class="line">docker service create -p 80:80 --name webserver nginx</div><div class="line">docker service ls</div><div class="line">docker service ps  webserver</div><div class="line"><span class="comment"># Docker Swarm的另一个功能是缩放服务的能力，即启动服务的其他实例。假设我们想将我们之前启动的webserver服务扩展为五个实例</span></div><div class="line">docker service scale webserver=5 <span class="comment">#output: webserver scaled to 5</span></div><div class="line">docker service ps  webserver <span class="comment"># 可以看到这5个服务在都分布在哪些节点上</span></div></pre></td></tr></table></figure>
+<p>坑一:</p>
+<p>创建实例时，先要在EC2控制面板创建一对密钥对，在创建实例时，选择此密钥对，并保存好，当你创建好实例之后，要连接实例时需要此.pem文件，才能连接上，不然就悲剧了.</p>
+<p>坑二:</p>
+<p>IAM:不是你的用户名和密码(root) ,失败</p>
+<pre><code>docker-machine create --driver amazonec2 --amazonec2-access-key username --amazonec2-secret-key password --amazonec2-vpc-id vpc-a24484c4 aws-sandbox
+# 你也可以创建其它的用户来管理aws,失败
+docker-machine create --driver amazonec2 --amazonec2-access-key AKIAIDGRV7O6MZ2DOYDA --amazonec2-secret-key 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 --amazonec2-vpc-id vpc-978f4cf1 aws-sandbox
+
+# 但只能是root用户才能访问成功
+docker-machine create --driver amazonec2 --amazonec2-access-key AKIAJY4GG2QGLNWE3KHQ --amazonec2-secret-key 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 \ 
+    --amazonec2-vpc-id vpc-a24484c4 --amazonec2-zone=b aws-sandbox
+
+# unable to find a subnet in the zone: us-east-1b to issue
+ssh -i &quot;femn.pem&quot; ubuntu@ec2-34-212-39-188.us-west-2.compute.amazonaws.com
+sudo apt install awscli
+aws configure
+</code></pre><p>坑三: 配置aws CLI ,IAM上面已得知了，Default region name:必须是这个实例的实际地址</p>
+<p>一定要选自己的地区  us-west-2</p>
+<h3 id="巨坑-创建swarm的参数问题一-–amazonec2-subnet-id-–amazonec2-zone"><a href="#巨坑-创建swarm的参数问题一-–amazonec2-subnet-id-–amazonec2-zone" class="headerlink" title="巨坑 创建swarm的参数问题一  –amazonec2-subnet-id –amazonec2-zone"></a>巨坑 创建swarm的参数问题一  –amazonec2-subnet-id –amazonec2-zone</h3><pre><code># 所有的都正确之后 ，下面的命令就会显示出你的VpcId,SubnetId,AvailabilityZone
+aws ec2 describe-subnets  选择第一个，而且--amazonec2-zone=b(选择最后一个字母)
+
+        &quot;AvailabilityZone&quot;: &quot;us-west-2b&quot;,
+        &quot;State&quot;: &quot;available&quot;,
+        &quot;MapPublicIpOnLaunch&quot;: true,
+        &quot;DefaultForAz&quot;: true,
+        &quot;SubnetId&quot;: &quot;subnet-fe382599&quot;,
+        &quot;VpcId&quot;: &quot;vpc-a24484c4&quot;,
+        &quot;AvailableIpAddressCount&quot;: 4091,
+        &quot;CidrBlock&quot;: &quot;172.31.16.0/20&quot;
+
+vim ~/.aws/credentials
+    [default]
+    aws_access_key_id = AKIAJY4GG2QGLNWE3KHQ
+    aws_secret_access_key = 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
+    amazonec2-vpc-id = vpc-a24484c4
+    amazonec2-zone = us-west-2b
+#docker-machine 创建
+docker-machine create --driver amazonec2 --amazonec2-subnet-id=subnet-fe382599 aws01
+坑四:
+Error setting machine configuration from flags provided: The desired subnet could not be located in this region. Is &apos;--amazonec2-subnet-id&apos; or AWS_SUBNET_ID configured correctly?
+
+所以得换成感觉是不一样的配置,也是不行
+&quot;AvailabilityZone&quot;: &quot;us-west-2c&quot;,
+        &quot;Tags&quot;: [
+            {
+                &quot;Value&quot;: &quot;公有子网&quot;,
+                &quot;Key&quot;: &quot;Name&quot;
+            }
+        ],
+        &quot;State&quot;: &quot;available&quot;,
+        &quot;MapPublicIpOnLaunch&quot;: false,
+        &quot;DefaultForAz&quot;: false,
+        &quot;SubnetId&quot;: &quot;subnet-3504b26e&quot;,
+        &quot;VpcId&quot;: &quot;vpc-978f4cf1&quot;,
+        &quot;AvailableIpAddressCount&quot;: 251,
+        &quot;CidrBlock&quot;: &quot;10.0.0.0/24&quot;
+
+vim ~/.aws/credentials
+    amazonec2-vpc-id = vpc-978f4cf1
+    amazonec2-zone = us-west-2c
+docker-machine create --driver amazonec2 --amazonec2-subnet-id=subnet-fe382599 aws01
+# 还是不行
+
+docker-machine create --driver amazonec2 --amazonec2-access-key AKIAJY4GG2QGLNWE3KHQ --amazonec2-secret-key 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 --amazonec2-subnet-id=subnet-fe382599 --amazonec2-zone=b  --amazonec2-vpc-id=vpc-a24484c4 aws01
+docker-machine create --driver amazonec2 --amazonec2-access-key AKIAJY4GG2QGLNWE3KHQ --amazonec2-secret-key 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 --amazonec2-subnet-id=subnet-fe382599 --amazonec2-zone=us-west-2b  --amazonec2-vpc-id=vpc-a24484c4 aws01
+
+# 第二个方法
+vim ~/.aws/credentials
+     [default]
+     aws_access_key_id = leipengkai@gmail.com
+     aws_secret_access_key = ,wwa0aaglei
+docker-machine create --driver amazonec2 aws-sandbox
+# Docker Machine通过AWS REST API创建一个Docker主机所需要的资源，需要使用AWS访问密钥（–amazonec2-access-key）和AWS密钥（–amazonec2-secret-key）进行认证。
+# 所创建的EC2主机需要在一个提前创建好的VPC（–amazonec2-vpc-id）里面
+# 所以我又在VPC的控制面板中，创建了一个实例
+</code></pre><h3 id="巨坑-创建swarm的参数问题二-–amazonec2-ami"><a href="#巨坑-创建swarm的参数问题二-–amazonec2-ami" class="headerlink" title="巨坑 创建swarm的参数问题二  –amazonec2-ami"></a>巨坑 创建swarm的参数问题二  –amazonec2-ami</h3><pre><code>ssh -i &quot;femn.pem&quot; ubuntu@ec2-34-209-65-168.us-west-2.compute.amazonaws.com
+aws ec2 create-image --instance-id i-09eb112b598ab5cb7 --name &quot;My server&quot; --description &quot;An AMI for my server&quot;
+# 会自动登出CLI
+
+ami-3af9e443
+docker-machine create --driver amazonec2 --amazonec2-access-key AKIAJY4GG2QGLNWE3KHQ --amazonec2-secret-key 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 --amazonec2-ami ami-3af9e443  aws03
+# InvalidAMIID.NotFound: The image id &apos;[ami-3af9e443]&apos; does not exist
+
+# 所以当我去启动ami时，去创建了一个实例
+# InvalidAMIID.NotFound: The image id &apos;[ami-3af9e443]&apos; does not exist 结果还是一样 使用公共的ami也是一样的情况
+
+#  结果用别人的一个ami就行了，创建docker的过程和上面的一样,错误也是一样，而且好像还不知道下哪里去了，有可能是下到别人的了
+docker-machine create --driver amazonec2 --amazonec2-access-key AKIAJY4GG2QGLNWE3KHQ --amazonec2-secret-key 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 --amazonec2-ami ami-efe09bf8  aws01
+</code></pre><h3 id="这样改了配置之后，就在本机不能使用sudo-docker-pull-mysql等命令了"><a href="#这样改了配置之后，就在本机不能使用sudo-docker-pull-mysql等命令了" class="headerlink" title="这样改了配置之后，就在本机不能使用sudo docker pull mysql等命令了."></a>这样改了配置之后，就在本机不能使用sudo docker pull mysql等命令了.</h3>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femnyy.com/2017/08/04/docker-swarm/" data-id="cj6n0lgjl000i08l1s92m43ao" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femnyy.com/2017/08/04/docker-swarm/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/04/docker-swarm/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-supervisor-server" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -230,7 +790,7 @@
     <div class="article-date">
         <i class="fa fa-calendar"></i>
         <a href="/2017/08/04/supervisor-server/">
-            <time datetime="2017-08-04T07:24:48.000Z" itemprop="datePublished">2017-08-04</time>
+            <time datetime="2017-08-04T15:24:48.000Z" itemprop="datePublished">2017-08-04</time>
         </a>
     </div>
 
@@ -283,7 +843,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/08/04/supervisor-server/" data-id="cj6giljub00103g3kvqqmoc69" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femnyy.com/2017/08/04/supervisor-server/" data-id="cj6n0lgn0001p08l19iwrb9dq" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -351,7 +911,137 @@
 
             
     
-        <a href="http://yoursite.com/2017/08/04/supervisor-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://yoursite.com/2017/08/04/supervisor-server/">Comments</a>
+        <a href="https://www.femnyy.com/2017/08/04/supervisor-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/04/supervisor-server/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/04/hello-world/">Hello World</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/04/hello-world/">
+            <time datetime="2017-08-04T09:08:54.853Z" itemprop="datePublished">2017-08-04</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femnyy.com/2017/08/04/hello-world/" data-id="cj6n0lgki000s08l1ojyifsoi" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femnyy.com/2017/08/04/hello-world/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/04/hello-world/">Comments</a>
     
 
         </footer>
@@ -379,7 +1069,7 @@
     <div class="article-date">
         <i class="fa fa-calendar"></i>
         <a href="/2017/08/04/basic_time/">
-            <time datetime="2017-08-04T00:10:53.000Z" itemprop="datePublished">2017-08-04</time>
+            <time datetime="2017-08-04T08:10:53.000Z" itemprop="datePublished">2017-08-04</time>
         </a>
     </div>
 
@@ -420,7 +1110,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/08/04/basic_time/" data-id="cj6giljsw00043g3k6n3scenv" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femnyy.com/2017/08/04/basic_time/" data-id="cj6n0lgi0000508l1ewikh5fn" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -488,7 +1178,7 @@
 
             
     
-        <a href="http://yoursite.com/2017/08/04/basic_time/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://yoursite.com/2017/08/04/basic_time/">Comments</a>
+        <a href="https://www.femnyy.com/2017/08/04/basic_time/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/04/basic_time/">Comments</a>
     
 
         </footer>
@@ -515,9 +1205,36 @@
                     <li>
                         
                         <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/python3/">python3</a></p>
+                            <p class="item-title"><a href="/2017/08/18/pymongo/" class="title">pymongo基本操作</a></p>
+                            <p class="item-date"><time datetime="2017-08-18T14:48:02.000Z" itemprop="datePublished">2017-08-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据库/">数据库</a></p>
+                            <p class="item-title"><a href="/2017/08/18/mongodb/" class="title">mongodb基本命令</a></p>
+                            <p class="item-date"><time datetime="2017-08-18T11:56:18.000Z" itemprop="datePublished">2017-08-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2017/08/18/ghost/" class="title">ghost下载与使用</a></p>
+                            <p class="item-date"><time datetime="2017-08-18T11:11:58.000Z" itemprop="datePublished">2017-08-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/linux/">linux</a></p>
                             <p class="item-title"><a href="/2017/08/17/linux-server-process/" class="title">linux 服务与进程</a></p>
-                            <p class="item-date"><time datetime="2017-08-17T07:44:24.000Z" itemprop="datePublished">2017-08-17</time></p>
+                            <p class="item-date"><time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time></p>
                         </div>
                     </li>
                 
@@ -526,34 +1243,7 @@
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
                             <p class="item-title"><a href="/2017/08/16/CDN-server/" class="title">内容分发网络</a></p>
-                            <p class="item-date"><time datetime="2017-08-16T07:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
-                            <p class="item-title"><a href="/2017/08/16/shadowsocks-server/" class="title">shadowsocks</a></p>
-                            <p class="item-date"><time datetime="2017-08-16T07:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
-                            <p class="item-title"><a href="/2017/08/16/sshd-server/" class="title">sshd</a></p>
-                            <p class="item-date"><time datetime="2017-08-16T07:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
-                            <p class="item-title"><a href="/2017/08/15/vps-server/" class="title">VPS搭建网站</a></p>
-                            <p class="item-date"><time datetime="2017-08-15T03:16:14.000Z" itemprop="datePublished">2017-08-15</time></p>
+                            <p class="item-date"><time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
                         </div>
                     </li>
                 
@@ -566,7 +1256,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">5</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -575,7 +1265,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">22</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">26</span></li></ul>
         </div>
     </div>
 
@@ -640,7 +1330,7 @@
     };
     (function() { 
         var d = document, s = d.createElement('script');  
-        s.src = '//' + 'hexo-theme-icarus' + '.disqus.com/count.js';
+        s.src = '//' + 'femn' + '.disqus.com/count.js';
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
     })();

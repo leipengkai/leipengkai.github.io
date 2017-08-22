@@ -84,8 +84,9 @@ github每个帐号只能有一个仓库来存放个人主页，而且仓库的�
     # 绑定独立域名
     cd ./source
     vim CNAME
-        www.femnxyz.xyz
+        www.femn.me
 
+    # 解决使用hexo d部署时,不能自定义commit问题
     vim update_blog.sh 
         #!/bin/bash
         IFS="|"
@@ -109,44 +110,54 @@ github每个帐号只能有一个仓库来存放个人主页，而且仓库的�
     ./d.sh "new-post,try to add domain"
         
 
-### 绑定独立域名
+### 7.绑定独立域名
 1.[获取](https://help.github.com/articles/setting-up-an-apex-domain/)github的IP地址
 
 2.在你的域名注册提供商那里配置DNS解析,推荐使用CNAME类型的记录
-注意是在域名提供商中修改DNS
+#### 注意是在域名提供商中修改DNS
 
-   CNAME  www.femn.me leipengkai.github.io
 namecheap的修改方式
 ![](css/images/namecheap.jpg)
+
 name的修改方式
 ![](css/images/name-domain.jpg)
+
 3.添加CNAME文件
 
     cd ./source
     vim CNAME
         www.femn.me
-    cd ../
+
 或者如图修改，会自动生成CNAME文件
 ![](css/images/github-page.jpg)
 
-使用git命令行部署的 效果是:当输入https://leipengkai.github.io/ 会转向到www.femnxyz.xyz这个url上，内容是github上的内容.
 
-如果在github-->setting-->sustom domain-->www.femn.me时，当输入https://leipengkai.github.io/ 会转向到www.femn.me这个网站上,内容是femn.me网站的内容.
+### 8.为自定义域名的GitHub Pages添加SSL
 
-4.为自定义域名的GitHub Pages添加SSL
-4.1 先去腾讯云申请免费一年的DV证书，然后配置Nginx,最后使用Cloudflare做DNS.[请参考](https://www.femn.me/2017/08/15/vps-server/)
+先去腾讯云申请免费一年的DV证书，然后配置Nginx,最后使用Cloudflare做DNS,再指向VPS-IP.[请参考](https://www.femn.me/2017/08/15/vps-server/)
+DNS记录如图:
 ![](css/images/cloudflare.png)
 
-4.2 使用[Cloudflare](https://www.yicodes.com/2016/12/04/free-cloudflare-ssl-for-custom-domain/) ,但其实重定向到https中去的，好像并没有保护作用
-### [添加disqus评论系统](https://disqus.com)翻墙之后才能看到
+### 9.添加RSS订阅功能
+```bash
+    cd blog
+    npm install hexo-generator-feed -save
+    vim _config.yml
+        theme: icarus
+        plugin: 
+            hexo-generator-feed
+    cd themes/icarus
+    # 开启theme的RSS支持
+    vim _config.yml
+        rss: /atom.xml
+```
+### 10.[添加disqus评论系统](https://disqus.com)翻墙之后才能看到
     
     # Qisqus – settings – Add Disqus to your site 
-    # Website Name:www.femnxyz.xyz
     # create after -->setting -->shortname
-    vim _config.yml
-        disqus_shortname: www-femnxyz-xyz (you-shortname)
-    vim thems/mabao/_config.yml
-        comment_provider: disqus
+    vim themes/icarus/_config.yml
+        comment:
+            disqus: femn 
     # 如需取消某个页面的评论，在md文件的front-matter中增加
         comments: false
 
@@ -173,9 +184,6 @@ name的修改方式
         tags: python
         categories: python3
         ---
- 
-    tags: 编程语言
-
 ### 熟悉hexo命令
     
     mkdir blog

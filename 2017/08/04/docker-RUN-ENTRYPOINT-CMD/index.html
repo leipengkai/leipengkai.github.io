@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Dockerfile docker-compose | Femn</title>
+    <title>docker RUN ENTRYPOINT CMD命令 | Femn</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="Dockerfile定制镜像命令,docker镜像:业务代码和运行环境进行整体的打包:一个Dockerfile的文件:系统基本所需要的环境和软件 1234567891011vim Dockerfile    FROM centos7    RUN # 对原镜像进行命令操作    ADD . /opt/ # 将宿主机此目录下的文件原copy到容器的/opt/下    EXPOSE 80 8000 #">
+    <meta name="description" content="运行时机RUN在Dockerfile构建镜像的过程(Build)中运行，最终被commit的到镜像。 ENTRYPOINT和CMD在容器运行(run、start)时运行 都有shell和exec形式shell形式1234567891011121314RUN command param1 param2CMD command param1 param2ENTRYPOINT command param1">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Dockerfile docker-compose">
-<meta property="og:url" content="https://www.femnyy.com/2017/08/04/Dockerfile_compose/index.html">
+<meta property="og:title" content="docker RUN ENTRYPOINT CMD命令">
+<meta property="og:url" content="https://www.femnyy.com/2017/08/04/docker-RUN-ENTRYPOINT-CMD/index.html">
 <meta property="og:site_name" content="Femn">
-<meta property="og:description" content="Dockerfile定制镜像命令,docker镜像:业务代码和运行环境进行整体的打包:一个Dockerfile的文件:系统基本所需要的环境和软件 1234567891011vim Dockerfile    FROM centos7    RUN # 对原镜像进行命令操作    ADD . /opt/ # 将宿主机此目录下的文件原copy到容器的/opt/下    EXPOSE 80 8000 #">
-<meta property="og:updated_time" content="2017-08-22T03:05:22.496Z">
+<meta property="og:description" content="运行时机RUN在Dockerfile构建镜像的过程(Build)中运行，最终被commit的到镜像。 ENTRYPOINT和CMD在容器运行(run、start)时运行 都有shell和exec形式shell形式1234567891011121314RUN command param1 param2CMD command param1 param2ENTRYPOINT command param1">
+<meta property="og:updated_time" content="2017-08-22T02:55:54.191Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Dockerfile docker-compose">
-<meta name="twitter:description" content="Dockerfile定制镜像命令,docker镜像:业务代码和运行环境进行整体的打包:一个Dockerfile的文件:系统基本所需要的环境和软件 1234567891011vim Dockerfile    FROM centos7    RUN # 对原镜像进行命令操作    ADD . /opt/ # 将宿主机此目录下的文件原copy到容器的/opt/下    EXPOSE 80 8000 #">
+<meta name="twitter:title" content="docker RUN ENTRYPOINT CMD命令">
+<meta name="twitter:description" content="运行时机RUN在Dockerfile构建镜像的过程(Build)中运行，最终被commit的到镜像。 ENTRYPOINT和CMD在容器运行(run、start)时运行 都有shell和exec形式shell形式1234567891011121314RUN command param1 param2CMD command param1 param2ENTRYPOINT command param1">
     
 
     
@@ -217,7 +217,7 @@
 </aside>
 
             
-            <section id="main"><article id="post-Dockerfile_compose" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-docker-RUN-ENTRYPOINT-CMD" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -225,7 +225,7 @@
                 
     
         <h1 class="article-title" itemprop="name">
-            Dockerfile docker-compose
+            docker RUN ENTRYPOINT CMD命令
         </h1>
     
 
@@ -234,8 +234,8 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/Dockerfile_compose/">
-            <time datetime="2017-08-04T15:24:48.000Z" itemprop="datePublished">2017-08-04</time>
+        <a href="/2017/08/04/docker-RUN-ENTRYPOINT-CMD/">
+            <time datetime="2017-08-04T20:19:31.000Z" itemprop="datePublished">2017-08-04</time>
         </a>
     </div>
 
@@ -255,20 +255,28 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h3 id="Dockerfile定制镜像命令-docker镜像-业务代码和运行环境进行整体的打包"><a href="#Dockerfile定制镜像命令-docker镜像-业务代码和运行环境进行整体的打包" class="headerlink" title="Dockerfile定制镜像命令,docker镜像:业务代码和运行环境进行整体的打包:"></a>Dockerfile定制镜像命令,docker镜像:业务代码和运行环境进行整体的打包:</h3><p><a href="https://github.com/imagine10255/centos6-lnmp-php56/blob/master/Dockerfile" target="_blank" rel="external">一个Dockerfile的文件</a>:系统基本所需要的环境和软件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">vim Dockerfile</div><div class="line">    FROM centos7</div><div class="line">    RUN <span class="comment"># 对原镜像进行命令操作</span></div><div class="line">    ADD . /opt/ <span class="comment"># 将宿主机此目录下的文件原copy到容器的/opt/下</span></div><div class="line">    EXPOSE 80 8000 <span class="comment"># 容器可映射的端口</span></div><div class="line">    VOLUME [<span class="string">"/home/python"</span>,<span class="string">""</span>]</div><div class="line">    WORKDIR <span class="string">'/home/xx'</span> <span class="comment"># 相当于宿主机的cd /home/xx</span></div><div class="line">    CMD [<span class="string">"nginx"</span>, <span class="string">"-g"</span>, <span class="string">"daemon off;"</span>] <span class="comment">#一开始运行这个容器所执行的命令</span></div><div class="line"><span class="comment"># 所有的文件复制均使用 COPY 指令,仅在需要自动解压缩的场合使用 ADD</span></div><div class="line"><span class="comment"># 用Dockerfile 生成镜像app</span></div><div class="line">docker build -t app .</div></pre></td></tr></table></figure>
-<h3 id="Dockerfile-模板文件-可以很方便的定义一个单独的应用容器-记录了-单-一个镜像的制作过程"><a href="#Dockerfile-模板文件-可以很方便的定义一个单独的应用容器-记录了-单-一个镜像的制作过程" class="headerlink" title="Dockerfile 模板文件,可以很方便的定义一个单独的应用容器,记录了(单)一个镜像的制作过程"></a>Dockerfile 模板文件,可以很方便的定义一个单独的应用容器,记录了(单)一个镜像的制作过程</h3><p>如果 dockerhub 的镜像不能满足我的需求就 dockerfile 自己 build 镜像</p>
-<p>为什么还要docker-compose,是因为Dockerfile要去执行CMD [“bash”]之后,再去启动nginx,node等其它的服务,不能直观的看到端口之间的映射,以及服务之间的link的原因吗？</p>
-<h3 id="但是很多时候-需要多个镜像合作才能启动一个服务-比如前端要有nginx-数据库mysql-邮件服务等等-当然你可以把所有这些都弄到一个镜像里去-但这样做就无法复用了"><a href="#但是很多时候-需要多个镜像合作才能启动一个服务-比如前端要有nginx-数据库mysql-邮件服务等等-当然你可以把所有这些都弄到一个镜像里去-但这样做就无法复用了" class="headerlink" title="但是很多时候,需要多个镜像合作才能启动一个服务,比如前端要有nginx,数据库mysql,邮件服务等等,当然你可以把所有这些都弄到一个镜像里去,但这样做就无法复用了."></a>但是很多时候,需要多个镜像合作才能启动一个服务,比如前端要有nginx,数据库mysql,邮件服务等等,当然你可以把所有这些都弄到一个镜像里去,但这样做就无法复用了.</h3><p>更常见的是,nginx,mysql,smtp都分别是个镜像,然后这些镜像合作,共同服务一个项目.<br>docker-compose就是解决这个问题的.你的项目需要哪些镜像,每个镜像怎么配置,要挂载哪些volume,等等信息都包含在docker-compose.yml里.<br>要启动服务,只需要docker-compose up就行,停止也只需要docker-compse stop/down</p>
-<p>dockerfile+docker-compose, 是因为docker-compose.yml本身没有镜像构建的信息,如果镜像是从docker registry拉取下来的,那么Dockerfile就不需要;如果镜像是需要build的,那就需要提供Dockerfile.</p>
-<h3 id="docker-compost-定义和运行多个Docker容器的应用"><a href="#docker-compost-定义和运行多个Docker容器的应用" class="headerlink" title="docker-compost:定义和运行多个Docker容器的应用"></a>docker-compost:定义和运行多个Docker容器的应用</h3><p>编排工具,定义并运行基于Docker的分布式应用,简化部署复杂应用的流程,管理容器化应用的完整开发周期</p>
-<p>1.允许用户通过一个单独的docker-compose.yml模板文件(YAML格式)来定义一组相关联的应用容器为一个项目:project<br>,包括注明需要哪些服务,服务之间的关联,开放的port,对外连结的路径volumes</p>
-<p>2.以启动container为目的的、先build image再以此启动container</p>
-<p>3.定义好了管理起来轻松,你如果喜欢用docker run带一大串parameters也是可以的</p>
-<h3 id="install-compose"><a href="#install-compose" class="headerlink" title="install compose"></a>install compose</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">curl -L https://github.com/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m` \</div><div class="line">     &gt; /usr/<span class="built_in">local</span>/bin/docker-compose</div><div class="line"><span class="comment"># 如果命令行下载超时 </span></div><div class="line">https://github.com/docker/compose/releases/download/1.8.0/docker-compose-Linux-x86_64</div><div class="line"><span class="built_in">cd</span> Download</div><div class="line">cp docker-compose-Linux-x86_64 /usr/<span class="built_in">local</span>/bin/docker-compose</div><div class="line"></div><div class="line">chmod a+x /usr/<span class="built_in">local</span>/bin/docker-compose</div><div class="line">docker-compose -h</div><div class="line">docker-compose up/down/stop</div></pre></td></tr></table></figure>
-<p>管理server(contient)执行的顺序,但其实这只是希望是这样执行(docker run),但其实真正的启动时的, 还需要其它的工具去控制.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">    mkdir 1</div><div class="line">    <span class="built_in">cd</span> 1</div><div class="line">    vim docker-compose.yml</div><div class="line">        nginx:</div><div class="line">            image: nginx</div><div class="line"><span class="comment"># 1. 只定义 image :先找本地、本地没有找 docker hub 、再没有就报错 </span></div><div class="line"><span class="comment"># 2.只定义build:跑Dockerfile做image,有image直接用,image没有name和tag </span></div><div class="line"><span class="comment"># 3.同时定义image和build:没有image就先跑build,name和tag用image定义的那个</span></div><div class="line"><span class="comment"># 有了image就直接跑container</span></div><div class="line">            <span class="comment"># build: ./nginx  ##nginx目录下有Dockerfile文件 </span></div><div class="line">            ports:</div><div class="line">                - <span class="string">"80:80"</span></div><div class="line">            volumes:</div><div class="line">                - <span class="variable">$PWD</span>/nginx/nginx.conf:/etc/nginx/nginx.conf</div><div class="line">                - ./nginx/sites-enabled:/etc/nginx/sites-enabled</div><div class="line">            restart: always</div><div class="line">        node:</div><div class="line">            image: node</div><div class="line">            ports:</div><div class="line">                -<span class="string">"8000:8000"</span></div><div class="line">            volumes:</div><div class="line">                - <span class="variable">$PWD</span>/node:/src/app</div><div class="line">            restart: always</div><div class="line"></div><div class="line">    mkdir node </div><div class="line">    mkdir nginx</div><div class="line">    <span class="built_in">cd</span> nginx</div><div class="line">    mkdir sites-enabled</div><div class="line">    vim nginx.conf</div><div class="line">        daemon off;</div><div class="line"></div><div class="line">    还要去配置node</div><div class="line">    <span class="built_in">cd</span> ../</div><div class="line">    docker-compose up</div><div class="line">    docker-compose down</div><div class="line">    docker ps -l</div></pre></td></tr></table></figure></p>
-<h3 id="用docker-compose-自动一个一个的安装软件-client"><a href="#用docker-compose-自动一个一个的安装软件-client" class="headerlink" title="用docker-compose 自动一个一个的安装软件(client)"></a>用docker-compose 自动一个一个的安装软件(client)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">vim docker-compose.yml</div><div class="line">    version: <span class="string">'2'</span></div><div class="line">    services:</div><div class="line">    mongodb:</div><div class="line">        image: tutum/mongodb</div><div class="line">        ports:</div><div class="line">            - <span class="string">"27017:27017"</span></div><div class="line">            - <span class="string">"28017:28017"</span></div><div class="line">        environment:</div><div class="line">            - AUTH=no</div><div class="line">        container_name: mongodb</div><div class="line">        restart: always</div><div class="line"></div><div class="line">    memcached:</div><div class="line">        image: memcached</div><div class="line">        ports:</div><div class="line">            - <span class="string">"11211:11211"</span></div><div class="line">        container_name: memcached</div><div class="line">        restart: always</div><div class="line"></div><div class="line"><span class="comment"># 效果:只要运行docker-compose up,就会自动安装mongodb和memcached</span></div><div class="line"><span class="comment"># 并且会在机器重启的时候自启动</span></div></pre></td></tr></table></figure>
-<p><a href="https://cola.workxplay.net/devops-docker-development-environment/" target="_blank" rel="external">一个项目的例子</a></p>
+            <h3 id="运行时机"><a href="#运行时机" class="headerlink" title="运行时机"></a>运行时机</h3><p>RUN在Dockerfile构建镜像的过程(Build)中运行，最终被commit的到镜像。</p>
+<p>ENTRYPOINT和CMD在容器运行(run、start)时运行</p>
+<h3 id="都有shell和exec形式"><a href="#都有shell和exec形式" class="headerlink" title="都有shell和exec形式"></a>都有shell和exec形式</h3><p>shell形式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">RUN <span class="built_in">command</span> param1 param2</div><div class="line">CMD <span class="built_in">command</span> param1 param2</div><div class="line">ENTRYPOINT <span class="built_in">command</span> param1 param2</div><div class="line"><span class="comment"># ENTRYPOINT的Shell格式会忽略任何CMD或docker run提供的参数</span></div><div class="line"><span class="comment">#eg</span></div><div class="line">RUN apt-get install python3  </div><div class="line">ENTRYPOINT <span class="built_in">echo</span> <span class="string">"Hello world"</span> </div><div class="line">CMD <span class="built_in">echo</span> <span class="string">"Hello world"</span>  </div><div class="line"></div><div class="line">ENV name Cloud Man  </div><div class="line">ENTRYPOINT <span class="built_in">echo</span> <span class="string">"Hello, <span class="variable">$name</span>"</span> </div><div class="line"><span class="comment"># shell 格式底层会调用 /bin/sh -c &lt;command&gt;</span></div><div class="line"><span class="comment"># 所以执行 docker run &lt;image&gt; 将输出</span></div><div class="line"><span class="comment"># Hello, Cloud Man</span></div></pre></td></tr></table></figure></p>
+<h4 id="shell形式还有一个严重的问题：由于其默认使用-bin-sh来运行命令，如果镜像中不包含-bin-sh，容器会无法启动"><a href="#shell形式还有一个严重的问题：由于其默认使用-bin-sh来运行命令，如果镜像中不包含-bin-sh，容器会无法启动" class="headerlink" title="shell形式还有一个严重的问题：由于其默认使用/bin/sh来运行命令，如果镜像中不包含/bin/sh，容器会无法启动."></a>shell形式还有一个严重的问题：由于其默认使用/bin/sh来运行命令，如果镜像中不包含/bin/sh，容器会无法启动.</h4><p>exec形式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">RUN [<span class="string">"executable"</span>, <span class="string">"param1"</span>, <span class="string">"param2"</span>]</div><div class="line">ENTRYPOINT [<span class="string">"executable"</span>, <span class="string">"param1"</span>, <span class="string">"param2"</span>]</div><div class="line">CMD [<span class="string">"executable"</span>, <span class="string">"param1"</span>, <span class="string">"param2"</span>]</div><div class="line"><span class="comment">#eg</span></div><div class="line">RUN [<span class="string">"apt-get"</span>, <span class="string">"install"</span>, <span class="string">"python3"</span>]  </div><div class="line">ENTRYPOINT [<span class="string">"/bin/echo"</span>, <span class="string">"Hello world"</span>]</div><div class="line">CMD [<span class="string">"/bin/echo"</span>, <span class="string">"Hello world"</span>]  </div><div class="line"></div><div class="line">ENV name Cloud Man  </div><div class="line">ENTRYPOINT [<span class="string">"/bin/echo"</span>, <span class="string">"Hello, <span class="variable">$name</span>"</span>]</div><div class="line"><span class="comment"># Hello, $name</span></div><div class="line">ENV name Cloud Man  </div><div class="line">ENTRYPOINT [<span class="string">"/bin/sh"</span>, <span class="string">"-c"</span>, <span class="string">"echo Hello, <span class="variable">$name</span>"</span>]</div><div class="line"><span class="comment"># Hello, Cloud Man</span></div></pre></td></tr></table></figure></p>
+<p>CMD还多了一种用于为ENTRYPOINT提供参数的形式:<br>此时 ENTRYPOINT 必须使用 Exec 格式<br>参数格式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CMD [<span class="string">"param1"</span>,<span class="string">"param2"</span>]</div></pre></td></tr></table></figure></p>
+<p>shell形式和exec的形式的本质区别在于shell形式提供了默认的指令/bin/sh -c，所以其指定的command将在shell的环境下运行。因此指定command的pid将不会是1，因为pid为1的是shell，command进程是shell的子进程.</p>
+<h4 id="exec形式则不然-但由于exec指定的命令不由shell启动，因此也就无法使用shell中的环境变量，如-HOME。如果希望能够使用环境变量，可以指定命令为sh：CMD-“sh”-“-c”-“echo”-“-HOME”"><a href="#exec形式则不然-但由于exec指定的命令不由shell启动，因此也就无法使用shell中的环境变量，如-HOME。如果希望能够使用环境变量，可以指定命令为sh：CMD-“sh”-“-c”-“echo”-“-HOME”" class="headerlink" title="exec形式则不然,但由于exec指定的命令不由shell启动，因此也就无法使用shell中的环境变量，如$HOME。如果希望能够使用环境变量，可以指定命令为sh：CMD [ “sh”, “-c”, “echo”, “$HOME” ]"></a>exec形式则不然,但由于exec指定的命令不由shell启动，因此也就无法使用shell中的环境变量，如$HOME。如果希望能够使用环境变量，可以指定命令为sh：CMD [ “sh”, “-c”, “echo”, “$HOME” ]</h4><h3 id="重载问题"><a href="#重载问题" class="headerlink" title="重载问题"></a>重载问题</h3><p>Dockerfile中只有最后一个ENTRYPOINT指令会生效，其他会被重载。</p>
+<p>Dockerfile中只有最后一个CMD指令会生效，其他会被重载。</p>
+<p>CMD指定的命令可以被docker run传递的命令覆盖。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">CMD <span class="built_in">echo</span> <span class="string">"Hello world"</span></div><div class="line"><span class="comment"># 运行容器 docker run -it [image] 将输出：</span></div><div class="line"><span class="comment"># Hello world</span></div><div class="line">docker run -it [image] /bin/bash</div><div class="line"><span class="comment"># CMD 会被忽略掉，命令 bash 将被执行</span></div><div class="line"><span class="comment"># root@10a32dc7d3d3:/#</span></div></pre></td></tr></table></figure></p>
+<p>ENTRYPOINT指定的命令不会被docker run传递的命令覆盖。容器名后面的所有内容都当成参数传递给其指定的命令。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">ENTRYPOINT [<span class="string">"/bin/echo"</span>, <span class="string">"Hello"</span>]  </div><div class="line">CMD [<span class="string">"echo"</span>,<span class="string">"world"</span>]</div><div class="line"></div><div class="line"><span class="comment"># 当容器通过 docker run -it [image] 启动时，输出为：</span></div><div class="line"><span class="comment"># Hello echo world</span></div><div class="line"></div><div class="line"><span class="comment"># 而如果通过 docker run -it [image] CloudMan 启动，则输出为：</span></div><div class="line"><span class="comment"># Hello CloudMan</span></div></pre></td></tr></table></figure></p>
+<p>当然，ENTRYPOINT指定的命令并不是不能重载的，只需指定–entrypoint来重载即可。</p>
+<h3 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h3><ol>
+<li><p>使用 RUN 指令安装应用和软件包，构建镜像。</p>
+</li>
+<li><p>如果 Docker 镜像的用途是运行应用程序或服务，比如运行一个 MySQL，应该优先使用 Exec 格式的 ENTRYPOINT 指令。CMD 可为 ENTRYPOINT 提供额外的默认参数，同时可利用 docker run 命令行替换默认参数。</p>
+</li>
+<li><p>如果想为容器设置默认的启动命令，可使用 CMD 指令。用户可在 docker run 命令行中替换此默认命令。</p>
+<h3 id="ENTRYPOINT和CMD进行组合-运行shell脚本"><a href="#ENTRYPOINT和CMD进行组合-运行shell脚本" class="headerlink" title="ENTRYPOINT和CMD进行组合,运行shell脚本"></a>ENTRYPOINT和CMD进行组合,运行shell脚本</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">FROM busybox</div><div class="line">MAINTAINER femn</div><div class="line"></div><div class="line">COPY ./entrypoint.sh /</div><div class="line">RUN chmod +x /entrypoint.sh</div><div class="line">ENTRYPOINT [<span class="string">"/entrypoint.sh"</span>]</div><div class="line">CMD [<span class="string">"echo"</span>,<span class="string">"CMD"</span>]</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>entrypoint.sh如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/sh</span></div><div class="line"><span class="built_in">set</span> -e</div><div class="line"><span class="built_in">echo</span> <span class="string">"ENTRYPOINT"</span></div><div class="line"><span class="built_in">exec</span> <span class="string">"<span class="variable">$@</span>"</span></div><div class="line"><span class="comment"># 脚本中使用exec "$@"来运行CMD中的命令</span></div></pre></td></tr></table></figure></p>
+<p>运行时则输出 ENTRYPOINT CMD,而运行的参数 都是传递给entrypoint.sh的.</p>
 
         
         </div>
@@ -279,7 +287,7 @@
 
 </div>
 
-    <a data-url="https://www.femnyy.com/2017/08/04/Dockerfile_compose/" data-id="cj6n0lgha000208l1506uxedz" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femnyy.com/2017/08/04/docker-RUN-ENTRYPOINT-CMD/" data-id="cj6n0lgia000708l17k5d4piy" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -347,7 +355,7 @@
 
             
     
-        <a href="https://www.femnyy.com/2017/08/04/Dockerfile_compose/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/04/Dockerfile_compose/">Comments</a>
+        <a href="https://www.femnyy.com/2017/08/04/docker-RUN-ENTRYPOINT-CMD/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/04/docker-RUN-ENTRYPOINT-CMD/">Comments</a>
     
 
         </footer>
@@ -356,19 +364,19 @@
         
 <nav id="article-nav">
     
-        <a href="/2017/08/04/docker-set-net/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/2017/08/05/iterable-iterator-generator/" id="article-nav-newer" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Newer</strong>
             <div class="article-nav-title">
                 
-                    docker网络代理设置
+                    迭代器与生成器
                 
             </div>
         </a>
     
     
-        <a href="/2017/08/04/docker-machine/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2017/08/04/docker-set-net/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Older</strong>
-            <div class="article-nav-title">docker-machine</div>
+            <div class="article-nav-title">docker网络代理设置</div>
         </a>
     
 </nav>
@@ -522,9 +530,9 @@
     <script>
     var disqus_config = function () {
         
-            this.page.url = 'https://www.femnyy.com/2017/08/04/Dockerfile_compose/';
+            this.page.url = 'https://www.femnyy.com/2017/08/04/docker-RUN-ENTRYPOINT-CMD/';
         
-        this.page.identifier = 'Dockerfile_compose';
+        this.page.identifier = 'docker-RUN-ENTRYPOINT-CMD';
     };
     (function() { 
         var d = document, s = d.createElement('script');  

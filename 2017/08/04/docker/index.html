@@ -3,24 +3,26 @@
 <head>
     <meta charset="utf-8">
     
-    <title>docker | Hexo</title>
+    <title>docker容器与镜像 | Femn</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="官方文档 一个中文的docker文档 对docker的解释 docker镜像：业务代码和运行环境进行整体的打包。1.1快速创建环境(开发，测试，生产) 1.2整体交付(运行环境+代码(之前只是代码)) 1.3可保证环境(开发，测试，生产)的一致性 1.4更好的完成devops 镜像分层技术：AUFS (Another UnionFS)支持将多个目录挂载到同一个虚拟目录下。已构建的镜像会设置成只读模">
+    <meta name="description" content="docker镜像：业务代码和运行环境进行整体的打包。1.1快速创建环境(开发，测试，生产) 1.2整体交付(运行环境+代码(之前只是代码)) 1.3可保证环境(开发，测试，生产)的一致性 1.4更好的完成devops 镜像（Image）就是一堆只读层（read-only layer）的统一视角这些层是Docker内部的实现细节，并且能够在主机的文件系统上访问到,统一文件系统（union file">
 <meta property="og:type" content="article">
-<meta property="og:title" content="docker">
-<meta property="og:url" content="http://yoursite.com/2017/08/04/docker/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="官方文档 一个中文的docker文档 对docker的解释 docker镜像：业务代码和运行环境进行整体的打包。1.1快速创建环境(开发，测试，生产) 1.2整体交付(运行环境+代码(之前只是代码)) 1.3可保证环境(开发，测试，生产)的一致性 1.4更好的完成devops 镜像分层技术：AUFS (Another UnionFS)支持将多个目录挂载到同一个虚拟目录下。已构建的镜像会设置成只读模">
-<meta property="og:updated_time" content="2017-08-17T02:58:14.814Z">
+<meta property="og:title" content="docker容器与镜像">
+<meta property="og:url" content="https://www.femnyy.com/2017/08/04/docker/index.html">
+<meta property="og:site_name" content="Femn">
+<meta property="og:description" content="docker镜像：业务代码和运行环境进行整体的打包。1.1快速创建环境(开发，测试，生产) 1.2整体交付(运行环境+代码(之前只是代码)) 1.3可保证环境(开发，测试，生产)的一致性 1.4更好的完成devops 镜像（Image）就是一堆只读层（read-only layer）的统一视角这些层是Docker内部的实现细节，并且能够在主机的文件系统上访问到,统一文件系统（union file">
+<meta property="og:updated_time" content="2017-08-22T02:55:27.767Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="docker">
-<meta name="twitter:description" content="官方文档 一个中文的docker文档 对docker的解释 docker镜像：业务代码和运行环境进行整体的打包。1.1快速创建环境(开发，测试，生产) 1.2整体交付(运行环境+代码(之前只是代码)) 1.3可保证环境(开发，测试，生产)的一致性 1.4更好的完成devops 镜像分层技术：AUFS (Another UnionFS)支持将多个目录挂载到同一个虚拟目录下。已构建的镜像会设置成只读模">
+<meta name="twitter:title" content="docker容器与镜像">
+<meta name="twitter:description" content="docker镜像：业务代码和运行环境进行整体的打包。1.1快速创建环境(开发，测试，生产) 1.2整体交付(运行环境+代码(之前只是代码)) 1.3可保证环境(开发，测试，生产)的一致性 1.4更好的完成devops 镜像（Image）就是一堆只读层（read-only layer）的统一视角这些层是Docker内部的实现细节，并且能够在主机的文件系统上访问到,统一文件系统（union file">
     
 
     
-        <link rel="alternate" href="/" title="Hexo" type="application/atom+xml" />
+        <link rel="alternate" href="/atom.xml" title="Femn" type="application/atom+xml" />
     
 
+    
+        <link rel="icon" href="/css/images/favicon.ico" />
     
 
     <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
@@ -51,7 +53,7 @@
         <div class="outer">
             <a href="/" id="logo">
                 <i class="logo"></i>
-                <span class="site-title">Hexo</span>
+                <span class="site-title">Femn</span>
             </a>
             <nav id="main-nav">
                 
@@ -157,7 +159,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                22
+                26
                 <span>posts</span>
             </div>
             <div class="article-info-block">
@@ -202,7 +204,7 @@
                     </td>
                     
                     <td>
-                        <a href="/" target="_blank" title="rss" class=tooltip>
+                        <a href="/atom.xml" target="_blank" title="rss" class=tooltip>
                             <i class="fa fa-rss"></i>
                         </a>
                     </td>
@@ -223,7 +225,7 @@
                 
     
         <h1 class="article-title" itemprop="name">
-            docker
+            docker容器与镜像
         </h1>
     
 
@@ -233,7 +235,7 @@
     <div class="article-date">
         <i class="fa fa-calendar"></i>
         <a href="/2017/08/04/docker/">
-            <time datetime="2017-08-04T07:24:48.000Z" itemprop="datePublished">2017-08-04</time>
+            <time datetime="2017-08-04T15:24:48.000Z" itemprop="datePublished">2017-08-04</time>
         </a>
     </div>
 
@@ -253,26 +255,25 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p><a href="https://docs.docker.com/" target="_blank" rel="external">官方文档</a></p>
-<p><a href="https://yeasy.gitbooks.io/docker_practice/content/install/centos.html" target="_blank" rel="external">一个中文的docker文档</a></p>
-<p><a href="https://juejin.im/post/58cb86bc61ff4b00601e7bfa" target="_blank" rel="external">对docker的解释</a></p>
-<h3 id="docker镜像：业务代码和运行环境进行整体的打包。"><a href="#docker镜像：业务代码和运行环境进行整体的打包。" class="headerlink" title="docker镜像：业务代码和运行环境进行整体的打包。"></a>docker镜像：业务代码和运行环境进行整体的打包。</h3><p>1.1快速创建环境(开发，测试，生产)</p>
+            <h3 id="docker镜像：业务代码和运行环境进行整体的打包。"><a href="#docker镜像：业务代码和运行环境进行整体的打包。" class="headerlink" title="docker镜像：业务代码和运行环境进行整体的打包。"></a>docker镜像：业务代码和运行环境进行整体的打包。</h3><p>1.1快速创建环境(开发，测试，生产)</p>
 <p>1.2整体交付(运行环境+代码(之前只是代码))</p>
 <p>1.3可保证环境(开发，测试，生产)的一致性</p>
 <p>1.4更好的完成devops</p>
-<h3 id="镜像分层技术：AUFS-Another-UnionFS-支持将多个目录挂载到同一个虚拟目录下。已构建的镜像会设置成只读模式，read-write操作是在read-only上的一种增量操作"><a href="#镜像分层技术：AUFS-Another-UnionFS-支持将多个目录挂载到同一个虚拟目录下。已构建的镜像会设置成只读模式，read-write操作是在read-only上的一种增量操作" class="headerlink" title="镜像分层技术：AUFS (Another UnionFS)支持将多个目录挂载到同一个虚拟目录下。已构建的镜像会设置成只读模式，read-write操作是在read-only上的一种增量操作."></a>镜像分层技术：AUFS (Another UnionFS)支持将多个目录挂载到同一个虚拟目录下。已构建的镜像会设置成只读模式，read-write操作是在read-only上的一种增量操作.</h3><p>把一个镜像创造成一个容器才能往里写东西。<br>所谓UnionFS就是把不同物理位置的目录合并mount到同一个目录中。UnionFS的一个最主要的应用是，把一张CD/DVD和一个硬盘目录给联合 mount在一起<br>然后，你就可以对这个只读的CD/DVD上的文件进行修改（当然，修改的文件存于硬盘上的目录里）</p>
-<h3 id="docker容器管理技术，是内核技术-容器本身是进程-其启动程序就是容器应用进程，容器就是为了主进程而存在的-主进程退出-容器就失去了存在的意义-从而退出-其它辅助进程不是它需要关心的东西"><a href="#docker容器管理技术，是内核技术-容器本身是进程-其启动程序就是容器应用进程，容器就是为了主进程而存在的-主进程退出-容器就失去了存在的意义-从而退出-其它辅助进程不是它需要关心的东西" class="headerlink" title="docker容器管理技术，是内核技术,容器本身是进程 其启动程序就是容器应用进程，容器就是为了主进程而存在的,主进程退出,容器就失去了存在的意义,从而退出,其它辅助进程不是它需要关心的东西"></a>docker容器管理技术，是内核技术,容器本身是进程 其启动程序就是容器应用进程，容器就是为了主进程而存在的,主进程退出,容器就失去了存在的意义,从而退出,其它辅助进程不是它需要关心的东西</h3><p>它并不是虚拟技术(VM),docker最关键的点是提出了docker images标准化，image打包了应用：如nginx镜像，通过镜像启动一个nginx容器，其实就是在主机上启动了一个nignx进程。<br>容器不等于微服务，推荐只运行一个服务，如果运行多个服务，需要结合进程管理工具(supervisor,S6),<br>因为容器本身就是进程，所以数据库容器也可以运行，但需要对数据做好保护(volume)。</p>
+<h4 id="镜像（Image）就是一堆只读层（read-only-layer）的统一视角"><a href="#镜像（Image）就是一堆只读层（read-only-layer）的统一视角" class="headerlink" title="镜像（Image）就是一堆只读层（read-only layer）的统一视角"></a>镜像（Image）就是一堆只读层（read-only layer）的统一视角</h4><p>这些层是Docker内部的实现细节，并且能够在主机的文件系统上访问到,统一文件系统（union file system）技术能够将不同的层整合成一个文件系统，为这些层提供了一个统一的视角，这样就隐藏了多层的存在，在用户的角度看来，只存在一个文件系统,你可以在你的主机文件系统上找到有关这些层的文件.它们存在于/var/lib/docker/aufs目录下<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo tree -L 1 /var/lib/docker/</div></pre></td></tr></table></figure></p>
+<h4 id="容器-镜像-读写层。并且容器的定义并没有提及是否要运行容器"><a href="#容器-镜像-读写层。并且容器的定义并没有提及是否要运行容器" class="headerlink" title="容器=镜像+读写层。并且容器的定义并没有提及是否要运行容器"></a>容器=镜像+读写层。并且容器的定义并没有提及是否要运行容器</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 创建容器</span></div><div class="line">docker create &lt;image_id&gt;</div><div class="line"><span class="comment"># 运行容器</span></div><div class="line">docker start &lt;image_id&gt;</div><div class="line"><span class="comment"># 上两条命令组合下如下命令</span></div><div class="line">docker run &lt;image_id&gt;</div></pre></td></tr></table></figure>
+<p>所以容器（container）的定义和镜像（image）几乎一模一样，也是一堆层的统一视角，唯一区别在于容器的最上面那一层是可读可写的.</p>
+<h4 id="镜像分层技术：AUFS-Another-UnionFS-支持将多个目录挂载到同一个虚拟目录下。已构建的镜像会设置成只读模式，read-write操作是在read-only上的一种增量操作"><a href="#镜像分层技术：AUFS-Another-UnionFS-支持将多个目录挂载到同一个虚拟目录下。已构建的镜像会设置成只读模式，read-write操作是在read-only上的一种增量操作" class="headerlink" title="镜像分层技术：AUFS (Another UnionFS)支持将多个目录挂载到同一个虚拟目录下。已构建的镜像会设置成只读模式，read-write操作是在read-only上的一种增量操作."></a>镜像分层技术：AUFS (Another UnionFS)支持将多个目录挂载到同一个虚拟目录下。已构建的镜像会设置成只读模式，read-write操作是在read-only上的一种增量操作.</h4><p>把一个镜像创造成一个容器才能往里写东西。<br>所谓UnionFS就是把不同物理位置的目录合并mount到同一个目录中。UnionFS的一个最主要的应用是，把一张CD/DVD和一个硬盘目录给联合 mount在一起<br>然后，你就可以对这个只读的CD/DVD上的文件进行修改（当然，修改的文件存于硬盘上的目录里）</p>
+<h4 id="docker容器管理技术，是内核技术-容器本身是进程-其启动程序就是容器应用进程，容器就是为了主进程而存在的-主进程退出-容器就失去了存在的意义-从而退出-其它辅助进程不是它需要关心的东西"><a href="#docker容器管理技术，是内核技术-容器本身是进程-其启动程序就是容器应用进程，容器就是为了主进程而存在的-主进程退出-容器就失去了存在的意义-从而退出-其它辅助进程不是它需要关心的东西" class="headerlink" title="docker容器管理技术，是内核技术,容器本身是进程 其启动程序就是容器应用进程，容器就是为了主进程而存在的,主进程退出,容器就失去了存在的意义,从而退出,其它辅助进程不是它需要关心的东西"></a>docker容器管理技术，是内核技术,容器本身是进程 其启动程序就是容器应用进程，容器就是为了主进程而存在的,主进程退出,容器就失去了存在的意义,从而退出,其它辅助进程不是它需要关心的东西</h4><p>它并不是虚拟技术(VM),docker最关键的点是提出了docker images标准化，image打包了应用：如nginx镜像，通过镜像启动一个nginx容器，其实就是在主机上启动了一个nignx进程。<br>容器不等于微服务，推荐只运行一个服务，如果运行多个服务，需要结合进程管理工具(supervisor,S6),<br>因为容器本身就是进程，所以数据库容器也可以运行，但需要对数据做好保护(volume)。</p>
 <p>既然是进程，那么在启动容器的时候，需要指定所运行的程序及参数。CMD 指令就是用于指定默认的容器主进程的启动命令的,<br>在运行时可以指定新的命令来替代镜像设置中的这个默认命令，比如，ubuntu 镜像默认的 CMD 是 /bin/bash，如果我们直接 docker run -it ubuntu 的话，会直接进入 bash。</p>
 <p>容器中的应用都应该以前台执行，而不是像虚拟机、物理机里面那样，用 upstart/systemd 去启动后台服务，容器内没有后台服务的概念.</p>
-<p>ubuntu install docker</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">sudo apt-get update</div><div class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</div><div class="line">sudo add-apt-repository <span class="string">"deb [arch=amd64] \</span></div><div class="line"><span class="string">    https://download.docker.com/linux/ubuntu <span class="variable">$(lsb_release -cs)</span> stable"</span></div><div class="line">sudo apt-get update</div><div class="line">sudo apt-cache policy docker-ce</div><div class="line">sudo apt-get install -y docker-ce</div><div class="line">sudo systemctl status docker</div><div class="line">sudo usermod -aG docker $(whoami)</div><div class="line">service docker start</div><div class="line">docker images</div><div class="line"><span class="comment"># 虚拟机是用此方法下载 当前用户就可以使用whoami</span></div></pre></td></tr></table></figure>
-<p><a href="http://wiki.jikexueyuan.com/project/docker/installation/debian.html" target="_blank" rel="external">debain install docker</a> </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 坑一</span></div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install docker.io</div><div class="line">apt-get purge docker.io*  </div><div class="line"></div><div class="line"><span class="comment"># 坑二</span></div><div class="line">apt-get dist-upgrade -y</div><div class="line">apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys \</div><div class="line">    58118E89F3A912897C070ADBF76221572C52609D</div><div class="line"><span class="built_in">echo</span> <span class="string">"deb https://apt.dockerproject.org/repo debian-jessie main"</span> | \</div><div class="line">tee /etc/apt/sources.list.d/docker.list</div><div class="line">apt-get update</div><div class="line">apt-get install docker-engine -y</div><div class="line">apt-get purge docker-engine -y </div><div class="line"></div><div class="line"><span class="comment"># 成功</span></div><div class="line">apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 \</div><div class="line">    --recv-keys 58118E89F3A912897C070ADBF76221572C52609D</div><div class="line"><span class="built_in">echo</span> <span class="string">"deb https://apt.dockerproject.org/repo ubuntu-trusty main "</span> &gt;   \</div><div class="line">    /etc/apt/sources.list.d/docker.list</div><div class="line">apt-get update </div><div class="line">apt-get install docker-engine=1.10.1-0~trusty</div><div class="line">apt install docker.io</div><div class="line">docker -v</div><div class="line"><span class="comment"># 本机是此方法下载docker 必须是root身份才能使用</span></div></pre></td></tr></table></figure>
-<p><a href="https://hub.docker.com/explore/" target="_blank" rel="external">docker官方镜像</a> 类似AppStore 是由各自官方机构做的镜像认证后，上传到docker官方镜像的，这个仓库的地址是在国外，所以下载的速度会慢点<br>利用镜像的分层技术，如果主机上已有layer(层)存在，那只会下载新增加的layer(类似git代码提交机制)</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">service docker start <span class="comment">#启动docker服务</span></div><div class="line">docker port nostalgic_morse 5000 <span class="comment"># 查看主机端口在容器的映射情况</span></div><div class="line"></div><div class="line"><span class="comment"># modify docker daemon启动参数 Docker的配置文件 </span></div><div class="line">vim /usr/lib/systemd/system/docker.service </div><div class="line"><span class="comment"># centos   ubuntu:/lib/systemd/system/docker.service</span></div><div class="line">ExecStart=之前的不要动加上     --insecure-registry=0.0.0.0/0</div><div class="line">systemctl daemon-reload</div><div class="line">systemctl restart docker</div><div class="line">ps aux |grep docker  <span class="comment">#看参数有没有正确的添加。</span></div></pre></td></tr></table></figure>
-<h3 id="容器操作命令"><a href="#容器操作命令" class="headerlink" title="容器操作命令"></a>容器操作命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">docker run/create -d -p 80:80 --name app nginx</div><div class="line"><span class="comment"># up状态  启动created状态时不需要 -d参数</span></div><div class="line">docker start app <span class="comment">#容器名，或者容器的ID</span></div><div class="line">       stop/<span class="built_in">kill</span> </div><div class="line">       resrart</div><div class="line">       stats</div><div class="line">       top app  <span class="comment">#查看当前容器跑了多少进程</span></div><div class="line">       logs</div><div class="line">       port</div><div class="line">       <span class="built_in">exec</span> -it app bash    <span class="comment"># 以bash的方式登陆到容器里面  exit 从容器中退出</span></div><div class="line">       diff</div><div class="line">       pause</div><div class="line">       unpause</div><div class="line">docker inspect redis/app |grep -i memory <span class="comment"># 查看指定镜像/容器</span></div><div class="line">docker update  -m 256m app <span class="comment">#更新容器信息</span></div><div class="line">docker ps -a  <span class="comment"># 查看容器状态</span></div><div class="line">docker rm  -f -v app <span class="comment"># 是删除容器 </span></div><div class="line">    <span class="comment"># -v如果这个容器有Volume这个文件存在的话，也一起删除掉</span></div><div class="line">docker copy 本地文件 容器路径 <span class="comment"># 可以换位置 created状态 up状态</span></div><div class="line">docker copy app:/usr/share/ngxin/html/index.html .</div><div class="line">docker copy index.html app:/tmp</div><div class="line">       <span class="built_in">exec</span> -it app bash ls /tmp</div><div class="line">       <span class="built_in">export</span>  app (把容器保存成tar文件)</div><div class="line">       import (把tar文件导会到镜像列表)</div></pre></td></tr></table></figure>
-<h4 id="镜像命令"><a href="#镜像命令" class="headerlink" title="镜像命令"></a>镜像命令</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 用容器创建镜像 推荐用Dockerfile</span></div><div class="line"><span class="comment"># -a作者 -m提交时的标记 app容器名 app:2.0镜像名</span></div><div class="line">docker commit -a admin@femnyy.com -m <span class="string">'app commit image'</span> app app:2.0</div><div class="line"><span class="comment">#  镜像 --&gt;tar包</span></div><div class="line">docker save nginx &gt;nginx.tar</div><div class="line"><span class="comment"># 删除镜像</span></div><div class="line">docker rmi nginx</div><div class="line"><span class="comment"># 1.此镜像是其他镜像的父镜像 </span></div><div class="line"><span class="comment"># 2.有容器使用镜像 镜像已经被创建为容器 不能删除本地镜像</span></div><div class="line"></div><div class="line"><span class="comment"># tar包--导入到镜像列表中</span></div><div class="line">docker load &lt; nginx.tar</div><div class="line">docker images</div><div class="line"><span class="comment"># 查看生成这个镜像 所使用的命令 (在这个镜像中，做过什么操作)</span></div><div class="line">docker <span class="built_in">history</span> nginx</div><div class="line"><span class="comment"># 下载镜像</span></div><div class="line">docker pull nginx</div><div class="line"><span class="comment"># 上传镜像</span></div><div class="line">docker push 192.168.1.116:5000/nginx:last <span class="comment"># 本机测试的成功</span></div><div class="line"><span class="comment"># 镜像的重命名</span></div><div class="line">docker tag nginx 47.52.94.126:5000/nginx:last  <span class="comment">#镜像的重命名 标记镜像</span></div><div class="line"><span class="comment"># 查看镜像</span></div><div class="line">docker search nginx</div></pre></td></tr></table></figure>
-<h3 id="镜像不能直接访问，只有启动成容器，才可以访问。"><a href="#镜像不能直接访问，只有启动成容器，才可以访问。" class="headerlink" title="镜像不能直接访问，只有启动成容器，才可以访问。"></a>镜像不能直接访问，只有启动成容器，才可以访问。</h3><h3 id="容器连接-相当于进程间的通信吧"><a href="#容器连接-相当于进程间的通信吧" class="headerlink" title="容器连接(相当于进程间的通信吧)"></a>容器连接(相当于进程间的通信吧)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">sudo docker run -d --name db training/postgres</div><div class="line"><span class="comment"># 指定了 training/webapp 镜像,并且这个镜像已经包含了简单的 Python Flask web 应用程序</span></div><div class="line"><span class="comment"># 最后，我们指定了我们容器要运行的命令： python app.py。这样我们的 web 应用就启动了</span></div><div class="line">sudo docker run -d -P --name web --link db:db training/webapp python app.py</div><div class="line">docker ps </div><div class="line"><span class="comment"># db和web，我们还在名字列中可以看到web容器也显示db/web。这告诉我们web容器和db容器是父/子关系。</span></div></pre></td></tr></table></figure>
+<h3 id="ubuntu-install-docker"><a href="#ubuntu-install-docker" class="headerlink" title="ubuntu install docker"></a>ubuntu install docker</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">sudo apt-get update</div><div class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</div><div class="line">sudo add-apt-repository <span class="string">"deb [arch=amd64] \</span></div><div class="line"><span class="string">    https://download.docker.com/linux/ubuntu <span class="variable">$(lsb_release -cs)</span> stable"</span></div><div class="line">sudo apt-get update</div><div class="line">sudo apt-cache policy docker-ce</div><div class="line">sudo apt-get install -y docker-ce</div><div class="line">sudo systemctl status docker</div><div class="line">sudo usermod -aG docker $(whoami)</div><div class="line">service docker start</div><div class="line">docker images</div><div class="line"><span class="comment"># 虚拟机是用此方法下载 当前用户就可以使用whoami</span></div></pre></td></tr></table></figure>
+<h3 id="debain-install-docker"><a href="#debain-install-docker" class="headerlink" title="debain install docker"></a><a href="http://wiki.jikexueyuan.com/project/docker/installation/debian.html" target="_blank" rel="external">debain install docker</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 坑一</span></div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install docker.io</div><div class="line">apt-get purge docker.io*  </div><div class="line"></div><div class="line"><span class="comment"># 坑二</span></div><div class="line">apt-get dist-upgrade -y</div><div class="line">apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys \</div><div class="line">    58118E89F3A912897C070ADBF76221572C52609D</div><div class="line"><span class="built_in">echo</span> <span class="string">"deb https://apt.dockerproject.org/repo debian-jessie main"</span> | \</div><div class="line">tee /etc/apt/sources.list.d/docker.list</div><div class="line">apt-get update</div><div class="line">apt-get install docker-engine -y</div><div class="line">apt-get purge docker-engine -y </div><div class="line"></div><div class="line"><span class="comment"># 成功</span></div><div class="line">apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 \</div><div class="line">    --recv-keys 58118E89F3A912897C070ADBF76221572C52609D</div><div class="line"><span class="built_in">echo</span> <span class="string">"deb https://apt.dockerproject.org/repo ubuntu-trusty main "</span> &gt;   \</div><div class="line">    /etc/apt/sources.list.d/docker.list</div><div class="line">apt-get update </div><div class="line">apt-get install docker-engine=1.10.1-0~trusty</div><div class="line">apt install docker.io</div><div class="line">docker -v</div><div class="line"><span class="comment"># 本机是此方法下载docker 必须是root身份才能使用</span></div></pre></td></tr></table></figure>
+<h3 id="启动docker服务"><a href="#启动docker服务" class="headerlink" title="启动docker服务"></a>启动docker服务</h3><p><a href="https://hub.docker.com/explore/" target="_blank" rel="external">docker官方镜像</a> 类似AppStore 是由各自官方机构做的镜像认证后，上传到docker官方镜像的，这个仓库的地址是在国外，所以下载的速度会慢点<br>利用镜像的分层技术，如果主机上已有layer(层)存在，那只会下载新增加的layer(类似git代码提交机制)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">service docker start    </div><div class="line">docker port nostalgic_morse 5000 <span class="comment"># 查看主机端口在容器的映射情况</span></div><div class="line"><span class="comment"># modify docker daemon启动参数 Docker的配置文件 </span></div><div class="line">vim /usr/lib/systemd/system/docker.service </div><div class="line"><span class="comment"># centos   ubuntu:/lib/systemd/system/docker.service</span></div><div class="line">ExecStart=之前的不要动加上     --insecure-registry=0.0.0.0/0</div><div class="line">systemctl daemon-reload</div><div class="line">systemctl restart docker</div><div class="line">ps aux |grep docker  <span class="comment">#看参数有没有正确的添加。</span></div></pre></td></tr></table></figure>
+<h3 id="容器操作命令"><a href="#容器操作命令" class="headerlink" title="容器操作命令"></a>容器操作命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">docker run -dit -p 80:80 --name app nginx</div><div class="line"><span class="comment"># -d后台运行 -it此时的容器就有了标准的输入和输出</span></div><div class="line">docker create  -p 80:80 --name app nginx</div><div class="line"><span class="comment"># 创建容器</span></div><div class="line">docker start app <span class="comment">#运行容器</span></div><div class="line"></div><div class="line">docker commit &lt;container-id&gt;</div><div class="line"><span class="comment"># 将容器的可读写层转换为一个只读层，这样就把一个容器转换成了不可变的镜像</span></div><div class="line"><span class="comment"># 用Dockerfile 生成镜像,命名为app</span></div><div class="line">docker build -t app .</div><div class="line"></div><div class="line">docker <span class="built_in">exec</span> -it app bash    </div><div class="line"><span class="comment"># 在运行中的容器执行一个新进程</span></div><div class="line"><span class="comment"># 以bash的方式登陆到容器里面  exit 从容器中退出</span></div><div class="line">docker <span class="built_in">exec</span> -it app bash ls /tmp</div><div class="line"></div><div class="line">docker rename app new_app <span class="comment">#重命容器名</span></div><div class="line"></div><div class="line">docker stop/<span class="built_in">kill</span>/pause/unpause/restart &lt;container_id&gt;</div><div class="line"><span class="comment"># 对容器中的进程发信号</span></div><div class="line"></div><div class="line">docker inspect/stats/port/ps/top/dip/dpid &lt;container-id&gt;</div><div class="line"><span class="comment"># 查看容器状态</span></div><div class="line">docker top app  <span class="comment">#查看当前容器跑了多少进程</span></div><div class="line">docker ps <span class="comment"># 列出所有运行中的容器,这隐藏了非运行态容器的存在</span></div><div class="line">docker ps -a  <span class="comment"># 查看所有容器</span></div><div class="line">docker inspect nginx/app |grep -i memory <span class="comment"># 查看指定镜像/容器</span></div><div class="line"><span class="comment"># 会提取出容器或者镜像最顶层的元数据</span></div><div class="line">docker stats $(docker ps | awk <span class="string">'NR&gt;1 &#123;print $NF&#125;'</span>)</div><div class="line"></div><div class="line">docker update  -m 256m app <span class="comment">#更新容器信息</span></div><div class="line">docker rm  -f -v app <span class="comment"># 移除构成容器的可读写层</span></div><div class="line"><span class="comment"># -f 强制删除 -v 连同Volumes也一起删除</span></div><div class="line"><span class="comment"># -v如果这个容器有Volume这个文件存在的话，也一起删除掉</span></div><div class="line">docker copy 本地文件 容器路径 </div><div class="line">docker copy app:/usr/share/ngxin/html/index.html .</div><div class="line">docker copy index.html app:/tmp</div><div class="line">docker <span class="built_in">export</span>  app (把容器保存成tar文件)</div><div class="line">docker import app.tar (把tar文件导会到镜像列表)</div></pre></td></tr></table></figure>
+<h4 id="镜像命令"><a href="#镜像命令" class="headerlink" title="镜像命令"></a>镜像命令</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">docker commit -a admin@femnyy.com -m <span class="string">'app commit image'</span> app app:2.0</div><div class="line"><span class="comment"># -a作者 -m提交时的标记 app容器名 app:2.0镜像名</span></div><div class="line"><span class="comment"># 用容器创建镜像 推荐用Dockerfile</span></div><div class="line">docker save nginx &gt;nginx.tar</div><div class="line"><span class="comment">#  镜像 --&gt;tar包</span></div><div class="line">docker rmi nginx</div><div class="line"><span class="comment"># 删除镜像</span></div><div class="line"><span class="comment"># 1.此镜像是其他镜像的父镜像 </span></div><div class="line"><span class="comment"># 2.有容器使用镜像 镜像已经被创建为容器 不能删除本地镜像</span></div><div class="line"></div><div class="line">docker load &lt; nginx.tar</div><div class="line"><span class="comment"># tar包--导入到镜像列表中</span></div><div class="line"></div><div class="line">docker images</div><div class="line"><span class="comment"># 列出了所有顶层（top-level）镜像</span></div><div class="line">docker <span class="built_in">history</span> &lt;image_id&gt;</div><div class="line"><span class="comment"># 列出镜像的所有层</span></div><div class="line">docker pull nginx</div><div class="line"><span class="comment"># 下载镜像</span></div><div class="line">docker tag nginx 192.168.1.116:5000/nginx:last  </div><div class="line"><span class="comment"># 镜像的重命名(标记镜像)</span></div><div class="line">docker push 192.168.1.116:5000/nginx:last <span class="comment"># 本机测试的成功</span></div><div class="line"><span class="comment"># 上传镜像</span></div><div class="line">docker search nginx</div><div class="line"><span class="comment"># 查看镜像</span></div></pre></td></tr></table></figure>
+<h3 id="容器与镜像"><a href="#容器与镜像" class="headerlink" title="容器与镜像"></a>容器与镜像</h3><p>镜像不能直接访问，只有启动成容器，才可以访问。镜像和容器的关系，就像是面向对象程序设计中的类和实例一样，镜像是静态的定义，容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等。同一个 Images 可生成多个不同配置的 Container.</p>
+<h3 id="容器连接-相当于进程间的通信吧"><a href="#容器连接-相当于进程间的通信吧" class="headerlink" title="容器连接(相当于进程间的通信吧)"></a>容器连接(相当于进程间的通信吧)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">sudo docker run -d --name db training/postgres</div><div class="line"><span class="comment"># 指定了 training/webapp 镜像,并且这个镜像已经包含了简单的 Python Flask web 应用程序</span></div><div class="line"><span class="comment"># 最后，我们指定了我们容器要运行的命令： python app.py。这样我们的 web 应用就启动了</span></div><div class="line">sudo docker run -d -P --name web --link db:db training/webapp python app.py</div><div class="line">docker ps </div><div class="line"><span class="comment"># db和web，我们还在名字列中可以看到web容器也显示db/web。这告诉我们web容器和db容器是父/子关系。</span></div></pre></td></tr></table></figure>
 <h3 id="Volume-持久化容器数据，以及容器之间共享数据"><a href="#Volume-持久化容器数据，以及容器之间共享数据" class="headerlink" title="Volume(持久化容器数据，以及容器之间共享数据)"></a>Volume(持久化容器数据，以及容器之间共享数据)</h3><h3 id="保留容器的数据"><a href="#保留容器的数据" class="headerlink" title="保留容器的数据"></a>保留容器的数据</h3><p>当容器删除时,就是杀死进程，只要我们的数据在，当再启动时，数据又回来了,但我们想在容器中产生的数据保留起来 </p>
 <h4 id="容器间的数据共享-root用户下-主机巻"><a href="#容器间的数据共享-root用户下-主机巻" class="headerlink" title="容器间的数据共享(root用户下,主机巻)"></a>容器间的数据共享(root用户下,主机巻)</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">docker run -d -v /web_data:/tmp:ro --name data-container nginx</div><div class="line"><span class="built_in">cd</span> /web_data</div><div class="line">mkdir files</div><div class="line">touch test.file</div><div class="line">docker <span class="built_in">exec</span> -it data-container ls /tmp</div><div class="line"></div><div class="line"><span class="comment">#第二个容器的数据来自 第一个容器的数据</span></div><div class="line">docker run -d --volumes-from data-container --name web-container nginx</div><div class="line"></div><div class="line"><span class="comment">#第三个容器的数据来自 第一个容器的数据</span></div><div class="line">docker run -d --volumes-from data-container --name web-container-2 nginx</div><div class="line"><span class="comment"># 查看容器 有没有第一个容器中的文件</span></div><div class="line">docker <span class="built_in">exec</span> -it web-container ls /tmp</div><div class="line"><span class="comment"># 验证只读</span></div><div class="line">docker <span class="built_in">exec</span> -it web-container bash</div><div class="line"><span class="built_in">cd</span> /tmp</div><div class="line">touch a.txt</div><div class="line"><span class="built_in">exit</span></div><div class="line"><span class="comment"># 在宿主机添加一个新文件，相当于往三个容器分发信息。</span></div><div class="line"><span class="built_in">cd</span> /web_data</div><div class="line">touch a.txt</div></pre></td></tr></table></figure>
 <h3 id="Volume分为容器卷-在Dockerfile写了VOLUME-和主机卷"><a href="#Volume分为容器卷-在Dockerfile写了VOLUME-和主机卷" class="headerlink" title="Volume分为容器卷(在Dockerfile写了VOLUME)和主机卷"></a>Volume分为容器卷(在Dockerfile写了VOLUME)和主机卷</h3><p>容器卷的定义的目录，将会自动保存在宿主机的/var/lib/docker/volumes目录下<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">mkdir docker</div><div class="line"><span class="built_in">cd</span> docker &amp;&amp; vim Dockerfile</div><div class="line"></div><div class="line">FROM centos:7</div><div class="line">RUN yum -y install epel-release &amp;&amp; \ </div><div class="line">    yum -y install nginx &amp;&amp; \ </div><div class="line">    yum clean all</div><div class="line">EXPOSE 80 443</div><div class="line">VOLUME [<span class="string">"/usr/share/nginx/html"</span>]</div><div class="line">CMD [<span class="string">"nginx"</span>,<span class="string">"-g"</span>, <span class="string">"daemon off;"</span>]</div><div class="line"></div><div class="line"><span class="comment"># 用Dockerfile 生成镜像app</span></div><div class="line">docker build -t app .</div><div class="line"></div><div class="line"><span class="built_in">cd</span> /var/lib/docker/volumes</div><div class="line">docker rm -f web-container data-container</div><div class="line"></div><div class="line">docker run -d --name app app</div><div class="line">ll <span class="comment">#会有一个随机生成字符串的目录 VOLUME的东西，将会同步到这个目录下的_data目录下</span></div><div class="line">docker rm -f -v app <span class="comment"># -v</span></div></pre></td></tr></table></figure></p>
@@ -294,6 +295,9 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># hostA</span></div><div class="line">docker run -d --name app1 --net=edu-net nginx</div><div class="line"><span class="comment"># 登陆进出</span></div><div class="line">docker <span class="built_in">exec</span> -it app1 bash</div><div class="line">ip addr</div><div class="line">ping www.baidu.com</div><div class="line"></div><div class="line"><span class="comment"># hostB 没有虚拟技术 所以没有实做</span></div><div class="line">docker run -d --name app2 --net=edu-net nginx</div><div class="line">docker <span class="built_in">exec</span> -it app2 bash</div><div class="line">ping app1</div></pre></td></tr></table></figure>
 </li>
 </ol>
+<p><a href="https://docs.docker.com/" target="_blank" rel="external">官方文档</a></p>
+<p><a href="https://yeasy.gitbooks.io/docker_practice/content/install/centos.html" target="_blank" rel="external">一个中文的docker文档</a></p>
+<p><a href="https://juejin.im/post/58cb86bc61ff4b00601e7bfa" target="_blank" rel="external">对docker的解释</a></p>
 
         
         </div>
@@ -304,7 +308,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/08/04/docker/" data-id="cj6giljte000d3g3kpqk3ml9k" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femnyy.com/2017/08/04/docker/" data-id="cj6n0lgjv000l08l1b1rm1331" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -372,7 +376,7 @@
 
             
     
-        <a href="http://yoursite.com/2017/08/04/docker/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://yoursite.com/2017/08/04/docker/">Comments</a>
+        <a href="https://www.femnyy.com/2017/08/04/docker/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/04/docker/">Comments</a>
     
 
         </footer>
@@ -381,19 +385,19 @@
         
 <nav id="article-nav">
     
-        <a href="/2017/08/04/docker-swarm/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/2017/08/04/docker-hub/" id="article-nav-newer" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Newer</strong>
             <div class="article-nav-title">
                 
-                    docker-swarm
+                    docker-hub
                 
             </div>
         </a>
     
     
-        <a href="/2017/08/04/docker-machine/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2017/08/04/docker-swarm/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Older</strong>
-            <div class="article-nav-title">docker-machine</div>
+            <div class="article-nav-title">docker-swarm</div>
         </a>
     
 </nav>
@@ -426,9 +430,36 @@
                     <li>
                         
                         <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/python3/">python3</a></p>
+                            <p class="item-title"><a href="/2017/08/18/pymongo/" class="title">pymongo基本操作</a></p>
+                            <p class="item-date"><time datetime="2017-08-18T14:48:02.000Z" itemprop="datePublished">2017-08-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据库/">数据库</a></p>
+                            <p class="item-title"><a href="/2017/08/18/mongodb/" class="title">mongodb基本命令</a></p>
+                            <p class="item-date"><time datetime="2017-08-18T11:56:18.000Z" itemprop="datePublished">2017-08-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2017/08/18/ghost/" class="title">ghost下载与使用</a></p>
+                            <p class="item-date"><time datetime="2017-08-18T11:11:58.000Z" itemprop="datePublished">2017-08-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/linux/">linux</a></p>
                             <p class="item-title"><a href="/2017/08/17/linux-server-process/" class="title">linux 服务与进程</a></p>
-                            <p class="item-date"><time datetime="2017-08-17T07:44:24.000Z" itemprop="datePublished">2017-08-17</time></p>
+                            <p class="item-date"><time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time></p>
                         </div>
                     </li>
                 
@@ -437,34 +468,7 @@
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
                             <p class="item-title"><a href="/2017/08/16/CDN-server/" class="title">内容分发网络</a></p>
-                            <p class="item-date"><time datetime="2017-08-16T07:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
-                            <p class="item-title"><a href="/2017/08/16/shadowsocks-server/" class="title">shadowsocks</a></p>
-                            <p class="item-date"><time datetime="2017-08-16T07:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
-                            <p class="item-title"><a href="/2017/08/16/sshd-server/" class="title">sshd</a></p>
-                            <p class="item-date"><time datetime="2017-08-16T07:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
-                            <p class="item-title"><a href="/2017/08/15/vps-server/" class="title">VPS搭建网站</a></p>
-                            <p class="item-date"><time datetime="2017-08-15T03:16:14.000Z" itemprop="datePublished">2017-08-15</time></p>
+                            <p class="item-date"><time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
                         </div>
                     </li>
                 
@@ -477,7 +481,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">5</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -486,7 +490,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">22</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">26</span></li></ul>
         </div>
     </div>
 
@@ -547,13 +551,13 @@
     <script>
     var disqus_config = function () {
         
-            this.page.url = 'http://yoursite.com/2017/08/04/docker/';
+            this.page.url = 'https://www.femnyy.com/2017/08/04/docker/';
         
         this.page.identifier = 'docker';
     };
     (function() { 
         var d = document, s = d.createElement('script');  
-        s.src = '//' + 'hexo-theme-icarus' + '.disqus.com/embed.js';
+        s.src = '//' + 'femn' + '.disqus.com/embed.js';
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
     })();
