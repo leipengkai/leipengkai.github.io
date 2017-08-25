@@ -8,10 +8,10 @@
     <meta name="description" content="先去mongodb官网下载mongod,配置好环境变量.最好也再下个robomongo,进行更好的图形界面管理 mongodb官方文档     mongodb中文文档 启动Mongod:1mongod --dbpath /home/python/data/mongodb  --logpath /home/python/data/log --auth 或者用配置文件的方式启动:123456mongo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mongodb基本命令">
-<meta property="og:url" content="https://www.femnyy.com/2017/08/18/mongodb/index.html">
+<meta property="og:url" content="https://www.femn.me/2017/08/18/mongodb/index.html">
 <meta property="og:site_name" content="Femn">
 <meta property="og:description" content="先去mongodb官网下载mongod,配置好环境变量.最好也再下个robomongo,进行更好的图形界面管理 mongodb官方文档     mongodb中文文档 启动Mongod:1mongod --dbpath /home/python/data/mongodb  --logpath /home/python/data/log --auth 或者用配置文件的方式启动:123456mongo">
-<meta property="og:updated_time" content="2017-08-18T04:41:50.749Z">
+<meta property="og:updated_time" content="2017-08-24T04:10:08.361Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mongodb基本命令">
 <meta name="twitter:description" content="先去mongodb官网下载mongod,配置好环境变量.最好也再下个robomongo,进行更好的图形界面管理 mongodb官方文档     mongodb中文文档 启动Mongod:1mongod --dbpath /home/python/data/mongodb  --logpath /home/python/data/log --auth 或者用配置文件的方式启动:123456mongo">
@@ -159,7 +159,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                26
+                27
                 <span>posts</span>
             </div>
             <div class="article-info-block">
@@ -235,7 +235,7 @@
     <div class="article-date">
         <i class="fa fa-calendar"></i>
         <a href="/2017/08/18/mongodb/">
-            <time datetime="2017-08-18T11:56:18.000Z" itemprop="datePublished">2017-08-18</time>
+            <time datetime="2017-08-18T03:56:18.000Z" itemprop="datePublished">2017-08-18</time>
         </a>
     </div>
 
@@ -261,26 +261,26 @@
 <h4 id="启动Mongod"><a href="#启动Mongod" class="headerlink" title="启动Mongod:"></a>启动Mongod:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongod --dbpath /home/python/data/mongodb  --logpath /home/python/data/<span class="built_in">log</span> --auth</div></pre></td></tr></table></figure>
 <p>或者用配置文件的方式启动:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">mongod -f ./mongod.conf</div><div class="line">vim ./mongod.conf</div><div class="line">    dbpath = /home/python/data/mongodb/</div><div class="line">    logpath = /home/python/data/<span class="built_in">log</span></div><div class="line">    port = 27017</div><div class="line">    auth = <span class="literal">true</span></div></pre></td></tr></table></figure></p>
 <h4 id="进入Mongo的CLI"><a href="#进入Mongo的CLI" class="headerlink" title="进入Mongo的CLI:"></a>进入Mongo的CLI:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">monogo -uusername -ppasswd 192.168.0.197:27017/db </div><div class="line"><span class="comment"># 如果有语言上的错误</span></div><div class="line"><span class="built_in">export</span> LC_ALL=C</div></pre></td></tr></table></figure>
-<h4 id="选择admin数据库，并认证"><a href="#选择admin数据库，并认证" class="headerlink" title="选择admin数据库，并认证:"></a>选择admin数据库，并认证:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">use admin</div><div class="line">db.auth(<span class="string">'femn2014'</span>,<span class="string">'femn2014'</span>)</div></pre></td></tr></table></figure>
+<h4 id="选择admin数据库-并认证"><a href="#选择admin数据库-并认证" class="headerlink" title="选择admin数据库,并认证:"></a>选择admin数据库,并认证:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">use admin</div><div class="line">db.auth(<span class="string">'username'</span>,<span class="string">'password'</span>)</div></pre></td></tr></table></figure>
 <p>指定好当前数据库后,用db命令查看,之后用密码登陆.</p>
 <p><em>查看所有的数据库</em></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">show dbs</div></pre></td></tr></table></figure>
-<h3 id="创建或选定数据库"><a href="#创建或选定数据库" class="headerlink" title="创建或选定数据库"></a>创建或选定数据库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">use 1 <span class="comment"># 该命令将创建一个新的数据库，如果它不存在，否则将返回现有的数据库。</span></div><div class="line">db.dropDatabase(<span class="string">'1'</span>)  <span class="comment"># 删除数据库</span></div></pre></td></tr></table></figure>
+<h3 id="创建或选定数据库"><a href="#创建或选定数据库" class="headerlink" title="创建或选定数据库"></a>创建或选定数据库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">use 1 <span class="comment"># 该命令将创建一个新的数据库,如果它不存在,否则将返回现有的数据库.</span></div><div class="line">db.dropDatabase(<span class="string">'1'</span>)  <span class="comment"># 删除数据库</span></div></pre></td></tr></table></figure>
 <p><em>创建集合(表),删除表,显示所有表</em></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">db.createCollection(<span class="string">'test'</span>)</div><div class="line">db.test.drop()</div><div class="line">show collections</div></pre></td></tr></table></figure>
 <p><em>创建文档(记录)</em></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.test_table.insert(&#123;<span class="string">'1'</span>:1&#125;)</div></pre></td></tr></table></figure>
 <p><em>指定数据库,一定要先选定再创建,创建用户角色</em></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">use <span class="built_in">test</span></div><div class="line">db.createUser( &#123;</div><div class="line">user: <span class="string">"femn2014"</span>,</div><div class="line"><span class="built_in">pwd</span>: <span class="string">"femn2014"</span>,</div><div class="line">roles: [ &#123; role : <span class="string">"readWrite"</span>, db: <span class="string">"test"</span> &#125; ]</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p>role:’sysadmin’，read、readWrite sysadmin和root角色只能在第一次创建一次，之后创建的必须是其它的角色,同时也要注意db:’xxx’要改变,如果指定的是admin数据库，则此用户可以看到所有的数据库,并只是针对db:’test’这个数据库有读写操作。</p>
-<p><em>指定数据库之后，查看用户</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">use <span class="built_in">test</span></div><div class="line">db.getUsers()</div></pre></td></tr></table></figure></p>
-<h3 id="一旦创建好用户之后，就必须要切换到admin数据库中，才能进行对用户角色的管理"><a href="#一旦创建好用户之后，就必须要切换到admin数据库中，才能进行对用户角色的管理" class="headerlink" title="一旦创建好用户之后，就必须要切换到admin数据库中，才能进行对用户角色的管理"></a>一旦创建好用户之后，就必须要切换到admin数据库中，才能进行对用户角色的管理</h3><p><em>用admin数据库，查看，管理所有数据库中的所有用户</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">use admin</div><div class="line">db.system.users.find()</div><div class="line">db.system.users.remove(&#123;user:<span class="string">'femn2014'</span>&#125;) 删除用户</div></pre></td></tr></table></figure></p>
+<p>role:”sysadmin”,”read”,”readWrite”,”sysadmin”和”root”角色只能在第一次创建一次,之后创建的必须是其它的角色,同时也要注意db:’xxx’要改变,如果指定的是admin数据库,则此用户可以看到所有的数据库,并只是针对db:’test’这个数据库有读写操作.</p>
+<p><em>指定数据库之后,查看用户</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">use <span class="built_in">test</span></div><div class="line">db.getUsers()</div></pre></td></tr></table></figure></p>
+<h3 id="一旦创建好用户之后-就必须要切换到admin数据库中-才能进行对用户角色的管理"><a href="#一旦创建好用户之后-就必须要切换到admin数据库中-才能进行对用户角色的管理" class="headerlink" title="一旦创建好用户之后,就必须要切换到admin数据库中,才能进行对用户角色的管理"></a>一旦创建好用户之后,就必须要切换到admin数据库中,才能进行对用户角色的管理</h3><p><em>用admin数据库,查看,管理所有数据库中的所有用户</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">use admin</div><div class="line">db.system.users.find()</div><div class="line">db.system.users.remove(&#123;user:<span class="string">'femn2014'</span>&#125;) 删除用户</div></pre></td></tr></table></figure></p>
 <h4 id="得到test表的索引"><a href="#得到test表的索引" class="headerlink" title="得到test表的索引"></a>得到test表的索引</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.test.getIndexes()</div></pre></td></tr></table></figure>
 <p><em>创建新的索引,此命令不会覆盖掉之前的索引</em></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.test.ensureIndex(&#123;<span class="string">'mobile'</span>:1&#125;)</div></pre></td></tr></table></figure>
-<p><em>创建二维索引,通过查询location这个数组，来得到文档</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.test.ensureIndex(&#123;<span class="string">"location"</span> : <span class="string">"2d"</span>&#125;,&#123;<span class="string">"background"</span> : <span class="literal">true</span>&#125;,&#123;min:-180,max:180&#125;)</div></pre></td></tr></table></figure>
-<p>MongoDB的Geospatial Indexing 2d默认取值范围[-179,-179]到[180,180] 包含这两个点，超出范围将报错</p>
+<p><em>创建二维索引,通过查询location这个数组,来得到文档</em></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">db.test.ensureIndex(&#123;<span class="string">"location"</span> : <span class="string">"2d"</span>&#125;,&#123;<span class="string">"background"</span> : <span class="literal">true</span>&#125;,</div><div class="line">    &#123;min:-180,max:180&#125;)</div></pre></td></tr></table></figure>
+<p>MongoDB的Geospatial Indexing 2d默认取值范围[-179,-179]到[180,180] 包含这两个点,超出范围将报错</p>
 <h4 id="备份Mongo"><a href="#备份Mongo" class="headerlink" title="备份Mongo:"></a>备份Mongo:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mongodump --host=192.168.1.217 --port=27017 --username=username \</div><div class="line">    --password=passwd --authenticationDatabase admin -dMongodb \</div><div class="line">    -cfemn -o /home/python/nosql_dump</div></pre></td></tr></table></figure>
 <h4 id="恢复Mongo"><a href="#恢复Mongo" class="headerlink" title="恢复Mongo:"></a>恢复Mongo:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">mongorestore -udba -pdba --host=60.205.140.13 --port=27017 \ </div><div class="line">    --authenticationDatabase admin -dbozhongboyue -cvideo \ </div><div class="line">    --drop /home/python/nosql_dump/1-5/bozhongboyue/video.bson</div><div class="line"><span class="comment"># 不经常使用如下命令</span></div><div class="line">mongoexport --host=192.168.1.217 --port=27017 --username=username \ </div><div class="line">    --password=passwd --authenticationDatabase admin -dMongodb -cfemn -o femn.json</div></pre></td></tr></table></figure>
 
@@ -293,7 +293,7 @@
 
 </div>
 
-    <a data-url="https://www.femnyy.com/2017/08/18/mongodb/" data-id="cj6n0lgl8001208l1p49iipo4" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/18/mongodb/" data-id="cj6pr40xg000uzu3krrhgl2p2" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -361,7 +361,7 @@
 
             
     
-        <a href="https://www.femnyy.com/2017/08/18/mongodb/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/18/mongodb/">Comments</a>
+        <a href="https://www.femn.me/2017/08/18/mongodb/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/18/mongodb/">Comments</a>
     
 
         </footer>
@@ -415,9 +415,18 @@
                     <li>
                         
                         <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/shell/">shell</a></p>
+                            <p class="item-title"><a href="/2017/08/23/shell-grep-sed-awk/" class="title">shell_sed_awk</a></p>
+                            <p class="item-date"><time datetime="2017-08-23T01:05:44.000Z" itemprop="datePublished">2017-08-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/python3/">python3</a></p>
                             <p class="item-title"><a href="/2017/08/18/pymongo/" class="title">pymongo基本操作</a></p>
-                            <p class="item-date"><time datetime="2017-08-18T14:48:02.000Z" itemprop="datePublished">2017-08-18</time></p>
+                            <p class="item-date"><time datetime="2017-08-18T06:48:02.000Z" itemprop="datePublished">2017-08-18</time></p>
                         </div>
                     </li>
                 
@@ -426,7 +435,7 @@
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/数据库/">数据库</a></p>
                             <p class="item-title"><a href="/2017/08/18/mongodb/" class="title">mongodb基本命令</a></p>
-                            <p class="item-date"><time datetime="2017-08-18T11:56:18.000Z" itemprop="datePublished">2017-08-18</time></p>
+                            <p class="item-date"><time datetime="2017-08-18T03:56:18.000Z" itemprop="datePublished">2017-08-18</time></p>
                         </div>
                     </li>
                 
@@ -435,7 +444,7 @@
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
                             <p class="item-title"><a href="/2017/08/18/ghost/" class="title">ghost下载与使用</a></p>
-                            <p class="item-date"><time datetime="2017-08-18T11:11:58.000Z" itemprop="datePublished">2017-08-18</time></p>
+                            <p class="item-date"><time datetime="2017-08-18T03:11:58.000Z" itemprop="datePublished">2017-08-18</time></p>
                         </div>
                     </li>
                 
@@ -444,16 +453,7 @@
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/linux/">linux</a></p>
                             <p class="item-title"><a href="/2017/08/17/linux-server-process/" class="title">linux 服务与进程</a></p>
-                            <p class="item-date"><time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
-                            <p class="item-title"><a href="/2017/08/16/CDN-server/" class="title">内容分发网络</a></p>
-                            <p class="item-date"><time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
+                            <p class="item-date"><time datetime="2017-08-17T07:44:24.000Z" itemprop="datePublished">2017-08-17</time></p>
                         </div>
                     </li>
                 
@@ -466,7 +466,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -475,7 +475,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">26</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">27</span></li></ul>
         </div>
     </div>
 
@@ -536,7 +536,7 @@
     <script>
     var disqus_config = function () {
         
-            this.page.url = 'https://www.femnyy.com/2017/08/18/mongodb/';
+            this.page.url = 'https://www.femn.me/2017/08/18/mongodb/';
         
         this.page.identifier = 'mongodb';
     };

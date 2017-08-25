@@ -203,6 +203,7 @@ DNS记录如图:
     hexo clean #清除缓存 网页正常情况下可以忽略此条命令
     hexo d(deploy) 将public的内容部署播客到远端（比如github, heroku等平台）
     hexo d -g #生成部署 在执行hexo deploy时将其public复制到.deploy_git文件夹中
+    hexo d [-m "commit message"]
     hexo s -g #生成预览
     hexo new "new-post" #新建文章
         source/_posts目录下会生成一个”new-post.md”的markdown文件
@@ -212,3 +213,4 @@ DNS记录如图:
     hexo server -s #静态模式
     hexo server -p 5000 #更改端口
     hexo server -i 192.168.1.1 #自定义 IP
+    

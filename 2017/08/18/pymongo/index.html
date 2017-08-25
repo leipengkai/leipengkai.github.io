@@ -8,10 +8,10 @@
     <meta name="description" content="知道了大概的mongodb命令后,再下载Mongodb的python驱动,sudo pip3 install pymongo ,然后在python文件中导入相应的库,进行如下的配置: 1234567from pymongo import MongoClient_client = MongoClient(&apos;127.0.0.1&apos;, 27017) #主机IP,Port#先创建一个名为Mongodb的数据">
 <meta property="og:type" content="article">
 <meta property="og:title" content="pymongo基本操作">
-<meta property="og:url" content="https://www.femnyy.com/2017/08/18/pymongo/index.html">
+<meta property="og:url" content="https://www.femn.me/2017/08/18/pymongo/index.html">
 <meta property="og:site_name" content="Femn">
 <meta property="og:description" content="知道了大概的mongodb命令后,再下载Mongodb的python驱动,sudo pip3 install pymongo ,然后在python文件中导入相应的库,进行如下的配置: 1234567from pymongo import MongoClient_client = MongoClient(&apos;127.0.0.1&apos;, 27017) #主机IP,Port#先创建一个名为Mongodb的数据">
-<meta property="og:updated_time" content="2017-08-18T08:15:30.341Z">
+<meta property="og:updated_time" content="2017-08-24T04:10:08.361Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="pymongo基本操作">
 <meta name="twitter:description" content="知道了大概的mongodb命令后,再下载Mongodb的python驱动,sudo pip3 install pymongo ,然后在python文件中导入相应的库,进行如下的配置: 1234567from pymongo import MongoClient_client = MongoClient(&apos;127.0.0.1&apos;, 27017) #主机IP,Port#先创建一个名为Mongodb的数据">
@@ -159,7 +159,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                26
+                27
                 <span>posts</span>
             </div>
             <div class="article-info-block">
@@ -235,7 +235,7 @@
     <div class="article-date">
         <i class="fa fa-calendar"></i>
         <a href="/2017/08/18/pymongo/">
-            <time datetime="2017-08-18T14:48:02.000Z" itemprop="datePublished">2017-08-18</time>
+            <time datetime="2017-08-18T06:48:02.000Z" itemprop="datePublished">2017-08-18</time>
         </a>
     </div>
 
@@ -266,20 +266,20 @@
 <p><code>find find_one</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">find() find(&#123;&#125;)         <span class="comment"># return 一个pymongo.cursor.CursorType</span></div><div class="line">find_one(&#123;<span class="string">'_id'</span>:<span class="string">'xx'</span>&#125;)  <span class="comment"># return dict 如果没有则返回None</span></div><div class="line">find_one_and_update()   <span class="comment"># return dict</span></div></pre></td></tr></table></figure></p>
 <h3 id="find-find-one-命令"><a href="#find-find-one-命令" class="headerlink" title="find find_one 命令"></a>find find_one 命令</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">femn.find(filter=&#123;<span class="string">'field'</span>:<span class="string">'xx'</span>&#125;,</div><div class="line">    projection=&#123;<span class="string">'mobile'</span>:<span class="number">1</span>,<span class="string">'name'</span>:<span class="number">0</span>&#125;,limit=<span class="number">10</span>,skip=<span class="number">0</span>,</div><div class="line">    sort=[(<span class="string">'update_time'</span>:pymongo.DESCENDING)])</div><div class="line"></div><div class="line">femn.find(&#123;<span class="string">'name'</span>:xx&#125;,&#123;<span class="string">'name'</span>:<span class="number">1</span>&#125;).limit().skip().</div><div class="line">    sort=([(<span class="string">'update_time'</span>:pymongo.DESCENDING)])</div></pre></td></tr></table></figure>
 <p>filter中的多个查询操作符</p>
-<p><code>$all $in $nin 此字段可包含(或排除)多个值的文档</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">(&#123;filed:&#123;$all:[]&#125;&#125;) </div><div class="line"><span class="comment"># 这个字段是数组并满足这个数组的值和指定的相同的文档</span></div><div class="line"></div><div class="line">(&#123;filed:&#123;$<span class="keyword">in</span>,<span class="string">'$nin'</span> :[<span class="string">'x'</span>]&#125;&#125;) </div><div class="line"><span class="comment"># 而这个只表示'x'在字段不管是数组类型的值,还是字符串类型的值,只要有这个'x'的文档就行</span></div></pre></td></tr></table></figure></p>
-<p><code>$regex 正规匹配字段的值</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(&#123;filed:&#123;<span class="string">'$regex'</span>: <span class="string">'%s'</span> % student_name&#125;&#125;) 就是    <span class="string">' *%s* '</span></div><div class="line">(&#123;filed:&#123;$<span class="keyword">not</span>:&#123;<span class="string">'$regex'</span>:<span class="string">'femn'</span>&#125;&#125;&#125;)</div></pre></td></tr></table></figure></p>
+<p><code>$all $in $nin 此字段可包含(或排除)多个值的文档</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">(&#123;filed:&#123;<span class="string">'$all'</span>:[]&#125;&#125;) </div><div class="line"><span class="comment"># 这个字段是数组并满足这个数组的值和指定的相同的文档</span></div><div class="line"></div><div class="line">(&#123;filed:&#123;<span class="string">'$in'</span>,<span class="string">'$nin'</span> :[<span class="string">'x'</span>]&#125;&#125;) </div><div class="line"><span class="comment"># 而这个只表示'x'在字段不管是数组类型的值,还是字符串类型的值,只要有这个'x'的文档就行</span></div></pre></td></tr></table></figure></p>
+<p><code>$regex 正规匹配字段的值</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(&#123;filed:&#123;<span class="string">'$regex'</span>: <span class="string">'%s'</span> % student_name&#125;&#125;) 就是    <span class="string">' *%s* '</span></div><div class="line">(&#123;filed:&#123;<span class="string">'$not'</span>:&#123;<span class="string">'$regex'</span>:<span class="string">'femn'</span>&#125;&#125;&#125;)</div></pre></td></tr></table></figure></p>
 <p><code>$exists 判断文档是否有此字段</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(&#123;filed: &#123;<span class="string">'$exists'</span>: <span class="keyword">False</span>&#125;&#125;)</div><div class="line"><span class="comment">#得到所有不存在flag字段的文档 可取True</span></div></pre></td></tr></table></figure></p>
 <p><code>$or 满足一个字段的值就行</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(&#123;<span class="string">'gender'</span>: <span class="string">'女'</span>, <span class="string">'$or'</span>: [&#123;<span class="string">'expand.expand_time'</span>: <span class="string">'2015-01-01'</span>&#125;,</div><div class="line">     &#123;<span class="string">'coin'</span>: &#123;<span class="string">'$lt'</span>: <span class="number">2</span>&#125;&#125;]&#125;)</div></pre></td></tr></table></figure></p>
-<p><code>$slice</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(&#123;<span class="string">'expand.expand_time'</span>:&#123;<span class="string">'$slice'</span>:[<span class="number">5</span>,<span class="number">3</span>]&#125;&#125;)</div><div class="line"><span class="comment"># 不是分片，去掉前5个后，再取3个 ,-5时去掉后5个取，取最后3个</span></div></pre></td></tr></table></figure></p>
+<p><code>$slice</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(&#123;<span class="string">'expand.expand_time'</span>:&#123;<span class="string">'$slice'</span>:[<span class="number">5</span>,<span class="number">3</span>]&#125;&#125;)</div><div class="line"><span class="comment"># 不是分片,去掉前5个后,再取3个 ,-5时去掉后5个取,取最后3个</span></div></pre></td></tr></table></figure></p>
 <p><code>混合包含和排除不能同时用</code></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(&#123;<span class="string">'album_id'</span>:&#123;<span class="string">'$in'</span>:[i]&#125;&#125;,projection=&#123;<span class="string">'play_count'</span>:<span class="number">1</span>,<span class="string">'cover_image'</span>:<span class="number">1</span>&#125;)</div></pre></td></tr></table></figure>
 <p>混合包含和排除不能同时用,既in:[],cover_image:1,comment:0不能同时使用,但可以 in:[],cover_image:1,comment:1</p>
 <p>其它的查询操作符 $eachMatch,$gt:2, $lte, $gte, $lt, ‘$slice’  $ne不等于</p>
-<h3 id="find-one-and-update命令"><a href="#find-one-and-update命令" class="headerlink" title="find_one_and_update命令"></a>find_one_and_update命令</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">find_one_and_update(q,u,p,upsert=<span class="keyword">False</span>,</div><div class="line">    return_document=ReturnDocument.AFTER)</div><div class="line"></div><div class="line">test.update(&#123;<span class="string">'name'</span>:<span class="string">'femn'</span>&#125;,</div><div class="line">    &#123;</div><div class="line">    <span class="comment"># update中的多个更新操作符</span></div><div class="line">    <span class="string">'$set'</span>:&#123;<span class="string">'name'</span>:<span class="string">'xx'</span>&#125;,</div><div class="line">    <span class="comment"># 改变某个字段的值</span></div><div class="line"></div><div class="line">    <span class="string">'$inc'</span>:&#123;<span class="string">'age'</span>:<span class="number">-1</span>&#125;,</div><div class="line">    <span class="comment"># 增加或减少 一个字段内容是数值的值</span></div><div class="line"></div><div class="line">    <span class="string">'$addToSet'</span>:&#123;<span class="string">'name_list'</span>:&#123;<span class="string">'$each'</span>:[<span class="string">''</span>,<span class="string">''</span>]&#125;&#125;,</div><div class="line">    <span class="comment"># 往一个数组的字段，添加不一样的内容，可避免反复添加</span></div><div class="line">    <span class="comment"># $push 往一个数组的字段中，可重复的添加一样的内容</span></div><div class="line"></div><div class="line">    <span class="string">'$pull'</span>:&#123;<span class="string">'list'</span>:&#123;<span class="string">'title'</span>:<span class="string">'title1'</span>&#125;&#125;,</div><div class="line">    <span class="comment"># 删除数组中 所有key为value的数组都会删除掉 将所有匹配到的数据都删除</span></div><div class="line"></div><div class="line">    <span class="string">'$pullAll'</span>:&#123;<span class="string">'l'</span>:[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]&#125;</div><div class="line">    <span class="comment"># 一次性删除多个数组</span></div><div class="line">    &#125;)</div><div class="line"></div><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,&#123;<span class="string">'$set'</span>:</div><div class="line">    &#123;<span class="string">'recording'</span>:&#123;<span class="string">'openid'</span>:openid,<span class="string">'book_id'</span>:book_id&#125;&#125;&#125;)</div><div class="line"> <span class="comment"># recording 是一个Object类型</span></div><div class="line">test.find_one(&#123;<span class="string">'_id'</span>:bookcase_id,recording.book_id<span class="string">':book_id&#125;)</span></div></pre></td></tr></table></figure>
+<h3 id="find-one-and-update命令"><a href="#find-one-and-update命令" class="headerlink" title="find_one_and_update命令"></a>find_one_and_update命令</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">find_one_and_update(q,u,p,upsert=<span class="keyword">False</span>,</div><div class="line">    return_document=ReturnDocument.AFTER)</div><div class="line"></div><div class="line">test.update(&#123;<span class="string">'name'</span>:<span class="string">'femn'</span>&#125;,</div><div class="line">    &#123;</div><div class="line">    <span class="comment"># update中的多个更新操作符</span></div><div class="line">    <span class="string">'$set'</span>:&#123;<span class="string">'name'</span>:<span class="string">'xx'</span>&#125;,</div><div class="line">    <span class="comment"># 改变某个字段的值</span></div><div class="line"></div><div class="line">    <span class="string">'$inc'</span>:&#123;<span class="string">'age'</span>:<span class="number">-1</span>&#125;,</div><div class="line">    <span class="comment"># 增加或减少 一个字段内容是数值的值</span></div><div class="line"></div><div class="line">    <span class="string">'$addToSet'</span>:&#123;<span class="string">'name_list'</span>:&#123;<span class="string">'$each'</span>:[<span class="string">''</span>,<span class="string">''</span>]&#125;&#125;,</div><div class="line">    <span class="comment"># 往一个数组的字段,添加不一样的内容,可避免反复添加</span></div><div class="line">    <span class="comment"># $each 一次性增加多个值</span></div><div class="line">    <span class="comment"># $push 往一个数组的字段中,可重复的添加一样的内容</span></div><div class="line"></div><div class="line">    <span class="string">'$pull'</span>:&#123;<span class="string">'list'</span>:&#123;<span class="string">'key'</span>:<span class="string">'value'</span>&#125;&#125;,</div><div class="line">    <span class="comment"># 删除数组中 所有key为value的数组都会删除掉 将所有匹配到的数据都删除</span></div><div class="line"></div><div class="line">    <span class="string">'$pullAll'</span>:&#123;<span class="string">'l'</span>:[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]&#125;</div><div class="line">    <span class="comment"># 一次性删除多个数组</span></div><div class="line">    &#125;)</div><div class="line"></div><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,&#123;<span class="string">'$set'</span>:</div><div class="line">    &#123;<span class="string">'recording'</span>:&#123;<span class="string">'openid'</span>:openid,<span class="string">'book_id'</span>:book_id&#125;&#125;&#125;)</div><div class="line"> <span class="comment"># recording 是一个Object类型</span></div><div class="line">test.find_one(&#123;<span class="string">'_id'</span>:bookcase_id,recording.book_id<span class="string">':book_id&#125;)</span></div></pre></td></tr></table></figure>
 <p>改变数值中的值 通过位置或者操作符$</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 通过$</span></div><div class="line">test.update(&#123;<span class="string">"relationships.fname"</span>:<span class="string">"xiong"</span>,<span class="string">'_id'</span>:id&#125;,</div><div class="line">        &#123;$set:&#123;<span class="string">"relationships.$.age"</span>:<span class="number">22</span>&#125;&#125;) </div><div class="line"><span class="comment"># 通过位置用来定位查询文档已匹配的元素，并进行更新</span></div><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,&#123;<span class="string">'$inc'</span>:&#123;<span class="string">'book_class.'</span>+str(i)+<span class="string">'.class_count'</span>:count&#125;&#125;)</div><div class="line"><span class="comment"># 指定一个数组中的一个字段改变 </span></div><div class="line"></div><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,&#123;<span class="string">'activity_history'</span>:&#123;<span class="string">'click_total'</span>:<span class="number">1</span>,per:<span class="number">1</span>,<span class="string">'login'</span>:<span class="number">1</span>&#125;&#125;&#125;)</div><div class="line"><span class="comment"># 此方法不行 换成如下方法</span></div><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,&#123;<span class="string">'$inc'</span>:&#123;<span class="string">'activity_history.0.click_total'</span>:<span class="number">1</span>,</div><div class="line">                <span class="string">'activity_history.0.2017-02'</span>:<span class="number">1</span>,<span class="string">'activity_history.0.login'</span>:<span class="number">1</span>&#125;&#125;,)</div></pre></td></tr></table></figure>
-<h4 id="注意pull一个个的数组是个整体"><a href="#注意pull一个个的数组是个整体" class="headerlink" title="注意pull一个个的数组是个整体"></a>注意<a href="https://docs.mongodb.com/manual/reference/operator/update/pull/#up._S_pull" target="_blank" rel="external">pull</a>一个个的数组是个整体</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="string">'reservation_list'</span>:[&#123;<span class="string">'time'</span>:<span class="string">""</span>,<span class="string">'device_id'</span>:<span class="string">''</span>,</div><div class="line">        <span class="string">'order_book'</span>:[&#123;<span class="number">1</span>&#125;,&#123;<span class="number">2</span>&#125;]&#125;,&#123;<span class="number">3</span>&#125;,&#123;<span class="number">4</span>&#125;]</div><div class="line">    <span class="comment"># 错误的设计 不可能单独的删除1,2还保留着 它会删除整个的那个数组(</span></div><div class="line"><span class="string">'reservation_list'</span>:[&#123;<span class="string">'device_id'</span>:<span class="string">''</span>,<span class="string">'book_id'</span>:<span class="string">''</span>,</div><div class="line">        <span class="string">'book_plu'</span>:<span class="string">''</span>,<span class="string">'shelf_number'</span>:<span class="number">101</span>&#125;]</div><div class="line">    <span class="comment"># 所以要将order_book中保存的信息，放出来</span></div></pre></td></tr></table></figure>
-<p><code>数组字段的内容album_id = [&#39;1&#39;,&#39;xx&#39;]，不是JSON类型</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,&#123;<span class="string">'$pull'</span>:&#123;<span class="string">'album_id'</span>:<span class="string">'xx'</span>&#125;&#125;) </div><div class="line"><span class="comment"># album_id必须是数组</span></div><div class="line">&#123;<span class="string">'$pull'</span>: &#123;<span class="string">'album_id'</span>: &#123;<span class="string">'$in'</span>: [<span class="string">'xx'</span>]&#125;&#125;</div><div class="line"> <span class="comment">#也可以使用其它的查询操作符 $gt</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 通过$</span></div><div class="line">test.update(&#123;<span class="string">"relationships.fname"</span>:<span class="string">"xiong"</span>,<span class="string">'_id'</span>:id&#125;,</div><div class="line">        &#123;$set:&#123;<span class="string">"relationships.$.age"</span>:<span class="number">22</span>&#125;&#125;) </div><div class="line"><span class="comment"># 通过位置用来定位查询文档已匹配的元素,并进行更新</span></div><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,</div><div class="line">    &#123;<span class="string">'$inc'</span>:&#123;<span class="string">'book_class.'</span>+str(i)+<span class="string">'.class_count'</span>:count&#125;&#125;)</div><div class="line"><span class="comment"># 指定一个数组中的一个字段改变 </span></div><div class="line"></div><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,</div><div class="line">    &#123;<span class="string">'activity_history'</span>:&#123;<span class="string">'click_total'</span>:<span class="number">1</span>,per:<span class="number">1</span>,<span class="string">'login'</span>:<span class="number">1</span>&#125;&#125;&#125;)</div><div class="line"><span class="comment"># 此方法不行 换成如下方法</span></div><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,</div><div class="line">    &#123;<span class="string">'$inc'</span>:&#123;<span class="string">'activity_history.0.click_total'</span>:<span class="number">1</span>,</div><div class="line">    <span class="string">'activity_history.0.2017-02'</span>:<span class="number">1</span>,</div><div class="line">    <span class="string">'activity_history.0.login'</span>:<span class="number">1</span>&#125;&#125;,)</div></pre></td></tr></table></figure>
+<h4 id="注意pull一个个的数组是个整体"><a href="#注意pull一个个的数组是个整体" class="headerlink" title="注意pull一个个的数组是个整体"></a>注意<a href="https://docs.mongodb.com/manual/reference/operator/update/pull/#up._S_pull" target="_blank" rel="external">pull</a>一个个的数组是个整体</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="string">'reservation_list'</span>:[&#123;<span class="string">'time'</span>:<span class="string">""</span>,<span class="string">'device_id'</span>:<span class="string">''</span>,</div><div class="line">        <span class="string">'order_book'</span>:[&#123;<span class="number">1</span>&#125;,&#123;<span class="number">2</span>&#125;]&#125;,&#123;...&#125;,&#123;...&#125;]</div><div class="line">    <span class="comment"># 错误的设计 不可能单独的删除order_book中的1,2还保留着...</span></div><div class="line">    <span class="comment"># 它会删除整个的那个数组reservation_list</span></div><div class="line"><span class="string">'reservation_list'</span>:[&#123;<span class="string">'device_id'</span>:<span class="string">''</span>,<span class="string">'book_id'</span>:<span class="string">''</span>,</div><div class="line">        <span class="string">'book_plu'</span>:<span class="string">''</span>,<span class="string">'shelf_number'</span>:<span class="number">101</span>&#125;]</div><div class="line">    <span class="comment"># 所以要将order_book中保存的信息,放出来</span></div></pre></td></tr></table></figure>
+<p><code>数组字段的内容album_id = [&#39;1&#39;,&#39;xx&#39;],不是JSON类型</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,&#123;<span class="string">'$pull'</span>:&#123;<span class="string">'album_id'</span>:<span class="string">'xx'</span>&#125;&#125;) </div><div class="line"><span class="comment"># album_id必须是数组</span></div><div class="line">&#123;<span class="string">'$pull'</span>: &#123;<span class="string">'album_id'</span>: &#123;<span class="string">'$in'</span>: [<span class="string">'xx'</span>]&#125;&#125;</div><div class="line"> <span class="comment">#也可以使用其它的查询操作符 $gt</span></div></pre></td></tr></table></figure></p>
 <p><code>删除以字典形式保存的数组</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"> &#123;<span class="string">'$pull'</span>: &#123;<span class="string">'praise'</span>: &#123;<span class="string">'user_id'</span>: user_id,<span class="string">'_id'</span>:<span class="string">'xx'</span>&#125;&#125; </div><div class="line">&#123;<span class="string">'$pull'</span>: &#123;<span class="string">'save_receiver_address'</span>: &#123;<span class="string">'flag'</span>: del_flag&#125;&#125;&#125;)</div></pre></td></tr></table></figure></p>
 
         
@@ -291,7 +291,7 @@
 
 </div>
 
-    <a data-url="https://www.femnyy.com/2017/08/18/pymongo/" data-id="cj6n0lgle001508l1tmmd68vn" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/18/pymongo/" data-id="cj6pued5v000i7c3k8kc7hbew" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -359,7 +359,7 @@
 
             
     
-        <a href="https://www.femnyy.com/2017/08/18/pymongo/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/18/pymongo/">Comments</a>
+        <a href="https://www.femn.me/2017/08/18/pymongo/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/18/pymongo/">Comments</a>
     
 
         </footer>
@@ -367,6 +367,15 @@
     
         
 <nav id="article-nav">
+    
+        <a href="/2017/08/23/shell-grep-sed-awk/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    shell_sed_awk
+                
+            </div>
+        </a>
     
     
         <a href="/2017/08/18/mongodb/" id="article-nav-older" class="article-nav-link-wrap">
@@ -404,9 +413,18 @@
                     <li>
                         
                         <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/shell/">shell</a></p>
+                            <p class="item-title"><a href="/2017/08/23/shell-grep-sed-awk/" class="title">shell_sed_awk</a></p>
+                            <p class="item-date"><time datetime="2017-08-23T01:05:44.000Z" itemprop="datePublished">2017-08-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/python3/">python3</a></p>
                             <p class="item-title"><a href="/2017/08/18/pymongo/" class="title">pymongo基本操作</a></p>
-                            <p class="item-date"><time datetime="2017-08-18T14:48:02.000Z" itemprop="datePublished">2017-08-18</time></p>
+                            <p class="item-date"><time datetime="2017-08-18T06:48:02.000Z" itemprop="datePublished">2017-08-18</time></p>
                         </div>
                     </li>
                 
@@ -415,7 +433,7 @@
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/数据库/">数据库</a></p>
                             <p class="item-title"><a href="/2017/08/18/mongodb/" class="title">mongodb基本命令</a></p>
-                            <p class="item-date"><time datetime="2017-08-18T11:56:18.000Z" itemprop="datePublished">2017-08-18</time></p>
+                            <p class="item-date"><time datetime="2017-08-18T03:56:18.000Z" itemprop="datePublished">2017-08-18</time></p>
                         </div>
                     </li>
                 
@@ -424,7 +442,7 @@
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
                             <p class="item-title"><a href="/2017/08/18/ghost/" class="title">ghost下载与使用</a></p>
-                            <p class="item-date"><time datetime="2017-08-18T11:11:58.000Z" itemprop="datePublished">2017-08-18</time></p>
+                            <p class="item-date"><time datetime="2017-08-18T03:11:58.000Z" itemprop="datePublished">2017-08-18</time></p>
                         </div>
                     </li>
                 
@@ -433,16 +451,7 @@
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/linux/">linux</a></p>
                             <p class="item-title"><a href="/2017/08/17/linux-server-process/" class="title">linux 服务与进程</a></p>
-                            <p class="item-date"><time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
-                            <p class="item-title"><a href="/2017/08/16/CDN-server/" class="title">内容分发网络</a></p>
-                            <p class="item-date"><time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
+                            <p class="item-date"><time datetime="2017-08-17T07:44:24.000Z" itemprop="datePublished">2017-08-17</time></p>
                         </div>
                     </li>
                 
@@ -455,7 +464,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -464,7 +473,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">26</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">27</span></li></ul>
         </div>
     </div>
 
@@ -525,7 +534,7 @@
     <script>
     var disqus_config = function () {
         
-            this.page.url = 'https://www.femnyy.com/2017/08/18/pymongo/';
+            this.page.url = 'https://www.femn.me/2017/08/18/pymongo/';
         
         this.page.identifier = 'pymongo';
     };

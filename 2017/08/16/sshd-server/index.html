@@ -5,16 +5,16 @@
     
     <title>sshd | Femn</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="server12345678910111213141516171819202122232425sudo apt-get install openssh-serverps ef|grep sshsudo /etc/init.d/ssh start 或者 service ssh start# 创建一个普通用户useradd usernamepasswd usernamevim /etc/ssh/ssh">
+    <meta name="description" content="server12345678910111213141516171819202122232425sudo apt-get install openssh-serverps ef|grep sshsudo /etc/init.d/ssh start 或者 service sshd start# 创建一个普通用户useradd usernamepasswd usernamevim /etc/ssh/ss">
 <meta property="og:type" content="article">
 <meta property="og:title" content="sshd">
-<meta property="og:url" content="https://www.femnyy.com/2017/08/16/sshd-server/index.html">
+<meta property="og:url" content="https://www.femn.me/2017/08/16/sshd-server/index.html">
 <meta property="og:site_name" content="Femn">
-<meta property="og:description" content="server12345678910111213141516171819202122232425sudo apt-get install openssh-serverps ef|grep sshsudo /etc/init.d/ssh start 或者 service ssh start# 创建一个普通用户useradd usernamepasswd usernamevim /etc/ssh/ssh">
-<meta property="og:updated_time" content="2017-08-19T01:17:08.432Z">
+<meta property="og:description" content="server12345678910111213141516171819202122232425sudo apt-get install openssh-serverps ef|grep sshsudo /etc/init.d/ssh start 或者 service sshd start# 创建一个普通用户useradd usernamepasswd usernamevim /etc/ssh/ss">
+<meta property="og:updated_time" content="2017-08-24T05:56:42.876Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="sshd">
-<meta name="twitter:description" content="server12345678910111213141516171819202122232425sudo apt-get install openssh-serverps ef|grep sshsudo /etc/init.d/ssh start 或者 service ssh start# 创建一个普通用户useradd usernamepasswd usernamevim /etc/ssh/ssh">
+<meta name="twitter:description" content="server12345678910111213141516171819202122232425sudo apt-get install openssh-serverps ef|grep sshsudo /etc/init.d/ssh start 或者 service sshd start# 创建一个普通用户useradd usernamepasswd usernamevim /etc/ssh/ss">
     
 
     
@@ -159,7 +159,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                26
+                27
                 <span>posts</span>
             </div>
             <div class="article-info-block">
@@ -235,7 +235,7 @@
     <div class="article-date">
         <i class="fa fa-calendar"></i>
         <a href="/2017/08/16/sshd-server/">
-            <time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time>
+            <time datetime="2017-08-16T07:24:48.000Z" itemprop="datePublished">2017-08-16</time>
         </a>
     </div>
 
@@ -255,7 +255,7 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h4 id="server"><a href="#server" class="headerlink" title="server"></a>server</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install openssh-server</div><div class="line">ps ef|grep ssh</div><div class="line">sudo /etc/init.d/ssh start 或者 service ssh start</div><div class="line"></div><div class="line"><span class="comment"># 创建一个普通用户</span></div><div class="line">useradd username</div><div class="line">passwd username</div><div class="line">vim /etc/ssh/sshd_config</div><div class="line">    Port 22333</div><div class="line">    PermitRootLogin no</div><div class="line">    TCPKeepAlive yes</div><div class="line">    ClientAliveInterval 360</div><div class="line">    ClientAliveCountMax 20</div><div class="line"></div><div class="line"><span class="comment"># 给普通用户附sudo权限</span></div><div class="line">chmod u+w /etc/sudoers</div><div class="line">vim /etc/sudoers</div><div class="line">    root            ALL=(ALL)                ALL</div><div class="line">    username            ALL=(ALL)                ALL</div><div class="line">chmod u-w /etc/sudoers</div><div class="line"></div><div class="line">/etc/init.d/ssh start</div><div class="line">service sshd restart</div><div class="line">firewall-cmd --permanent --add-port=22333/tcp</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure>
+            <h4 id="server"><a href="#server" class="headerlink" title="server"></a>server</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install openssh-server</div><div class="line">ps ef|grep ssh</div><div class="line">sudo /etc/init.d/ssh start 或者 service sshd start</div><div class="line"></div><div class="line"><span class="comment"># 创建一个普通用户</span></div><div class="line">useradd username</div><div class="line">passwd username</div><div class="line">vim /etc/ssh/sshd_config</div><div class="line">    Port 22333</div><div class="line">    PermitRootLogin no</div><div class="line">    TCPKeepAlive yes</div><div class="line">    ClientAliveInterval 360</div><div class="line">    ClientAliveCountMax 20</div><div class="line"></div><div class="line"><span class="comment"># 给普通用户附sudo权限</span></div><div class="line">chmod u+w /etc/sudoers</div><div class="line">vim /etc/sudoers</div><div class="line">    root            ALL=(ALL)                ALL</div><div class="line">    username            ALL=(ALL)                ALL</div><div class="line">chmod u-w /etc/sudoers</div><div class="line"></div><div class="line">/etc/init.d/ssh start</div><div class="line">service sshd restart</div><div class="line">firewall-cmd --permanent --add-port=22333/tcp</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure>
 <h4 id="client"><a href="#client" class="headerlink" title="client"></a>client</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -p 22333 username@ip</div></pre></td></tr></table></figure>
 <h3 id="SSH无密码登录"><a href="#SSH无密码登录" class="headerlink" title="SSH无密码登录"></a>SSH无密码登录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># client:生成SSH公钥</span></div><div class="line">ssh-keygen -t rsa -C <span class="string">"邮箱"</span> </div><div class="line"></div><div class="line"><span class="comment"># 将SSH公钥上传到Linux服务器</span></div><div class="line">ssh-copy-id -p 22 username@remote-server</div><div class="line"><span class="comment"># 将client端的gedit ~/.ssh/id_rsa.pub的内容放到server端~/.ssh/authorized_keys</span></div><div class="line"><span class="comment"># 等同于如下</span></div><div class="line">cat ~/.ssh/id_rsa.pub | ssh username@your_host \ </div><div class="line">    <span class="string">"cat - &gt;&gt; /home/username/.ssh/authorized_keys"</span></div></pre></td></tr></table></figure>
 
@@ -268,7 +268,7 @@
 
 </div>
 
-    <a data-url="https://www.femnyy.com/2017/08/16/sshd-server/" data-id="cj6n0lgmv001n08l159fyrd4q" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/16/sshd-server/" data-id="cj6q1blyq003q7c3kqf8mkf5s" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -336,7 +336,7 @@
 
             
     
-        <a href="https://www.femnyy.com/2017/08/16/sshd-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/16/sshd-server/">Comments</a>
+        <a href="https://www.femn.me/2017/08/16/sshd-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/sshd-server/">Comments</a>
     
 
         </footer>
@@ -345,19 +345,19 @@
         
 <nav id="article-nav">
     
-        <a href="/2017/08/16/CDN-server/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/2017/08/16/shadowsocks-server/" id="article-nav-newer" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Newer</strong>
             <div class="article-nav-title">
                 
-                    内容分发网络
+                    shadowsocks
                 
             </div>
         </a>
     
     
-        <a href="/2017/08/16/shadowsocks-server/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2017/08/16/CDN-server/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Older</strong>
-            <div class="article-nav-title">shadowsocks</div>
+            <div class="article-nav-title">内容分发网络</div>
         </a>
     
 </nav>
@@ -390,9 +390,18 @@
                     <li>
                         
                         <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/shell/">shell</a></p>
+                            <p class="item-title"><a href="/2017/08/23/shell-grep-sed-awk/" class="title">shell_sed_awk</a></p>
+                            <p class="item-date"><time datetime="2017-08-23T01:05:44.000Z" itemprop="datePublished">2017-08-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/python3/">python3</a></p>
                             <p class="item-title"><a href="/2017/08/18/pymongo/" class="title">pymongo基本操作</a></p>
-                            <p class="item-date"><time datetime="2017-08-18T14:48:02.000Z" itemprop="datePublished">2017-08-18</time></p>
+                            <p class="item-date"><time datetime="2017-08-18T06:48:02.000Z" itemprop="datePublished">2017-08-18</time></p>
                         </div>
                     </li>
                 
@@ -401,7 +410,7 @@
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/数据库/">数据库</a></p>
                             <p class="item-title"><a href="/2017/08/18/mongodb/" class="title">mongodb基本命令</a></p>
-                            <p class="item-date"><time datetime="2017-08-18T11:56:18.000Z" itemprop="datePublished">2017-08-18</time></p>
+                            <p class="item-date"><time datetime="2017-08-18T03:56:18.000Z" itemprop="datePublished">2017-08-18</time></p>
                         </div>
                     </li>
                 
@@ -410,7 +419,7 @@
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
                             <p class="item-title"><a href="/2017/08/18/ghost/" class="title">ghost下载与使用</a></p>
-                            <p class="item-date"><time datetime="2017-08-18T11:11:58.000Z" itemprop="datePublished">2017-08-18</time></p>
+                            <p class="item-date"><time datetime="2017-08-18T03:11:58.000Z" itemprop="datePublished">2017-08-18</time></p>
                         </div>
                     </li>
                 
@@ -419,16 +428,7 @@
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/linux/">linux</a></p>
                             <p class="item-title"><a href="/2017/08/17/linux-server-process/" class="title">linux 服务与进程</a></p>
-                            <p class="item-date"><time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
-                            <p class="item-title"><a href="/2017/08/16/CDN-server/" class="title">内容分发网络</a></p>
-                            <p class="item-date"><time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
+                            <p class="item-date"><time datetime="2017-08-17T07:44:24.000Z" itemprop="datePublished">2017-08-17</time></p>
                         </div>
                     </li>
                 
@@ -441,7 +441,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -450,7 +450,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">26</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">27</span></li></ul>
         </div>
     </div>
 
@@ -511,7 +511,7 @@
     <script>
     var disqus_config = function () {
         
-            this.page.url = 'https://www.femnyy.com/2017/08/16/sshd-server/';
+            this.page.url = 'https://www.femn.me/2017/08/16/sshd-server/';
         
         this.page.identifier = 'sshd-server';
     };

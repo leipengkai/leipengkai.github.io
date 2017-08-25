@@ -5,16 +5,16 @@
     
     <title>docker RUN ENTRYPOINT CMD命令 | Femn</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="运行时机RUN在Dockerfile构建镜像的过程(Build)中运行，最终被commit的到镜像。 ENTRYPOINT和CMD在容器运行(run、start)时运行 都有shell和exec形式shell形式1234567891011121314RUN command param1 param2CMD command param1 param2ENTRYPOINT command param1">
+    <meta name="description" content="运行时机RUN在Dockerfile构建镜像的过程(Build)中运行,最终被commit的到镜像. ENTRYPOINT和CMD在容器运行(run、start)时运行 都有shell和exec形式shell形式1234567891011121314RUN command param1 param2CMD command param1 param2ENTRYPOINT command param1">
 <meta property="og:type" content="article">
 <meta property="og:title" content="docker RUN ENTRYPOINT CMD命令">
-<meta property="og:url" content="https://www.femnyy.com/2017/08/04/docker-RUN-ENTRYPOINT-CMD/index.html">
+<meta property="og:url" content="https://www.femn.me/2017/08/04/docker-RUN-ENTRYPOINT-CMD/index.html">
 <meta property="og:site_name" content="Femn">
-<meta property="og:description" content="运行时机RUN在Dockerfile构建镜像的过程(Build)中运行，最终被commit的到镜像。 ENTRYPOINT和CMD在容器运行(run、start)时运行 都有shell和exec形式shell形式1234567891011121314RUN command param1 param2CMD command param1 param2ENTRYPOINT command param1">
-<meta property="og:updated_time" content="2017-08-22T02:55:54.191Z">
+<meta property="og:description" content="运行时机RUN在Dockerfile构建镜像的过程(Build)中运行,最终被commit的到镜像. ENTRYPOINT和CMD在容器运行(run、start)时运行 都有shell和exec形式shell形式1234567891011121314RUN command param1 param2CMD command param1 param2ENTRYPOINT command param1">
+<meta property="og:updated_time" content="2017-08-24T04:10:08.329Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="docker RUN ENTRYPOINT CMD命令">
-<meta name="twitter:description" content="运行时机RUN在Dockerfile构建镜像的过程(Build)中运行，最终被commit的到镜像。 ENTRYPOINT和CMD在容器运行(run、start)时运行 都有shell和exec形式shell形式1234567891011121314RUN command param1 param2CMD command param1 param2ENTRYPOINT command param1">
+<meta name="twitter:description" content="运行时机RUN在Dockerfile构建镜像的过程(Build)中运行,最终被commit的到镜像. ENTRYPOINT和CMD在容器运行(run、start)时运行 都有shell和exec形式shell形式1234567891011121314RUN command param1 param2CMD command param1 param2ENTRYPOINT command param1">
     
 
     
@@ -159,7 +159,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                26
+                27
                 <span>posts</span>
             </div>
             <div class="article-info-block">
@@ -235,7 +235,7 @@
     <div class="article-date">
         <i class="fa fa-calendar"></i>
         <a href="/2017/08/04/docker-RUN-ENTRYPOINT-CMD/">
-            <time datetime="2017-08-04T20:19:31.000Z" itemprop="datePublished">2017-08-04</time>
+            <time datetime="2017-08-04T12:19:31.000Z" itemprop="datePublished">2017-08-04</time>
         </a>
     </div>
 
@@ -255,27 +255,27 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h3 id="运行时机"><a href="#运行时机" class="headerlink" title="运行时机"></a>运行时机</h3><p>RUN在Dockerfile构建镜像的过程(Build)中运行，最终被commit的到镜像。</p>
+            <h3 id="运行时机"><a href="#运行时机" class="headerlink" title="运行时机"></a>运行时机</h3><p>RUN在Dockerfile构建镜像的过程(Build)中运行,最终被commit的到镜像.</p>
 <p>ENTRYPOINT和CMD在容器运行(run、start)时运行</p>
 <h3 id="都有shell和exec形式"><a href="#都有shell和exec形式" class="headerlink" title="都有shell和exec形式"></a>都有shell和exec形式</h3><p>shell形式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">RUN <span class="built_in">command</span> param1 param2</div><div class="line">CMD <span class="built_in">command</span> param1 param2</div><div class="line">ENTRYPOINT <span class="built_in">command</span> param1 param2</div><div class="line"><span class="comment"># ENTRYPOINT的Shell格式会忽略任何CMD或docker run提供的参数</span></div><div class="line"><span class="comment">#eg</span></div><div class="line">RUN apt-get install python3  </div><div class="line">ENTRYPOINT <span class="built_in">echo</span> <span class="string">"Hello world"</span> </div><div class="line">CMD <span class="built_in">echo</span> <span class="string">"Hello world"</span>  </div><div class="line"></div><div class="line">ENV name Cloud Man  </div><div class="line">ENTRYPOINT <span class="built_in">echo</span> <span class="string">"Hello, <span class="variable">$name</span>"</span> </div><div class="line"><span class="comment"># shell 格式底层会调用 /bin/sh -c &lt;command&gt;</span></div><div class="line"><span class="comment"># 所以执行 docker run &lt;image&gt; 将输出</span></div><div class="line"><span class="comment"># Hello, Cloud Man</span></div></pre></td></tr></table></figure></p>
-<h4 id="shell形式还有一个严重的问题：由于其默认使用-bin-sh来运行命令，如果镜像中不包含-bin-sh，容器会无法启动"><a href="#shell形式还有一个严重的问题：由于其默认使用-bin-sh来运行命令，如果镜像中不包含-bin-sh，容器会无法启动" class="headerlink" title="shell形式还有一个严重的问题：由于其默认使用/bin/sh来运行命令，如果镜像中不包含/bin/sh，容器会无法启动."></a>shell形式还有一个严重的问题：由于其默认使用/bin/sh来运行命令，如果镜像中不包含/bin/sh，容器会无法启动.</h4><p>exec形式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">RUN [<span class="string">"executable"</span>, <span class="string">"param1"</span>, <span class="string">"param2"</span>]</div><div class="line">ENTRYPOINT [<span class="string">"executable"</span>, <span class="string">"param1"</span>, <span class="string">"param2"</span>]</div><div class="line">CMD [<span class="string">"executable"</span>, <span class="string">"param1"</span>, <span class="string">"param2"</span>]</div><div class="line"><span class="comment">#eg</span></div><div class="line">RUN [<span class="string">"apt-get"</span>, <span class="string">"install"</span>, <span class="string">"python3"</span>]  </div><div class="line">ENTRYPOINT [<span class="string">"/bin/echo"</span>, <span class="string">"Hello world"</span>]</div><div class="line">CMD [<span class="string">"/bin/echo"</span>, <span class="string">"Hello world"</span>]  </div><div class="line"></div><div class="line">ENV name Cloud Man  </div><div class="line">ENTRYPOINT [<span class="string">"/bin/echo"</span>, <span class="string">"Hello, <span class="variable">$name</span>"</span>]</div><div class="line"><span class="comment"># Hello, $name</span></div><div class="line">ENV name Cloud Man  </div><div class="line">ENTRYPOINT [<span class="string">"/bin/sh"</span>, <span class="string">"-c"</span>, <span class="string">"echo Hello, <span class="variable">$name</span>"</span>]</div><div class="line"><span class="comment"># Hello, Cloud Man</span></div></pre></td></tr></table></figure></p>
+<h4 id="shell形式还有一个严重的问题-由于其默认使用-bin-sh来运行命令-如果镜像中不包含-bin-sh-容器会无法启动"><a href="#shell形式还有一个严重的问题-由于其默认使用-bin-sh来运行命令-如果镜像中不包含-bin-sh-容器会无法启动" class="headerlink" title="shell形式还有一个严重的问题:由于其默认使用/bin/sh来运行命令,如果镜像中不包含/bin/sh,容器会无法启动."></a>shell形式还有一个严重的问题:由于其默认使用/bin/sh来运行命令,如果镜像中不包含/bin/sh,容器会无法启动.</h4><p>exec形式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">RUN [<span class="string">"executable"</span>, <span class="string">"param1"</span>, <span class="string">"param2"</span>]</div><div class="line">ENTRYPOINT [<span class="string">"executable"</span>, <span class="string">"param1"</span>, <span class="string">"param2"</span>]</div><div class="line">CMD [<span class="string">"executable"</span>, <span class="string">"param1"</span>, <span class="string">"param2"</span>]</div><div class="line"><span class="comment">#eg</span></div><div class="line">RUN [<span class="string">"apt-get"</span>, <span class="string">"install"</span>, <span class="string">"python3"</span>]  </div><div class="line">ENTRYPOINT [<span class="string">"/bin/echo"</span>, <span class="string">"Hello world"</span>]</div><div class="line">CMD [<span class="string">"/bin/echo"</span>, <span class="string">"Hello world"</span>]  </div><div class="line"></div><div class="line">ENV name Cloud Man  </div><div class="line">ENTRYPOINT [<span class="string">"/bin/echo"</span>, <span class="string">"Hello, <span class="variable">$name</span>"</span>]</div><div class="line"><span class="comment"># Hello, $name</span></div><div class="line">ENV name Cloud Man  </div><div class="line">ENTRYPOINT [<span class="string">"/bin/sh"</span>, <span class="string">"-c"</span>, <span class="string">"echo Hello, <span class="variable">$name</span>"</span>]</div><div class="line"><span class="comment"># Hello, Cloud Man</span></div></pre></td></tr></table></figure></p>
 <p>CMD还多了一种用于为ENTRYPOINT提供参数的形式:<br>此时 ENTRYPOINT 必须使用 Exec 格式<br>参数格式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CMD [<span class="string">"param1"</span>,<span class="string">"param2"</span>]</div></pre></td></tr></table></figure></p>
-<p>shell形式和exec的形式的本质区别在于shell形式提供了默认的指令/bin/sh -c，所以其指定的command将在shell的环境下运行。因此指定command的pid将不会是1，因为pid为1的是shell，command进程是shell的子进程.</p>
-<h4 id="exec形式则不然-但由于exec指定的命令不由shell启动，因此也就无法使用shell中的环境变量，如-HOME。如果希望能够使用环境变量，可以指定命令为sh：CMD-“sh”-“-c”-“echo”-“-HOME”"><a href="#exec形式则不然-但由于exec指定的命令不由shell启动，因此也就无法使用shell中的环境变量，如-HOME。如果希望能够使用环境变量，可以指定命令为sh：CMD-“sh”-“-c”-“echo”-“-HOME”" class="headerlink" title="exec形式则不然,但由于exec指定的命令不由shell启动，因此也就无法使用shell中的环境变量，如$HOME。如果希望能够使用环境变量，可以指定命令为sh：CMD [ “sh”, “-c”, “echo”, “$HOME” ]"></a>exec形式则不然,但由于exec指定的命令不由shell启动，因此也就无法使用shell中的环境变量，如$HOME。如果希望能够使用环境变量，可以指定命令为sh：CMD [ “sh”, “-c”, “echo”, “$HOME” ]</h4><h3 id="重载问题"><a href="#重载问题" class="headerlink" title="重载问题"></a>重载问题</h3><p>Dockerfile中只有最后一个ENTRYPOINT指令会生效，其他会被重载。</p>
-<p>Dockerfile中只有最后一个CMD指令会生效，其他会被重载。</p>
-<p>CMD指定的命令可以被docker run传递的命令覆盖。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">CMD <span class="built_in">echo</span> <span class="string">"Hello world"</span></div><div class="line"><span class="comment"># 运行容器 docker run -it [image] 将输出：</span></div><div class="line"><span class="comment"># Hello world</span></div><div class="line">docker run -it [image] /bin/bash</div><div class="line"><span class="comment"># CMD 会被忽略掉，命令 bash 将被执行</span></div><div class="line"><span class="comment"># root@10a32dc7d3d3:/#</span></div></pre></td></tr></table></figure></p>
-<p>ENTRYPOINT指定的命令不会被docker run传递的命令覆盖。容器名后面的所有内容都当成参数传递给其指定的命令。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">ENTRYPOINT [<span class="string">"/bin/echo"</span>, <span class="string">"Hello"</span>]  </div><div class="line">CMD [<span class="string">"echo"</span>,<span class="string">"world"</span>]</div><div class="line"></div><div class="line"><span class="comment"># 当容器通过 docker run -it [image] 启动时，输出为：</span></div><div class="line"><span class="comment"># Hello echo world</span></div><div class="line"></div><div class="line"><span class="comment"># 而如果通过 docker run -it [image] CloudMan 启动，则输出为：</span></div><div class="line"><span class="comment"># Hello CloudMan</span></div></pre></td></tr></table></figure></p>
-<p>当然，ENTRYPOINT指定的命令并不是不能重载的，只需指定–entrypoint来重载即可。</p>
+<p>shell形式和exec的形式的本质区别在于shell形式提供了默认的指令/bin/sh -c,所以其指定的command将在shell的环境下运行.因此指定command的pid将不会是1,因为pid为1的是shell,command进程是shell的子进程.</p>
+<h4 id="exec形式则不然-但由于exec指定的命令不由shell启动-因此也就无法使用shell中的环境变量-如-HOME-如果希望能够使用环境变量-可以指定命令为sh-CMD-“sh”-“-c”-“echo”-“-HOME”"><a href="#exec形式则不然-但由于exec指定的命令不由shell启动-因此也就无法使用shell中的环境变量-如-HOME-如果希望能够使用环境变量-可以指定命令为sh-CMD-“sh”-“-c”-“echo”-“-HOME”" class="headerlink" title="exec形式则不然,但由于exec指定的命令不由shell启动,因此也就无法使用shell中的环境变量,如$HOME.如果希望能够使用环境变量,可以指定命令为sh:CMD [ “sh”, “-c”, “echo”, “$HOME” ]"></a>exec形式则不然,但由于exec指定的命令不由shell启动,因此也就无法使用shell中的环境变量,如$HOME.如果希望能够使用环境变量,可以指定命令为sh:CMD [ “sh”, “-c”, “echo”, “$HOME” ]</h4><h3 id="重载问题"><a href="#重载问题" class="headerlink" title="重载问题"></a>重载问题</h3><p>Dockerfile中只有最后一个ENTRYPOINT指令会生效,其他会被重载.</p>
+<p>Dockerfile中只有最后一个CMD指令会生效,其他会被重载.</p>
+<p>CMD指定的命令可以被docker run传递的命令覆盖.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">CMD <span class="built_in">echo</span> <span class="string">"Hello world"</span></div><div class="line"><span class="comment"># 运行容器 docker run -it [image] 将输出:</span></div><div class="line"><span class="comment"># Hello world</span></div><div class="line">docker run -it [image] /bin/bash</div><div class="line"><span class="comment"># CMD 会被忽略掉,命令 bash 将被执行</span></div><div class="line"><span class="comment"># root@10a32dc7d3d3:/#</span></div></pre></td></tr></table></figure></p>
+<p>ENTRYPOINT指定的命令不会被docker run传递的命令覆盖.容器名后面的所有内容都当成参数传递给其指定的命令.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">ENTRYPOINT [<span class="string">"/bin/echo"</span>, <span class="string">"Hello"</span>]  </div><div class="line">CMD [<span class="string">"echo"</span>,<span class="string">"world"</span>]</div><div class="line"></div><div class="line"><span class="comment"># 当容器通过 docker run -it [image] 启动时,输出为:</span></div><div class="line"><span class="comment"># Hello echo world</span></div><div class="line"></div><div class="line"><span class="comment"># 而如果通过 docker run -it [image] CloudMan 启动,则输出为:</span></div><div class="line"><span class="comment"># Hello CloudMan</span></div></pre></td></tr></table></figure></p>
+<p>当然,ENTRYPOINT指定的命令并不是不能重载的,只需指定–entrypoint来重载即可.</p>
 <h3 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h3><ol>
-<li><p>使用 RUN 指令安装应用和软件包，构建镜像。</p>
+<li><p>使用 RUN 指令安装应用和软件包,构建镜像.</p>
 </li>
-<li><p>如果 Docker 镜像的用途是运行应用程序或服务，比如运行一个 MySQL，应该优先使用 Exec 格式的 ENTRYPOINT 指令。CMD 可为 ENTRYPOINT 提供额外的默认参数，同时可利用 docker run 命令行替换默认参数。</p>
+<li><p>如果 Docker 镜像的用途是运行应用程序或服务,比如运行一个 MySQL,应该优先使用 Exec 格式的 ENTRYPOINT 指令.CMD 可为 ENTRYPOINT 提供额外的默认参数,同时可利用 docker run 命令行替换默认参数.</p>
 </li>
-<li><p>如果想为容器设置默认的启动命令，可使用 CMD 指令。用户可在 docker run 命令行中替换此默认命令。</p>
+<li><p>如果想为容器设置默认的启动命令,可使用 CMD 指令.用户可在 docker run 命令行中替换此默认命令.</p>
 <h3 id="ENTRYPOINT和CMD进行组合-运行shell脚本"><a href="#ENTRYPOINT和CMD进行组合-运行shell脚本" class="headerlink" title="ENTRYPOINT和CMD进行组合,运行shell脚本"></a>ENTRYPOINT和CMD进行组合,运行shell脚本</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">FROM busybox</div><div class="line">MAINTAINER femn</div><div class="line"></div><div class="line">COPY ./entrypoint.sh /</div><div class="line">RUN chmod +x /entrypoint.sh</div><div class="line">ENTRYPOINT [<span class="string">"/entrypoint.sh"</span>]</div><div class="line">CMD [<span class="string">"echo"</span>,<span class="string">"CMD"</span>]</div></pre></td></tr></table></figure>
 </li>
 </ol>
-<p>entrypoint.sh如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/sh</span></div><div class="line"><span class="built_in">set</span> -e</div><div class="line"><span class="built_in">echo</span> <span class="string">"ENTRYPOINT"</span></div><div class="line"><span class="built_in">exec</span> <span class="string">"<span class="variable">$@</span>"</span></div><div class="line"><span class="comment"># 脚本中使用exec "$@"来运行CMD中的命令</span></div></pre></td></tr></table></figure></p>
+<p>entrypoint.sh如下:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/sh</span></div><div class="line"><span class="built_in">set</span> -e</div><div class="line"><span class="built_in">echo</span> <span class="string">"ENTRYPOINT"</span></div><div class="line"><span class="built_in">exec</span> <span class="string">"<span class="variable">$@</span>"</span></div><div class="line"><span class="comment"># 脚本中使用exec "$@"来运行CMD中的命令</span></div></pre></td></tr></table></figure></p>
 <p>运行时则输出 ENTRYPOINT CMD,而运行的参数 都是传递给entrypoint.sh的.</p>
 
         
@@ -287,7 +287,7 @@
 
 </div>
 
-    <a data-url="https://www.femnyy.com/2017/08/04/docker-RUN-ENTRYPOINT-CMD/" data-id="cj6n0lgia000708l17k5d4piy" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/docker-RUN-ENTRYPOINT-CMD/" data-id="cj6pr40vt0003zu3ks2y575rf" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -355,7 +355,7 @@
 
             
     
-        <a href="https://www.femnyy.com/2017/08/04/docker-RUN-ENTRYPOINT-CMD/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/04/docker-RUN-ENTRYPOINT-CMD/">Comments</a>
+        <a href="https://www.femn.me/2017/08/04/docker-RUN-ENTRYPOINT-CMD/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/docker-RUN-ENTRYPOINT-CMD/">Comments</a>
     
 
         </footer>
@@ -374,9 +374,9 @@
         </a>
     
     
-        <a href="/2017/08/04/docker-set-net/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2017/08/04/docker-hub/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Older</strong>
-            <div class="article-nav-title">docker网络代理设置</div>
+            <div class="article-nav-title">docker-hub</div>
         </a>
     
 </nav>
@@ -409,9 +409,18 @@
                     <li>
                         
                         <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/shell/">shell</a></p>
+                            <p class="item-title"><a href="/2017/08/23/shell-grep-sed-awk/" class="title">shell_sed_awk</a></p>
+                            <p class="item-date"><time datetime="2017-08-23T01:05:44.000Z" itemprop="datePublished">2017-08-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/python3/">python3</a></p>
                             <p class="item-title"><a href="/2017/08/18/pymongo/" class="title">pymongo基本操作</a></p>
-                            <p class="item-date"><time datetime="2017-08-18T14:48:02.000Z" itemprop="datePublished">2017-08-18</time></p>
+                            <p class="item-date"><time datetime="2017-08-18T06:48:02.000Z" itemprop="datePublished">2017-08-18</time></p>
                         </div>
                     </li>
                 
@@ -420,7 +429,7 @@
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/数据库/">数据库</a></p>
                             <p class="item-title"><a href="/2017/08/18/mongodb/" class="title">mongodb基本命令</a></p>
-                            <p class="item-date"><time datetime="2017-08-18T11:56:18.000Z" itemprop="datePublished">2017-08-18</time></p>
+                            <p class="item-date"><time datetime="2017-08-18T03:56:18.000Z" itemprop="datePublished">2017-08-18</time></p>
                         </div>
                     </li>
                 
@@ -429,7 +438,7 @@
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
                             <p class="item-title"><a href="/2017/08/18/ghost/" class="title">ghost下载与使用</a></p>
-                            <p class="item-date"><time datetime="2017-08-18T11:11:58.000Z" itemprop="datePublished">2017-08-18</time></p>
+                            <p class="item-date"><time datetime="2017-08-18T03:11:58.000Z" itemprop="datePublished">2017-08-18</time></p>
                         </div>
                     </li>
                 
@@ -438,16 +447,7 @@
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/linux/">linux</a></p>
                             <p class="item-title"><a href="/2017/08/17/linux-server-process/" class="title">linux 服务与进程</a></p>
-                            <p class="item-date"><time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
-                            <p class="item-title"><a href="/2017/08/16/CDN-server/" class="title">内容分发网络</a></p>
-                            <p class="item-date"><time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
+                            <p class="item-date"><time datetime="2017-08-17T07:44:24.000Z" itemprop="datePublished">2017-08-17</time></p>
                         </div>
                     </li>
                 
@@ -460,7 +460,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -469,7 +469,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">26</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">27</span></li></ul>
         </div>
     </div>
 
@@ -530,7 +530,7 @@
     <script>
     var disqus_config = function () {
         
-            this.page.url = 'https://www.femnyy.com/2017/08/04/docker-RUN-ENTRYPOINT-CMD/';
+            this.page.url = 'https://www.femn.me/2017/08/04/docker-RUN-ENTRYPOINT-CMD/';
         
         this.page.identifier = 'docker-RUN-ENTRYPOINT-CMD';
     };

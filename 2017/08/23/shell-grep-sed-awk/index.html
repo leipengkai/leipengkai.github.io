@@ -3,15 +3,18 @@
 <head>
     <meta charset="utf-8">
     
-    <title>categories | Femn</title>
+    <title>shell_sed_awk | Femn</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="https://www.femn.me/categories/index-1.html">
+    <meta name="description" content="Sed全名为Stream EDitor,即流式编辑器,行编辑器sed常用用法12sed [options] &apos;script(模式命令)&apos; input_file...sed [options] -f script_file(sed脚本) input_file... options  -n 静默模式,不打印模式空间中的内容 -e 执行模式命令,适用于多脚本处理 -i 直接操作原文件1234567sed">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shell_sed_awk">
+<meta property="og:url" content="https://www.femn.me/2017/08/23/shell-grep-sed-awk/index.html">
 <meta property="og:site_name" content="Femn">
-<meta property="og:updated_time" content="2017-08-12T00:17:15.978Z">
+<meta property="og:description" content="Sed全名为Stream EDitor,即流式编辑器,行编辑器sed常用用法12sed [options] &apos;script(模式命令)&apos; input_file...sed [options] -f script_file(sed脚本) input_file... options  -n 静默模式,不打印模式空间中的内容 -e 执行模式命令,适用于多脚本处理 -i 直接操作原文件1234567sed">
+<meta property="og:updated_time" content="2017-08-25T08:26:01.285Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="categories">
+<meta name="twitter:title" content="shell_sed_awk">
+<meta name="twitter:description" content="Sed全名为Stream EDitor,即流式编辑器,行编辑器sed常用用法12sed [options] &apos;script(模式命令)&apos; input_file...sed [options] -f script_file(sed脚本) input_file... options  -n 静默模式,不打印模式空间中的内容 -e 执行模式命令,适用于多脚本处理 -i 直接操作原文件1234567sed">
     
 
     
@@ -214,7 +217,7 @@
 </aside>
 
             
-            <section id="main"><article id="page-" class="article article-type-page" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-shell-grep-sed-awk" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -222,10 +225,29 @@
                 
     
         <h1 class="article-title" itemprop="name">
-            categories
+            shell_sed_awk
         </h1>
     
 
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/23/shell-grep-sed-awk/">
+            <time datetime="2017-08-23T01:05:44.000Z" itemprop="datePublished">2017-08-23</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/shell/">shell</a>
+    </div>
+
+                        
+                    </div>
                 
             </header>
         
@@ -233,7 +255,35 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            
+            <h3 id="Sed全名为Stream-EDitor-即流式编辑器-行编辑器"><a href="#Sed全名为Stream-EDitor-即流式编辑器-行编辑器" class="headerlink" title="Sed全名为Stream EDitor,即流式编辑器,行编辑器"></a>Sed全名为Stream EDitor,即流式编辑器,行编辑器</h3><p>sed常用用法<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sed [options] <span class="string">'script(模式命令)'</span> input_file...</div><div class="line">sed [options] -f script_file(sed脚本) input_file...</div></pre></td></tr></table></figure></p>
+<p>options </p>
+<p>-n 静默模式,不打印模式空间中的内容</p>
+<p>-e 执行模式命令,适用于多脚本处理</p>
+<p>-i 直接操作原文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sed -n -e <span class="string">'1p'</span> -e <span class="string">'37,40p'</span> /etc/passwd &gt; passwd.txt &amp;&amp; cat passwd.txt </div><div class="line"><span class="comment"># 输出如下</span></div><div class="line">root:x:0:0:root:/root:/bin/bash</div><div class="line">rtkit:x:118:126:RealtimeKit,,,:/proc:/bin/<span class="literal">false</span></div><div class="line">saned:x:119:127::/var/lib/saned:/bin/<span class="literal">false</span></div><div class="line">usbmux:x:120:46:usbmux daemon,,,:/var/lib/usbmux:/bin/<span class="literal">false</span></div><div class="line">femn:x:1000:1000:femn,,,:/home/femn:/bin/bash</div></pre></td></tr></table></figure></p>
+<p>模式命令  s:替换 p:打印 d:删除 a:增加 g:表示一行上的替换所有的匹配<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">sed -e <span class="string">'1,37d'</span> /etc/passwd</div><div class="line"><span class="comment"># 输出如下</span></div><div class="line">saned:x:119:127::/var/lib/saned:/bin/<span class="literal">false</span></div><div class="line">usbmux:x:120:46:usbmux daemon,,,:/var/lib/usbmux:/bin/<span class="literal">false</span></div><div class="line">femn:x:1000:1000:femn,,,:/home/femn:/bin/bash</div><div class="line">mysql:x:121:130:MySQL Server,,,:/nonexistent:/bin/<span class="literal">false</span></div></pre></td></tr></table></figure></p>
+<p>a \:在模式匹配到的行后面添加新内容<br>i                   前面<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">sed -e <span class="string">'/root/i \this is head'</span> \</div><div class="line">    -e <span class="string">'/femn/a \this is tail\n'</span> passwd.txt </div><div class="line"><span class="comment"># 输出如下</span></div><div class="line">this is head</div><div class="line">root:x:0:0:root:/root:/bin/bash</div><div class="line">rtkit:x:118:126:RealtimeKit,,,:/proc:/bin/<span class="literal">false</span></div><div class="line">saned:x:119:127::/var/lib/saned:/bin/<span class="literal">false</span></div><div class="line">usbmux:x:120:46:usbmux daemon,,,:/var/lib/usbmux:/bin/<span class="literal">false</span></div><div class="line">femn:x:1000:1000:femn,,,:/home/femn:/bin/bash</div><div class="line">this is tail</div></pre></td></tr></table></figure></p>
+<p>匹配内容的行’/{content}/‘ 可以使用正则匹配<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sed -n -e <span class="string">'/\&lt;root\&gt;/s/bin/nologin/p'</span> -e <span class="string">'s/femn/hehe/p'</span> passwd.txt</div><div class="line"><span class="comment"># 输出如下</span></div><div class="line">root:x:0:0:root:/root:/nologin/bash</div><div class="line">hehe:x:1000:1000:femn,,,:/home/femn:/bin/bash</div></pre></td></tr></table></figure></p>
+<p>-f 指定文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">vim ss</div><div class="line">    /\&lt;root\&gt;/s/bin/nologin/p</div><div class="line">    s/femn/hehe/p</div><div class="line">sed -n -f ss passwd.txt</div></pre></td></tr></table></figure></p>
+<p>sed脚本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">vim ss.sh</div><div class="line">    <span class="comment">#!/bin/sed -f</span></div><div class="line">    /\&lt;root\&gt;/s/bin/nologin/p</div><div class="line">    s/femn/hehe/p</div><div class="line">chmod a+u ss.sh</div><div class="line">./ss.sh passwd.txt</div></pre></td></tr></table></figure>
+<p>删除注释和空行 显示删除之后的行数<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sed -e <span class="string">'/^#/d'</span> -e <span class="string">'/^$/d'</span> passwd.txt | wc -l</div><div class="line">wc -l !$   <span class="comment"># 上个文件多少行</span></div></pre></td></tr></table></figure></p>
+<p>个人的一个实用脚本,将中文符号换成英文<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash </span></div><div class="line"></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `ls /home/femn/blog/<span class="built_in">source</span>/_posts/*.md`</div><div class="line"><span class="keyword">do</span> </div><div class="line">    sed -i -e <span class="string">'s/:/:/g'</span> \</div><div class="line">        -e <span class="string">'s/;/;/g'</span> \</div><div class="line">        -e <span class="string">'s/,/,/g'</span> \</div><div class="line">        -e <span class="string">'s/././g'</span> \</div><div class="line">        -e <span class="string">'s/(/(/g'</span> \</div><div class="line">        -e <span class="string">'s/)/)/g'</span> \</div><div class="line">        -e <span class="string">'s/"/"/g'</span> \</div><div class="line">        -e <span class="string">'s/"/"/g'</span> \</div><div class="line">        -e <span class="string">"s/'/'/g"</span> \</div><div class="line">        -e <span class="string">"s/'/'/g"</span> \</div><div class="line">        <span class="string">"<span class="variable">$i</span>"</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure></p>
+<h3 id="awk擅于处理列"><a href="#awk擅于处理列" class="headerlink" title="awk擅于处理列"></a>awk擅于处理列</h3><p>awk的一些内建变量</p>
+<p>FS 输入字段分隔符 默认是空格或Tab    </p>
+<p>$0 当前记录(这个变量中存放着整个行  的内容)</p>
+<p>$1~$n 当前记录的第n个字段,字段间由FS分隔    </p>
+<p>OFS 输出字段分隔符, 默认也是空格</p>
+<p>NR 已经读出的记录数,就是行号    </p>
+<p>FNR 文件自己的行号</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">awk  <span class="string">'BEGIN&#123;FS=":"&#125; &#123;print $1,$3,$6&#125;'</span> &lt; passwd.txt</div><div class="line"><span class="comment"># 如下输出</span></div><div class="line">root 0 /root</div><div class="line">rtkit 118 /proc</div><div class="line">saned 119 /var/lib/saned</div><div class="line">usbmux 120 /var/lib/usbmux</div><div class="line">femn 1000 /home/femn</div></pre></td></tr></table></figure>
+<p>匹配内容<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">awk  -F: <span class="string">'$1=="root" || $1 ~ /femn|mysql/ &#123;print NR, FNR, $1,$3,$6&#125;'</span> OFS=<span class="string">"\t"</span> passwd.txt</div><div class="line"><span class="comment"># 如下输出</span></div><div class="line">1   1   root    0   /root                </div><div class="line">5   5   femn    1000    /home/femn</div><div class="line"><span class="comment"># -F: 指定分隔符为':'去分隔文件 默认为空格或Tab</span></div><div class="line"><span class="comment"># ~ 表示匹配模式开始./ /中是模式.这就是一个正则表达式的匹配.!~ 表示取反</span></div></pre></td></tr></table></figure></p>
+<p>把指定的列输出到文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">awk <span class="string">'NR!=1&#123;if($1 ~ /root|femn/) print &gt; "1.txt"; \</span></div><div class="line"><span class="string">    else if($1 ~ /mysql/) print &gt; "2.txt"; \</span></div><div class="line"><span class="string">    else print &gt; "3.txt" &#125;'</span> passwd.txt</div><div class="line">vim 1.txt </div><div class="line">    emn:x:1000:1000:femn,,,:/home/femn:/bin/bash</div><div class="line">    <span class="comment"># NR!=1表示不处理表头,所以没有root的那一行</span></div><div class="line">vim 2.txt <span class="comment"># 是个空的</span></div><div class="line">vim 3.txt</div><div class="line">    rtkit:x:118:126:RealtimeKit,,,:/proc:/bin/<span class="literal">false</span></div><div class="line">    saned:x:119:127::/var/lib/saned:/bin/<span class="literal">false</span></div><div class="line">    usbmux:x:120:46:usbmux daemon,,,:/var/lib/usbmux:/bin/<span class="literal">false</span></div></pre></td></tr></table></figure></p>
+<p>注意其中的if-else-if语句,可见awk其实是个脚本解释器</p>
+<p>统计<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">ll *.txt | awk <span class="string">'&#123;print $5,$9&#125;'</span></div><div class="line"><span class="comment"># 输出如下</span></div><div class="line">46 1.txt</div><div class="line">0 2.txt</div><div class="line">151 3.txt</div><div class="line">229 passwd.txt</div><div class="line"></div><div class="line">ll *.txt |awk <span class="string">'&#123;sum+=$5&#125; END &#123;print sum&#125;'</span></div><div class="line"><span class="comment"># 输出如下</span></div><div class="line">426</div></pre></td></tr></table></figure></p>
+<p>统计每个用户的进程的占了多少内存,sum的RSS那一列<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps aux | awk <span class="string">'NR!=1&#123;a[$1]+=$6;&#125; END &#123; for(i in a) print i ", " a[i]"KB";&#125;'</span></div></pre></td></tr></table></figure></p>
+<p>按连接数查看客户端IP<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">netstat -ntu | awk <span class="string">'&#123;print $5&#125;'</span> | cut -d: -f1 | sort | uniq -c | sort -nr</div></pre></td></tr></table></figure></p>
+<p>awk脚本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">awk -F: <span class="string">'BEGIN &#123;i=1&#125; &#123; if ($7=="/bin/bash")  i+=1 &#125; END &#123;print "number "i&#125;'</span> &lt; /etc/passwd</div><div class="line"><span class="comment"># 输出如下</span></div><div class="line">number 3</div><div class="line"></div><div class="line">vim aa</div><div class="line">    BEGIN &#123;i=1&#125;</div><div class="line">    &#123; <span class="keyword">if</span> (<span class="variable">$7</span>==<span class="string">"/bin/bash"</span>)  i+=1 &#125;</div><div class="line">    END &#123;<span class="built_in">print</span> <span class="string">"number "</span>i&#125;</div><div class="line">cat /etc/passwd | awk -F: -f aa</div></pre></td></tr></table></figure></p>
+
         
         </div>
         <footer class="article-footer">
@@ -243,7 +293,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/categories/index-1.html" data-id="cj6pr40x6000nzu3kx8s7vmg3" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/23/shell-grep-sed-awk/" data-id="cj6ptca5400047c3kvv5zflic" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -311,13 +361,23 @@
 
             
     
-        <a href="https://www.femn.me/categories/index-1.html#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/categories/index-1.html">Comments</a>
+        <a href="https://www.femn.me/2017/08/23/shell-grep-sed-awk/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/23/shell-grep-sed-awk/">Comments</a>
     
 
         </footer>
     </div>
     
         
+<nav id="article-nav">
+    
+    
+        <a href="/2017/08/18/pymongo/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">pymongo基本操作</div>
+        </a>
+    
+</nav>
+
 
     
 </article>
@@ -467,9 +527,9 @@
     <script>
     var disqus_config = function () {
         
-            this.page.url = 'https://www.femn.me/categories/index-1.html';
+            this.page.url = 'https://www.femn.me/2017/08/23/shell-grep-sed-awk/';
         
-        this.page.identifier = '';
+        this.page.identifier = 'shell-grep-sed-awk';
     };
     (function() { 
         var d = document, s = d.createElement('script');  

@@ -8,10 +8,10 @@
     <meta name="description" content="用shadowsocks作为翻墙的工具一般的翻墙工具还有VPN,pptp是VPN的一种,我们在这里介绍的是shadowsocks翻墙工具   shadowsocks 官网  centos7 install shadowsocks 123456789101112131415161718yum install python-setuptools &amp;amp;&amp;amp; easy_install pip">
 <meta property="og:type" content="article">
 <meta property="og:title" content="shadowsocks">
-<meta property="og:url" content="https://www.femnyy.com/2017/08/16/shadowsocks-server/index.html">
+<meta property="og:url" content="https://www.femn.me/2017/08/16/shadowsocks-server/index.html">
 <meta property="og:site_name" content="Femn">
 <meta property="og:description" content="用shadowsocks作为翻墙的工具一般的翻墙工具还有VPN,pptp是VPN的一种,我们在这里介绍的是shadowsocks翻墙工具   shadowsocks 官网  centos7 install shadowsocks 123456789101112131415161718yum install python-setuptools &amp;amp;&amp;amp; easy_install pip">
-<meta property="og:updated_time" content="2017-08-17T23:30:14.398Z">
+<meta property="og:updated_time" content="2017-08-24T06:05:22.010Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="shadowsocks">
 <meta name="twitter:description" content="用shadowsocks作为翻墙的工具一般的翻墙工具还有VPN,pptp是VPN的一种,我们在这里介绍的是shadowsocks翻墙工具   shadowsocks 官网  centos7 install shadowsocks 123456789101112131415161718yum install python-setuptools &amp;amp;&amp;amp; easy_install pip">
@@ -159,7 +159,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                26
+                27
                 <span>posts</span>
             </div>
             <div class="article-info-block">
@@ -235,7 +235,7 @@
     <div class="article-date">
         <i class="fa fa-calendar"></i>
         <a href="/2017/08/16/shadowsocks-server/">
-            <time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time>
+            <time datetime="2017-08-16T07:24:48.000Z" itemprop="datePublished">2017-08-16</time>
         </a>
     </div>
 
@@ -262,16 +262,17 @@
 <p>启动 ssserver服务<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">nohup ssserver -c /root/ss/ssserver.json -d start &amp;</div></pre></td></tr></table></figure></p>
 <p>查看ssserver 有没有启动成功</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps aux |grep ssserver</div></pre></td></tr></table></figure>
-<p>如果没有成功，可能是因为/root/ss/ssserver.json 的server_ip的原因,我买了个<a href="https://intl.aliyun.com/zh" target="_blank" rel="external">国际阿里云</a>的ECS服务器，我写的是公网的IP,结果一直运行不起来<br>因为公网是通过nat IP实现的(所以在安全组中只能是选择内网进行配置)，所以改成Privaty IP就可以正常启动了，最好是设置为0.0.0.0就好。</p>
-<p>阿里云的ECS服务器上配置使用任意端口的服务后，端口会自动开启监听，但它还有一个安全组的概念，最好设置一个(内网   入  允许 全部 -1/-1   0.0.0.0/0  优先级110)<br>这样就完全可以由ECS的系统完全的操作防火墙，就像没有安全组概念一样了。</p>
-<p> <a href="https://www.vultr.com/docs/how-to-deploy-google-bbr-on-centos-7" target="_blank" rel="external">centos7 install BBR</a> 要注意下sudo grub2-set-default 0,应该是为0的,使用最新的，文档却写成了1<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># update kernet</span></div><div class="line"><span class="comment"># look current kernet</span></div><div class="line">uname -r</div><div class="line"><span class="comment"># Install the ELRepo repo:</span></div><div class="line">sudo rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org</div><div class="line">sudo rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm</div><div class="line"><span class="comment"># install newer kernet</span></div><div class="line">sudo yum --enablerepo=elrepo-kernel install kernel-ml -y</div><div class="line"><span class="comment"># look install newer kernet</span></div><div class="line">rpm -qa | grep kernel</div><div class="line">sudo egrep ^menuentry /etc/grub2.cfg | cut -f 2 -d \<span class="string">'</span></div><div class="line"><span class="string"># setting newer kernet</span></div><div class="line"><span class="string">sudo grub2-set-default 0</span></div><div class="line"><span class="string">sudo shutdown -r now</span></div><div class="line"><span class="string">uname -r</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string"># enable BBr</span></div><div class="line"><span class="string">echo '</span>net.core.default_qdisc=fq<span class="string">' | sudo tee -a /etc/sysctl.conf</span></div><div class="line"><span class="string">echo '</span>net.ipv4.tcp_congestion_control=bbr<span class="string">' | sudo tee -a /etc/sysctl.conf</span></div><div class="line"><span class="string">sudo sysctl -p</span></div><div class="line"><span class="string">sudo sysctl net.ipv4.tcp_available_congestion_control</span></div><div class="line"><span class="string">net.ipv4.tcp_available_congestion_control = bbr cubic reno</span></div><div class="line"><span class="string">sudo sysctl -n net.ipv4.tcp_congestion_control</span></div><div class="line"><span class="string">bbr</span></div><div class="line"><span class="string">lsmod |grep bbr   # output   tcp_bbr                16384  0</span></div></pre></td></tr></table></figure></p>
+<p>如果没有成功,可能是因为/root/ss/ssserver.json 的server_ip的原因,我买了个<a href="https://intl.aliyun.com/zh" target="_blank" rel="external">国际阿里云</a>的ECS服务器,我写的是公网的IP,结果一直运行不起来<br>因为公网是通过nat IP实现的(所以在安全组中只能是选择内网进行配置),所以改成Privaty IP就可以正常启动了,最好是设置为0.0.0.0就好.</p>
+<p>阿里云的ECS服务器上配置使用任意端口的服务后,端口会自动开启监听,但它还有一个安全组的概念,最好设置一个(内网   入  允许 全部 -1/-1   0.0.0.0/0  优先级110)<br>这样就完全可以由ECS的系统完全的操作防火墙,就像没有安全组概念一样了.</p>
+<p> <a href="https://www.vultr.com/docs/how-to-deploy-google-bbr-on-centos-7" target="_blank" rel="external">centos7 install BBR</a> 要注意下sudo grub2-set-default 0,应该是为0的,使用最新的,文档却写成了1<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># update kernet</span></div><div class="line"><span class="comment"># look current kernet</span></div><div class="line">uname -r</div><div class="line"><span class="comment"># Install the ELRepo repo:</span></div><div class="line">sudo rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org</div><div class="line">sudo rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm</div><div class="line"><span class="comment"># install newer kernet</span></div><div class="line">sudo yum --enablerepo=elrepo-kernel install kernel-ml -y</div><div class="line"><span class="comment"># look install newer kernet</span></div><div class="line">rpm -qa | grep kernel</div><div class="line">sudo egrep ^menuentry /etc/grub2.cfg | cut -f 2 -d \<span class="string">'</span></div><div class="line"><span class="string"># setting newer kernet</span></div><div class="line"><span class="string">sudo grub2-set-default 0</span></div><div class="line"><span class="string">sudo shutdown -r now</span></div><div class="line"><span class="string">uname -r</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string"># enable BBr</span></div><div class="line"><span class="string">echo '</span>net.core.default_qdisc=fq<span class="string">' | sudo tee -a /etc/sysctl.conf</span></div><div class="line"><span class="string">echo '</span>net.ipv4.tcp_congestion_control=bbr<span class="string">' | sudo tee -a /etc/sysctl.conf</span></div><div class="line"><span class="string">sudo sysctl -p</span></div><div class="line"><span class="string">sudo sysctl net.ipv4.tcp_available_congestion_control</span></div><div class="line"><span class="string">net.ipv4.tcp_available_congestion_control = bbr cubic reno</span></div><div class="line"><span class="string">sudo sysctl -n net.ipv4.tcp_congestion_control</span></div><div class="line"><span class="string">bbr</span></div><div class="line"><span class="string">lsmod |grep bbr   # output   tcp_bbr                16384  0</span></div></pre></td></tr></table></figure></p>
 <p><a href="https://github.com/shadowsocks/shadowsocks-qt5/wiki/%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97" target="_blank" rel="external">client install shadowsocks</a></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#ubuntu</span></div><div class="line">sudo add-apt-repository ppa:hzwhuang/ss-qt5</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install shadowsocks-qt5</div><div class="line">ss-qt5</div><div class="line"><span class="comment"># 将ssserver.json的配置，设置到ss中</span></div></pre></td></tr></table></figure>
-<h3 id="注意-一定要再去配置下代理Pxory-0-0-0-0-1080-或者用本地的-pac文件-Local-Port就必须和service-pac文件-此文件是过滤网址用的-启动的端口一致"><a href="#注意-一定要再去配置下代理Pxory-0-0-0-0-1080-或者用本地的-pac文件-Local-Port就必须和service-pac文件-此文件是过滤网址用的-启动的端口一致" class="headerlink" title="注意:一定要再去配置下代理Pxory 0.0.0.0:1080 或者用本地的.pac文件,Local Port就必须和service.pac文件(此文件是过滤网址用的)启动的端口一致."></a>注意:一定要再去配置下代理Pxory 0.0.0.0:1080 或者用本地的.pac文件,Local Port就必须和service.pac文件(此文件是过滤网址用的)启动的端口一致.</h3><p><a href="http://pac.ddcc.me/1.pac" target="_blank" rel="external">http://pac.ddcc.me/1.pac</a> == local.pac</p>
-<h4 id="在国际里云购买的ESC，配置好shadowsocks之后，在手机上能正常使用，也不需要去设置代理，但在Ubuntu下却一直用不了"><a href="#在国际里云购买的ESC，配置好shadowsocks之后，在手机上能正常使用，也不需要去设置代理，但在Ubuntu下却一直用不了" class="headerlink" title="在国际里云购买的ESC，配置好shadowsocks之后，在手机上能正常使用，也不需要去设置代理，但在Ubuntu下却一直用不了"></a>在国际里云购买的ESC，配置好shadowsocks之后，在手机上能正常使用，也不需要去设置代理，但在Ubuntu下却一直用不了</h4><p> 如果自己不想搭建服务器的话，可以按下面的操作进行翻墙:<br> <a href="https://github.com/TestSmirk/ss-ip" target="_blank" rel="external">这个是我大哥的一些ss帐号</a></p>
-<p> <a href="https://doub.io/sszhfx/" target="_blank" rel="external">Shadowsocks免费账号分享</a>,但这个网址要先翻墙才行，哈哈<br> 具体的使用：在免费账号分享的这个网址上 </p>
-<p>1.使用二维码：点击二维码会出现一个二维码的图 这里打开shadowsocks软件–&gt;点鼠标右键–&gt;add–&gt;scan QR code on screen</p>
-<p>2.使用生成二维码的url:在add–&gt;选择url中ss以及后面的部分<br>如果失败的话，可以换其它的二维码试试。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#ubuntu</span></div><div class="line">sudo add-apt-repository ppa:hzwhuang/ss-qt5</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install shadowsocks-qt5</div><div class="line">ss-qt5</div><div class="line"><span class="comment"># 将ssserver.json的配置,设置到ss中</span></div></pre></td></tr></table></figure>
+<h3 id="注意-一定要再去配置下代理Pxory-0-0-0-0-1080-或者用本地的-pac文件-Local-Port就必须和service-pac文件-此文件是过滤网址用的-如果访问文件中的网址则走代理-启动的端口一致"><a href="#注意-一定要再去配置下代理Pxory-0-0-0-0-1080-或者用本地的-pac文件-Local-Port就必须和service-pac文件-此文件是过滤网址用的-如果访问文件中的网址则走代理-启动的端口一致" class="headerlink" title="注意:一定要再去配置下代理Pxory 0.0.0.0:1080 或者用本地的.pac文件,Local Port就必须和service.pac文件(此文件是过滤网址用的,如果访问文件中的网址则走代理)启动的端口一致."></a>注意:一定要再去配置下代理Pxory 0.0.0.0:1080 或者用本地的.pac文件,Local Port就必须和service.pac文件(此文件是过滤网址用的,如果访问文件中的网址则走代理)启动的端口一致.</h3><p><a href="http://pac.ddcc.me/1.pac" target="_blank" rel="external">http://pac.ddcc.me/1.pac</a> == local.pac</p>
+<h4 id="在国际里云购买的ESC-配置好shadowsocks之后-在手机上能正常使用-也不需要去设置代理-但在Ubuntu桌面下却一直用不了"><a href="#在国际里云购买的ESC-配置好shadowsocks之后-在手机上能正常使用-也不需要去设置代理-但在Ubuntu桌面下却一直用不了" class="headerlink" title="在国际里云购买的ESC,配置好shadowsocks之后,在手机上能正常使用,也不需要去设置代理,但在Ubuntu桌面下却一直用不了"></a>在国际里云购买的ESC,配置好shadowsocks之后,在手机上能正常使用,也不需要去设置代理,但在Ubuntu桌面下却一直用不了</h4><p> 如果自己不想搭建服务器的话,可以按下面的操作进行翻墙:</p>
+<p> <a href="https://doub.io/sszhfx/" target="_blank" rel="external">Shadowsocks免费账号分享</a>,但这个网址要先翻墙才行,哈哈<br> 具体的使用:在免费账号分享的这个网址上 </p>
+<p>1.使用二维码:点击二维码会出现一个二维码的图 这里打开shadowsocks软件–&gt;点鼠标右键–&gt;add–&gt;scan QR code on screen</p>
+<p>2.使用生成二维码的url:在add–&gt;选择url中ss以及后面的部分<br>如果失败的话,可以换其它的二维码试试.</p>
+<p><a href="https://github.com/TestSmirk/ss-ip" target="_blank" rel="external">这个是我大哥自己搭建的一些ss帐号</a></p>
 <h3 id="ubuntu-etc-resolv-conf"><a href="#ubuntu-etc-resolv-conf" class="headerlink" title="ubuntu /etc/resolv.conf"></a>ubuntu /etc/resolv.conf</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">nameserver 127.0.1.1</div><div class="line"><span class="comment"># nameserver 8.8.8.8</span></div><div class="line">search DHCP HOST</div></pre></td></tr></table></figure>
 <h3 id="加速SS的链接速度"><a href="#加速SS的链接速度" class="headerlink" title="加速SS的链接速度"></a><a href="http://vegetablefinn.github.io/2016/05/02/SS%E7%A5%9E%E5%99%A8-FinalSpeed-XSocks-%E7%AC%94%E8%AE%B0/" target="_blank" rel="external">加速SS的链接速度</a></h3>
         
@@ -283,7 +284,7 @@
 
 </div>
 
-    <a data-url="https://www.femnyy.com/2017/08/16/shadowsocks-server/" data-id="cj6n0lgmk001l08l1fli6sn2o" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/16/shadowsocks-server/" data-id="cj6q1ng2p003y7c3k9ldeao9q" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -351,7 +352,7 @@
 
             
     
-        <a href="https://www.femnyy.com/2017/08/16/shadowsocks-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/16/shadowsocks-server/">Comments</a>
+        <a href="https://www.femn.me/2017/08/16/shadowsocks-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/shadowsocks-server/">Comments</a>
     
 
         </footer>
@@ -360,19 +361,19 @@
         
 <nav id="article-nav">
     
-        <a href="/2017/08/16/sshd-server/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/2017/08/17/linux-server-process/" id="article-nav-newer" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Newer</strong>
             <div class="article-nav-title">
                 
-                    sshd
+                    linux 服务与进程
                 
             </div>
         </a>
     
     
-        <a href="/2017/08/15/vps-server/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2017/08/16/sshd-server/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Older</strong>
-            <div class="article-nav-title">VPS搭建网站</div>
+            <div class="article-nav-title">sshd</div>
         </a>
     
 </nav>
@@ -405,9 +406,18 @@
                     <li>
                         
                         <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/shell/">shell</a></p>
+                            <p class="item-title"><a href="/2017/08/23/shell-grep-sed-awk/" class="title">shell_sed_awk</a></p>
+                            <p class="item-date"><time datetime="2017-08-23T01:05:44.000Z" itemprop="datePublished">2017-08-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/python3/">python3</a></p>
                             <p class="item-title"><a href="/2017/08/18/pymongo/" class="title">pymongo基本操作</a></p>
-                            <p class="item-date"><time datetime="2017-08-18T14:48:02.000Z" itemprop="datePublished">2017-08-18</time></p>
+                            <p class="item-date"><time datetime="2017-08-18T06:48:02.000Z" itemprop="datePublished">2017-08-18</time></p>
                         </div>
                     </li>
                 
@@ -416,7 +426,7 @@
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/数据库/">数据库</a></p>
                             <p class="item-title"><a href="/2017/08/18/mongodb/" class="title">mongodb基本命令</a></p>
-                            <p class="item-date"><time datetime="2017-08-18T11:56:18.000Z" itemprop="datePublished">2017-08-18</time></p>
+                            <p class="item-date"><time datetime="2017-08-18T03:56:18.000Z" itemprop="datePublished">2017-08-18</time></p>
                         </div>
                     </li>
                 
@@ -425,7 +435,7 @@
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
                             <p class="item-title"><a href="/2017/08/18/ghost/" class="title">ghost下载与使用</a></p>
-                            <p class="item-date"><time datetime="2017-08-18T11:11:58.000Z" itemprop="datePublished">2017-08-18</time></p>
+                            <p class="item-date"><time datetime="2017-08-18T03:11:58.000Z" itemprop="datePublished">2017-08-18</time></p>
                         </div>
                     </li>
                 
@@ -434,16 +444,7 @@
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/linux/">linux</a></p>
                             <p class="item-title"><a href="/2017/08/17/linux-server-process/" class="title">linux 服务与进程</a></p>
-                            <p class="item-date"><time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
-                            <p class="item-title"><a href="/2017/08/16/CDN-server/" class="title">内容分发网络</a></p>
-                            <p class="item-date"><time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
+                            <p class="item-date"><time datetime="2017-08-17T07:44:24.000Z" itemprop="datePublished">2017-08-17</time></p>
                         </div>
                     </li>
                 
@@ -456,7 +457,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -465,7 +466,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">26</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">27</span></li></ul>
         </div>
     </div>
 
@@ -526,7 +527,7 @@
     <script>
     var disqus_config = function () {
         
-            this.page.url = 'https://www.femnyy.com/2017/08/16/shadowsocks-server/';
+            this.page.url = 'https://www.femn.me/2017/08/16/shadowsocks-server/';
         
         this.page.identifier = 'shadowsocks-server';
     };

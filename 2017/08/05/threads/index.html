@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8">
     
-    <title>threads | Femn</title>
+    <title>进程与线程 | Femn</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="性能：在其他同等条件下，高性能的程序应该可以等同于CPU的利用率，CPU的利用率越高(一直在工作，没有闲下来的时候)，程序的性能越高。 体验：这里的体验不只是界面多么漂亮，功能多么顺手，这里的体验指程序的响应速度，响应速度越快，用户体验越好。 由于我们要解决的问题是CPU高速执行能力和IO设备的龟速严重不匹配，多线程和多进程只是解决这一问题的一种方法。 另一种解决IO问题的方法是异步IO。当代码需">
+    <meta name="description" content="性能:在其他同等条件下,高性能的程序应该可以等同于CPU的利用率,CPU的利用率越高(一直在工作,没有闲下来的时候),程序的性能越高. 体验:这里的体验不只是界面多么漂亮,功能多么顺手,这里的体验指程序的响应速度,响应速度越快,用户体验越好. 由于我们要解决的问题是CPU高速执行能力和IO设备的龟速严重不匹配,多线程和多进程只是解决这一问题的一种方法. 另一种解决IO问题的方法是异步IO.当代码需">
 <meta property="og:type" content="article">
-<meta property="og:title" content="threads">
-<meta property="og:url" content="https://www.femnyy.com/2017/08/05/threads/index.html">
+<meta property="og:title" content="进程与线程">
+<meta property="og:url" content="https://www.femn.me/2017/08/05/threads/index.html">
 <meta property="og:site_name" content="Femn">
-<meta property="og:description" content="性能：在其他同等条件下，高性能的程序应该可以等同于CPU的利用率，CPU的利用率越高(一直在工作，没有闲下来的时候)，程序的性能越高。 体验：这里的体验不只是界面多么漂亮，功能多么顺手，这里的体验指程序的响应速度，响应速度越快，用户体验越好。 由于我们要解决的问题是CPU高速执行能力和IO设备的龟速严重不匹配，多线程和多进程只是解决这一问题的一种方法。 另一种解决IO问题的方法是异步IO。当代码需">
-<meta property="og:updated_time" content="2017-08-14T00:36:07.036Z">
+<meta property="og:description" content="性能:在其他同等条件下,高性能的程序应该可以等同于CPU的利用率,CPU的利用率越高(一直在工作,没有闲下来的时候),程序的性能越高. 体验:这里的体验不只是界面多么漂亮,功能多么顺手,这里的体验指程序的响应速度,响应速度越快,用户体验越好. 由于我们要解决的问题是CPU高速执行能力和IO设备的龟速严重不匹配,多线程和多进程只是解决这一问题的一种方法. 另一种解决IO问题的方法是异步IO.当代码需">
+<meta property="og:updated_time" content="2017-08-25T07:05:55.884Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="threads">
-<meta name="twitter:description" content="性能：在其他同等条件下，高性能的程序应该可以等同于CPU的利用率，CPU的利用率越高(一直在工作，没有闲下来的时候)，程序的性能越高。 体验：这里的体验不只是界面多么漂亮，功能多么顺手，这里的体验指程序的响应速度，响应速度越快，用户体验越好。 由于我们要解决的问题是CPU高速执行能力和IO设备的龟速严重不匹配，多线程和多进程只是解决这一问题的一种方法。 另一种解决IO问题的方法是异步IO。当代码需">
+<meta name="twitter:title" content="进程与线程">
+<meta name="twitter:description" content="性能:在其他同等条件下,高性能的程序应该可以等同于CPU的利用率,CPU的利用率越高(一直在工作,没有闲下来的时候),程序的性能越高. 体验:这里的体验不只是界面多么漂亮,功能多么顺手,这里的体验指程序的响应速度,响应速度越快,用户体验越好. 由于我们要解决的问题是CPU高速执行能力和IO设备的龟速严重不匹配,多线程和多进程只是解决这一问题的一种方法. 另一种解决IO问题的方法是异步IO.当代码需">
     
 
     
@@ -159,7 +159,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                26
+                27
                 <span>posts</span>
             </div>
             <div class="article-info-block">
@@ -225,7 +225,7 @@
                 
     
         <h1 class="article-title" itemprop="name">
-            threads
+            进程与线程
         </h1>
     
 
@@ -235,7 +235,7 @@
     <div class="article-date">
         <i class="fa fa-calendar"></i>
         <a href="/2017/08/05/threads/">
-            <time datetime="2017-08-05T11:16:14.000Z" itemprop="datePublished">2017-08-05</time>
+            <time datetime="2017-08-05T03:16:14.000Z" itemprop="datePublished">2017-08-05</time>
         </a>
     </div>
 
@@ -255,56 +255,55 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>性能：在其他同等条件下，高性能的程序应该可以等同于CPU的利用率，CPU的利用率越高(一直在工作，没有闲下来的时候)，程序的性能越高。</p>
-<p>体验：这里的体验不只是界面多么漂亮，功能多么顺手，这里的体验指程序的响应速度，响应速度越快，用户体验越好。</p>
-<p>由于我们要解决的问题是CPU高速执行能力和IO设备的龟速严重不匹配，多线程和多进程只是解决这一问题的一种方法。</p>
-<p>另一种解决IO问题的方法是异步IO。当代码需要执行一个耗时的IO操作时，它只发出IO指令，并不等待IO结果，然后就去执行其他代码了。<br>一段时间后，当IO返回结果时，再通知CPU进行处理，在处理 IO 的时候，阻塞和非阻塞都是同步 IO。 只有使用了特殊的 API 才是异步 IO。</p>
+            <p>性能:在其他同等条件下,高性能的程序应该可以等同于CPU的利用率,CPU的利用率越高(一直在工作,没有闲下来的时候),程序的性能越高.</p>
+<p>体验:这里的体验不只是界面多么漂亮,功能多么顺手,这里的体验指程序的响应速度,响应速度越快,用户体验越好.</p>
+<p>由于我们要解决的问题是CPU高速执行能力和IO设备的龟速严重不匹配,多线程和多进程只是解决这一问题的一种方法.</p>
+<p>另一种解决IO问题的方法是异步IO.当代码需要执行一个耗时的IO操作时,它只发出IO指令,并不等待IO结果,然后就去执行其他代码了.<br>一段时间后,当IO返回结果时,再通知CPU进行处理,在处理 IO 的时候,阻塞和非阻塞都是同步 IO. 只有使用了特殊的 API 才是异步 IO.</p>
 <p>首先对一些名词的理解</p>
-<h3 id="被调用方：同步与异步关乎做事情的方式。-同步：做完一件事再去做另一件。-异步：同时做多件事情，某个事情有结果了再去处理（又一个新事情）我的理解-被调用方有没有能力同时处理问题的能力。"><a href="#被调用方：同步与异步关乎做事情的方式。-同步：做完一件事再去做另一件。-异步：同时做多件事情，某个事情有结果了再去处理（又一个新事情）我的理解-被调用方有没有能力同时处理问题的能力。" class="headerlink" title="被调用方：同步与异步关乎做事情的方式。 同步：做完一件事再去做另一件。 异步：同时做多件事情，某个事情有结果了再去处理（又一个新事情）我的理解: 被调用方有没有能力同时处理问题的能力。"></a>被调用方：同步与异步关乎做事情的方式。 同步：做完一件事再去做另一件。 异步：同时做多件事情，某个事情有结果了再去处理（又一个新事情）我的理解: 被调用方有没有能力同时处理问题的能力。</h3><p>同步和异步关注的是消息通信机制(synchronous communication/ asynchronous communication):<br>所谓同步，就是在发出一个调用时，在没有得到结果之前,该调用就不返回，但是一旦调用返回，就得到返回值了<br>换句话说，就是由调用者主动等待这个调用的结果</p>
-<p>而异步则是相反，调用在发出之后，这个调用就直接返回了，所以没有返回结果。换句话说，当一个异步过程调用发出后，调用者不会立刻得到结果。<br>而是在调用发出后，被调用者通过状态、通知来通知调用者，或通过回调函数处理这个调用</p>
-<h3 id="调用方：阻塞与非阻塞关乎如何对待事情产生的结果。-阻塞：不等到想要的结果我就不走了。-非阻塞：有结果我就带走，没结果我就空手而回，总之一句话：爷等不起"><a href="#调用方：阻塞与非阻塞关乎如何对待事情产生的结果。-阻塞：不等到想要的结果我就不走了。-非阻塞：有结果我就带走，没结果我就空手而回，总之一句话：爷等不起" class="headerlink" title="调用方：阻塞与非阻塞关乎如何对待事情产生的结果。 阻塞：不等到想要的结果我就不走了。 非阻塞：有结果我就带走，没结果我就空手而回，总之一句话：爷等不起"></a>调用方：阻塞与非阻塞关乎如何对待事情产生的结果。 阻塞：不等到想要的结果我就不走了。 非阻塞：有结果我就带走，没结果我就空手而回，总之一句话：爷等不起</h3><h3 id="并发与并行"><a href="#并发与并行" class="headerlink" title="并发与并行"></a>并发与并行</h3><p>并发指在同一时刻，只能有一条指令执行，但多个进程指令被快速轮换执行(纳秒级)，使得在宏观上具有多个进程同时执行的效果。<br>只能运行一个进程，CPU不断地在这些进程之间轮换执行,</p>
-<p>并行指在同一时刻，有多条指令在多个处理器上同时执行；多个CPU处理器</p>
-<h3 id="进程-拥有独立的内存单元-chrome使用多进程-与线程-也被称作轻量级进程"><a href="#进程-拥有独立的内存单元-chrome使用多进程-与线程-也被称作轻量级进程" class="headerlink" title="进程(拥有独立的内存单元,chrome使用多进程)与线程(也被称作轻量级进程)"></a>进程(拥有独立的内存单元,chrome使用多进程)与线程(也被称作轻量级进程)</h3><p>进程:程序的一次执行. 线程:CPU的基本调度单位 ,而在Linux系统里面，在最底层，线程和进程确实是不区分的。</p>
+<h3 id="被调用方-同步与异步关乎做事情的方式-同步-做完一件事再去做另一件-异步-同时做多件事情-某个事情有结果了再去处理-又一个新事情-我的理解-被调用方有没有能力同时处理问题的能力"><a href="#被调用方-同步与异步关乎做事情的方式-同步-做完一件事再去做另一件-异步-同时做多件事情-某个事情有结果了再去处理-又一个新事情-我的理解-被调用方有没有能力同时处理问题的能力" class="headerlink" title="被调用方:同步与异步关乎做事情的方式. 同步:做完一件事再去做另一件. 异步:同时做多件事情,某个事情有结果了再去处理(又一个新事情)我的理解: 被调用方有没有能力同时处理问题的能力."></a>被调用方:同步与异步关乎做事情的方式. 同步:做完一件事再去做另一件. 异步:同时做多件事情,某个事情有结果了再去处理(又一个新事情)我的理解: 被调用方有没有能力同时处理问题的能力.</h3><p>同步和异步关注的是消息通信机制(synchronous communication/ asynchronous communication):<br>所谓同步,就是在发出一个调用时,在没有得到结果之前,该调用就不返回,但是一旦调用返回,就得到返回值了<br>换句话说,就是由调用者主动等待这个调用的结果</p>
+<p>而异步则是相反,调用在发出之后,这个调用就直接返回了,所以没有返回结果.换句话说,当一个异步过程调用发出后,调用者不会立刻得到结果.<br>而是在调用发出后,被调用者通过状态、通知来通知调用者,或通过回调函数处理这个调用</p>
+<h3 id="调用方-阻塞与非阻塞关乎如何对待事情产生的结果-阻塞-不等到想要的结果我就不走了-非阻塞-有结果我就带走-没结果我就空手而回-总之一句话-爷等不起"><a href="#调用方-阻塞与非阻塞关乎如何对待事情产生的结果-阻塞-不等到想要的结果我就不走了-非阻塞-有结果我就带走-没结果我就空手而回-总之一句话-爷等不起" class="headerlink" title="调用方:阻塞与非阻塞关乎如何对待事情产生的结果. 阻塞:不等到想要的结果我就不走了. 非阻塞:有结果我就带走,没结果我就空手而回,总之一句话:爷等不起"></a>调用方:阻塞与非阻塞关乎如何对待事情产生的结果. 阻塞:不等到想要的结果我就不走了. 非阻塞:有结果我就带走,没结果我就空手而回,总之一句话:爷等不起</h3><h3 id="并发与并行"><a href="#并发与并行" class="headerlink" title="并发与并行"></a>并发与并行</h3><p>并发指在同一时刻,只能有一条指令执行,但多个进程指令被快速轮换执行(纳秒级),使得在宏观上具有多个进程同时执行的效果.<br>只能运行一个进程,CPU不断地在这些进程之间轮换执行,</p>
+<p>并行指在同一时刻,有多条指令在多个处理器上同时执行;多个CPU处理器</p>
+<h3 id="进程-拥有独立的内存单元-chrome使用多进程-与线程-也被称作轻量级进程"><a href="#进程-拥有独立的内存单元-chrome使用多进程-与线程-也被称作轻量级进程" class="headerlink" title="进程(拥有独立的内存单元,chrome使用多进程)与线程(也被称作轻量级进程)"></a>进程(拥有独立的内存单元,chrome使用多进程)与线程(也被称作轻量级进程)</h3><p>进程:程序的一次执行. 线程:CPU的基本调度单位 ,而在Linux系统里面,在最底层,线程和进程确实是不区分的.</p>
 <p>进程是系统进行资源分配和调度的一个独立单位,线程是进程的执行单元.线程的调度和管理由进程本身负责完成.线程在进程中是独立的、并发的执行流.</p>
-<p>当一个程序运行时，内部可能包含了多个顺序执行流，每个顺序执行流就是一个线程。当一个程序进入内存，运行后，即变成一个进程.</p>
+<p>当一个程序运行时,内部可能包含了多个顺序执行流,每个顺序执行流就是一个线程.当一个程序进入内存,运行后,即变成一个进程.</p>
 <h4 id="进程的三个特性"><a href="#进程的三个特性" class="headerlink" title="进程的三个特性"></a>进程的三个特性</h4><ol>
-<li><p>独立性：进程是系统中独立存在的实体，它可以拥有自己独立的资源，每一个进程都拥有自己私有的地址空间。在没有经过进程本身允许的情况下，一个用户进程不可以直接就访问其他进程的地址空间。</p>
+<li><p>独立性:进程是系统中独立存在的实体,它可以拥有自己独立的资源,每一个进程都拥有自己私有的地址空间.在没有经过进程本身允许的情况下,一个用户进程不可以直接就访问其他进程的地址空间.</p>
 </li>
-<li><p>动态性：进程与程序的区别在于，程序只是一个静态的指令集合，而进程是一个正在系统中活动的指令集合。在进程中加入了时间的概念。进程具有自己的生命周期和各种不同的状态，这些概念在程序中都是不具备的。</p>
+<li><p>动态性:进程与程序的区别在于,程序只是一个静态的指令集合,而进程是一个正在系统中活动的指令集合.在进程中加入了时间的概念.进程具有自己的生命周期和各种不同的状态,这些概念在程序中都是不具备的.</p>
 </li>
-<li><p>并发性：多个进程可以在单个处理器上并发执行，多个进程之间不会互相影响</p>
+<li><p>并发性:多个进程可以在单个处理器上并发执行,多个进程之间不会互相影响</p>
 </li>
 </ol>
 <p>车间:</p>
-<p>   <a href="http://www.ruanyifeng.com/blog/2013/04/processes_and_threads.html" target="_blank" rel="external">一个进程与线程的一个简单解释</a><br>   程序(车间，有独立的内存空间)之间进行内存数据交换(通信)比较麻烦：每个程序的内存空间都是被保护的，不能被别的程序直接访问，所以要通过某种介质，管道或第三方工具，去通信。<br>   nosql(第三方):将内存的数据缓存进来，供其它的程序调用，所有的程序都可以往里存数据，所有的程序都可以取数据。相当于实现了一个共享的内存空间</p>
+<p>   <a href="http://www.ruanyifeng.com/blog/2013/04/processes_and_threads.html" target="_blank" rel="external">一个进程与线程的一个简单解释</a><br>   程序(车间,有独立的内存空间)之间进行内存数据交换(通信)比较麻烦:每个程序的内存空间都是被保护的,不能被别的程序直接访问,所以要通过某种介质,管道或第三方工具,去通信.<br>   nosql(第三方):将内存的数据缓存进来,供其它的程序调用,所有的程序都可以往里存数据,所有的程序都可以取数据.相当于实现了一个共享的内存空间</p>
 <p>餐桌:</p>
-<p>   一群人(多个线程)在一个桌子(进程)上吃饭，他们会涉及到一些问题，比如多个人可能会夹一个菜(竞争)<br>A和B同时看到盘子里面有一块肉，同时伸出筷子去夹，A先夹走，B迟了一点伸到盘子的时候已经没了，只能缩回来(临界资源，互斥)<br>有一个点心需要用馍夹肉一起吃。A夹了肉，B夹了馍，A需要B的馍，B需要A的肉，他们僵持不下谁都不让步(死锁)。<br>多线程之间的资源共享是非常方便的，因为他们共用进程的资源空间(在一个桌子上),但是需要注意一系列的问题,竞争,死锁,同步等</p>
-<p>   如果在旁边再开一个桌子(进程)。 那么桌子之间讲话，递东西又不方便(进程间通信)，而开一个桌子的开销比在一个桌子上多加一个人的开销要大。<br>另外一个桌子上的人数不可能无限制增加，桌子的容量有限也坐不下这么多人(进程的线程句柄是有限制的)。<br>一个桌子坏了不会影响到另一个桌子上面人的就餐情况(进程间相互独立，一个进程崩溃不会影响另一个)，而一个桌子上的某人喝挂了需要送医院，<br>估计这一桌人都要散了(线程挂掉会导致整个进程也挂掉)。所以多线程与多进程是各有优缺点，不能一概而论</p>
+<p>   一群人(多个线程)在一个桌子(进程)上吃饭,他们会涉及到一些问题,比如多个人可能会夹一个菜(竞争)<br>A和B同时看到盘子里面有一块肉,同时伸出筷子去夹,A先夹走,B迟了一点伸到盘子的时候已经没了,只能缩回来(临界资源,互斥)<br>有一个点心需要用馍夹肉一起吃.A夹了肉,B夹了馍,A需要B的馍,B需要A的肉,他们僵持不下谁都不让步(死锁).<br>多线程之间的资源共享是非常方便的,因为他们共用进程的资源空间(在一个桌子上),但是需要注意一系列的问题,竞争,死锁,同步等</p>
+<p>   如果在旁边再开一个桌子(进程). 那么桌子之间讲话,递东西又不方便(进程间通信),而开一个桌子的开销比在一个桌子上多加一个人的开销要大.<br>另外一个桌子上的人数不可能无限制增加,桌子的容量有限也坐不下这么多人(进程的线程句柄是有限制的).<br>一个桌子坏了不会影响到另一个桌子上面人的就餐情况(进程间相互独立,一个进程崩溃不会影响另一个),而一个桌子上的某人喝挂了需要送医院,<br>估计这一桌人都要散了(线程挂掉会导致整个进程也挂掉).所以多线程与多进程是各有优缺点,不能一概而论</p>
 <ol>
-<li>对于 Windows系统来说，【开桌子】的开销很大，因此Windows鼓励大家在一个桌子上吃菜。因此Windows多线程学习重点是要大量面对资源争抢与同步方面的问题。</li>
-<li>对于Linux系统来说，【开桌子】的开销很小，因此Linux鼓励大家尽量每个人都开自己的桌子吃菜。这带来新的问题是：坐在两张不同的桌子上，说话不方便。<br>因此，Linux下的学习重点大家要学习进程间通讯的方法。</li>
+<li>对于 Windows系统来说,【开桌子】的开销很大,因此Windows鼓励大家在一个桌子上吃菜.因此Windows多线程学习重点是要大量面对资源争抢与同步方面的问题.</li>
+<li>对于Linux系统来说,【开桌子】的开销很小,因此Linux鼓励大家尽量每个人都开自己的桌子吃菜.这带来新的问题是:坐在两张不同的桌子上,说话不方便.<br>因此,Linux下的学习重点大家要学习进程间通讯的方法.</li>
 </ol>
-<h3 id="单线程-单任务，按顺序去完成-和多线程"><a href="#单线程-单任务，按顺序去完成-和多线程" class="headerlink" title="单线程(单任务，按顺序去完成)和多线程"></a>单线程(单任务，按顺序去完成)和多线程</h3><p>   多线程则扩展了多进程的概念，使得同一个进程可以同时并发(轮换执行)处理多个任务。线程(Thread)也被称作轻量级进程(LightweightProcess)，线程是进程的执行单元.</p>
-<p>   就像进程在操作系统中的地位一样，线程在进程中是独立的、并发的执行流。进程操作系统–线程进程,当线程被初始化后，主线程就被创建了对于应用程序而言，</p>
-<p>   通常至少有一个主线程，可以在该进程内创建多条顺序执行流，这些顺序执行流就是线程，每条线程也是相互独立的；</p>
-<p>   线程是进程的的组成部分，一个进程可以拥有多个线程，一个线程必须有一个父进程，线程可以拥有自己的堆栈、自己的程序计数器和自己的局部变量，<br>但是不再拥有系统资源，它与父进程的其他线程共享该进程所拥有的全部资源。</p>
-<p>   因为多个线程共享父进程里的全部资源，因此编程更加方便；但必须更加小心，必须确保线程不会妨碍同一进程里的其他线程。线程的调度和管理由进程本身负责完成。</p>
-<p>进程在执行过程中拥有独立的内存单元，而多个线程共享内存，从而极大地提高了程序的运行效率</p>
-<p>车间：</p>
-<p>当要完成一项工作或多项工作时(但还是在一个主线程中)，单线程就好比一个工人，而多线程就是招了多个工人一起干活，效率当然快了！<br>但管理就费劲了(死锁，竟争)，允许单个任务分成不同的部分运行</p>
-<p>餐桌：</p>
-<p>单线程就是整个餐厅只有一个单人桌，这个人吃完了，下一个人轮上。<br>但大餐馆用的可能是八仙桌，同时能容纳八个人吃饭，这就是多线程:从一次一个变成了一次多个或者多次多个</p>
-<h4 id="多线程的作用"><a href="#多线程的作用" class="headerlink" title="多线程的作用"></a>多线程的作用</h4><p>1.把程序细分成几个功能相对独立的模块，防止其中一个功能模块阻塞导致整个程序假死（GUI程序是典型).一个线程一件事，多线程做多件事</p>
-<p>2.提高运行效率，比如多个核同时跑，或者单核里面，某个线程进行IO操作时，另一个线程可以同时执行<br>这样一条主线程，处理整个程序任务的主方向的链，而其链上又有许许多多的分支，就像树枝那样，<br> 这样，既有了主线程去处理那些主要任务，又有了那些细小线程去处理耗时费力任务，从而让界面看起来更加流畅</p>
-<h4 id="多线程做同一件事"><a href="#多线程做同一件事" class="headerlink" title="多线程做同一件事"></a>多线程做同一件事</h4><p>多线程使得程序内部可以分出多个线程来做多件事情，而不会造成程序界面卡死。比如迅雷等多线程下载工具就是典型的多线程。<br>一个下载任务进来，迅雷把文件平分成10份，然后开10个线程分别下载。这时主界面是一个单独的线程，并不会因为下载文件而卡死。<br>而且主线程可以控制下属线程，比如某个线程下载缓慢甚至停止，主线程可以把它强行关掉并重启另外一个线程.</p>
-<p>多线程因为在同一个进程里，所以可以共享内存和其他资源，比如迅雷里10个线程一齐下载一个文件，这个文件是由进程打开的，<br>然后10个线程都可以往里写入东西。如果是10个进程就不行了，操作系统不允许一个文件由两个进程同时写入</p>
-<p>python中使用 GIL(global interpreter lock)保证了线程安全(保证数据被安全读取)，即同时只能有一个线程在CPU上运行，<br>这个线程也不能扩散到其它CPU上，GIL是以CPU为单位去控制这个锁,对于python的多线程，多核也没有实际的提速作用,</p>
-<h4 id="所以多线程在Python中只能跑在一个CPU上。如果想利用多CPU的话，就使用多进程-需要给独立的内存空间，所以比较占内存资源-。"><a href="#所以多线程在Python中只能跑在一个CPU上。如果想利用多CPU的话，就使用多进程-需要给独立的内存空间，所以比较占内存资源-。" class="headerlink" title="所以多线程在Python中只能跑在一个CPU上。如果想利用多CPU的话，就使用多进程(需要给独立的内存空间，所以比较占内存资源)。"></a>所以多线程在Python中只能跑在一个CPU上。如果想利用多CPU的话，就使用多进程(需要给独立的内存空间，所以比较占内存资源)。</h4><p>当每个CPU核心运行一个进程的时候，由于每个进程的资源都独立，所以CPU核心之间切换的时候无需考虑上下文。</p>
-<p>当每个CPU核心运行一个线程的时候，由于每个线程需要共享资源，所以这些资源必须从CPU的一个核心被复制到另外一个核心，才能继续运算，这占用了额外的开销。<br>换句话说，在CPU为多核的情况下，多线程在性能上不如多进程。</p>
-<h3 id="（1）以多进程形式，允许多个任务同时运行；"><a href="#（1）以多进程形式，允许多个任务同时运行；" class="headerlink" title="（1）以多进程形式，允许多个任务同时运行；"></a>（1）以多进程形式，允许多个任务同时运行；</h3><h3 id="（2）以多线程形式，允许单个任务分成不同的部分运行；"><a href="#（2）以多线程形式，允许单个任务分成不同的部分运行；" class="headerlink" title="（2）以多线程形式，允许单个任务分成不同的部分运行；"></a>（2）以多线程形式，允许单个任务分成不同的部分运行；</h3><h3 id="（3）提供协调机制，一方面防止进程之间和线程之间产生冲突，另一方面允许进程之间和线程之间共享资源。"><a href="#（3）提供协调机制，一方面防止进程之间和线程之间产生冲突，另一方面允许进程之间和线程之间共享资源。" class="headerlink" title="（3）提供协调机制，一方面防止进程之间和线程之间产生冲突，另一方面允许进程之间和线程之间共享资源。"></a>（3）提供协调机制，一方面防止进程之间和线程之间产生冲突，另一方面允许进程之间和线程之间共享资源。</h3><h3 id="协程-又称微线程-coroutine-相当于单线程的能力-与子程序-函数调用是通过栈实现的，一个线程就是执行一个子程序-子程序就是协程的一种特例"><a href="#协程-又称微线程-coroutine-相当于单线程的能力-与子程序-函数调用是通过栈实现的，一个线程就是执行一个子程序-子程序就是协程的一种特例" class="headerlink" title="协程(又称微线程(coroutine),相当于单线程的能力)与子程序(函数调用是通过栈实现的，一个线程就是执行一个子程序,子程序就是协程的一种特例)"></a>协程(又称微线程(coroutine),相当于单线程的能力)与子程序(函数调用是通过栈实现的，一个线程就是执行一个子程序,子程序就是协程的一种特例)</h3><p>  子程序，或者称为函数，在所有语言中都是层级调用，比如A调用B，B在执行过程中又调用了C，C执行完毕返回，B执行完毕返回，最后是A执行完毕。<br>  协程(协作完成任务),tornado好像就是用协程来实现异步的协程，协程看上去也是子程序，但执行过程中，在子程序内部可中断，然后转而执行别的子程序，在适当的时候再返回来接着执行.</p>
-<h3 id="协程的特点在于是一个线程执行-所有协程有如下优势"><a href="#协程的特点在于是一个线程执行-所有协程有如下优势" class="headerlink" title="协程的特点在于是一个线程执行,所有协程有如下优势"></a>协程的特点在于是一个线程执行,所有协程有如下优势</h3><p>  最大的优势就是协程极高的执行效率。因为子程序切换不是线程切换，而是由程序自身控制，因此，没有线程切换的开销，和多线程比，线程数量越多，协程的性能优势就越明显。</p>
-<pre><code>第二大优势就是不需要多线程的锁机制，因为只有一个线程，也不存在同时写变量冲突，在协程中控制共享资源不加锁，只需要判断状态就好了，所以执行效率比多线程高很多。
-</code></pre><p><a href="https://github.com/willwinworld/asyncmultispider" target="_blank" rel="external">参考于此</a></p>
+<h3 id="单线程-单任务-按顺序去完成-和多线程"><a href="#单线程-单任务-按顺序去完成-和多线程" class="headerlink" title="单线程(单任务,按顺序去完成)和多线程"></a>单线程(单任务,按顺序去完成)和多线程</h3><p>   多线程则扩展了多进程的概念,使得同一个进程可以同时并发(轮换执行)处理多个任务.线程(Thread)也被称作轻量级进程(LightweightProcess),线程是进程的执行单元.</p>
+<p>   就像进程在操作系统中的地位一样,线程在进程中是独立的、并发的执行流.进程操作系统–线程进程,当线程被初始化后,主线程就被创建了对于应用程序而言,</p>
+<p>   通常至少有一个主线程,可以在该进程内创建多条顺序执行流,这些顺序执行流就是线程,每条线程也是相互独立的;</p>
+<p>   线程是进程的的组成部分,一个进程可以拥有多个线程,一个线程必须有一个父进程,线程可以拥有自己的堆栈、自己的程序计数器和自己的局部变量,<br>但是不再拥有系统资源,它与父进程的其他线程共享该进程所拥有的全部资源.</p>
+<p>   因为多个线程共享父进程里的全部资源,因此编程更加方便;但必须更加小心,必须确保线程不会妨碍同一进程里的其他线程.线程的调度和管理由进程本身负责完成.</p>
+<p>进程在执行过程中拥有独立的内存单元,而多个线程共享内存,从而极大地提高了程序的运行效率</p>
+<p>车间:</p>
+<p>当要完成一项工作或多项工作时(但还是在一个主线程中),单线程就好比一个工人,而多线程就是招了多个工人一起干活,效率当然快了！<br>但管理就费劲了(死锁,竟争),允许单个任务分成不同的部分运行</p>
+<p>餐桌:</p>
+<p>单线程就是整个餐厅只有一个单人桌,这个人吃完了,下一个人轮上.<br>但大餐馆用的可能是八仙桌,同时能容纳八个人吃饭,这就是多线程:从一次一个变成了一次多个或者多次多个</p>
+<h4 id="多线程的作用"><a href="#多线程的作用" class="headerlink" title="多线程的作用"></a>多线程的作用</h4><p>1.把程序细分成几个功能相对独立的模块,防止其中一个功能模块阻塞导致整个程序假死(GUI程序是典型).一个线程一件事,多线程做多件事</p>
+<p>2.提高运行效率,比如多个核同时跑,或者单核里面,某个线程进行IO操作时,另一个线程可以同时执行<br>这样一条主线程,处理整个程序任务的主方向的链,而其链上又有许许多多的分支,就像树枝那样,<br> 这样,既有了主线程去处理那些主要任务,又有了那些细小线程去处理耗时费力任务,从而让界面看起来更加流畅</p>
+<h4 id="多线程做同一件事"><a href="#多线程做同一件事" class="headerlink" title="多线程做同一件事"></a>多线程做同一件事</h4><p>多线程使得程序内部可以分出多个线程来做多件事情,而不会造成程序界面卡死.比如迅雷等多线程下载工具就是典型的多线程.<br>一个下载任务进来,迅雷把文件平分成10份,然后开10个线程分别下载.这时主界面是一个单独的线程,并不会因为下载文件而卡死.<br>而且主线程可以控制下属线程,比如某个线程下载缓慢甚至停止,主线程可以把它强行关掉并重启另外一个线程.</p>
+<p>多线程因为在同一个进程里,所以可以共享内存和其他资源,比如迅雷里10个线程一齐下载一个文件,这个文件是由进程打开的,<br>然后10个线程都可以往里写入东西.如果是10个进程就不行了,操作系统不允许一个文件由两个进程同时写入</p>
+<p>python中使用 GIL(global interpreter lock)保证了线程安全(保证数据被安全读取),即同时只能有一个线程在CPU上运行,<br>这个线程也不能扩散到其它CPU上,GIL是以CPU为单位去控制这个锁,对于python的多线程,多核也没有实际的提速作用,</p>
+<h4 id="所以多线程在Python中只能跑在一个CPU上-如果想利用多CPU的话-就使用多进程-需要给独立的内存空间-所以比较占内存资源"><a href="#所以多线程在Python中只能跑在一个CPU上-如果想利用多CPU的话-就使用多进程-需要给独立的内存空间-所以比较占内存资源" class="headerlink" title="所以多线程在Python中只能跑在一个CPU上.如果想利用多CPU的话,就使用多进程(需要给独立的内存空间,所以比较占内存资源)."></a>所以多线程在Python中只能跑在一个CPU上.如果想利用多CPU的话,就使用多进程(需要给独立的内存空间,所以比较占内存资源).</h4><p>当每个CPU核心运行一个进程的时候,由于每个进程的资源都独立,所以CPU核心之间切换的时候无需考虑上下文.</p>
+<p>当每个CPU核心运行一个线程的时候,由于每个线程需要共享资源,所以这些资源必须从CPU的一个核心被复制到另外一个核心,才能继续运算,这占用了额外的开销.<br>换句话说,在CPU为多核的情况下,多线程在性能上不如多进程.</p>
+<h3 id="1-以多进程形式-允许多个任务同时运行"><a href="#1-以多进程形式-允许多个任务同时运行" class="headerlink" title="(1)以多进程形式,允许多个任务同时运行;"></a>(1)以多进程形式,允许多个任务同时运行;</h3><h3 id="2-以多线程形式-允许单个任务分成不同的部分运行"><a href="#2-以多线程形式-允许单个任务分成不同的部分运行" class="headerlink" title="(2)以多线程形式,允许单个任务分成不同的部分运行;"></a>(2)以多线程形式,允许单个任务分成不同的部分运行;</h3><h3 id="3-提供协调机制-一方面防止进程之间和线程之间产生冲突-另一方面允许进程之间和线程之间共享资源"><a href="#3-提供协调机制-一方面防止进程之间和线程之间产生冲突-另一方面允许进程之间和线程之间共享资源" class="headerlink" title="(3)提供协调机制,一方面防止进程之间和线程之间产生冲突,另一方面允许进程之间和线程之间共享资源."></a>(3)提供协调机制,一方面防止进程之间和线程之间产生冲突,另一方面允许进程之间和线程之间共享资源.</h3><h3 id="协程-又称微线程-coroutine-相当于单线程的能力-与子程序-函数调用是通过栈实现的-一个线程就是执行一个子程序-子程序就是协程的一种特例"><a href="#协程-又称微线程-coroutine-相当于单线程的能力-与子程序-函数调用是通过栈实现的-一个线程就是执行一个子程序-子程序就是协程的一种特例" class="headerlink" title="协程(又称微线程(coroutine),相当于单线程的能力)与子程序(函数调用是通过栈实现的,一个线程就是执行一个子程序,子程序就是协程的一种特例)"></a>协程(又称微线程(coroutine),相当于单线程的能力)与子程序(函数调用是通过栈实现的,一个线程就是执行一个子程序,子程序就是协程的一种特例)</h3><p>  子程序,或者称为函数,在所有语言中都是层级调用,比如A调用B,B在执行过程中又调用了C,C执行完毕返回,B执行完毕返回,最后是A执行完毕.<br>  协程(协作完成任务),tornado好像就是用协程来实现异步的协程,协程看上去也是子程序,但执行过程中,在子程序内部可中断,然后转而执行别的子程序,在适当的时候再返回来接着执行.</p>
+<h3 id="协程的特点在于是一个线程执行-所有协程有如下优势"><a href="#协程的特点在于是一个线程执行-所有协程有如下优势" class="headerlink" title="协程的特点在于是一个线程执行,所有协程有如下优势"></a>协程的特点在于是一个线程执行,所有协程有如下优势</h3><p>  最大的优势就是协程极高的执行效率.因为子程序切换不是线程切换,而是由程序自身控制,因此,没有线程切换的开销,和多线程比,线程数量越多,协程的性能优势就越明显.</p>
+<p>第二大优势就是不需要多线程的锁机制,因为只有一个线程,也不存在同时写变量冲突,在协程中控制共享资源不加锁,只需要判断状态就好了,所以执行效率比多线程高很多.<br><a href="https://github.com/willwinworld/asyncmultispider" target="_blank" rel="external">参考于此</a></p>
 
         
         </div>
@@ -315,7 +314,7 @@
 
 </div>
 
-    <a data-url="https://www.femnyy.com/2017/08/05/threads/" data-id="cj6n0lgn6001s08l1bf4xjfgj" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/05/threads/" data-id="cj6rj9i1g00111d3k4rtlmoa8" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -383,7 +382,7 @@
 
             
     
-        <a href="https://www.femnyy.com/2017/08/05/threads/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/05/threads/">Comments</a>
+        <a href="https://www.femn.me/2017/08/05/threads/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/05/threads/">Comments</a>
     
 
         </footer>
@@ -437,9 +436,18 @@
                     <li>
                         
                         <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/shell/">shell</a></p>
+                            <p class="item-title"><a href="/2017/08/23/shell-grep-sed-awk/" class="title">shell_sed_awk</a></p>
+                            <p class="item-date"><time datetime="2017-08-23T01:05:44.000Z" itemprop="datePublished">2017-08-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/python3/">python3</a></p>
                             <p class="item-title"><a href="/2017/08/18/pymongo/" class="title">pymongo基本操作</a></p>
-                            <p class="item-date"><time datetime="2017-08-18T14:48:02.000Z" itemprop="datePublished">2017-08-18</time></p>
+                            <p class="item-date"><time datetime="2017-08-18T06:48:02.000Z" itemprop="datePublished">2017-08-18</time></p>
                         </div>
                     </li>
                 
@@ -448,7 +456,7 @@
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/数据库/">数据库</a></p>
                             <p class="item-title"><a href="/2017/08/18/mongodb/" class="title">mongodb基本命令</a></p>
-                            <p class="item-date"><time datetime="2017-08-18T11:56:18.000Z" itemprop="datePublished">2017-08-18</time></p>
+                            <p class="item-date"><time datetime="2017-08-18T03:56:18.000Z" itemprop="datePublished">2017-08-18</time></p>
                         </div>
                     </li>
                 
@@ -457,7 +465,7 @@
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
                             <p class="item-title"><a href="/2017/08/18/ghost/" class="title">ghost下载与使用</a></p>
-                            <p class="item-date"><time datetime="2017-08-18T11:11:58.000Z" itemprop="datePublished">2017-08-18</time></p>
+                            <p class="item-date"><time datetime="2017-08-18T03:11:58.000Z" itemprop="datePublished">2017-08-18</time></p>
                         </div>
                     </li>
                 
@@ -466,16 +474,7 @@
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/linux/">linux</a></p>
                             <p class="item-title"><a href="/2017/08/17/linux-server-process/" class="title">linux 服务与进程</a></p>
-                            <p class="item-date"><time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
-                            <p class="item-title"><a href="/2017/08/16/CDN-server/" class="title">内容分发网络</a></p>
-                            <p class="item-date"><time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time></p>
+                            <p class="item-date"><time datetime="2017-08-17T07:44:24.000Z" itemprop="datePublished">2017-08-17</time></p>
                         </div>
                     </li>
                 
@@ -488,7 +487,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -497,7 +496,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">26</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">27</span></li></ul>
         </div>
     </div>
 
@@ -558,7 +557,7 @@
     <script>
     var disqus_config = function () {
         
-            this.page.url = 'https://www.femnyy.com/2017/08/05/threads/';
+            this.page.url = 'https://www.femn.me/2017/08/05/threads/';
         
         this.page.identifier = 'threads';
     };
