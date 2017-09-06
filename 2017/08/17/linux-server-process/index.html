@@ -12,7 +12,7 @@
 <meta property="og:url" content="https://www.femnyy.com/2017/08/17/linux-server-process/index.html">
 <meta property="og:site_name" content="Femn">
 <meta property="og:description" content="linux启动流程通电 –&amp;gt;BIOS(哪个磁盘有MBR) –&amp;gt;MBR(哪个分区为要开启的OS) –&amp;gt;OS –&amp;gt;/boot(kernel) –&amp;gt;init(PID:1) –&amp;gt;/etc/rc*.d/ –&amp;gt;/etc/init.d/ –&amp;gt;用户登陆(/etc/profilc–&amp;gt;~/.profile .bash_login .bash_profile–&amp;gt">
-<meta property="og:updated_time" content="2017-08-25T08:39:36.918Z">
+<meta property="og:updated_time" content="2017-09-06T01:25:59.842Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux 服务与进程">
 <meta name="twitter:description" content="linux启动流程通电 –&amp;gt;BIOS(哪个磁盘有MBR) –&amp;gt;MBR(哪个分区为要开启的OS) –&amp;gt;OS –&amp;gt;/boot(kernel) –&amp;gt;init(PID:1) –&amp;gt;/etc/rc*.d/ –&amp;gt;/etc/init.d/ –&amp;gt;用户登陆(/etc/profilc–&amp;gt;~/.profile .bash_login .bash_profile–&amp;gt">
@@ -160,11 +160,11 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                27
+                37
                 <span>posts</span>
             </div>
             <div class="article-info-block">
-                2
+                3
                 <span>tags</span>
             </div>
         </div>
@@ -266,7 +266,8 @@
 <p>K开头的脚本文件代表运行级别加载时需要关闭的,S开头的代表需要执行,数字代表执行顺序<br>因此,当我们需要开机启动自己的脚本时,只需要将可执行脚本丢在/etc/init.d目录下,然后在/etc/rc*.d中建立软链接即可</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">sudo shmod 755 /etc/init.d/ssh</div><div class="line"><span class="built_in">cd</span> /etc/init.d</div><div class="line">sudo update-rc.d ssh defaults 95 5 . <span class="comment"># 执行顺序95,加入运行级别5级中</span></div><div class="line"><span class="comment">#即在rc*.d中各建立了一个软连接,因此也可以自己手动建立软连接,如下</span></div><div class="line">ln -s /etc/init.d/ssh /etc/rc5.d/S95sshd</div><div class="line">sudo /etc/init.d/ssh start</div><div class="line">sudo service S95sshd start</div><div class="line"></div><div class="line"><span class="comment"># 开机启动</span></div><div class="line">sudo apt-get install openssh-server</div><div class="line"><span class="comment"># 二选一</span></div><div class="line">sudo /etc/init.d/ssh start</div><div class="line">sudo service sshd start</div></pre></td></tr></table></figure>
 <h3 id="简单的启动命令"><a href="#简单的启动命令" class="headerlink" title="简单的启动命令"></a>简单的启动命令</h3><p>Linux 在启动的时候会执行 /etc/rc.local 里面的脚本,所以只要在这里添加执行命令就可以</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">vim /etc/rc.loca</div><div class="line">/usr/bin/supervisord -c /etc/supervisor/supervisord.conf</div><div class="line"><span class="comment"># 如果是 Ubuntu 16.04 以上,rc.local 被当成了服务,而且默认是不会启动,需要手动启用一下服务</span></div><div class="line"><span class="comment"># 启动rc.local服务:</span></div><div class="line">sudo systemctl <span class="built_in">enable</span> rc-local.service</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">vim /etc/rc.local</div><div class="line">/usr/bin/supervisord -c /etc/supervisor/supervisord.conf</div><div class="line"><span class="comment"># 如果是 Ubuntu 16.04 以上,rc.local 被当成了服务,而且默认是不会启动,需要手动启用一下服务</span></div><div class="line"><span class="comment"># 启动rc.local服务:</span></div><div class="line">sudo systemctl <span class="built_in">enable</span> rc-local.service</div><div class="line"></div><div class="line"><span class="comment"># 如果有图形桌面的话</span></div><div class="line">super键--search <span class="string">"startup"</span>--&gt;设置开机启动选项,最重要的就是找到程序的绝对路经写上就可以.可以通过如下命令查看:</div><div class="line">vim ~/.config/autostart/chromium-browser.desktop</div></pre></td></tr></table></figure>
+<p>也可以使用第三方包来<a href="http://apt.ubuntu.com/p/alacarte" target="_blank" rel="external">管理启动程序</a></p>
 <h3 id="定时任务"><a href="#定时任务" class="headerlink" title="定时任务"></a>定时任务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">vim /etc/crontab </div><div class="line"><span class="comment"># 权限要一致,且要可执行</span></div><div class="line"><span class="comment"># 分　时　日　月　周　命令</span></div><div class="line"><span class="comment"># 每天11点执行</span></div><div class="line">0 11 * * *  root  sh /home/python/xx.sh </div><div class="line"></div><div class="line"><span class="comment"># 每两个小时 </span></div><div class="line">0 */2 * * * <span class="built_in">echo</span> <span class="string">"Have a break now."</span> &gt;&gt; /tmp/test.txt</div><div class="line"></div><div class="line"><span class="comment"># 晚上11点到早上8点之间每两个小时和早上八点 </span></div><div class="line">0 23-7/2,8 * * * <span class="built_in">echo</span> <span class="string">"Have a good dream"</span> &gt;&gt; /tmp/test.txt</div><div class="line"></div><div class="line"><span class="comment"># 保存退出即生效(刚添加的任务会到2-3分钟后才开始生效)</span></div></pre></td></tr></table></figure>
 <h3 id="查看服务状态"><a href="#查看服务状态" class="headerlink" title="查看服务状态"></a>查看服务状态</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ubuntu centos</span></div><div class="line">service sshd status/stop/restart <span class="comment"># service 在rc*.d/的名字</span></div><div class="line"></div><div class="line">systemctl start docker <span class="comment">#centos启动服务</span></div><div class="line">systemctl <span class="built_in">enable</span> docker <span class="comment"># 开机启动</span></div><div class="line">systemctl status nginx</div><div class="line">systemctl start firewalld.service</div><div class="line">systemctl <span class="built_in">enable</span> firewalld.service</div><div class="line">systemctl daemon-reload <span class="comment"># 修改启动参数时的 </span></div><div class="line">systemctl restart docker</div><div class="line"><span class="comment"># 只有systmectl 状态 服务名</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># redhat 操作系统下</span></div><div class="line">chkconfig 命令</div><div class="line">chkconfig --list sshd</div></pre></td></tr></table></figure>
 <h3 id="进程有关的"><a href="#进程有关的" class="headerlink" title="进程有关的"></a>进程有关的</h3><p>“衍生出来的进程”正是 Linux 的父子进程的概念.<br>当我们登录系统后,会取得一个 bash shell,然后我们利用这个 bash 提供的接口去执行另一个命令,</p>
@@ -296,7 +297,7 @@
 
 </div>
 
-    <a data-url="https://www.femnyy.com/2017/08/17/linux-server-process/" data-id="cj71bj1x4000z07qvf9bfglsl" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femnyy.com/2017/08/17/linux-server-process/" data-id="cj78eyjtz001hbrlncrqc56ft" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -418,6 +419,24 @@
                     <li>
                         
                         <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/python3/">python3</a></p>
+                            <p class="item-title"><a href="/2017/09/05/MER/" class="title">归并排序</a></p>
+                            <p class="item-date"><time datetime="2017-09-05T11:31:15.000Z" itemprop="datePublished">2017-09-05</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/python3/">python3</a></p>
+                            <p class="item-title"><a href="/2017/09/05/BUB/" class="title">冒泡和简单选择排序算法</a></p>
+                            <p class="item-date"><time datetime="2017-09-05T09:19:32.000Z" itemprop="datePublished">2017-09-05</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/shell/">shell</a></p>
                             <p class="item-title"><a href="/2017/08/23/shell-grep-sed-awk/" class="title">shell_sed_awk</a></p>
                             <p class="item-date"><time datetime="2017-08-23T09:05:44.000Z" itemprop="datePublished">2017-08-23</time></p>
@@ -442,24 +461,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
-                            <p class="item-title"><a href="/2017/08/18/ghost/" class="title">ghost下载与使用</a></p>
-                            <p class="item-date"><time datetime="2017-08-18T11:11:58.000Z" itemprop="datePublished">2017-08-18</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/linux/">linux</a></p>
-                            <p class="item-title"><a href="/2017/08/17/linux-server-process/" class="title">linux 服务与进程</a></p>
-                            <p class="item-date"><time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -469,7 +470,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -478,7 +479,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">27</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">35</span></li></ul>
         </div>
     </div>
 
@@ -487,7 +488,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">tags</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -496,7 +497,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">tag cloud</h3>
         <div class="widget tagcloud">
-            <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
+            <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/算法/" style="font-size: 20px;">算法</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
         </div>
     </div>
 
