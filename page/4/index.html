@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta property="og:type" content="website">
 <meta property="og:title" content="Femn">
-<meta property="og:url" content="https://www.femnyy.com/page/4/index.html">
+<meta property="og:url" content="https://www.femn.me/page/4/index.html">
 <meta property="og:site_name" content="Femn">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Femn">
@@ -155,11 +155,11 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                37
+                38
                 <span>posts</span>
             </div>
             <div class="article-info-block">
-                3
+                4
                 <span>tags</span>
             </div>
         </div>
@@ -214,6 +214,408 @@
 
             
             <section id="main">
+    <article id="post-basic_time" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/04/basic_time/">basic time</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/04/basic_time/">
+            <time datetime="2017-08-04T08:10:53.000Z" itemprop="datePublished">2017-08-04</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>from datetime import date,datetime,timedelta</p>
+<h4 id="datetime类型"><a href="#datetime类型" class="headerlink" title="datetime类型"></a>datetime类型</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">d = datetime.now()   datetime.datetime(2017, 6, 2, 17, 22, 5, 470694)</div><div class="line">datetime(2017,2,3)   datetime.datetime(2017, 2, 3, 0, 0)</div><div class="line">str(d)[:19]</div><div class="line">d.year d.month      (属性,都是int类型)</div><div class="line">current_day,month_days = calendar.monthrange(2017, 2)  (获取某年某月的 当前天数 和  此月共有天)</div></pre></td></tr></table></figure>
+<h4 id="date类型"><a href="#date类型" class="headerlink" title="date类型"></a>date类型</h4><p>datetime.datetime 会精确到 %H%M%S  而datetime.date 不需要<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">date_today = date.today()</div><div class="line">start_date = date(2017,2,6).replace(day=1) </div><div class="line"># 对应月份第一天的日期 datetime.date(2017, 2, 1) 如果输入是一个 datetime 实例,那么你得到的就是一个 datetime 实例</div><div class="line">end_date = start_date + timedelta(days=month_days-1) </div><div class="line"># 第一种获得当月月底的日期 datetime.date(2017, 2, 28)date类型和datetime类型 都可以通过 timedelta 进行前/后几天的计算</div><div class="line"></div><div class="line"># 加月份时</div><div class="line">from dateutil.relativedelta import relativedelta</div><div class="line">six_months = date.today() + relativedelta(months=+6)  datetime.date(2017, 12, 27)</div><div class="line">six_months = datetime.now() + relativedelta(months=+6) datetime.datetime(2017, 12, 27, 16, 2, 5, 260990)</div></pre></td></tr></table></figure></p>
+<h4 id="时间戳类型-timestamp"><a href="#时间戳类型-timestamp" class="headerlink" title="时间戳类型 timestamp"></a>时间戳类型 timestamp</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">time.time()   1483756148.2785556  type:float</div></pre></td></tr></table></figure>
+<h4 id="time-tuple类型"><a href="#time-tuple类型" class="headerlink" title="time tuple类型"></a>time tuple类型</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">time.localtime() time.struct_time(tm_year=2017, tm_mon=1, tm_mday=7, tm_hour=11, tm_min=0, t_m_sec=54, tm_wday=5, tm_yday=7, tm_isdst=0)</div></pre></td></tr></table></figure>
+<h3 id="转换关系"><a href="#转换关系" class="headerlink" title="转换关系"></a>转换关系</h3><h4 id="datetime-datetime-–-gt-str"><a href="#datetime-datetime-–-gt-str" class="headerlink" title="datetime.datetime –&gt; str"></a>datetime.datetime –&gt; str</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">s = d.strftime(&apos;%Y-%m-%d %H:%M:%S.%f&apos;)   (2017-01-07 10:16:12.962917)</div><div class="line">s = date_today.strftime(&apos;%Y-%m-%d&apos;) (2017-01-07)</div></pre></td></tr></table></figure>
+<h4 id="datetime-datetime-–-gt-time-tuple"><a href="#datetime-datetime-–-gt-time-tuple" class="headerlink" title="datetime.datetime –&gt; time tuple"></a>datetime.datetime –&gt; time tuple</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">d.timetuple()</div></pre></td></tr></table></figure>
+<h4 id="str-–-gt-datetime-datetime"><a href="#str-–-gt-datetime-datetime" class="headerlink" title="str –&gt; datetime.datetime"></a>str –&gt; datetime.datetime</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">datetime.strptime(&apos;20170107 10:21:28&apos;,&apos;%Y%m%d %H:%M:%S&apos;)</div></pre></td></tr></table></figure>
+<h4 id="timestamp-–-gt-datetime"><a href="#timestamp-–-gt-datetime" class="headerlink" title="timestamp –&gt; datetime"></a>timestamp –&gt; datetime</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">datetime.fromtimestamp(1483755372.0)</div></pre></td></tr></table></figure>
+<h4 id="str-–-gt-time-tuple"><a href="#str-–-gt-time-tuple" class="headerlink" title="str –&gt; time tuple"></a>str –&gt; time tuple</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tuple = time.strptime(&apos;2017-01-07 10:16:12&apos;, &apos;%Y-%m-%d %H:%M:%S&apos;)</div></pre></td></tr></table></figure>
+<h4 id="time-tuple-–-gt-timestamp"><a href="#time-tuple-–-gt-timestamp" class="headerlink" title="time tuple –&gt;timestamp"></a>time tuple –&gt;timestamp</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">time.mktime(tuple)</div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/04/basic_time/" data-id="cj7eq5b1g000s08qhzyh4thiy" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/04/basic_time/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/basic_time/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-WebSocket" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/04/WebSocket/">WebSocket</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/04/WebSocket/">
+            <time datetime="2017-08-04T08:10:53.000Z" itemprop="datePublished">2017-08-04</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>网页的消息推送一般常见的实现方法有轮询,长连接,WebSocket.</p>
+<h4 id="为什么要用-WebSockets？"><a href="#为什么要用-WebSockets？" class="headerlink" title="为什么要用 WebSockets？"></a>为什么要用 WebSockets？</h4><p>一个 WebSocket 连接允许在客户端和服务端之间进行全双工通讯,从而每一端都可以通过建立的连接向另一端推送数据.</p>
+<p>WebSocket,以及与其相关的 服务端发送事件 (SSE) 及 WebRTC 数据通路 等技术之所以重要的原因是:<br>HTTP不能打开并一直保持连接,不能在服务端和 Web 浏览器之间进行频繁的数据推送.在这之前,大多数的 Web 应用会通过频繁的异步 JavaScript 和 XML (AJAX) 请求来实现长轮循</p>
+<p>WebSocket并不限于以Ajax(或XHR)方式通信,因为Ajax技术需要客户端发起请求,而WebSocket服务器和客户端可以彼此相互推送信息;XHR受到域的限制,而WebSocket允许跨域通信.</p>
+<h4 id="实现-WebSocket"><a href="#实现-WebSocket" class="headerlink" title="实现 WebSocket"></a>实现 WebSocket</h4><p>Web 浏览器和服务端都必须要实现 WebSocket 协议,以便建立和维护连接.因为 WebSocket 的连接是持续连通的,不像经典的 HTTP 连接,因此服务器需要做更多工作.</p>
+<p>基于多线程或多进程的服务器不能很好地提供 WebSockets 服务,因为它们的设计是:打开一个连接,尽快处理完请求,然后关闭连接.<br>因此,采用 Tornado 或 打包了 gevent 的 Green Unicorn 等异步服务器,对于实现一个实用的服务端 WebSockets 都是必要的</p>
+<p>而在客户端,使用 WebSocket 并不要求有某个 JavaScript 库.实现了 WebSocket 的 Web 浏览器都会通过 WebSockets 对象 导出所有必要的客户端功能.</p>
+<p><a href="https://github.com/tornadoweb/tornado/tree/master/demos/websocket" target="_blank" rel="external">github中的例子</a></p>
+<p><a href="http://www.jianshu.com/p/6e890428744c" target="_blank" rel="external">对这个例子的的解释</a></p>
+<p><a href="http://fullstackpython.atjiang.com/websockets.html" target="_blank" rel="external">Websocket资源</a></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/04/WebSocket/" data-id="cj7eq5b15000908qh1c7ogzqm" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/04/WebSocket/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/WebSocket/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-basic_derivation" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/04/basic_derivation/">推导式(Derivation)</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/04/basic_derivation/">
+            <time datetime="2017-08-04T08:10:53.000Z" itemprop="datePublished">2017-08-04</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>list derivation(列表推导式)<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">l = [x*x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>)]</div><div class="line"><span class="comment"># [0, 1, 4, 9, 16] 直接返回列表而不是生成器</span></div><div class="line"></div><div class="line">[i+<span class="number">1</span> <span class="keyword">if</span> i&gt;<span class="number">0</span> <span class="keyword">else</span> <span class="number">1</span> <span class="keyword">for</span> i <span class="keyword">in</span> l]</div><div class="line"><span class="comment"># [1, 2, 5, 10, 17]</span></div><div class="line"></div><div class="line">[i+<span class="number">1</span> <span class="keyword">if</span> i&gt;<span class="number">0</span> <span class="keyword">else</span> <span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> l]</div><div class="line"><span class="comment"># [2, 2, 5, 10, 17] # 说明 如果是取else的话,就不再去做更新的操作</span></div><div class="line"></div><div class="line">[i <span class="keyword">for</span> i <span class="keyword">in</span> l <span class="keyword">if</span> i &gt;<span class="number">4</span> <span class="keyword">and</span> i &lt;=<span class="number">16</span>] <span class="comment"># [9,16]</span></div><div class="line"></div><div class="line">vec = [[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>], [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]]</div><div class="line">[num <span class="keyword">for</span> elem <span class="keyword">in</span> vec <span class="keyword">for</span> num <span class="keyword">in</span> elem]</div><div class="line"><span class="comment"># [1, 2, 3, 4, 5, 6, 7, 8, 9]</span></div><div class="line"></div><div class="line">[(x, y) <span class="keyword">for</span> x <span class="keyword">in</span> [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>] <span class="keyword">for</span> y <span class="keyword">in</span> [<span class="number">3</span>,<span class="number">1</span>,<span class="number">4</span>] <span class="keyword">if</span> x != y]</div><div class="line"><span class="comment"># [(1, 3), (1, 4), (2, 3), (2, 1), (2, 4), (3, 1), (3, 4)]</span></div><div class="line">```	</div><div class="line"></div><div class="line">改变字典的值</div><div class="line"></div><div class="line">```python </div><div class="line">l_d = [&#123;<span class="string">'name'</span>:<span class="string">'femn'</span>,<span class="string">'age'</span>:<span class="number">25</span>&#125;,&#123;<span class="string">'name'</span>:<span class="string">'femnyy'</span>,<span class="string">'age'</span>:<span class="number">35</span>&#125;]</div><div class="line">[i <span class="keyword">if</span> i.get(<span class="string">'age'</span>)&gt; <span class="number">25</span> <span class="keyword">else</span> i <span class="keyword">for</span> i <span class="keyword">in</span> l_d]</div><div class="line"></div><div class="line"><span class="comment"># 虽然此时不能得到自己想要的改变 不能用i['name']='femnhh'去做改变</span></div><div class="line">[i.update(&#123;<span class="string">'name'</span>:<span class="string">'femnhh'</span>&#125;) <span class="keyword">if</span> i.get(<span class="string">'age'</span>)&gt; <span class="number">25</span> <span class="keyword">else</span> i <span class="keyword">for</span> i <span class="keyword">in</span> l_d]</div><div class="line"><span class="comment"># [&#123;'age': 25, 'name': 'femn'&#125;, None] # 相当于是匹配没有匹配成功则返回None</span></div><div class="line"></div><div class="line"><span class="comment"># 但此时l_d却已经是改变成想要的了</span></div><div class="line">l_d</div><div class="line"><span class="comment"># [&#123;'age': 25, 'name': 'femn'&#125;, &#123;'age': 35, 'name': 'femnhh'&#125;]</span></div></pre></td></tr></table></figure></p>
+<h3 id="generator-derivation-生成器推导式"><a href="#generator-derivation-生成器推导式" class="headerlink" title="generator derivation(生成器推导式)"></a>generator derivation(生成器推导式)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">g = (x*x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>)) <span class="comment"># 'generator' object</span></div><div class="line">next(g) <span class="comment">#</span></div></pre></td></tr></table></figure>
+<h3 id="dict-derivation-字典推导式"><a href="#dict-derivation-字典推导式" class="headerlink" title="dict derivation (字典推导式)"></a>dict derivation (字典推导式)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">prices = &#123;<span class="string">'ACME'</span>: <span class="number">45.23</span>,<span class="string">'AAPL'</span>: <span class="number">612.78</span>,<span class="string">'IBM'</span>: <span class="number">205.55</span>,\</div><div class="line">        <span class="string">'HPQ'</span>: <span class="number">37.20</span>,<span class="string">'FB'</span>: <span class="number">10.75</span>&#125;</div><div class="line">p1 = &#123;key: value <span class="keyword">for</span> key, value <span class="keyword">in</span> prices.items() <span class="keyword">if</span> value &gt; <span class="number">20</span>&#125;</div><div class="line"><span class="comment"># &#123;'ACME': 45.23, 'IBM': 205.55, 'HPQ': 37.2, 'AAPL': 612.78&#125;</span></div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/04/basic_derivation/" data-id="cj7eq5b1b000j08qhwesbnc3q" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/04/basic_derivation/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/basic_derivation/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-shell" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -274,7 +676,7 @@
 <p>bash shell能处理的数仅有整数.使用bash计算器时,你可以让shell将浮点值作为字符串值存储进一个变量,如果你只是要通过echo语句来显示这个结果,那它能很好地工作,便它无法在基于数字的函数中工作.</p>
 <p><em>字符串比较:</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;</div><div class="line">&gt;</div><div class="line">=</div><div class="line">!=</div><div class="line">-z</div><div class="line">-n</div></pre></td></tr></table></figure></p>
 <p>字符串顺序:要测试一个字符串要比另一个字符串大就开始变得烦琐了,大于小于符号必须转义,否则shell会把它们当做重写向符号而把字符串值当做文件名.而且大于小于顺序和sort命令所采用的不同.test命令中大写字母会被当成小于小写字母.<br>if [Test \&lt; test]</p>
-<p><em>文件比较:</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 检查new.sh文件是否比old.sh新,在此之前要先确认文件是否存在.</span></div><div class="line"><span class="keyword">if</span> [ ./new.sh -nt ./old.sh ] </div><div class="line"><span class="keyword">if</span> [ ./old.sh -ot ./new.sh ] <span class="comment">#</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ -e <span class="variable">$HOME</span> ] <span class="comment">#检查文件是否存在 下面的所有检查都要满足这个前提条件</span></div><div class="line"><span class="keyword">if</span> [ -d <span class="variable">$HOME</span> ] <span class="comment"># 检查文件是否存在并是个目录</span></div><div class="line"><span class="keyword">if</span> [ -f <span class="variable">$HOME</span>/.vimrc ] <span class="comment"># 并是个文件</span></div><div class="line"><span class="keyword">if</span> [ -r <span class="variable">$HOME</span> ] <span class="comment"># 并是可读</span></div><div class="line"><span class="keyword">if</span> [ -w <span class="variable">$HOME</span>/.vimrc ] <span class="comment"># 并是可写</span></div><div class="line"><span class="keyword">if</span> [ -x <span class="variable">$HOME</span>/.vimrc ] <span class="comment"># 并是可执行</span></div><div class="line"><span class="keyword">if</span> [ -O <span class="variable">$HOME</span>/.vimrc ] <span class="comment"># 并是 属于当前用户所有</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ -s <span class="variable">$HOME</span>/.vimrc ] <span class="comment"># 并是不为空,说明有数据,删除时就小心了.</span></div></pre></td></tr></table></figure></p>
+<p><em>文件比较:</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 检查new.sh文件是否比old.sh新,在此之前要先确认文件是否存在.</span></div><div class="line"><span class="keyword">if</span> [ ./new.sh -nt ./old.sh ] </div><div class="line"><span class="keyword">if</span> [ ./old.sh -ot ./new.sh ] <span class="comment">#</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ -e <span class="variable">$HOME</span> ] <span class="comment">#检查文件是否存在 下面的所有检查都要满足这个前提条件</span></div><div class="line"><span class="keyword">if</span> [ -d <span class="variable">$HOME</span> ] <span class="comment"># 检查文件是否存在并是个目录</span></div><div class="line"><span class="keyword">if</span> [ -f <span class="variable">$HOME</span>/.vimrc ] <span class="comment"># 并是个文件</span></div><div class="line"><span class="keyword">if</span> [ ! -f <span class="variable">$HOME</span>/.vimrc ] <span class="comment"># 如果不是文件则执行</span></div><div class="line"><span class="keyword">if</span> [ -r <span class="variable">$HOME</span> ] <span class="comment"># 并是可读</span></div><div class="line"><span class="keyword">if</span> [ -w <span class="variable">$HOME</span>/.vimrc ] <span class="comment"># 并是可写</span></div><div class="line"><span class="keyword">if</span> [ -x <span class="variable">$HOME</span>/.vimrc ] <span class="comment"># 并是可执行</span></div><div class="line"><span class="keyword">if</span> [ -O <span class="variable">$HOME</span>/.vimrc ] <span class="comment"># 并是 属于当前用户所有</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ -s <span class="variable">$HOME</span>/.vimrc ] <span class="comment"># 并是不为空,说明有数据,删除时就小心了.</span></div></pre></td></tr></table></figure></p>
 <p>if-then的高级特征:</p>
 <p>双圆括号命令允许你将高级数学表达式放入比较中<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(( expression ))</div></pre></td></tr></table></figure></p>
 <p>test命令只允许在比较中进行简单的算术操作.双圆括号命令提供了更多的为用过其它编程语言的程序员所熟悉的数学符号.你不需要将圆括号中表达式里的大于号转义,这是双圆括号命令提供的另一个高级特性.</p>
@@ -320,7 +722,7 @@
 
 </div>
 
-    <a data-url="https://www.femnyy.com/2017/08/04/shell/" data-id="cj78eyjuh0028brlnsx55r2j3" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/shell/" data-id="cj7eq5b2r002c08qhe7ucpm7v" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -388,7 +790,7 @@
 
             
     
-        <a href="https://www.femnyy.com/2017/08/04/shell/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/04/shell/">Comments</a>
+        <a href="https://www.femn.me/2017/08/04/shell/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/shell/">Comments</a>
     
 
         </footer>
@@ -398,7 +800,7 @@
 
 
 
-    <article id="post-basic_time" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-basic_socket" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -406,7 +808,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/04/basic_time/">basic time</a>
+            <a class="article-title" href="/2017/08/04/basic_socket/">套接字(SOCKET)</a>
         </h1>
     
 
@@ -415,7 +817,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/basic_time/">
+        <a href="/2017/08/04/basic_socket/">
             <time datetime="2017-08-04T08:10:53.000Z" itemprop="datePublished">2017-08-04</time>
         </a>
     </div>
@@ -436,17 +838,12 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>from datetime import date,datetime,timedelta</p>
-<h4 id="datetime类型"><a href="#datetime类型" class="headerlink" title="datetime类型"></a>datetime类型</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">d = datetime.now()   datetime.datetime(2017, 6, 2, 17, 22, 5, 470694)</div><div class="line">datetime(2017,2,3)   datetime.datetime(2017, 2, 3, 0, 0)</div><div class="line">str(d)[:19]</div><div class="line">d.year d.month      (属性,都是int类型)</div><div class="line">current_day,month_days = calendar.monthrange(2017, 2)  (获取某年某月的 当前天数 和  此月共有天)</div></pre></td></tr></table></figure>
-<h4 id="date类型"><a href="#date类型" class="headerlink" title="date类型"></a>date类型</h4><p>datetime.datetime 会精确到 %H%M%S  而datetime.date 不需要<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">date_today = date.today()</div><div class="line">start_date = date(2017,2,6).replace(day=1) </div><div class="line"># 对应月份第一天的日期 datetime.date(2017, 2, 1) 如果输入是一个 datetime 实例,那么你得到的就是一个 datetime 实例</div><div class="line">end_date = start_date + timedelta(days=month_days-1) </div><div class="line"># 第一种获得当月月底的日期 datetime.date(2017, 2, 28)date类型和datetime类型 都可以通过 timedelta 进行前/后几天的计算</div><div class="line"></div><div class="line"># 加月份时</div><div class="line">from dateutil.relativedelta import relativedelta</div><div class="line">six_months = date.today() + relativedelta(months=+6)  datetime.date(2017, 12, 27)</div><div class="line">six_months = datetime.now() + relativedelta(months=+6) datetime.datetime(2017, 12, 27, 16, 2, 5, 260990)</div></pre></td></tr></table></figure></p>
-<h4 id="时间戳类型-timestamp"><a href="#时间戳类型-timestamp" class="headerlink" title="时间戳类型 timestamp"></a>时间戳类型 timestamp</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">time.time()   1483756148.2785556  type:float</div></pre></td></tr></table></figure>
-<h4 id="time-tuple类型"><a href="#time-tuple类型" class="headerlink" title="time tuple类型"></a>time tuple类型</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">time.localtime() time.struct_time(tm_year=2017, tm_mon=1, tm_mday=7, tm_hour=11, tm_min=0, t_m_sec=54, tm_wday=5, tm_yday=7, tm_isdst=0)</div></pre></td></tr></table></figure>
-<h3 id="转换关系"><a href="#转换关系" class="headerlink" title="转换关系"></a>转换关系</h3><h4 id="datetime-datetime-–-gt-str"><a href="#datetime-datetime-–-gt-str" class="headerlink" title="datetime.datetime –&gt; str"></a>datetime.datetime –&gt; str</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">s = d.strftime(&apos;%Y-%m-%d %H:%M:%S.%f&apos;)   (2017-01-07 10:16:12.962917)</div><div class="line">s = date_today.strftime(&apos;%Y-%m-%d&apos;) (2017-01-07)</div></pre></td></tr></table></figure>
-<h4 id="datetime-datetime-–-gt-time-tuple"><a href="#datetime-datetime-–-gt-time-tuple" class="headerlink" title="datetime.datetime –&gt; time tuple"></a>datetime.datetime –&gt; time tuple</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">d.timetuple()</div></pre></td></tr></table></figure>
-<h4 id="str-–-gt-datetime-datetime"><a href="#str-–-gt-datetime-datetime" class="headerlink" title="str –&gt; datetime.datetime"></a>str –&gt; datetime.datetime</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">datetime.strptime(&apos;20170107 10:21:28&apos;,&apos;%Y%m%d %H:%M:%S&apos;)</div></pre></td></tr></table></figure>
-<h4 id="timestamp-–-gt-datetime"><a href="#timestamp-–-gt-datetime" class="headerlink" title="timestamp –&gt; datetime"></a>timestamp –&gt; datetime</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">datetime.fromtimestamp(1483755372.0)</div></pre></td></tr></table></figure>
-<h4 id="str-–-gt-time-tuple"><a href="#str-–-gt-time-tuple" class="headerlink" title="str –&gt; time tuple"></a>str –&gt; time tuple</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tuple = time.strptime(&apos;2017-01-07 10:16:12&apos;, &apos;%Y-%m-%d %H:%M:%S&apos;)</div></pre></td></tr></table></figure>
-<h4 id="time-tuple-–-gt-timestamp"><a href="#time-tuple-–-gt-timestamp" class="headerlink" title="time tuple –&gt;timestamp"></a>time tuple –&gt;timestamp</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">time.mktime(tuple)</div></pre></td></tr></table></figure>
+            <p>socket套接字.是一种通信机制,用于描述IP地址和端口,是一个通信链的句柄.操作socket就像操作Unix一样,一切皆是文件,.</p>
+<p>0.0.0.0有多少个网卡,都可以连接到本机.<br>程序之间进行内存数据交换(通信)比较麻烦:每个程序的内存空间都是被保护的,不能被别的程序直接访问,所以要通过某种介质,管道或第三方工具,去通信.<br>nosql(第三方):将内存的数据缓存进来,供其它的程序调用,所有的程序都可以往里存数据,所有的程序都可以取数据.相当于实现了一个共享的内存空间.<br>socket.AF_UNIX;只能够用于单一的Unix系统进程间通信<br>socket.AF_INET:服务器之间网络通信<br>socket.AF_INET6 IPv6</p>
+<p>socket 4层 ICMP 3层<br>socket通信的数据格式<br>socket.SOCK_STREAM :PCP三次握手<br>socket.SOCKDGRAM:UDP<br>socket.SOCK_RAW 原始套接字 可以处理普通套接字不能处理的ICMP,IGMP等网络报文 可以可以伪造IP</p>
+<h4 id="server"><a href="#server" class="headerlink" title="server"></a>server</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> socket <span class="keyword">import</span> *</div><div class="line"><span class="comment">#IP协议(socket type)   TCP协议(数据包格式)</span></div><div class="line">socketobj = socket(AF_INET,SOCK_STREAM)<span class="comment"># 生成对象</span></div><div class="line">socketobj.bind((<span class="string">'localhost'</span>,<span class="number">8080</span>)) <span class="comment">#绑定IP和端口</span></div><div class="line">socketobj.listen(<span class="number">128</span>)<span class="comment"># 监听连接数量</span></div><div class="line"><span class="comment"># 1</span></div><div class="line"><span class="comment">#客户端实例,客户端地址</span></div><div class="line"><span class="comment"># connection,address=socketobj.accept()</span></div><div class="line"><span class="comment"># 每个客户端一连接就会返回的结果</span></div><div class="line"><span class="comment"># 但只能连接一个客户端,只有当前客户端下线,下个客户端才能连上</span></div><div class="line"></div><div class="line"><span class="comment"># A,B客户端都运行 但A先连接 B后连接 B处于阻塞状态,没有生成connection </span></div><div class="line"><span class="comment"># A断开之后,因为只有一个connection,所以执行了 socketobj.close(),</span></div><div class="line"><span class="comment"># 服务也跟着断了 B不会自动连上</span></div><div class="line"></div><div class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">    <span class="comment"># 2</span></div><div class="line">    connection,address=socketobj.accept()</div><div class="line">    <span class="comment"># 多用户连接时 生成了对应的多个connection</span></div><div class="line">    <span class="comment"># 只是当A断开之后,B自动连上,但每个客户端只能访问一次之后</span></div><div class="line">    <span class="comment"># 访问一次后 重新循环 重新一次新的连接</span></div><div class="line">    <span class="comment"># 而上次的connection就被 服务器给挂起了</span></div><div class="line">    print(<span class="string">'connect by '</span>, address)</div><div class="line">    <span class="comment"># 3</span></div><div class="line">    <span class="comment"># while True:</span></div><div class="line">    <span class="comment"># 当多用户连接时 生成了对应的多个connection</span></div><div class="line">    <span class="comment"># 只是当A断开之后,B自动连上,B可以随便聊</span></div><div class="line"></div><div class="line">    data = connection.recv(<span class="number">1024</span>) <span class="comment">#服务器只接收1024个字节</span></div><div class="line">    print(<span class="string">'server端收到client端的信息:'</span>+ str(data,encoding = <span class="string">"utf-8"</span>))</div><div class="line">    connection.sendall(bytes(<span class="string">"hello client"</span>,<span class="string">"utf-8"</span>))</div><div class="line">    <span class="comment">#服务器返回给客户的信息</span></div><div class="line">socketobj.close()</div></pre></td></tr></table></figure>
+<h4 id="client"><a href="#client" class="headerlink" title="client"></a>client</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> socket <span class="keyword">import</span> *</div><div class="line">socketobj = socket(AF_INET,SOCK_STREAM)</div><div class="line"><span class="comment"># socketobj.connect(('localhost',8080)) #绑定 阻塞的</span></div><div class="line">socketobj.connect((<span class="string">'localhost'</span>,<span class="number">20000</span>)) <span class="comment">#asy</span></div><div class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">    user_input =input(<span class="string">"msg to server:"</span>).strip()</div><div class="line">    socketobj.send(bytes(user_input,<span class="string">'utf-8'</span>))</div><div class="line"></div><div class="line"><span class="comment">#socketobj.sendall(bytes("hello server", 'utf-8'))</span></div><div class="line">    data = socketobj.recv(<span class="number">1024</span>)</div><div class="line">    print(<span class="string">"client端收到server端的信息 :"</span>+str(data,encoding = <span class="string">"utf-8"</span>))</div><div class="line">socketobj.close()</div></pre></td></tr></table></figure>
+<h4 id="asy-server"><a href="#asy-server" class="headerlink" title="asy_server"></a>asy_server</h4><p><a href="http://python3-cookbook.readthedocs.io/zh_CN/latest/c11/p02_creating_tcp_server.html" target="_blank" rel="external">参考</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> socketserver <span class="keyword">import</span> BaseRequestHandler, TCPServer, ThreadingTCPServer</div><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="comment"># socketserver 可以让我们很容易的创建简单的TCP服务器,</span></div><div class="line"><span class="comment"># 巨大部分Python的高层网络模块(比如HTTP,XML-RPC等)都是建立在socketserver功能之上</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">EchoHandler</span><span class="params">(BaseRequestHandler)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">handle</span><span class="params">(self)</span>:</span><span class="comment">#每个连接就会 调用此方法</span></div><div class="line">        print(<span class="string">'Got connection from'</span>, self.client_address)</div><div class="line">        <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">        <span class="comment"># 循环去监听用户的连接,否则只能像单进程的阻塞一样,只能连接一个用户</span></div><div class="line">            msg = self.request.recv(<span class="number">8192</span>)</div><div class="line">            <span class="keyword">if</span> <span class="keyword">not</span> msg:<span class="comment">#如果用户退出,没有这句的话 就变成死循环</span></div><div class="line">                print(<span class="string">'connection close by'</span>, self.client_address)</div><div class="line">                <span class="keyword">break</span></div><div class="line">            print(msg)</div><div class="line">            <span class="comment"># self.request.send(str(msg,encoding = "utf-8"))</span></div><div class="line">            self.request.send(msg)</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    <span class="comment"># serv = TCPServer(('', 20000), EchoHandler)#单个线程</span></div><div class="line">    serv = ThreadingTCPServer((<span class="string">'0.0.0.0'</span>, <span class="number">20000</span>), EchoHandler)</div><div class="line">    serv.serve_forever()</div></pre></td></tr></table></figure></p>
 
         
         </div>
@@ -457,7 +854,7 @@
 
 </div>
 
-    <a data-url="https://www.femnyy.com/2017/08/04/basic_time/" data-id="cj78eyjtg000sbrlnw8yxgcrj" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/basic_socket/" data-id="cj7eq5b19000f08qhatzjj9i3" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -525,270 +922,7 @@
 
             
     
-        <a href="https://www.femnyy.com/2017/08/04/basic_time/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/04/basic_time/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-os" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/04/os/">os模块</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/os/">
-            <time datetime="2017-08-04T08:10:53.000Z" itemprop="datePublished">2017-08-04</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/python3/">python3</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h3 id="import-os"><a href="#import-os" class="headerlink" title="import os"></a>import os</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">path = <span class="string">r"aa/"</span></div><div class="line">path1 = <span class="string">r'bb/'</span></div><div class="line"><span class="comment"># 如果path路径不加'/'的话,默认是从运行路径再加aa</span></div><div class="line">os.getcwd() </div><div class="line"><span class="comment">#'/home/python'</span></div><div class="line"><span class="comment"># 运行ipython的路径,如果是python3 /home/python/app1.6/runner.py</span></div><div class="line"><span class="comment"># 则是/home/python/app1.6</span></div><div class="line"></div><div class="line">os.path.abspath(path) <span class="comment"># path规范化的绝对路径</span></div><div class="line"><span class="comment">#'/home/python/aa'</span></div><div class="line"></div><div class="line">os.path.join(os.getcwd(),path,path1)</div><div class="line"><span class="comment">#'/home/python/aa/bb/'</span></div><div class="line"></div><div class="line">os.path.normpath(os.path.join(os.getcwd(),path,path1)) </div><div class="line"><span class="comment"># path规范化的绝对路径</span></div><div class="line"><span class="comment">#'/home/python/aa/bb'</span></div><div class="line"></div><div class="line"></div><div class="line">将多个路径组合后返回,第一个绝对路径之前的参数将被忽略</div><div class="line">os.path.join(<span class="string">'/home/python'</span>,<span class="string">'/'</span>,<span class="string">'aa'</span>,<span class="string">'/home/'</span>)</div><div class="line"><span class="comment"># '/home/'</span></div></pre></td></tr></table></figure>
-<h3 id="判断"><a href="#判断" class="headerlink" title="判断"></a>判断</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">os.path.exists(path)<span class="comment"># 如果path存在,返回True;如果path不存在,返回False.</span></div><div class="line">os.path.isabs(os.getcwd()) <span class="comment"># 如果只要path是绝对路径,不管是不是存在,返回True</span></div><div class="line">os.path.isfile(path) </div><div class="line">os.path.isdir(path)</div><div class="line"><span class="string">'1.jpg'</span>.endswith(<span class="string">'.jpng'</span>) <span class="comment"># False</span></div><div class="line"></div><div class="line"><span class="comment"># 计算此文件的大小 </span></div><div class="line">(os.path.getsize(abspath))/<span class="number">1024</span>/<span class="number">1024</span> <span class="comment"># byte/k/M</span></div><div class="line"><span class="comment">#改变一个文件的文件名</span></div><div class="line">os.rename(os.path.join(<span class="string">'abspath'</span>,<span class="string">'filename'</span>), \</div><div class="line">    os.path.join(<span class="string">'abspath'</span>,<span class="string">'new_name'</span>))</div><div class="line"><span class="comment"># 如果没有则创建目录,有的话就没原来的,防止</span></div><div class="line">os.makedirs(<span class="string">'/home/python/1/1/1'</span>,exist_ok=<span class="keyword">True</span>)</div></pre></td></tr></table></figure>
-<h3 id="分割"><a href="#分割" class="headerlink" title="分割"></a>分割</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">os.path.splitext(<span class="string">r'/home/python/22.json'</span>)</div><div class="line"><span class="comment">#('/home/python/22', '.json')</span></div><div class="line">os.path.split(<span class="string">'/home/python/app1.6/1.txt'</span>)</div><div class="line"><span class="comment"># 将path分割成目录和文件名二元组返回</span></div><div class="line"><span class="comment">#('/home/python/app1.6', '1.txt')</span></div><div class="line"></div><div class="line">os.path.dirname(<span class="string">'/home/python/app1.6/1.txt'</span>) </div><div class="line"><span class="comment"># 相当于os.path.split(path)的第一元素</span></div><div class="line"><span class="comment">#'/home/python/app1.6'</span></div><div class="line"></div><div class="line">os.path.basename(<span class="string">'/home/python/app1.6/1.txt'</span>) </div><div class="line"><span class="comment"># 相当于os.path.split(path)的第二元素</span></div><div class="line"><span class="comment">#'1.txt'</span></div></pre></td></tr></table></figure>
-<h3 id="from-urllib-parse-import-urljoin"><a href="#from-urllib-parse-import-urljoin" class="headerlink" title="from urllib.parse import urljoin"></a>from urllib.parse import urljoin</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">urljoin(<span class="string">'https://femnyy.com/'</span>,<span class="string">'VPS/xx'</span>) </div><div class="line"><span class="comment"># 第一个路径必须要有最后一个'/'</span></div></pre></td></tr></table></figure>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femnyy.com/2017/08/04/os/" data-id="cj78eyju2001nbrlnp03b86zx" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femnyy.com/2017/08/04/os/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/04/os/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-basic_sort" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/04/basic_sort/">排序</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/basic_sort/">
-            <time datetime="2017-08-04T08:10:53.000Z" itemprop="datePublished">2017-08-04</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/python3/">python3</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h3 id="items"><a href="#items" class="headerlink" title="items"></a>items</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">d = &#123;<span class="string">'k'</span>:<span class="number">1</span>,<span class="string">'x'</span>:<span class="number">1</span>&#125;</div><div class="line">u.items() <span class="comment"># ==dict_items([('x', 1), ('k', 1)])</span></div></pre></td></tr></table></figure>
-<h3 id="sorted-iterable-key-reverse"><a href="#sorted-iterable-key-reverse" class="headerlink" title="sorted(iterable,key,reverse)"></a>sorted(iterable,key,reverse)</h3><p><em>sorted函数按key本身的值对字典排序</em><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> itemgetter</div><div class="line">d = &#123;<span class="string">'a'</span>:<span class="number">1</span>,<span class="string">'c'</span>:<span class="number">3</span>,<span class="string">'d'</span>:<span class="number">444</span>,<span class="string">'b'</span>:<span class="number">2</span>&#125;</div><div class="line"><span class="comment"># 在签名时挺有用的</span></div><div class="line"><span class="keyword">for</span> k, v <span class="keyword">in</span> sorted(d.items(),key=<span class="keyword">lambda</span> x:x[<span class="number">0</span>]):</div><div class="line">    print(k,v)</div><div class="line"></div><div class="line">sort_d  = sorted(d.items(),key = itemgetter(<span class="number">0</span>),reverse=<span class="keyword">False</span>)</div><div class="line"></div><div class="line">a = &#123;<span class="string">'x'</span>: <span class="number">1</span>,<span class="string">'y'</span>: <span class="number">2</span>,<span class="string">'z'</span>: <span class="number">3</span>&#125;</div><div class="line">b = &#123;<span class="string">'w'</span>: <span class="number">10</span>,<span class="string">'x'</span>: <span class="number">11</span>,<span class="string">'y'</span>: <span class="number">2</span>&#125;</div><div class="line">sorted(zip(a.values(),a.keys()))</div><div class="line"><span class="comment"># [(1, 'x'), (2, 'y'), (3, 'z')]</span></div><div class="line"></div><div class="line">max(zip(a.values(),a.keys()))</div><div class="line"><span class="comment"># (3, 'z')</span></div><div class="line"></div><div class="line">min(zip(a.keys(),a.values()))</div><div class="line"><span class="comment"># ('x',1)</span></div></pre></td></tr></table></figure></p>
-<p><em>对v值的排序</em></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> itemgetter</div><div class="line">rows = [</div><div class="line">    &#123;<span class="string">'address'</span>: <span class="string">'5412 N CLARK'</span>, <span class="string">'date'</span>: <span class="string">'07/01/2012'</span>&#125;,</div><div class="line">    &#123;<span class="string">'address'</span>: <span class="string">'5412 NIKE SHIRT'</span>, <span class="string">'date'</span>: <span class="string">'07/01/2012'</span>&#125;,</div><div class="line">    &#123;<span class="string">'address'</span>: <span class="string">'5148 N CLARK'</span>, <span class="string">'date'</span>: <span class="string">'07/04/2012'</span>&#125;,</div><div class="line">    &#123;<span class="string">'address'</span>: <span class="string">'5800 E 58TH'</span>, <span class="string">'date'</span>: <span class="string">'07/02/2012'</span>&#125;,</div><div class="line">        ]</div><div class="line">rows.sort(key=itemgetter(<span class="string">'date'</span>))</div><div class="line"></div><div class="line">rows = sorted(rows,key=itemgetter(<span class="string">'date'</span>))</div><div class="line"></div><div class="line">rows = sorted(rows, key=<span class="keyword">lambda</span> x: x.get(<span class="string">'date'</span>) \</div><div class="line">    <span class="keyword">if</span> x.get(<span class="string">'date'</span>) <span class="keyword">else</span> <span class="string">'4000'</span>, reverse=<span class="keyword">False</span>)</div><div class="line"><span class="comment"># 必須提供一個在排序过程中使用的函数,为每个元素创建一个key,然后按这个key来排序</span></div><div class="line">a = [<span class="string">'femn'</span>,<span class="string">'femn2014'</span>,<span class="string">'fe'</span>,<span class="string">'femnyy'</span>]</div><div class="line">a.sort(key=len)</div><div class="line"></div><div class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> groupby</div><div class="line"><span class="comment"># 按相同时间的值,进行分组</span></div><div class="line"><span class="keyword">for</span> date, items <span class="keyword">in</span> groupby(rows, key=itemgetter(<span class="string">'date'</span>)):</div><div class="line">    print(date)</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> items:</div><div class="line">        print(<span class="string">' '</span>, i)</div><div class="line"><span class="comment"># 输出如下 </span></div><div class="line"><span class="comment"># 07/01/2012</span></div><div class="line"><span class="comment"># &#123;'address': '5412 N CLARK', 'date': '07/01/2012'&#125;</span></div><div class="line"><span class="comment"># &#123;'address': '5412 NIKE SHIRT', 'date': '07/01/2012'&#125;</span></div><div class="line"><span class="comment"># 07/04/2012</span></div><div class="line"><span class="comment"># &#123;'address': '5148 N CLARK', 'date': '07/04/2012'&#125;</span></div><div class="line"><span class="comment"># 07/02/2012</span></div><div class="line"><span class="comment"># &#123;'address': '5800 E 58TH', 'date': '07/02/2012'&#125;</span></div></pre></td></tr></table></figure>
-<h3 id="join"><a href="#join" class="headerlink" title="join"></a>join</h3><p>如果你想要合并的字符串是在一个序列或者 iterable 中,那么最快的方式就是使用 join() 方法</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">data = [<span class="string">'ACME'</span>, <span class="number">50</span>, <span class="number">91.1</span>]</div><div class="line"><span class="string">','</span>.join(str(d) <span class="keyword">for</span> d <span class="keyword">in</span> data) <span class="comment"># 'ACME,50,91.1'</span></div><div class="line">(str(d) <span class="keyword">for</span> d <span class="keyword">in</span> data)  <span class="comment">#是一个	generator</span></div></pre></td></tr></table></figure>
-<h3 id="random"><a href="#random" class="headerlink" title="random"></a>random</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> random,string</div><div class="line">v = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>] <span class="comment"># 一个序列或者 iterable </span></div><div class="line"><span class="comment"># 随机选择一个,且只能是选一个</span></div><div class="line">random.choice(v)</div><div class="line"></div><div class="line"><span class="comment"># 随机提取N个,保证不重复出现,并且N不能超过v的长度</span></div><div class="line">random.sample(v,<span class="number">3</span>)</div><div class="line"></div><div class="line"><span class="comment"># 只是想打乱序列中的顺序</span></div><div class="line">random.shuffle(v) <span class="comment"># 此时v值的顺序已经被改变</span></div><div class="line"></div><div class="line"><span class="comment"># 生成一个随机的整数</span></div><div class="line">random.randint(<span class="number">0</span>,<span class="number">10</span>)</div><div class="line"></div><div class="line"><span class="string">''</span>.join(random.choice(string.ascii_letters + string.digits) <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">32</span>))</div><div class="line"><span class="string">''</span>.join([random.choice(string.ascii_letters+string.digits) <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">43</span>)])</div><div class="line"><span class="string">''</span>.join(random.sample(string.ascii_letters+string.digits, <span class="number">15</span>))</div></pre></td></tr></table></figure>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femnyy.com/2017/08/04/basic_sort/" data-id="cj78eyjte000pbrlnvxl3ivew" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femnyy.com/2017/08/04/basic_sort/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/04/basic_sort/">Comments</a>
+        <a href="https://www.femn.me/2017/08/04/basic_socket/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/basic_socket/">Comments</a>
     
 
         </footer>
@@ -860,7 +994,7 @@
 
 </div>
 
-    <a data-url="https://www.femnyy.com/2017/08/04/character_and_encode/" data-id="cj78eyjtj000vbrlnuj8atazo" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/character_and_encode/" data-id="cj7eq5b1c000l08qh6trbpugp" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -928,7 +1062,7 @@
 
             
     
-        <a href="https://www.femnyy.com/2017/08/04/character_and_encode/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/04/character_and_encode/">Comments</a>
+        <a href="https://www.femn.me/2017/08/04/character_and_encode/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/character_and_encode/">Comments</a>
     
 
         </footer>
@@ -1022,7 +1156,7 @@
 
 </div>
 
-    <a data-url="https://www.femnyy.com/2017/08/04/basic_sequence/" data-id="cj78eyjta000ibrln9g9tn1si" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/basic_sequence/" data-id="cj7eq5b18000d08qhntwls7l4" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1090,7 +1224,7 @@
 
             
     
-        <a href="https://www.femnyy.com/2017/08/04/basic_sequence/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/04/basic_sequence/">Comments</a>
+        <a href="https://www.femn.me/2017/08/04/basic_sequence/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/basic_sequence/">Comments</a>
     
 
         </footer>
@@ -1152,7 +1286,7 @@
 
 </div>
 
-    <a data-url="https://www.femnyy.com/2017/08/01/hello-world/" data-id="cj78eyjtu001bbrln6m2255b0" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/01/hello-world/" data-id="cj7eq5b1q001208qhxqc3ee7u" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1220,7 +1354,7 @@
 
             
     
-        <a href="https://www.femnyy.com/2017/08/01/hello-world/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/01/hello-world/">Comments</a>
+        <a href="https://www.femn.me/2017/08/01/hello-world/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/01/hello-world/">Comments</a>
     
 
         </footer>
@@ -1243,6 +1377,15 @@
         <h3 class="widget-title">recent</h3>
         <div class="widget">
             <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/C/">C</a></p>
+                            <p class="item-title"><a href="/2017/09/10/内存交换/" class="title">内存信息的生成与交换</a></p>
+                            <p class="item-date"><time datetime="2017-09-10T08:10:53.000Z" itemprop="datePublished">2017-09-10</time></p>
+                        </div>
+                    </li>
                 
                     <li>
                         
@@ -1280,15 +1423,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/数据库/">数据库</a></p>
-                            <p class="item-title"><a href="/2017/08/18/mongodb/" class="title">mongodb基本命令</a></p>
-                            <p class="item-date"><time datetime="2017-08-18T11:56:18.000Z" itemprop="datePublished">2017-08-18</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -1298,7 +1432,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -1307,7 +1441,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">35</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">35</span></li></ul>
         </div>
     </div>
 
@@ -1316,7 +1450,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">tags</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -1325,7 +1459,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">tag cloud</h3>
         <div class="widget tagcloud">
-            <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/算法/" style="font-size: 20px;">算法</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
+            <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/算法/" style="font-size: 20px;">算法</a> <a href="/tags/计算机/" style="font-size: 10px;">计算机</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
         </div>
     </div>
 

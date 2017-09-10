@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta property="og:type" content="website">
 <meta property="og:title" content="Femn">
-<meta property="og:url" content="https://www.femnyy.com/page/2/index.html">
+<meta property="og:url" content="https://www.femn.me/page/2/index.html">
 <meta property="og:site_name" content="Femn">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Femn">
@@ -155,11 +155,11 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                37
+                38
                 <span>posts</span>
             </div>
             <div class="article-info-block">
-                3
+                4
                 <span>tags</span>
             </div>
         </div>
@@ -214,6 +214,151 @@
 
             
             <section id="main">
+    <article id="post-shadowsocks-server" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/16/shadowsocks-server/">shadowsocks</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/16/shadowsocks-server/">
+            <time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/server/">server</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="用shadowsocks作为翻墙的工具"><a href="#用shadowsocks作为翻墙的工具" class="headerlink" title="用shadowsocks作为翻墙的工具"></a>用shadowsocks作为翻墙的工具</h3><p>一般的翻墙工具还有VPN,pptp是VPN的一种,我们在这里介绍的是shadowsocks翻墙工具 </p>
+<p> <a href="https://shadowsocks.org/en/download/clients.html" target="_blank" rel="external">shadowsocks 官网</a></p>
+<p> <a href="https://www.loyalsoldier.me/fuck-the-gfw-with-my-own-shadowsocks-server/" target="_blank" rel="external">centos7 install shadowsocks</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">yum install python-setuptools &amp;&amp; easy_install pip  </div><div class="line">pip install shadowsocks</div><div class="line">vim /root/ss/ssserver.json</div><div class="line">    &#123;</div><div class="line">      <span class="string">"server"</span>: <span class="string">"0.0.0.0"</span>,</div><div class="line">      <span class="string">"server_port"</span>: 8388,</div><div class="line">      <span class="string">"local_address"</span>: <span class="string">"127.0.0.1"</span>,</div><div class="line">      <span class="string">"local_port"</span>: 1080,</div><div class="line">      <span class="string">"password"</span>: <span class="string">"yourpassword"</span>,</div><div class="line">      <span class="string">"timeout"</span>: 300,</div><div class="line">      <span class="string">"method"</span>: <span class="string">"aes-256-cfb"</span>,</div><div class="line">      <span class="string">"fast_open"</span>: <span class="literal">false</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">systemctl start firewalld.service</div><div class="line">systemctl <span class="built_in">enable</span> firewalld.service</div><div class="line">firewall-cmd --permanent --add-port=8388/tcp</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure>
+<p>启动 ssserver服务<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">nohup ssserver -c /root/ss/ssserver.json -d start &amp;</div></pre></td></tr></table></figure></p>
+<p>查看ssserver 有没有启动成功</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps aux |grep ssserver</div></pre></td></tr></table></figure>
+<p>如果没有成功,可能是因为/root/ss/ssserver.json 的server_ip的原因,我买了个<a href="https://intl.aliyun.com/zh" target="_blank" rel="external">国际阿里云</a>的ECS服务器,我写的是公网的IP,结果一直运行不起来<br>因为公网是通过nat IP实现的(所以在安全组中只能是选择内网进行配置),所以改成Privaty IP就可以正常启动了,最好是设置为0.0.0.0就好.</p>
+<p>阿里云的ECS服务器上配置使用任意端口的服务后,端口会自动开启监听,但它还有一个安全组的概念,最好设置一个(内网   入  允许 全部 -1/-1   0.0.0.0/0  优先级110)<br>这样就完全可以由ECS的系统完全的操作防火墙,就像没有安全组概念一样了.</p>
+<p> <a href="https://www.vultr.com/docs/how-to-deploy-google-bbr-on-centos-7" target="_blank" rel="external">centos7 install BBR</a> 要注意下sudo grub2-set-default 0,应该是为0的,使用最新的,文档却写成了1<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># update kernet</span></div><div class="line"><span class="comment"># look current kernet</span></div><div class="line">uname -r</div><div class="line"><span class="comment"># Install the ELRepo repo:</span></div><div class="line">sudo rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org</div><div class="line">sudo rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm</div><div class="line"><span class="comment"># install newer kernet</span></div><div class="line">sudo yum --enablerepo=elrepo-kernel install kernel-ml -y</div><div class="line"><span class="comment"># look install newer kernet</span></div><div class="line">rpm -qa | grep kernel</div><div class="line">sudo egrep ^menuentry /etc/grub2.cfg | cut -f 2 -d \<span class="string">'</span></div><div class="line"><span class="string"># setting newer kernet</span></div><div class="line"><span class="string">sudo grub2-set-default 0</span></div><div class="line"><span class="string">sudo shutdown -r now</span></div><div class="line"><span class="string">uname -r</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string"># enable BBr</span></div><div class="line"><span class="string">echo '</span>net.core.default_qdisc=fq<span class="string">' | sudo tee -a /etc/sysctl.conf</span></div><div class="line"><span class="string">echo '</span>net.ipv4.tcp_congestion_control=bbr<span class="string">' | sudo tee -a /etc/sysctl.conf</span></div><div class="line"><span class="string">sudo sysctl -p</span></div><div class="line"><span class="string">sudo sysctl net.ipv4.tcp_available_congestion_control</span></div><div class="line"><span class="string">net.ipv4.tcp_available_congestion_control = bbr cubic reno</span></div><div class="line"><span class="string">sudo sysctl -n net.ipv4.tcp_congestion_control</span></div><div class="line"><span class="string">bbr</span></div><div class="line"><span class="string">lsmod |grep bbr   # output   tcp_bbr                16384  0</span></div></pre></td></tr></table></figure></p>
+<p><a href="https://github.com/shadowsocks/shadowsocks-qt5/wiki/%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97" target="_blank" rel="external">client install shadowsocks</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#ubuntu</span></div><div class="line">sudo add-apt-repository ppa:hzwhuang/ss-qt5</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install shadowsocks-qt5</div><div class="line">ss-qt5</div><div class="line"><span class="comment"># 将ssserver.json的配置,设置到ss中</span></div></pre></td></tr></table></figure>
+<h3 id="注意-一定要再去配置下代理Pxory-0-0-0-0-1080-或者用本地的-pac文件-Local-Port就必须和service-pac文件-此文件是过滤网址用的-如果访问文件中的网址则走代理-启动的端口一致"><a href="#注意-一定要再去配置下代理Pxory-0-0-0-0-1080-或者用本地的-pac文件-Local-Port就必须和service-pac文件-此文件是过滤网址用的-如果访问文件中的网址则走代理-启动的端口一致" class="headerlink" title="注意:一定要再去配置下代理Pxory 0.0.0.0:1080 或者用本地的.pac文件,Local Port就必须和service.pac文件(此文件是过滤网址用的,如果访问文件中的网址则走代理)启动的端口一致."></a>注意:一定要再去配置下代理Pxory 0.0.0.0:1080 或者用本地的.pac文件,Local Port就必须和service.pac文件(此文件是过滤网址用的,如果访问文件中的网址则走代理)启动的端口一致.</h3><p><a href="http://pac.ddcc.me/1.pac" target="_blank" rel="external">http://pac.ddcc.me/1.pac</a> == local.pac</p>
+<h4 id="在国际里云购买的ESC-配置好shadowsocks之后-在手机上能正常使用-也不需要去设置代理-但在Ubuntu桌面下却一直用不了"><a href="#在国际里云购买的ESC-配置好shadowsocks之后-在手机上能正常使用-也不需要去设置代理-但在Ubuntu桌面下却一直用不了" class="headerlink" title="在国际里云购买的ESC,配置好shadowsocks之后,在手机上能正常使用,也不需要去设置代理,但在Ubuntu桌面下却一直用不了"></a>在国际里云购买的ESC,配置好shadowsocks之后,在手机上能正常使用,也不需要去设置代理,但在Ubuntu桌面下却一直用不了</h4><p> 如果自己不想搭建服务器的话,可以按下面的操作进行翻墙:</p>
+<p> <a href="https://doub.io/sszhfx/" target="_blank" rel="external">Shadowsocks免费账号分享</a>,但这个网址要先翻墙才行,哈哈<br> 具体的使用:在免费账号分享的这个网址上 </p>
+<p>1.使用二维码:点击二维码会出现一个二维码的图 这里打开shadowsocks软件–&gt;点鼠标右键–&gt;add–&gt;scan QR code on screen</p>
+<p>2.使用生成二维码的url:在add–&gt;选择url中ss以及后面的部分<br>如果失败的话,可以换其它的二维码试试.</p>
+<p><a href="https://github.com/TestSmirk/ss-ip" target="_blank" rel="external">这个是我大哥自己搭建的一些ss帐号</a></p>
+<h3 id="ubuntu-etc-resolv-conf"><a href="#ubuntu-etc-resolv-conf" class="headerlink" title="ubuntu /etc/resolv.conf"></a>ubuntu /etc/resolv.conf</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">nameserver 127.0.1.1</div><div class="line"><span class="comment"># nameserver 8.8.8.8</span></div><div class="line">search DHCP HOST</div></pre></td></tr></table></figure>
+<h3 id="加速SS的链接速度"><a href="#加速SS的链接速度" class="headerlink" title="加速SS的链接速度"></a><a href="http://vegetablefinn.github.io/2016/05/02/SS%E7%A5%9E%E5%99%A8-FinalSpeed-XSocks-%E7%AC%94%E8%AE%B0/" target="_blank" rel="external">加速SS的链接速度</a></h3>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/16/shadowsocks-server/" data-id="cj7eq5b2c002008qhtlpc4byc" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/16/shadowsocks-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/shadowsocks-server/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-vps-server" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -279,7 +424,7 @@
 <p>8.有了泛域名之后,就可以在 server_name 增加 *.femnyy.com;</p>
 <h3 id="4-上面的证书没有成功的话-那就用腾讯云SSL证书-免费一年"><a href="#4-上面的证书没有成功的话-那就用腾讯云SSL证书-免费一年" class="headerlink" title="4.上面的证书没有成功的话,那就用腾讯云SSL证书 免费一年"></a>4.上面的证书没有成功的话,那就用<a href="https://console.qcloud.com/ssl" target="_blank" rel="external">腾讯云SSL证书</a> 免费一年</h3><p>csr证书请求文件–交给CA签名后形成服务端自己的证书,认证通过之后,签证机构给你crt文件 crt+key = pem </p>
 <p>cat crt key = pem<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">vim /etc/nginx/conf.d/ghost</div><div class="line">    server &#123;</div><div class="line">        listen 80;</div><div class="line">        <span class="comment">#server_name puplic IP;</span></div><div class="line">        <span class="comment">#server_name 0.0.0.0; 上面的公网IP也不行了,</span></div><div class="line">        server_name www.femnyy.com puplic_IP yy.femnyy.com;</div><div class="line">        <span class="comment">#server_name femnyy.com;</span></div><div class="line">        rewrite ^(.*) https://<span class="variable">$host</span><span class="variable">$1</span> permanent;</div><div class="line">        <span class="built_in">return</span> 301 https://<span class="variable">$server_name</span><span class="variable">$request_uri</span>;</div><div class="line">    &#125;</div><div class="line">    server&#123;</div><div class="line">        listen  443;</div><div class="line">        server_name  www.femnyy.com;</div><div class="line">        ssl on; </div><div class="line">        <span class="comment">#index index.htm index.html;</span></div><div class="line">        ssl_certificate   /etc/nginx/conf.d/Nginx_ssl/server.crt;</div><div class="line">        ssl_certificate_key  /etc/nginx/conf.d/Nginx_ssl/server.key;</div><div class="line">        ssl_session_timeout 5m; </div><div class="line">        ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</div><div class="line">        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</div><div class="line">        ssl_prefer_server_ciphers on; </div><div class="line">        location / &#123;</div><div class="line">            proxy_set_header   X-Real-IP <span class="variable">$remote_addr</span>;</div><div class="line">            proxy_set_header   Host      <span class="variable">$http_host</span>;</div><div class="line">            proxy_pass         http://127.0.0.1:2368;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">firewall-cmd --permanent --add-port=443/tcp</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure></p>
-<h3 id="推荐管理主机的状态-nodequery"><a href="#推荐管理主机的状态-nodequery" class="headerlink" title="推荐管理主机的状态 nodequery"></a>推荐管理主机的状态 <a href="https://nodequery.com/" target="_blank" rel="external">nodequery</a></h3><h3 id="统计访问量"><a href="#统计访问量" class="headerlink" title="统计访问量"></a>统计访问量</h3><p>其实在dnspod下管理域名时,就会有流量统计这个功能,但本人使用<a href="https://www.cloudflare.com/" target="_blank" rel="external">cloudflare</a>加速网页之后,就没有此功能了<br>(<a href="https://www.femnyy.com/cdn/">可以看下本人的CND设置</a>)</p>
+<h3 id="推荐管理主机的状态-nodequery"><a href="#推荐管理主机的状态-nodequery" class="headerlink" title="推荐管理主机的状态 nodequery"></a>推荐管理主机的状态 <a href="https://nodequery.com/" target="_blank" rel="external">nodequery</a></h3><h3 id="统计访问量"><a href="#统计访问量" class="headerlink" title="统计访问量"></a>统计访问量</h3><p>其实在dnspod下管理域名时,就会有流量统计这个功能,但本人使用<a href="https://www.cloudflare.com/" target="_blank" rel="external">cloudflare</a>加速网页之后,就没有此功能了<br>(<a href="https://www.femnyy.com/cdn/" target="_blank" rel="external">可以看下本人的CND设置</a>)</p>
 <p>所以使用<a href="https://www.google.com/intl/zh-CN/analytics/" target="_blank" rel="external">谷歌统计访问量</a><br>注册好了之后–&gt;管理–&gt; .js跟踪信息–&gt;代码跟踪–&gt;将网站跟踪的代码复制到ghost的code injection 的Blog Footer</p>
 <p>如果有github学生礼包的话,就可以<a href="https://education.github.com/" target="_blank" rel="external">登陆</a><br><a href="https://www.caoqq.net/github-pack.html" target="_blank" rel="external">此链接</a>,是教如何使用礼包教程<br>这样就可以免费使用digitalocean VPS和namecheap域名了(免费使用.me的域名一年).</p>
 <p>使用digitalocean<br>1.gmail注册的,用paypal必须要充$5,其它支付方式,好像不需要<br>注册时比较坑的时,要等两个小时,害得我不断的去注册个人信息 我去(英语不好哈哈)！同时还比较麻烦的就是在关联paypal的时候,还会发信息给注册paypal的邮箱,并要求回复信息,认证是本人.<br>2.创建实例,居然是用Droplets这个单词</p>
@@ -293,7 +438,7 @@
 
 </div>
 
-    <a data-url="https://www.femnyy.com/2017/08/15/vps-server/" data-id="cj78eyjum002jbrlnopakij5s" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/15/vps-server/" data-id="cj7eq5b2s002e08qhusuhajwc" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -361,7 +506,7 @@
 
             
     
-        <a href="https://www.femnyy.com/2017/08/15/vps-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/15/vps-server/">Comments</a>
+        <a href="https://www.femn.me/2017/08/15/vps-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/15/vps-server/">Comments</a>
     
 
         </footer>
@@ -422,7 +567,7 @@
 
 </div>
 
-    <a data-url="https://www.femnyy.com/2017/08/14/python-fun-program/" data-id="cj78eyju9001xbrln2b2ey7bc" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/14/python-fun-program/" data-id="cj7eq5b26001t08qhxft6cmnd" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -490,7 +635,7 @@
 
             
     
-        <a href="https://www.femnyy.com/2017/08/14/python-fun-program/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/14/python-fun-program/">Comments</a>
+        <a href="https://www.femn.me/2017/08/14/python-fun-program/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/14/python-fun-program/">Comments</a>
     
 
         </footer>
@@ -554,7 +699,7 @@
 
 </div>
 
-    <a data-url="https://www.femnyy.com/2017/08/11/python-closure/" data-id="cj78eyju5001rbrlnro6lfbd3" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/python-closure/" data-id="cj7eq5b23001p08qhzt0ksgxz" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -622,7 +767,7 @@
 
             
     
-        <a href="https://www.femnyy.com/2017/08/11/python-closure/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/11/python-closure/">Comments</a>
+        <a href="https://www.femn.me/2017/08/11/python-closure/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-closure/">Comments</a>
     
 
         </footer>
@@ -708,7 +853,7 @@
 
 </div>
 
-    <a data-url="https://www.femnyy.com/2017/08/10/python-decorator/" data-id="cj78eyju7001ubrlnyt05em7h" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/10/python-decorator/" data-id="cj7eq5b24001r08qhato8ybc5" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -776,7 +921,7 @@
 
             
     
-        <a href="https://www.femnyy.com/2017/08/10/python-decorator/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/10/python-decorator/">Comments</a>
+        <a href="https://www.femn.me/2017/08/10/python-decorator/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/10/python-decorator/">Comments</a>
     
 
         </footer>
@@ -832,7 +977,7 @@
 <h3 id="磁盘和挂载"><a href="#磁盘和挂载" class="headerlink" title="磁盘和挂载"></a>磁盘和挂载</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">df -h <span class="comment"># 设备文件名称,本系统中的磁盘的使用大小情况</span></div><div class="line">df -at <span class="comment"># 文件系统, 磁盘的状态</span></div><div class="line">du -sh <span class="comment"># 显示此目录总所占空间</span></div><div class="line">du -sh ~/* | sort -nr </div><div class="line"><span class="comment"># 参数让结果按降序输出   管道命令将du命令的输出重定向到sort命令</span></div><div class="line"></div><div class="line"></div><div class="line">fdisk -l  <span class="comment"># 查看本机的所有磁盘,以及磁盘的分区情况</span></div><div class="line">fdisk /dev/sda <span class="comment"># 查看,创建,删除某个磁盘 分区</span></div><div class="line">dumpe2fs -h /dev/sdb3 <span class="comment"># 得到这个磁盘分区的所有信息</span></div><div class="line"></div><div class="line"><span class="comment"># 格式化之前先不要挂载 </span></div><div class="line">mkfs -t ext4 /dev/sda4 </div><div class="line">mkfs.ext4 /dev/sda4</div><div class="line"><span class="comment"># 将这个分区(或硬盘)格式化为ext4文件系统,格式化磁盘</span></div><div class="line">mke2fs -j -L <span class="string">"partition-label-name"</span> -b 4096 -i -c 128 /dev/sda4  </div><div class="line"><span class="comment"># 这样就可以传4.3G的大文件到U盘上了,只是这样格式,在Win不能用</span></div><div class="line"></div><div class="line"><span class="comment"># 挂载</span></div><div class="line">mount /dev/sdc1 /home/name/usb  </div><div class="line">mount -o remount,rw,auto /dev/sdc1 </div><div class="line"><span class="comment"># 将/dev/sdc1重新挂载,并加入参数rw,auto</span></div><div class="line">umount /home/name/usb     or /dev/sdc1 挂载点或设备文件名 </div><div class="line"><span class="comment"># -l参数是强制</span></div><div class="line">lsof |grep /dev/sdc1</div><div class="line"><span class="comment"># 当挂载不掉时,用下面的命令 ,会得到进程号</span></div><div class="line"></div><div class="line"><span class="comment"># 特殊设备loop挂载(镜像文件不刻录就挂载使用)</span></div><div class="line">mount -o loop /home/name/ubuntu-16.04-desktop-amd64.iso \</div><div class="line">    /hame/name/usb  </div><div class="line"><span class="comment">#使用 dd 命令写入下载好的 ISO 镜像到 U 盘中</span></div><div class="line">sudo dd <span class="keyword">if</span>=xxxxx.iso of=/dev/sdc &amp;&amp; sync</div><div class="line"></div><div class="line">nautilus .     <span class="comment"># 默认是打开home目录</span></div></pre></td></tr></table></figure>
 <p>传统的磁盘管理问题:<br>当分区大小不够用时无法扩展其大小,只能通过添加硬盘,创建新分区来扩充空间,但是新添加进来的硬盘是作为独立文件系统存在的,原有的文件系统并未得到扩充,上层应用很多时候只能访问一个文件系统,只能让现有磁盘下线,换上新的磁盘之后,再将原始数据导入.</p>
 <h3 id="LVM逻辑卷管理-Logical-volume-Manager"><a href="#LVM逻辑卷管理-Logical-volume-Manager" class="headerlink" title="LVM逻辑卷管理(Logical volume Manager)"></a><a href="https://www.qingsword.com/qing/924.html" target="_blank" rel="external">LVM</a>逻辑卷管理(Logical volume Manager)</h3><p>PE(physical extend)物理扩展:逻辑卷空间管理的最基本单位,默认是4M<br>PV(physica volume)物理卷:将底层磁盘格式化成物理卷,可以是物理硬盘上的分区,也可以是整块物理硬盘<br>VG(volume group)卷组:空间池是给来装PE的,我们可以将一个或多个PV,加入到VG当中,当创建好了VG会有/dev/vgname的目录<br>LV(logical volume)逻辑卷(操作系统最终使用的是逻辑卷格式化之后的数据)/dev/vgname/lvname的目录,每个的逻辑卷空间有可以来自不同的物理磁盘<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">1. 创建PV</div><div class="line"><span class="comment"># 整块物理硬盘创建PV</span></div><div class="line">sudo pvcreate /dev/sd[b-c]</div><div class="line"></div><div class="line"><span class="comment"># 物理硬盘上的分区创建PV</span></div><div class="line">fdisk /dev/sdb1 使用t将分区类型改成8e(LVM)</div><div class="line">partprobe <span class="comment"># 刷新分区表</span></div><div class="line">sudo pvcreate /dev/sdb1</div><div class="line"></div><div class="line">sudo pvs <span class="comment"># 查看创建好的PV</span></div><div class="line"></div><div class="line">2. PV创建好了就可以创建VG了</div><div class="line">sudo vgcreate vg0 /dev/sdb1</div><div class="line">sudo vgs <span class="comment"># 查看创建好的VG</span></div><div class="line">sudo pvs <span class="comment"># sdb1这个PV就属于vg0这个卷组池了</span></div><div class="line"></div><div class="line">3. 创建好卷组池就能从池中划分容量给逻辑卷(LV)了</div><div class="line">sudo lvcreate -n lv0 -L 10G vg0</div><div class="line"><span class="comment"># 从卷组vg0中拿出10G,分配给lv0,其中-n后面是lv自定义名称,</span></div><div class="line"><span class="comment"># -L后面跟需要从vg0中分配给lv0的大小以及从哪个VG分配</span></div><div class="line"></div><div class="line">4. 创建好lv后就可以格式化它,成为文件系统使用</div><div class="line">sudo mkfs.ext4 /dev/vg0/lv0</div><div class="line"><span class="comment"># 创建好的lv所在目录是"/dev/卷组名称/逻辑卷名称",</span></div><div class="line"><span class="comment"># 所以本例就是/dev/vg0/lv0,将它格式化成ext4文件系统</span></div><div class="line"></div><div class="line">5. 挂载和使用</div><div class="line">sudo mount /dev/vg0/lv0 /mnt</div><div class="line"></div><div class="line">6. 扩充VG</div><div class="line">sudo pvcreate /dev/sdd</div><div class="line"><span class="comment">#新增加一块硬盘sdd(20G),将它创建成PV后划分到vg0下,</span></div><div class="line"><span class="comment"># 此时vg0的容量将增加sdd硬盘的大小</span></div><div class="line">sudo vgextend vg0 /dev/sdd</div><div class="line"></div><div class="line">7. 扩充LV</div><div class="line">sudo vgs <span class="comment"># 先确保VG池中有足够的VFree空间可供使用</span></div><div class="line">sudo lvextend -L +5G /dev/vg0/lv0</div><div class="line">sudo resize2fs /dev/vg0/lv0 <span class="comment"># 更新</span></div></pre></td></tr></table></figure></p>
-<h3 id="安装和下载"><a href="#安装和下载" class="headerlink" title="安装和下载"></a>安装和下载</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">vim /proc/meminfo 文件来观察LINux系统上虚拟内存的当前状态.</div><div class="line">sudo dpkg -i **.deb <span class="comment"># 安装 查看-l</span></div><div class="line">sudo dpkg -purge **</div><div class="line">sudo apt install **</div><div class="line"></div><div class="line">curl https://wordpress.org/latest.tar.gz | tar -zxvf -</div><div class="line">curl url/install.sh | sh</div><div class="line"></div><div class="line">wget -O redis.tar.gz \</div><div class="line">    http://download.redis.io/releases/redis-3.2.0.tar.gz</div><div class="line">tar -zxvf redis.tar.gz -C /usr/src</div><div class="line">make -C /usr/src/redis \</div><div class="line">    &amp;&amp; make -C /usr/src/redis/src install </div><div class="line"></div><div class="line">wget https://ghost.org/zip/ghost-latest.zip</div><div class="line">unzip -uo ghost-latest.zip -d /var/www/ghost </div><div class="line"></div><div class="line">wget -qO- url/install.sh | sh</div><div class="line">wget --no-check-certificate url/install.sh -O ./install.sh</div><div class="line"></div><div class="line">curl -LOk https://ghost.org/zip/ghost-latest.zip</div><div class="line">unzip ghost-latest.zip -d ghost-temp</div><div class="line"></div><div class="line">curl http://localhost:8000/wrap?name=femn&amp;  get()</div><div class="line">http://localhost:8000/wrap -d name=femn    post()方法请求</div><div class="line"><span class="comment"># Siege对我们的应用在10秒内执行大约10个并发请求</span></div><div class="line">siege http://localhost:8000/?q=pants -c10 -t10s</div></pre></td></tr></table></figure>
+<h3 id="安装和下载"><a href="#安装和下载" class="headerlink" title="安装和下载"></a>安装和下载</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">vim /proc/meminfo 文件来观察LINux系统上虚拟内存的当前状态.</div><div class="line">sudo dpkg -i **.deb <span class="comment"># 安装 查看-l</span></div><div class="line">dpkg -l |grep minitube</div><div class="line">sudo dpkg --purge minitube</div><div class="line"></div><div class="line">sudo apt install **</div><div class="line"></div><div class="line">curl https://wordpress.org/latest.tar.gz | tar -zxvf -</div><div class="line">curl url/install.sh | sh</div><div class="line"></div><div class="line">wget -O redis.tar.gz \</div><div class="line">    http://download.redis.io/releases/redis-3.2.0.tar.gz</div><div class="line">tar -zxvf redis.tar.gz -C /usr/src</div><div class="line">make -C /usr/src/redis \</div><div class="line">    &amp;&amp; make -C /usr/src/redis/src install </div><div class="line"></div><div class="line">wget https://ghost.org/zip/ghost-latest.zip</div><div class="line">unzip -uo ghost-latest.zip -d /var/www/ghost </div><div class="line"></div><div class="line">wget -qO- url/install.sh | sh</div><div class="line">wget --no-check-certificate url/install.sh -O ./install.sh</div><div class="line"></div><div class="line">curl -LOk https://ghost.org/zip/ghost-latest.zip</div><div class="line">unzip ghost-latest.zip -d ghost-temp</div><div class="line"></div><div class="line">curl http://localhost:8000/wrap?name=femn&amp;  get()</div><div class="line">http://localhost:8000/wrap -d name=femn    post()方法请求</div><div class="line"><span class="comment"># Siege对我们的应用在10秒内执行大约10个并发请求</span></div><div class="line">siege http://localhost:8000/?q=pants -c10 -t10s</div></pre></td></tr></table></figure>
 <h3 id="文件和目录操作"><a href="#文件和目录操作" class="headerlink" title="文件和目录操作"></a>文件和目录操作</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">    ll linux.md</div><div class="line">    <span class="comment"># ll 查看的信息 第二列是链接数量</span></div><div class="line">    ll |grep -v linux.md <span class="comment"># 取反</span></div><div class="line">    <span class="built_in">history</span> | grep -c rar <span class="comment"># 计算匹配的数量</span></div><div class="line">    touch file1 <span class="comment"># 创建文件</span></div><div class="line">    file file1 <span class="comment"># 查看文件类型</span></div><div class="line">    cp -Rf <span class="built_in">source</span> destination </div><div class="line">    <span class="comment"># -R 允许你通过命令递归地复制整个目录的内容.</span></div><div class="line">    <span class="comment"># -f 强制覆盖已经存在的目标文件,不提示 </span></div><div class="line">    <span class="comment"># -l 硬链接,它们是同一个文件,索引节点是相同的</span></div><div class="line">    \cp -R dir1 dir2 <span class="comment"># 同上</span></div><div class="line">    \cp -R content/themes/casper ../ghost/content/themes</div><div class="line">    rm -rf file1</div><div class="line">    tail -f -n 20 /etc/passwd</div><div class="line"></div><div class="line">    <span class="comment"># 软连接可以不用事先创建目录,硬连接必须先创建目录</span></div><div class="line">    sudo ln -s /home/femn/file /usr/share/nginx/html/file</div><div class="line">    mkdir ~/file</div><div class="line">    </div><div class="line">    <span class="comment"># mv排除文件</span></div><div class="line">    <span class="comment"># 将本路径下所有的文件移动到本路径下vimrc_config目录下,</span></div><div class="line">    <span class="comment"># 但vimrc_config本身不动</span></div><div class="line">    mv !(vimrc_config) vimrc_config</div><div class="line">    <span class="comment"># 但此命令不包括mv 隐藏文件</span></div><div class="line">    rm命令类似</div><div class="line">    </div><div class="line">    sort -t <span class="string">':'</span> -k 3 -n /etc/passwd</div><div class="line">    <span class="comment"># 按字段分隔数据,按分隔后的第几个进行排序 </span></div><div class="line"></div><div class="line">    scp -r -P 22 root@ip:/server/app/main/handlers \</div><div class="line">        ./main/handlers/</div><div class="line">    scp -P 22 ./1.txt python@ip:/usr/share/nginx/html/file/</div><div class="line">    <span class="comment"># 只需要file目录有写权限,普通用户就可以用了</span></div><div class="line">    rsync -av -e <span class="string">"ssh -p 22"</span> /home/python/app1.6/main/ \</div><div class="line">        root@ip:/server/app1.6/main/</div><div class="line">    rsync -av -e <span class="string">"ssh -p 22"</span> /home/python/oldapp_8000/ \</div><div class="line">        root@ip:/server/app/main/</div><div class="line"></div><div class="line"><span class="comment"># 截图</span></div><div class="line">    <span class="comment">#你将可以使用鼠标选取一个矩形框.在你放下鼠标左键的那一刻,</span></div><div class="line">    <span class="comment"># 一个该矩形框的截屏会以import后面跟的文件名保存在当前目录下</span></div><div class="line">    import screenshot.jpg </div><div class="line">    gnome-screenshot -a</div><div class="line"></div><div class="line"><span class="comment"># 改变视频文件大小(分辨率)http://blog.topspeedsnail.com/archives/1699</span></div><div class="line">    ffmpeg -i source.mpg -s 960x540 -c:a copy  destination.mp4</div><div class="line"><span class="comment"># Linux系统将每个对象当作文件来处理,这包括输入和输入的过程.Linux用文件描述符来标识每个文件对象.</span></div></pre></td></tr></table></figure>
 <h3 id="解压缩"><a href="#解压缩" class="headerlink" title="解压缩"></a>解压缩</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tar</span></div><div class="line">tar -zcvf /home/name/conclusion.tar.gz ./conclusion </div><div class="line">tar -zxvf ./conclusion.tar.gz </div><div class="line">tar -cvf /tmp/etc.tar /etc &lt;==仅打包,不压缩</div><div class="line"></div><div class="line"><span class="comment"># rar </span></div><div class="line">rar x file.rar <span class="comment"># 解压</span></div><div class="line"></div><div class="line"><span class="comment"># zip</span></div><div class="line">zip test.zip <span class="built_in">test</span> </div><div class="line">unzip test.zip</div></pre></td></tr></table></figure>
 <h3 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">printenv <span class="comment"># 查看所有全局环境变量</span></div><div class="line"><span class="built_in">set</span> <span class="comment"># 会显示为某个特定进程设置的所有环境变量</span></div><div class="line"><span class="comment"># 设置PATH环境变量</span></div><div class="line">vim ~/.profile</div><div class="line">    <span class="built_in">export</span> JAVA_HOME=/home/name/jdk1.8.0_92</div><div class="line">    <span class="built_in">export</span> ANT_HOME=/home/name/apache-ant-1.9.7</div><div class="line">    PATH=<span class="variable">$&#123;PATH&#125;</span>:/home/name/jdk1.8.0_92/bin:/home/name/apache/bin</div><div class="line"><span class="comment"># 设置局部变量(只能在定义的进程可见)</span></div><div class="line">femn=<span class="string">'hello,my name is femn'</span></div><div class="line"><span class="comment"># 设置全局变量</span></div><div class="line"><span class="built_in">export</span> femn  <span class="comment"># 记住不要再用美元符($) </span></div><div class="line"><span class="comment"># 删除环境变量</span></div><div class="line"><span class="built_in">unset</span> femn</div></pre></td></tr></table></figure>
@@ -848,7 +993,7 @@
 
 </div>
 
-    <a data-url="https://www.femnyy.com/2017/08/08/linux-common-commands/" data-id="cj78eyjtx001fbrlndnx7ionv" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/08/linux-common-commands/" data-id="cj7eq5b1v001608qh3xgtv7ql" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -916,7 +1061,7 @@
 
             
     
-        <a href="https://www.femnyy.com/2017/08/08/linux-common-commands/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/08/linux-common-commands/">Comments</a>
+        <a href="https://www.femn.me/2017/08/08/linux-common-commands/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/08/linux-common-commands/">Comments</a>
     
 
         </footer>
@@ -1044,7 +1189,7 @@
 
 </div>
 
-    <a data-url="https://www.femnyy.com/2017/08/06/python-object/" data-id="cj78eyjua001zbrlnxzpnyk6w" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/06/python-object/" data-id="cj7eq5b27001v08qhw7knd33j" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1112,7 +1257,7 @@
 
             
     
-        <a href="https://www.femnyy.com/2017/08/06/python-object/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/06/python-object/">Comments</a>
+        <a href="https://www.femn.me/2017/08/06/python-object/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/06/python-object/">Comments</a>
     
 
         </footer>
@@ -1176,7 +1321,7 @@
 
 </div>
 
-    <a data-url="https://www.femnyy.com/2017/08/05/python-threads/" data-id="cj78eyjuc0024brlndk82y6q8" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/05/python-threads/" data-id="cj7eq5b2a001x08qhi7oqh85e" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1244,7 +1389,7 @@
 
             
     
-        <a href="https://www.femnyy.com/2017/08/05/python-threads/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/05/python-threads/">Comments</a>
+        <a href="https://www.femn.me/2017/08/05/python-threads/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/05/python-threads/">Comments</a>
     
 
         </footer>
@@ -1351,7 +1496,7 @@
 
 </div>
 
-    <a data-url="https://www.femnyy.com/2017/08/05/threads/" data-id="cj78eyjul002gbrlnud2x8g6z" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/05/threads/" data-id="cj7eq5b2q002a08qh04gye6xg" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1419,7 +1564,7 @@
 
             
     
-        <a href="https://www.femnyy.com/2017/08/05/threads/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/05/threads/">Comments</a>
+        <a href="https://www.femn.me/2017/08/05/threads/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/05/threads/">Comments</a>
     
 
         </footer>
@@ -1509,7 +1654,7 @@
 
 </div>
 
-    <a data-url="https://www.femnyy.com/2017/08/05/iterable-iterator-generator/" data-id="cj78eyjtw001dbrln5uvgzu6y" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/05/iterable-iterator-generator/" data-id="cj7eq5b1z001d08qhlhnt2dzr" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1577,155 +1722,7 @@
 
             
     
-        <a href="https://www.femnyy.com/2017/08/05/iterable-iterator-generator/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/05/iterable-iterator-generator/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-docker-RUN-ENTRYPOINT-CMD" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/04/docker-RUN-ENTRYPOINT-CMD/">docker RUN ENTRYPOINT CMD命令</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/docker-RUN-ENTRYPOINT-CMD/">
-            <time datetime="2017-08-04T20:19:31.000Z" itemprop="datePublished">2017-08-04</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/docker/">docker</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h3 id="运行时机"><a href="#运行时机" class="headerlink" title="运行时机"></a>运行时机</h3><p>RUN在Dockerfile构建镜像的过程(Build)中运行,最终被commit的到镜像.</p>
-<p>ENTRYPOINT和CMD在容器运行(run、start)时运行</p>
-<h3 id="都有shell和exec形式"><a href="#都有shell和exec形式" class="headerlink" title="都有shell和exec形式"></a>都有shell和exec形式</h3><p>shell形式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">RUN <span class="built_in">command</span> param1 param2</div><div class="line">CMD <span class="built_in">command</span> param1 param2</div><div class="line">ENTRYPOINT <span class="built_in">command</span> param1 param2</div><div class="line"><span class="comment"># ENTRYPOINT的Shell格式会忽略任何CMD或docker run提供的参数</span></div><div class="line"><span class="comment">#eg</span></div><div class="line">RUN apt-get install python3  </div><div class="line">ENTRYPOINT <span class="built_in">echo</span> <span class="string">"Hello world"</span> </div><div class="line">CMD <span class="built_in">echo</span> <span class="string">"Hello world"</span>  </div><div class="line"></div><div class="line">ENV name Cloud Man  </div><div class="line">ENTRYPOINT <span class="built_in">echo</span> <span class="string">"Hello, <span class="variable">$name</span>"</span> </div><div class="line"><span class="comment"># shell 格式底层会调用 /bin/sh -c &lt;command&gt;</span></div><div class="line"><span class="comment"># 所以执行 docker run &lt;image&gt; 将输出</span></div><div class="line"><span class="comment"># Hello, Cloud Man</span></div></pre></td></tr></table></figure></p>
-<h4 id="shell形式还有一个严重的问题-由于其默认使用-bin-sh来运行命令-如果镜像中不包含-bin-sh-容器会无法启动"><a href="#shell形式还有一个严重的问题-由于其默认使用-bin-sh来运行命令-如果镜像中不包含-bin-sh-容器会无法启动" class="headerlink" title="shell形式还有一个严重的问题:由于其默认使用/bin/sh来运行命令,如果镜像中不包含/bin/sh,容器会无法启动."></a>shell形式还有一个严重的问题:由于其默认使用/bin/sh来运行命令,如果镜像中不包含/bin/sh,容器会无法启动.</h4><p>exec形式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">RUN [<span class="string">"executable"</span>, <span class="string">"param1"</span>, <span class="string">"param2"</span>]</div><div class="line">ENTRYPOINT [<span class="string">"executable"</span>, <span class="string">"param1"</span>, <span class="string">"param2"</span>]</div><div class="line">CMD [<span class="string">"executable"</span>, <span class="string">"param1"</span>, <span class="string">"param2"</span>]</div><div class="line"><span class="comment">#eg</span></div><div class="line">RUN [<span class="string">"apt-get"</span>, <span class="string">"install"</span>, <span class="string">"python3"</span>]  </div><div class="line">ENTRYPOINT [<span class="string">"/bin/echo"</span>, <span class="string">"Hello world"</span>]</div><div class="line">CMD [<span class="string">"/bin/echo"</span>, <span class="string">"Hello world"</span>]  </div><div class="line"></div><div class="line">ENV name Cloud Man  </div><div class="line">ENTRYPOINT [<span class="string">"/bin/echo"</span>, <span class="string">"Hello, <span class="variable">$name</span>"</span>]</div><div class="line"><span class="comment"># Hello, $name</span></div><div class="line">ENV name Cloud Man  </div><div class="line">ENTRYPOINT [<span class="string">"/bin/sh"</span>, <span class="string">"-c"</span>, <span class="string">"echo Hello, <span class="variable">$name</span>"</span>]</div><div class="line"><span class="comment"># Hello, Cloud Man</span></div></pre></td></tr></table></figure></p>
-<p>CMD还多了一种用于为ENTRYPOINT提供参数的形式:<br>此时 ENTRYPOINT 必须使用 Exec 格式<br>参数格式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CMD [<span class="string">"param1"</span>,<span class="string">"param2"</span>]</div></pre></td></tr></table></figure></p>
-<p>shell形式和exec的形式的本质区别在于shell形式提供了默认的指令/bin/sh -c,所以其指定的command将在shell的环境下运行.因此指定command的pid将不会是1,因为pid为1的是shell,command进程是shell的子进程.</p>
-<h4 id="exec形式则不然-但由于exec指定的命令不由shell启动-因此也就无法使用shell中的环境变量-如-HOME-如果希望能够使用环境变量-可以指定命令为sh-CMD-“sh”-“-c”-“echo”-“-HOME”"><a href="#exec形式则不然-但由于exec指定的命令不由shell启动-因此也就无法使用shell中的环境变量-如-HOME-如果希望能够使用环境变量-可以指定命令为sh-CMD-“sh”-“-c”-“echo”-“-HOME”" class="headerlink" title="exec形式则不然,但由于exec指定的命令不由shell启动,因此也就无法使用shell中的环境变量,如$HOME.如果希望能够使用环境变量,可以指定命令为sh:CMD [ “sh”, “-c”, “echo”, “$HOME” ]"></a>exec形式则不然,但由于exec指定的命令不由shell启动,因此也就无法使用shell中的环境变量,如$HOME.如果希望能够使用环境变量,可以指定命令为sh:CMD [ “sh”, “-c”, “echo”, “$HOME” ]</h4><h3 id="重载问题"><a href="#重载问题" class="headerlink" title="重载问题"></a>重载问题</h3><p>Dockerfile中只有最后一个ENTRYPOINT指令会生效,其他会被重载.</p>
-<p>Dockerfile中只有最后一个CMD指令会生效,其他会被重载.</p>
-<p>CMD指定的命令可以被docker run传递的命令覆盖.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">CMD <span class="built_in">echo</span> <span class="string">"Hello world"</span></div><div class="line"><span class="comment"># 运行容器 docker run -it [image] 将输出:</span></div><div class="line"><span class="comment"># Hello world</span></div><div class="line">docker run -it [image] /bin/bash</div><div class="line"><span class="comment"># CMD 会被忽略掉,命令 bash 将被执行</span></div><div class="line"><span class="comment"># root@10a32dc7d3d3:/#</span></div></pre></td></tr></table></figure></p>
-<p>ENTRYPOINT指定的命令不会被docker run传递的命令覆盖.容器名后面的所有内容都当成参数传递给其指定的命令.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">ENTRYPOINT [<span class="string">"/bin/echo"</span>, <span class="string">"Hello"</span>]  </div><div class="line">CMD [<span class="string">"echo"</span>,<span class="string">"world"</span>]</div><div class="line"></div><div class="line"><span class="comment"># 当容器通过 docker run -it [image] 启动时,输出为:</span></div><div class="line"><span class="comment"># Hello echo world</span></div><div class="line"></div><div class="line"><span class="comment"># 而如果通过 docker run -it [image] CloudMan 启动,则输出为:</span></div><div class="line"><span class="comment"># Hello CloudMan</span></div></pre></td></tr></table></figure></p>
-<p>当然,ENTRYPOINT指定的命令并不是不能重载的,只需指定–entrypoint来重载即可.</p>
-<h3 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h3><ol>
-<li><p>使用 RUN 指令安装应用和软件包,构建镜像.</p>
-</li>
-<li><p>如果 Docker 镜像的用途是运行应用程序或服务,比如运行一个 MySQL,应该优先使用 Exec 格式的 ENTRYPOINT 指令.CMD 可为 ENTRYPOINT 提供额外的默认参数,同时可利用 docker run 命令行替换默认参数.</p>
-</li>
-<li><p>如果想为容器设置默认的启动命令,可使用 CMD 指令.用户可在 docker run 命令行中替换此默认命令.</p>
-<h3 id="ENTRYPOINT和CMD进行组合-运行shell脚本"><a href="#ENTRYPOINT和CMD进行组合-运行shell脚本" class="headerlink" title="ENTRYPOINT和CMD进行组合,运行shell脚本"></a>ENTRYPOINT和CMD进行组合,运行shell脚本</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">FROM busybox</div><div class="line">MAINTAINER femn</div><div class="line"></div><div class="line">COPY ./entrypoint.sh /</div><div class="line">RUN chmod +x /entrypoint.sh</div><div class="line">ENTRYPOINT [<span class="string">"/entrypoint.sh"</span>]</div><div class="line">CMD [<span class="string">"echo"</span>,<span class="string">"CMD"</span>]</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>entrypoint.sh如下:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/sh</span></div><div class="line"><span class="built_in">set</span> -e</div><div class="line"><span class="built_in">echo</span> <span class="string">"ENTRYPOINT"</span></div><div class="line"><span class="built_in">exec</span> <span class="string">"<span class="variable">$@</span>"</span></div><div class="line"><span class="comment"># 脚本中使用exec "$@"来运行CMD中的命令</span></div></pre></td></tr></table></figure></p>
-<p>运行时则输出 ENTRYPOINT CMD,而运行的参数 都是传递给entrypoint.sh的.</p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femnyy.com/2017/08/04/docker-RUN-ENTRYPOINT-CMD/" data-id="cj78eyjtk000xbrln0tt3me7f" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femnyy.com/2017/08/04/docker-RUN-ENTRYPOINT-CMD/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femnyy.com/2017/08/04/docker-RUN-ENTRYPOINT-CMD/">Comments</a>
+        <a href="https://www.femn.me/2017/08/05/iterable-iterator-generator/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/05/iterable-iterator-generator/">Comments</a>
     
 
         </footer>
@@ -1748,6 +1745,15 @@
         <h3 class="widget-title">recent</h3>
         <div class="widget">
             <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/C/">C</a></p>
+                            <p class="item-title"><a href="/2017/09/10/内存交换/" class="title">内存信息的生成与交换</a></p>
+                            <p class="item-date"><time datetime="2017-09-10T08:10:53.000Z" itemprop="datePublished">2017-09-10</time></p>
+                        </div>
+                    </li>
                 
                     <li>
                         
@@ -1785,15 +1791,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/数据库/">数据库</a></p>
-                            <p class="item-title"><a href="/2017/08/18/mongodb/" class="title">mongodb基本命令</a></p>
-                            <p class="item-date"><time datetime="2017-08-18T11:56:18.000Z" itemprop="datePublished">2017-08-18</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -1803,7 +1800,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -1812,7 +1809,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">35</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">35</span></li></ul>
         </div>
     </div>
 
@@ -1821,7 +1818,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">tags</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -1830,7 +1827,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">tag cloud</h3>
         <div class="widget tagcloud">
-            <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/算法/" style="font-size: 20px;">算法</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
+            <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/算法/" style="font-size: 20px;">算法</a> <a href="/tags/计算机/" style="font-size: 10px;">计算机</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
         </div>
     </div>
 
