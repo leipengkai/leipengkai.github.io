@@ -155,7 +155,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                38
+                44
                 <span>posts</span>
             </div>
             <div class="article-info-block">
@@ -214,6 +214,147 @@
 
             
             <section id="main">
+    <article id="post-virtualbox" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/09/20/virtualbox/">VirtualBox下虚拟机的网络配置</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/09/20/virtualbox/">
+            <time datetime="2017-09-20T09:51:19.000Z" itemprop="datePublished">2017-09-20</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/server/">server</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h4 id="基本思路"><a href="#基本思路" class="headerlink" title="基本思路"></a>基本思路</h4><ol>
+<li>从主机可以通过静态IP访问到每一个虚拟机,从虚拟机中可以访问主机(主机也有一个固定的静态IP)(Host-only Adapter 模式)<br>注意:这里设置是主机的IPV4,不是虚拟机的</li>
+<li>虚拟机之间组成一个由静态IP构成的网络,而且虚拟机之间可以互相访问 (Internal Network 模式)<br>注意,虚拟机之间的内网名字可以随便起,这里叫做 intnet.如果在配置在第二个虚拟机的时候,也要记得选择 intnet 这个内网名字,这样虚拟机之间才可以互相通信</li>
+<li>从主机,从虚拟机都可以访问internet (NET 模式)</li>
+</ol>
+<h3 id="具体操作"><a href="#具体操作" class="headerlink" title="具体操作"></a>具体操作</h3><p><code>在Virtualbox中设置全局变量的 Host-only Networks</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">打开Virtualbox--任务栏--File--Preferences--Network--Host-only Networks</div></pre></td></tr></table></figure></p>
+<p><img src="https://drive.google.com/file/d/0B9NEWVh_ricqa1RRSnBCbWgwR1k/view?usp=sharing" alt="如图"><br><code>配置虚拟机的网卡</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">选择一个虚拟机--Settings--Network--&gt;设置三个网卡</div></pre></td></tr></table></figure></p>
+<p><img src="https://drive.google.com/file/d/0B9NEWVh_ricqTWI2OTU2dnQ1aFE/view?usp=sharing" alt="如图"></p>
+<p><code>保存,启动虚拟机,安装系统</code><br><code>进入虚拟机内部配置网卡</code></p>
+<p>修改静态IP,与主机同一个网段,实现主机与虚拟机的通信<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">vi /etc/sysconfig/network-scripts/ifcfg-enp0s3 </div><div class="line">    BOOTPROTO=static</div><div class="line">    ONBOOT=yes</div><div class="line">    IPADDR=192.168.1.220</div><div class="line">    PREFIX=24</div><div class="line">    BROADCAST=192.168.1.255</div></pre></td></tr></table></figure></p>
+<p>修改静态IP,与虚拟机同一个网段,实现虚拟机之间的通信<br>注意:虚拟机内网我们选择 192.168.0. 这个网段<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">vi /etc/sysconfig/network-scripts/ifcfg-enp0s8</div><div class="line">    BOOTPROTO=static</div><div class="line">    ONBOOT=yes</div><div class="line">    IPADDR=192.168.0.2</div><div class="line">    PREFIX=24</div></pre></td></tr></table></figure></p>
+<p>实现连接internet<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">vi /etc/sysconfig/network-scripts/ifcfg-enp0s9</div><div class="line">    ONBOOT=yes</div></pre></td></tr></table></figure></p>
+<p>重新启动网络<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service network restart</div></pre></td></tr></table></figure></p>
+<p><code>关机保存上面的配置好的虚拟机</code><br><code>clone虚拟机,然后进入clone后的虚拟机,修改如下配置及可</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 设置一个没有使用的IP</span></div><div class="line">vi /etc/sysconfig/network-scripts/ifcfg-enp0s3 </div><div class="line">    IPADDR=192.168.1.220</div><div class="line"><span class="comment"># 设置一个新的内网IP    </span></div><div class="line">vi /etc/sysconfig/network-scripts/ifcfg-enp0s8</div><div class="line">    IPADDR=192.168.0.2</div><div class="line"><span class="comment"># 因为internet的网络设置是DHCP,所以不用配置</span></div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/09/20/virtualbox/" data-id="cj7swqigw002kcrqjm5l6bj7l" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/09/20/virtualbox/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/20/virtualbox/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-内存交换" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -257,12 +398,12 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h4 id="由C编译的程序占用内存情况"><a href="#由C编译的程序占用内存情况" class="headerlink" title="由C编译的程序占用内存情况"></a>由C编译的程序占用内存情况</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//main.cpp    </span></div><div class="line"><span class="keyword">int</span> a = <span class="number">0</span>; <span class="comment">//全局初始化区  </span></div><div class="line"><span class="keyword">char</span> *p1; <span class="comment">//全局未初始化区  </span></div><div class="line">      </div><div class="line">main()  </div><div class="line">&#123;  </div><div class="line">    <span class="keyword">int</span> b; <span class="comment">//栈  </span></div><div class="line">    <span class="keyword">char</span> s[] = <span class="string">"abc"</span>; <span class="comment">//栈  </span></div><div class="line">    <span class="keyword">char</span> *p2; <span class="comment">//栈  </span></div><div class="line">    <span class="keyword">char</span> *p3 = <span class="string">"123456"</span>; <span class="comment">//123456\\0在常量区,p3在栈上.  </span></div><div class="line">    <span class="keyword">static</span> <span class="keyword">int</span> c =<span class="number">0</span>;<span class="comment">//全局(静态)初始化区  </span></div><div class="line">    p1 = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="number">10</span>);      </div><div class="line">    p2 = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="number">20</span>);<span class="comment">//分配得来得10和20字节的区域就在堆区.  </span></div><div class="line">    <span class="built_in">strcpy</span>(p1, <span class="string">"123456"</span>); <span class="comment">//123456\\0放在常量区,</span></div><div class="line">    <span class="comment">// 编译器可能会将它与p3所指向的"123456"优化成一个地方.        </span></div><div class="line">    <span class="keyword">char</span> *s = <span class="string">"hello,world"</span>;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%s\n"</span>,&amp;s[<span class="number">7</span>]);<span class="comment">//world</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+            <h4 id="由C编译的程序占用内存情况"><a href="#由C编译的程序占用内存情况" class="headerlink" title="由C编译的程序占用内存情况"></a>由C编译的程序占用内存情况</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//main.cpp    </span></div><div class="line"><span class="keyword">int</span> a = <span class="number">0</span>; <span class="comment">//全局初始化区  </span></div><div class="line"><span class="keyword">char</span> *p1; <span class="comment">//全局未初始化区  </span></div><div class="line">      </div><div class="line">main()  </div><div class="line">&#123;  </div><div class="line">    <span class="keyword">int</span> b; <span class="comment">//栈  </span></div><div class="line">    <span class="keyword">char</span> s[] = <span class="string">"abc"</span>; <span class="comment">//栈  </span></div><div class="line">    <span class="keyword">char</span> *p2; <span class="comment">//栈  </span></div><div class="line">    <span class="keyword">char</span> *p3 = <span class="string">"123456"</span>; <span class="comment">//123456\\0在常量区,p3在栈上.  </span></div><div class="line">    <span class="keyword">static</span> <span class="keyword">int</span> c =<span class="number">0</span>;<span class="comment">//全局(静态)初始化区  </span></div><div class="line">    p1 = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="number">10</span>);      </div><div class="line">    p2 = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="number">20</span>);<span class="comment">//分配得来得10和20字节的区域就在堆区.  </span></div><div class="line">    <span class="built_in">strcpy</span>(p1, <span class="string">"123456"</span>); <span class="comment">//123456\\0放在常量区,</span></div><div class="line">    <span class="comment">// 编译器可能会将它与p3所指向的"123456"优化成一个地方.        </span></div><div class="line">    <span class="keyword">char</span> *s = <span class="string">"hello, world"</span>;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%s\n"</span>,&amp;s[<span class="number">7</span>]);<span class="comment">//world</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><a href="https://drive.google.com/file/d/0B9NEWVh_ricqQ2U3clFRWjFacms/view?usp=sharing" target="_blank" rel="external">如图</a></p>
 <h4 id="不能进行交换"><a href="#不能进行交换" class="headerlink" title="不能进行交换"></a>不能进行交换</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"><span class="comment">*void swap(int a, int b);</span></div><div class="line"><span class="comment">*/</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">int</span> tmp = a;</div><div class="line">    a = b;</div><div class="line">    b = tmp;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="comment">/* main函数会分配一个内存空间 */</span></div><div class="line">    <span class="keyword">int</span> x = <span class="number">1</span>;</div><div class="line">    <span class="keyword">int</span> y = <span class="number">2</span>;</div><div class="line"></div><div class="line"><span class="comment">/* main函数中会为x,y分配两个紧邻的内存空间</span></div><div class="line"><span class="comment"> * */</span></div><div class="line"></div><div class="line">    <span class="built_in">printf</span>(<span class="string">"x is %i\n"</span>, x); </div><div class="line">    <span class="built_in">printf</span>(<span class="string">"y is %i\n"</span>, y); </div><div class="line">    <span class="built_in">printf</span>(<span class="string">"Swapping...\n"</span>);</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"Swapped.\n"</span>);</div><div class="line">    swap(x, y); </div><div class="line">    <span class="comment">/* swap函数也会分配独立的内存空间,并且是在main内存空间之上</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="built_in">printf</span>(<span class="string">"x is %i\n"</span>, x); </div><div class="line">    <span class="built_in">printf</span>(<span class="string">"y is %i\n"</span>, y); </div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h4 id="成功交换"><a href="#成功交换" class="headerlink" title="成功交换"></a>成功交换</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> *a, <span class="keyword">int</span> *b)</span></span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">int</span> x = <span class="number">1</span>;</div><div class="line">    <span class="keyword">int</span> y = <span class="number">2</span>;</div><div class="line"></div><div class="line">    <span class="built_in">printf</span>(<span class="string">"x is %i\n"</span>, x); </div><div class="line">    <span class="built_in">printf</span>(<span class="string">"y is %i\n"</span>, y); </div><div class="line">    <span class="built_in">printf</span>(<span class="string">"Swapping...\n"</span>);</div><div class="line">    swap(&amp;x, &amp;y);</div><div class="line"><span class="comment">/* &amp;表示内存地址,提供的是内存地址值</span></div><div class="line"><span class="comment"> * 这个传递的不是x,y本身,而是x,y的int型地址</span></div><div class="line"><span class="comment"> * 使一个函数能够使用另一个函数的内存块 */</span></div><div class="line">    <span class="built_in">printf</span>(<span class="string">"Swapped!\n"</span>);</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"x is %i\n"</span>, x); </div><div class="line">    <span class="built_in">printf</span>(<span class="string">"y is %i\n"</span>, y); </div><div class="line">&#125;</div><div class="line"><span class="comment">/* */</span></div><div class="line"><span class="comment">/* */</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> *a, <span class="keyword">int</span> *b)</span> </span></div><div class="line"><span class="function"><span class="comment">/* 当有函数调用swap函数时,函数原型使用*号之后,</span></span></div><div class="line"><span class="function"><span class="comment"> * a不再是一个整形数,而是一个int型指针,指的是内存地址本身的值*/</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line"><span class="comment">/* 但是在函数中,*意思是定位到这个内存地址指向的值</span></div><div class="line"><span class="comment"> * swap函数起了作用 来修改本来不属于它的内存,</span></div><div class="line"><span class="comment"> * 不在它的作用域的变量 */</span></div><div class="line">    <span class="keyword">int</span> tmp = *a; </div><div class="line">    *a = *b; </div><div class="line">    *b = tmp;</div><div class="line"><span class="comment">/*但 = 左边的 表示内存地址的值 */</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/*当这个函数调用完成之后swap内存空间将会被释放 */</span></div></pre></td></tr></table></figure>
 <p><a href="https://drive.google.com/file/d/0B9NEWVh_ricqUlJsWVlZV1Z2MFE/view?usp=sharing" target="_blank" rel="external">如图</a></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"s: "</span>);</div><div class="line"><span class="comment">/* 指针是操作内存地址的方法</span></div><div class="line"><span class="comment">    stack栈   heap堆:为函数分配的内存地址(指针)</span></div><div class="line"><span class="comment">*/</span></div><div class="line">    <span class="built_in">string</span> *s = get_string();</div><div class="line"></div><div class="line">    <span class="built_in">string</span> *t = s;<span class="comment">/*t为指针,s为具体的值*/</span></div><div class="line"></div><div class="line">    <span class="keyword">int</span> *x;</div><div class="line">    <span class="keyword">int</span> *y;</div><div class="line">    x = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>));<span class="comment">/*内存分配:</span></div><div class="line"><span class="comment">    表示向系统申请存在空间的字节数 </span></div><div class="line"><span class="comment">    已经有预定指向内存地址了*/</span></div><div class="line">    <span class="comment">/*x = 52;会重新分配新内存,而上面的内存也就浪费掉了*/</span></div><div class="line">    *x = <span class="number">52</span>;</div><div class="line">    <span class="comment">/* *y = 12; 这个没有事先分配的内存地址*/</span></div><div class="line">    y = x;</div><div class="line">    *y = <span class="number">12</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"s: "</span>);</div><div class="line"><span class="comment">/* 指针是操作内存地址的方法</span></div><div class="line"><span class="comment">    stack栈   heap堆:为函数分配的内存地址(指针)</span></div><div class="line"><span class="comment">*/</span></div><div class="line">    <span class="built_in">string</span> *s = get_string();</div><div class="line"></div><div class="line">    <span class="built_in">string</span> *t = s;<span class="comment">/*t为指针,s为具体的值*/</span></div><div class="line"></div><div class="line">    <span class="keyword">int</span> *x;</div><div class="line">    <span class="keyword">int</span> *y;</div><div class="line">    x = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>));<span class="comment">/*内存分配:</span></div><div class="line"><span class="comment">    表示向系统申请存在空间的字节数 </span></div><div class="line"><span class="comment">    已经有预定指向内存地址了*/</span></div><div class="line">    <span class="comment">/* x = 52;会重新分配新内存,而上面的内存也就浪费掉了*/</span></div><div class="line">    *x = <span class="number">52</span>;</div><div class="line">    <span class="comment">/* *y = 12; 这个没有事先分配的内存地址*/</span></div><div class="line">    y = x;</div><div class="line">    *y = <span class="number">12</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
         
         </div>
@@ -273,7 +414,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/10/内存交换/" data-id="cj7eq5b3t002l08qh12hp7tpc" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/10/内存交换/" data-id="cj7swqih1002qcrqjm4qvhwoj" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -413,7 +554,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/05/MER/" data-id="cj7eq5b0l000008qhzsxg7xpu" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/05/MER/" data-id="cj7swqifa000acrqjgnf7wwy3" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -550,7 +691,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/05/BUB/" data-id="cj7eq5b0y000608qhy2lqffkr" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/05/BUB/" data-id="cj7swqien0000crqjxe4vce1x" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -704,7 +845,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/23/shell-grep-sed-awk/" data-id="cj7eq5b2d002208qh90sqtia6" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/23/shell-grep-sed-awk/" data-id="cj7swqigm0025crqjza4wiviq" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -856,7 +997,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/18/pymongo/" data-id="cj7eq5b21001j08qhdhxnbjos" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/18/pymongo/" data-id="cj7swqigd001qcrqjd4xqvnzq" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1010,7 +1151,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/18/mongodb/" data-id="cj7eq5b20001g08qhx5mah823" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/18/mongodb/" data-id="cj7swqig7001icrqjt3xrukza" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1169,7 +1310,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/18/ghost/" data-id="cj7eq5b1v001808qh8hqfsv0r" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/18/ghost/" data-id="cj7swqig10018crqj5hne2dwu" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1238,6 +1379,452 @@
             
     
         <a href="https://www.femn.me/2017/08/18/ghost/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/18/ghost/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-vim_grammar" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/17/vim_grammar/">vim基本语法</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/17/vim_grammar/">
+            <time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/linux/">linux</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="普通模式下"><a href="#普通模式下" class="headerlink" title="普通模式下"></a>普通模式下</h3><pre><code>操作符
+&gt;G &gt;gg # 缩进 y复制 d删除
+C == c$  #c是修改,删除之后进入插入模式
+s == cl # l一个字符 aw一个单词(iw不涉及到空格,ciw推荐) ap一个段落
+S == ^cc # 删除一整行
+# g命令空间
+g~l # 反转大小写
+guw # 转化成小写
+gUU # 转化成大写
+:!nginx -s reload # 使用外部命令
+</code></pre><h4 id="当前文件中的移动"><a href="#当前文件中的移动" class="headerlink" title="当前文件中的移动"></a>当前文件中的移动</h4><pre><code>u # 撤消
+&lt;ctrl-r&gt; # 重做
+动作命令
+w b e ge # 对单词 动作的移动程度和方向
+W B E gE # 对字串 动作的移动程度和方向
+* 和 #符号  # 匹配光标当前的所有单词
+% # 匹配括号移动 
+f+ # 查找当前行的下一个&apos;+&apos;字符,定位到&apos;+&apos; F上一个
+t+ # 查找当前行的下一个&apos;+&apos;字符,定位到&apos;+&apos;的上一个字符 T上一个
+3fa → 在当前行查找第三个出现的a 
+
+; # 重复
+, # 退回
+yaw yt,  f,dt. d/ge&lt;CR&gt; # 查找动作告诉d操作符删除什么
+#Vim的文本对象由两个字符组成,第一个字符永远是i或a.文本对象自身并不是动作命令,不能用它们在文档中移动
+# 但我们却可以在可视化及操作符待决模式中使用文本对象
+#操作分隔符的文本对象 m{a-zA-Z}要在其内部
+a)==ab  a}==aB  at#一对XML标签 it #XML标签内部
+vi) ci)
+# 操作文本块的文本对象
+daw ciw
+
+# 设置位置标记
+m{a-zA-Z}#小写每个缓冲区局部可见,大写全局可见
+mm `m
+# Vim的自动位置标记
+&apos;&apos; # 当前文件中上次跳转动作之前的位置
+&apos;. # 上次修改过的地方
+&apos;^ #     插入
+&apos;[ # 上次修改或复制的起始位置
+&apos;] #             结束
+&apos;&lt; #     高亮选区
+&apos;&gt; #                 结束
+# 括号间的跳转
+%
+
+# 当不同文件之间的移动和跳转
+任何改变当前窗口中活动文件的命令,都可以称为跳转命令
+Vim会把执行跳转命令之前和之后的光标位置,记录到跳转列表中
+
+
+
+&apos;&lt;ff&gt;&apos;    
+@: # 重复上次的Ex命令
+:s%/old/new/g # 替换
+1&lt;ctrl-a&gt; # 对当前行的一下数字加1  1&lt;ctrl-x&gt;:减一
+
+# 重绘屏幕
+zz #把当前行显示在窗口正中
+&lt;ctrl-d&gt;(D) # 向下滚屏
+&lt;ctrl-u&gt;(U) #   上
+H/M/L # 跳到屏幕最上,中,下方
+
+# 可视化模式
+v
+
+# 命令行模式
+:
+
+# 命令行窗口
+q:
+
+# 替换模式
+R gR
+r{char} gr{char} # 覆盖一个字符之后,马上又回到普通模式
+
+#特别一点
+ga #查看任意字符的编码 分别以10,16,8进制的形式显示其字符编码
+J将下面的一整行,都提到光标行的末尾
+&lt;ctrl-g&gt; # 显示当前文件文件名及状态
+</code></pre><h4 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h4><pre><code># Vim操作的是寄存器,而并非剪贴板
+# &quot;{register}前缀的方式指定要用的寄存器,若不指明则使用无名寄存器
+&quot;ayiw &quot;bdd &quot;&quot;yiw &quot;+yy:delete c # 分别 对应寄存器a,b,&quot;,c中 
+&quot;ap   &quot;bp  &quot;&quot;p   :put c       # 对应的复制
+# x,s,d,c,y,p命令都会覆盖无名寄存器
+
+# 无名寄存器(&quot;&quot;) &quot;&quot;p==p
+yaw daw &quot;0p
+# 有名寄存器(&quot;a-&quot;z)
+# 黑洞寄存器(&quot;_)
+# 复制专用寄存器(&quot;0) y命令不仅会被拷贝到无名寄存器中,还拷贝到复制专用寄存器中
+
+# ubuntu 和mint默认安装的vim是不支持系统剪切、粘贴版的
+sudo apt-get install -y vim-gnome
+# 对于非GUI版本的vim,剪切板是不可用的,解决方案很简单,安装一下就是了:
+sudo apt-get install gvim
+
+# 系统剪贴板(&quot;+)
+# 将系统剪贴板的内容粘贴到Vim内部
+&quot;+p  # 插入模式下&lt;ctrl-r&gt;+,&quot;,a,0
+# 将Vim的文本捕获到系统剪贴板
+&quot;+yy
+&quot;%p # &quot;%当前文件名
+&quot;.p  # &quot;.上次插入的文本
+
+# 只读(read-only)寄存器:
+&quot;:,分别缓存最近命令
+&quot;.,最近插入文本
+&quot;%,当前文件名
+&quot;#,当前交替文件名
+
+# 代换单词
+yiw jww ve p
+yiw jww  ciw&lt;ctrl-r&gt;0&lt;Esc&gt;
+</code></pre><h4 id="宏-在录制一个宏时-要确保每条命令都可被重复执行-同时禁止使用鼠标"><a href="#宏-在录制一个宏时-要确保每条命令都可被重复执行-同时禁止使用鼠标" class="headerlink" title="宏:在录制一个宏时,要确保每条命令都可被重复执行,同时禁止使用鼠标"></a>宏:在录制一个宏时,要确保每条命令都可被重复执行,同时禁止使用鼠标</h4><h4 id="而且当动作命令-j-n-停止时-宏将中止运行"><a href="#而且当动作命令-j-n-停止时-宏将中止运行" class="headerlink" title="而且当动作命令(j,n)停止时,宏将中止运行"></a>而且当动作命令(j,n)停止时,宏将中止运行</h4><pre><code>#打任意数目的按键操作录制到寄存器,用于之后的回放
+# 把命令序列录制成宏
+qa #录制宏的开始 q{register},从而指定一个用于保存宏的寄存器
+A;&lt;Esc&gt;
+Ivar &lt;Esc&gt;
+q # 停止宏录制
+j @a j@@
+:reg a  # 查看寄存器的内容
+@a # @{register} 执行指定寄存器的内容,
+@@ # 重复最近高过的宏
+
+10@a # 加次数回放宏 .命令不能执行次数
+f+  s_+_&lt;Esc&gt;  qq;.q 22@q
+
+# 串行的运行宏 j :next
+
+    10@a # 加次数回放宏 .命令不能执行次数
+# 并行的运行宏
+
+    :&apos;&lt;,&apos;&gt;normal @a # 单个文件的多行并行运行宏
+
+    :args *.py # 建立目标文件列表
+    :edit!
+    :argdo normal @a
+    # 当在多个文件中 进行并行运行宏时,执行宏一旦失败,不方便找到到底哪个失败了
+    :wall
+
+# 给宏追加命令 
+qA # Vim会录制按键操作,但会把它们附加到寄存器a原有的内容之后
+# 编辑宏
+:put a # 将宏复制到缓冲区,当前光标的下方,而 &quot;ap 复制到当前光标之后
+# 在缓冲区进行对宏的编辑
+0 &quot;ay$ dd # 将宏从缓冲区复制回寄存器
+</code></pre><h4 id="插入模式"><a href="#插入模式" class="headerlink" title="插入模式"></a>插入模式</h4><pre><code>&lt;ctrl-h&gt;
+&lt;ctrl-w&gt;
+&lt;ctrl-u&gt; # 都是删除操作
+
+# 插入-普通模式
+&lt;ctrl-o&gt; #切换到插入-普通模式,在此后可执行一条普通模式下的命令后,再回到插入模式
+&lt;ctrl-o&gt;zz #
+
+# 复制专用寄存器(&quot;0) y命令不仅会被拷贝到无名寄存器中,还拷贝到复制专用寄存器中
+&lt;ctrl-r&gt;0 # 0就是寄存器的名字 在命令行中yaw,默认寄存器的名字是0
+&lt;ctrl-r&gt;&lt;ctrl-p&gt;0 # 它会按原义插入寄存器内的文本,并修正任何不必要的缩进
+&lt;ctrl-r&gt;=9*9&lt;CR&gt; # 表达式寄存器  &lt;ctrl-r&gt;=
+&lt;C-p&gt;或是&lt;C-n&gt;,自动补齐功
+
+&lt;ctrl-v&gt;065 # A用字符编码插入字符,vim所接受的字符编码共包含3位数
+&lt;ctrl-v&gt;u00bf # 编码超过3位的,可以用4位16进制编码来输入
+&lt;ctrl-v&gt;&lt;Tab&gt; # 如果后面跟一个非数字键,它会插入这个键本身所代表的字符
+</code></pre><h4 id="可视模式"><a href="#可视模式" class="headerlink" title="可视模式"></a>可视模式</h4><pre><code>v V &lt;ctrl-v&gt;
+o # 切换高亮选区的活动端
+gv # 重选上次的高亮选区
+yyp--&gt;Vr# # ####横编排
+&lt;ctrl-v&gt;3j$ #竖编排 
+= # 自动给缩进 
+</code></pre><h4 id="命令行-EX命令"><a href="#命令行-EX命令" class="headerlink" title="命令行(EX命令)"></a>命令行(EX命令)</h4><pre><code>@: # 在普通模式下执行 重复上次的Ex命令
+/
+&lt;ctrl-r&gt;= # 访问表达式寄存器也会激活命令行模式
+
+# 有些命令可以在插入和命令行模式下通用
+&lt;ctrl-r&gt;0 #复制寄存器的内容
+&lt;ctrl-h&gt;
+&lt;ctrl-w&gt;
+&lt;ctrl-u&gt; # 都是删除操作 
+
+/the/
+?the?
+
+:1,$ == :% # 整个文件
+:. # 光标所有行
+:0 #虚拟行 位于文件第一行上方
+
+# 删除行
+:3d == 3G+dd
+:.d # 删除当前行
+
+# 复制行t,移动行m
+:6t. # :[range]t{address} 把第六行复制到当前行下方
+:t6                        当前        第六行
+:t. == yyp
+:&apos;&lt;,&apos;&gt;t$ # 将高亮选区的内容复制到文本结尾处
+
+A;
+:&apos;&lt;,&apos;&gt;normal . == :&apos;&lt;,&apos;&gt;normal A; # 对高亮选区中的每一行,对其执行普通模式下的 . 命令. 
+
+# 自动补全Ex命令
+&lt;ctrl-d&gt; &lt;Tab&gt; &lt;Shfit-Tab&gt;
+:colors&lt;Tab&gt;
+:colorscheme &lt;Tab&gt;
+
+# 把当前光标的单词插入到命令行
+&lt;ctrl-r&gt;&lt;ctrl-w&gt;
+# 把当前光标的字串插入到命令行
+&lt;ctrl-r&gt;&lt;ctrl-a&gt;
+
+
+#  命令行窗口,就像一个常规的Vim缓冲区,只不过它的内容都对应着命令历史中的一个条目
+q: # 打开Ex 命令历史 k j键进行移动 ,&lt;CR&gt;将会把当前行的内容当成Ex命令执行  
+q/ # 打开查找
+:q #关闭命令行窗口 像操作普通Vim窗口一样 其它的操作也可以
+&lt;ctrl-f&gt; # 从命令行模式切换到命令行窗口
+
+# 运行shell
+:!{cmd} # 执行一次性命令
+:shell  # 启动一个交互的shell会话  exit  # 退出此shell并返回Vim
+# 也可以在普通模式下 &lt;ctrl-z&gt;挂起Vim进程,$jobs  $fg [作业号]
+:read !{cmd} # 将标准输出插入到光标下方
+:[range]write !{cmd} # 将range(默认是整个文件)每行内容,作为此命令的输入
+:%!sort -t &apos;,&apos; -k 2 # 以逗号分隔,按第二个字段进行排序
+
+
+:tabnew # 创建新标签页
+:split 文件路径 #分割窗口,如果不指定文件路径,默认是分割本文件
+:set ignorecase #查找单词时需要忽略大小写
+:set hlsearch # 可以将查找的内容设置成高亮
+:set history=200 #设置保存命令的条数
+</code></pre><h4 id="参数列表-vi的一个功能-是缓冲区列表-Vim增加的功能-的强力补充"><a href="#参数列表-vi的一个功能-是缓冲区列表-Vim增加的功能-的强力补充" class="headerlink" title="参数列表(vi的一个功能)是缓冲区列表(Vim增加的功能)的强力补充"></a>参数列表(vi的一个功能)是缓冲区列表(Vim增加的功能)的强力补充</h4><pre><code>vim vim_grammar.md linux.md    
+:ls #缓冲区列表 %哪个缓冲区在当前容器中可见 #代表轮换文件&lt;ctrl-^&gt;进行快速切换
+# Vim是用缓冲区列表对打开的文件进行管理的
+
+# 选择缓冲区
+:buffer N/bufname # N是Vim自动分配的编号由上面的命令行得知  bufname是文件名
+:bprev
+:bnext 
+:bfirst
+:blast  
+#退出(保存)所有的缓冲区
+:qall!
+:wall
+
+# 删除缓冲区
+:bdelete N1 N2
+
+# 用参数列表将缓冲区分组
+# 查看参数列表
+:args
+:args *.py # 建立目标文件列表
+
+#如果活动缓冲区的内容发生了变化,Vim会在离开缓冲区时自动将其设为隐藏(默认会有错误信息&apos;文件已修改但未保存&apos;)
+#&apos;hidden&apos;设置让我们用一条;argdo {cmd}或 bufdo{cmd}命令就可以修改一组缓冲区.
+</code></pre><h4 id="分割窗口"><a href="#分割窗口" class="headerlink" title="分割窗口"></a>分割窗口</h4><pre><code># 创建分割窗口
+&lt;ctrl-w&gt;s    
+&lt;ctrl-w&gt;v    
+:sp[lit] {file} #载入新文件
+:vsp[lit] {file}
+# 关闭窗口
+&lt;ctrl-w&gt;c    #关闭活动窗口  :clo[se]
+&lt;ctrl-w&gt;o    #保存活动容器,关闭其它所有窗口 :on[ly]
+# 切换窗口
+&lt;ctrl-w&gt;w    # 窗口循环切换
+&lt;ctrl-w&gt;h j k l    
+#改变窗口
+&lt;ctrl-w&gt;=    
+[N]&lt;ctrl-w&gt;_ # 最大化高度
+
+[N]&lt;ctrl-w&gt;| #       宽度
+[N]&lt;ctrl-w&gt;&lt; # &gt;
+</code></pre><h4 id="在Vim中-标签页是可以容纳一系列窗口的容器口"><a href="#在Vim中-标签页是可以容纳一系列窗口的容器口" class="headerlink" title="在Vim中,标签页是可以容纳一系列窗口的容器口"></a>在Vim中,标签页是可以容纳一系列窗口的容器口</h4><pre><code>:tabnew # 创建新标签页
+:tabe[dit] {filename} # 在新标签页打开{filename} 如果没有指定文件,会建立一个新标签页,里面包含一个空缓冲区
+:&lt;ctrl-w&gt;T  #当标签页中包含了不只一个窗口时,用此命令 把当前窗口移到一个新标签页
+:tabc[lose]  # 关闭当前所有标签页的窗口
+:tabo[nly]  # 关闭其它
+[N]gt #       下  :tabn[ext] 
+[N]gT # 切换到上一标签页  :tabp[revious]
+</code></pre><h4 id="打开文件"><a href="#打开文件" class="headerlink" title="打开文件"></a>打开文件</h4><pre><code>#Vim也有工作目录的概念,这各bash及其他shell是一样的
+#相对于活动文件目录下打开一个文件
+:edit %:h&lt;Tab&gt;  # %代表活动缓冲区的完整文件路径 :h修饰符会去除文件名 也就是此命令会被展开为当前文件所有目录的路径
+:set path+=app/** # 匹配app/目录下所有子目录
+:find 文件名
+
+# netrw管理文件系统
+# 打开文件管理器
+$ vim .
+:edit %:h ==:e . ==:Explore ==:E
+# 上面的操作都会代替当前的缓冲区内容
+# 当要保存到不存在的目录中时
+:!mkdir -p %:h #-p创建任何不存在的中间目录
+
+# 我们可以把任务委派给一个以sudo运行的shell进程,来完成工作
+:w !sudo tee % &gt;/dev/null # :w将缓冲区的内容作为sudo tee的标准输入,%是当前文件
+# 此时Vim会检测到该文件被一个外部程序改了,所以Vim会提示我们做出选择,是保留缓冲区的还是载入磁盘上的版本
+</code></pre><p>vim对于ctage的支持,<br>1.我们可以快速地跳到到函数及类的定义之处,实现浏览整个代码库的目的.(基于标签的跳转)<br>2.用于建立自动补全的单词列表</p>
+<h3 id="安装和运行ctage"><a href="#安装和运行ctage" class="headerlink" title="安装和运行ctage"></a>安装和运行ctage</h3><pre><code>sudo apt-get install exuberant-ctags
+
+sudo apt install linuxbrew-wrapper
+# 检测系统是否安装了ctags以及路径正确与否
+brew install ctags
+ctags --help
+</code></pre><h3 id="用ctags创建代码库的索引"><a href="#用ctags创建代码库的索引" class="headerlink" title="用ctags创建代码库的索引"></a>用ctags创建代码库的索引</h3><pre><code># 手动创建索引
+cd ~/app1.6
+ctags -R *
+# 应该可以用!cd /home/python/app1.6 &amp;&amp; ctags -R *
+# Linux下的C/C++的程序员,使用VIM+Ctags的组合来写程序也许是最佳的选择
+# 好像没有递归子目录,所以为子目录创建索引
+cd main &amp;&amp; ctags -R *
+cd ../app1.6 #必须要cd到此目录或者 main目录下,可由 :set tags 查看
+vim runner
+# 这样本地的所有代码,都正确的创建了索引,但源代码还是没有办法创建索引
+
+:tabnew /home/python/app1.6/runner.py
+:set tags?
+&lt;ctrl-]&gt; # 会从当前所在的关键字跳转到它的定义处 ,
+g&lt;ctrl-]&gt;
+
+&lt;ctrl-t&gt; # 充当着后退按钮 
+</code></pre>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/17/vim_grammar/" data-id="cj7swqigt002icrqjptu235g9" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/17/vim_grammar/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/vim_grammar/">Comments</a>
     
 
         </footer>
@@ -1326,7 +1913,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/17/linux-server-process/" data-id="cj7eq5b1y001b08qhlc7097pl" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/17/linux-server-process/" data-id="cj7swqig2001acrqj42jeke1x" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1404,268 +1991,8 @@
 
 
 
-    <article id="post-CDN-server" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/16/CDN-server/">内容分发网络</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/16/CDN-server/">
-            <time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/server/">server</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h3 id="CDN"><a href="#CDN" class="headerlink" title="CDN:"></a>CDN:</h3><p>内容分发网络(Content delivery network或Content distribution network,缩写:CDN)是指一种通过互联网互相连接的电脑网络系统,<br>利用最靠近每位用户的服务器,更快、更可靠地将音乐、图片、视频、应用程序及其他文件发送给用户,来提供高性能、可扩展性及低成本的网络内容传递给用户</p>
-<h3 id="CDN的作用"><a href="#CDN的作用" class="headerlink" title="CDN的作用"></a>CDN的作用</h3><h4 id="1-加速您网站的访问"><a href="#1-加速您网站的访问" class="headerlink" title="1.加速您网站的访问:"></a>1.加速您网站的访问:</h4><p>访问者的每个访问请求,都会被自动发送到物理距离最近、速度最快的节点上.<br>将blog内容的所有的东西(图片,文字,视频)都是保存在自己的服务器中,要从自己的服务器中取得,当如果某个页面需要加载很多内容时,速度就会变慢.<br>而cdn就会把所以网址上的东西,全部分送到它们在全世界各地所架设的云端的伺服务器上,也就是说我的网址会被散播(拆解)到全世界的伺服务器上,取最近的.</p>
-<h4 id="2-防骇客-抵御DoS攻击-访问我们的网址-相当于访问到云端的伺服务器上"><a href="#2-防骇客-抵御DoS攻击-访问我们的网址-相当于访问到云端的伺服务器上" class="headerlink" title="2.防骇客,抵御DoS攻击,访问我们的网址,相当于访问到云端的伺服务器上."></a>2.防骇客,抵御DoS攻击,访问我们的网址,相当于访问到云端的伺服务器上.</h4><h4 id="3-可以承受网站的流量-节省您的流量"><a href="#3-可以承受网站的流量-节省您的流量" class="headerlink" title="3.可以承受网站的流量,节省您的流量:"></a>3.可以承受网站的流量,节省您的流量:</h4><p>您的网站内容将被缓存在 CloudFlare 的节点中,访问者并不直接从您的主机获取内容,从而最大限度地节省主机的流量<br>同时网站的下载速度也会比以往的快些.</p>
-<h3 id="使用cloudflare加速"><a href="#使用cloudflare加速" class="headerlink" title="使用cloudflare加速"></a>使用<a href="https://www.cloudflare.com/" target="_blank" rel="external">cloudflare</a>加速</h3><p>cloudflare是一个国外著名的免费CDN网站加速服务公司<br>甚至可以在网站主服务器宕机的情况下,访问者依然可以通过 CloudFlare 的分发服务器访问到您的网站</p>
-<p><a href="http://www.xujiahua.com/4680.html" target="_blank" rel="external">使用cloudflare的教程</a></p>
-<h3 id="但使用了cloudflare之后-就不再支持泛域名的解析了-所以还得多配置nginx"><a href="#但使用了cloudflare之后-就不再支持泛域名的解析了-所以还得多配置nginx" class="headerlink" title="但使用了cloudflare之后,就不再支持泛域名的解析了,所以还得多配置nginx."></a>但使用了cloudflare之后,就不再支持泛域名的解析了,所以还得多配置nginx.</h3>
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/16/CDN-server/" data-id="cj7eq5b12000808qhq3n42aiz" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/16/CDN-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/CDN-server/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-sshd-server" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/16/sshd-server/">sshd</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/16/sshd-server/">
-            <time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/server/">server</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h4 id="server"><a href="#server" class="headerlink" title="server"></a>server</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install openssh-server</div><div class="line">ps ef|grep ssh</div><div class="line">sudo /etc/init.d/ssh start 或者 service sshd start</div><div class="line"></div><div class="line"><span class="comment"># 创建一个普通用户</span></div><div class="line">useradd username</div><div class="line">passwd username</div><div class="line">vim /etc/ssh/sshd_config</div><div class="line">    Port 22333</div><div class="line">    PermitRootLogin no</div><div class="line">    TCPKeepAlive yes</div><div class="line">    ClientAliveInterval 360</div><div class="line">    ClientAliveCountMax 20</div><div class="line"></div><div class="line"><span class="comment"># 给普通用户附sudo权限</span></div><div class="line">chmod u+w /etc/sudoers</div><div class="line">vim /etc/sudoers</div><div class="line">    root            ALL=(ALL)                ALL</div><div class="line">    username            ALL=(ALL)                ALL</div><div class="line">chmod u-w /etc/sudoers</div><div class="line"></div><div class="line">/etc/init.d/ssh start</div><div class="line">service sshd restart</div><div class="line">firewall-cmd --permanent --add-port=22333/tcp</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure>
-<h4 id="client"><a href="#client" class="headerlink" title="client"></a>client</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -p 22333 username@ip</div></pre></td></tr></table></figure>
-<h3 id="SSH无密码登录"><a href="#SSH无密码登录" class="headerlink" title="SSH无密码登录"></a>SSH无密码登录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># client:生成SSH公钥</span></div><div class="line">ssh-keygen -t rsa -C <span class="string">"邮箱"</span> </div><div class="line"></div><div class="line"><span class="comment"># 将SSH公钥上传到Linux服务器</span></div><div class="line">ssh-copy-id -p 22 username@remote-server</div><div class="line"><span class="comment"># 将client端的gedit ~/.ssh/id_rsa.pub的内容放到server端~/.ssh/authorized_keys</span></div><div class="line"><span class="comment"># 等同于如下</span></div><div class="line">cat ~/.ssh/id_rsa.pub | ssh username@your_host \ </div><div class="line">    <span class="string">"cat - &gt;&gt; /home/username/.ssh/authorized_keys"</span></div></pre></td></tr></table></figure>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/16/sshd-server/" data-id="cj7eq5b2o002408qhfmmssfph" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/16/sshd-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/sshd-server/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <nav id="page-nav">
-        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
 </section>
             
@@ -1677,6 +2004,15 @@
         <h3 class="widget-title">recent</h3>
         <div class="widget">
             <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2017/09/20/virtualbox/" class="title">VirtualBox下虚拟机的网络配置</a></p>
+                            <p class="item-date"><time datetime="2017-09-20T09:51:19.000Z" itemprop="datePublished">2017-09-20</time></p>
+                        </div>
+                    </li>
                 
                     <li>
                         
@@ -1714,15 +2050,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/python3/">python3</a></p>
-                            <p class="item-title"><a href="/2017/08/18/pymongo/" class="title">pymongo基本操作</a></p>
-                            <p class="item-date"><time datetime="2017-08-18T14:48:02.000Z" itemprop="datePublished">2017-08-18</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -1732,7 +2059,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -1741,7 +2068,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">35</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">40</span></li></ul>
         </div>
     </div>
 
