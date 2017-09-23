@@ -155,11 +155,11 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                44
+                49
                 <span>posts</span>
             </div>
             <div class="article-info-block">
-                4
+                5
                 <span>tags</span>
             </div>
         </div>
@@ -214,6 +214,583 @@
 
             
             <section id="main">
+    <article id="post-hadoop_MapReduce" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/09/23/hadoop_MapReduce/">hadoop MapReduce</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/09/23/hadoop_MapReduce/">
+            <time datetime="2017-09-23T12:01:15.000Z" itemprop="datePublished">2017-09-23</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/hadoop/">hadoop</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/大数据/">大数据</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h4 id="hadoop运行jar包"><a href="#hadoop运行jar包" class="headerlink" title="hadoop运行jar包"></a>hadoop运行jar包</h4><p>运行一个mapreduce程序job(打包成一个jar包)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">hadoop jar </div><div class="line"><span class="built_in">cd</span> /root/hadoop-2.8.1/share/hadoop/mapreduce</div><div class="line"><span class="comment"># 用mapreduce计算圆周率 map的任务数量 每一map的取样数</span></div><div class="line">hadoop jar hadoop-mapreduce-examples-2.8.1.jar pi 5 5</div><div class="line"><span class="comment"># yarn 创建了tmp ,同时mapreduce程序创建了user目录</span></div><div class="line"></div><div class="line"><span class="comment"># 运行计算单词出现的次数</span></div><div class="line"><span class="comment"># wordcount 将此目录下的所有文件进行统计 结果输出到此目录下</span></div><div class="line">vim test.txt</div><div class="line">    hello world</div><div class="line">    hello femn</div><div class="line">    hello leipengkai</div><div class="line">    hello friend</div><div class="line"></div><div class="line">hadoop fs -put test.txt /wordcount/input</div><div class="line">hadoop jar hadoop-mapreduce-examples-2.8.1.jar wordcount \</div><div class="line">    /wordcount/input /wordcount/output</div></pre></td></tr></table></figure></p>
+<h3 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h3><p>处理海量数据的运算, 即使是一个很简单的逻辑,要把它变成分布式运行的程序将会面临很多的其它问题:</p>
+<p>运算代码程序的资源分发和启动程序的环境配置,以及代码分发到哪些datanode上,并且还得监控datanode运行状态是否正常 以及datanode的调试汇总</p>
+<p>解决思路:运算往数据方移动,而不是数据移动到运算这方来.</p>
+<p>MapReduce分成两个步骤去完成业务逻辑:<br>Map逻辑和Reduce逻辑都会在分布在datanode中,先执行Map,再执行Reduce.在Map程序时可高并发执行</p>
+<p>实例代码</p>
+<pre><code>vim WCMAP.java
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> cn.itcast.hadoop.wcmapreduce;</div><div class="line"><span class="keyword">import</span> java.io.IOException;</div><div class="line"><span class="keyword">import</span> java.util.StringTokenizer;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.apache.hadoop.io.LongWritable;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.io.Text;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.mapred.OutputCollector;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.Mapper;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.util.StringUtils;</div><div class="line"></div><div class="line"><span class="comment">// 4个泛型中,前两个是指定map输入数据类型,KEY是输入的key类型,</span></div><div class="line"><span class="comment">// VALUEIN是输入的value的类型,后面两个是map输出给reduce的输出数据类型</span></div><div class="line"></div><div class="line"><span class="comment">// 默认情况下,框架传递给我们的map的输入数据中,</span></div><div class="line"><span class="comment">// key是要处理的文本(block)中一行的起始偏移量,这一行的内容作为value</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WCMap</span> <span class="keyword">extends</span> <span class="title">Mapper</span>&lt;<span class="title">LongWritable</span>, <span class="title">Text</span>, <span class="title">Text</span>, <span class="title">LongWritable</span>&gt;</span>&#123;</div><div class="line"><span class="comment">// Long,String,String,Long等内存对象 经过序列化之后再通过网络传递到节点中</span></div><div class="line"><span class="comment">// hadoop实现了自己的序列化机制 去掉多余的java序列化信息	</span></div><div class="line">    </div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> LongWritable one =<span class="keyword">new</span> LongWritable(<span class="number">1</span>);</div><div class="line">    <span class="keyword">private</span> Text word = <span class="keyword">new</span> Text();</div><div class="line">    <span class="comment">// map()框架第每读一行数据就调用一次该方法,</span></div><div class="line">    <span class="comment">// 对节点中的文本处理完所有的map之后才进入reduce</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">map</span><span class="params">(LongWritable key,Text value,Context context)</span></span></div><div class="line"><span class="function">            <span class="keyword">throws</span> IOException, InterruptedException</span>&#123;</div><div class="line">        <span class="comment">// 具体业务逻辑就写在这个方法体中,而且我们业务要处理的数据已经被框架传递进来</span></div><div class="line"><span class="comment">// 在方法的参数中key-value中</span></div><div class="line">        <span class="comment">// key是这一行数据的起始偏移量 value是这一行的文本内容 </span></div><div class="line">        <span class="comment">// context传到reduce的工具不用自己去找节点</span></div><div class="line">        String line = value.toString();</div><div class="line">        <span class="keyword">char</span> split = <span class="string">' '</span>;</div><div class="line">        String[] words =StringUtils.split(line, split);</div><div class="line">        <span class="comment">//</span></div><div class="line">        <span class="comment">//遍历这个单词数组输出为k-v形式 k:单词 v:1</span></div><div class="line">        <span class="keyword">for</span> (String word: words) &#123;</div><div class="line">            context.write(<span class="keyword">new</span> Text(word), <span class="keyword">new</span> LongWritable(<span class="number">1</span>));</div><div class="line">        &#125;</div><div class="line"><span class="comment">//	 StringTokenizer itr = new StringTokenizer(value.toString());</span></div><div class="line"><span class="comment">//	 while(itr.hasMoreTokens()) &#123;</span></div><div class="line"><span class="comment">//		 word.set(itr.nextToken());</span></div><div class="line"><span class="comment">//		 context.write(word, one);</span></div><div class="line"><span class="comment">//		 &#125;</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<pre><code>vim WCReduce.java
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> cn.itcast.hadoop.wcmapreduce;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.io.IOException;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.apache.hadoop.io.LongWritable;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.io.Text;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.Reducer;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WCReduce</span> <span class="keyword">extends</span> <span class="title">Reducer</span>&lt;<span class="title">Text</span>, <span class="title">LongWritable</span>, <span class="title">Text</span>, <span class="title">LongWritable</span>&gt; </span>&#123;</div><div class="line">    <span class="comment">// 框架在map处理完之后,将所有的k-v缓存起来,进行分级,然后传递一个组,&lt;k,vs&#123;&#125;&gt;</span></div><div class="line">    <span class="comment">//调用一次reduce方法  &lt;hello,&#123;1,1...&#125;&gt;</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">reduce</span><span class="params">(Text key, Iterable&lt;LongWritable&gt; values,Context context)</span> </span></div><div class="line"><span class="function">                    <span class="keyword">throws</span> IOException, InterruptedException </span>&#123;</div><div class="line">        <span class="comment">// TODO Auto-generated method stub</span></div><div class="line"><span class="comment">//		super.reduce(key, values, context);</span></div><div class="line">        <span class="keyword">long</span> count = <span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span> (LongWritable v:values) &#123;</div><div class="line">            count += v.get();</div><div class="line">        &#125;</div><div class="line">        context.write(key, <span class="keyword">new</span> LongWritable(count));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<pre><code>vim WCRunner.java
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> cn.itcast.hadoop.wcmapreduce;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.io.IOException;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.apache.hadoop.conf.Configuration;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.Path;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.io.LongWritable;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.io.Text;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.Job;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.lib.input.FileInputFormat;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;</div><div class="line"></div><div class="line"><span class="comment">//import org.apache.hadoop.mapred.jobcontrol.Job;</span></div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WCRunner</span> </span>&#123;</div><div class="line">    <span class="comment">//用来描述一个特定的作业</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException, InterruptedException </span>&#123;</div><div class="line">        <span class="comment">// TODO Auto-generated method stub</span></div><div class="line">        Configuration conf = <span class="keyword">new</span> Configuration();</div><div class="line">        Job job = Job.getInstance(conf);</div><div class="line"></div><div class="line">        <span class="comment">//设置整个job手忙脚乱的那些类在哪个jar包中</span></div><div class="line">        job.setJarByClass(WCRunner.class);</div><div class="line">        <span class="comment">//该作业使用哪个类作为逻辑处理中的map,哪个作为reduce</span></div><div class="line">        job.setMapperClass(WCMap.class);</div><div class="line">        job.setReducerClass(WCReduce.class);</div><div class="line"></div><div class="line">        <span class="comment">//指定map输出数据类型k-v</span></div><div class="line">        job.setMapOutputKeyClass(Text.class);</div><div class="line">        job.setMapOutputValueClass(LongWritable.class);</div><div class="line"></div><div class="line">        <span class="comment">//指定reduce输出数据类型k-v</span></div><div class="line">        job.setOutputKeyClass(Text.class);</div><div class="line">        job.setOutputValueClass(LongWritable.class);</div><div class="line"></div><div class="line">        <span class="comment">//该作业要处理的数据所在的路径以及输出结果存放路径</span></div><div class="line">        <span class="comment">// hdfs只有一个test.txt文件</span></div><div class="line">        FileInputFormat.setInputPaths(job, <span class="keyword">new</span> Path(<span class="string">"/"</span>));</div><div class="line"></div><div class="line">        FileOutputFormat.setOutputPath(job, <span class="keyword">new</span> Path(<span class="string">"/wc/output"</span>));</div><div class="line">        <span class="comment">//本地测试时Debung,只需要改成相对应输入输出的/home/femn/text.txt路径</span></div><div class="line">        </div><div class="line">        <span class="comment">//提交集群运行</span></div><div class="line">        job.waitForCompletion(<span class="keyword">true</span>);</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在本地测试,直接在虚拟机下用eclipse运行WCRunner </p>
+<p>在集群中运行,将将整个项目打包成jar,让hadoop分发运行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hadoop fs -rm -f -R hdfs://cluster1:9000/*</div><div class="line">hadoop fs -put test.txt hdfs://cluster1:9000/</div><div class="line">hadoop jar wc.jar cn.itcast.hadoop.wcmapreduce.WCRunner</div></pre></td></tr></table></figure></p>
+<p>查看运行的结果<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hadoop fs -cat  hdfs://cluster1:9000/wc/output/part-r-00000</div></pre></td></tr></table></figure></p>
+<h4 id="将信息打印到控制台"><a href="#将信息打印到控制台" class="headerlink" title="将信息打印到控制台"></a>将信息打印到控制台</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> HADOOP_ROOT_LOGGER=DEBUG,console</div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/09/23/hadoop_MapReduce/" data-id="cj7x62cou001307qsz2oa9zni" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/09/23/hadoop_MapReduce/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/23/hadoop_MapReduce/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-hadoop_RPC" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/09/23/hadoop_RPC/">hadoop RPC</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/09/23/hadoop_RPC/">
+            <time datetime="2017-09-23T11:51:15.000Z" itemprop="datePublished">2017-09-23</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/hadoop/">hadoop</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/大数据/">大数据</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h4 id="RPC"><a href="#RPC" class="headerlink" title="RPC"></a>RPC</h4><p>远程过程调用(RPC):hadoop的节点之间的进程通信(类与类之间),以及与客户端的通信.心跳也是通过RPC完成的<br>为什么datanode定期会向Namenode汇报block信息</p>
+<p>RPC的现实技术:动态代理,反射,socker通信</p>
+<pre><code>serveice
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> cn.itcast.hadoop.hdfs;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.apache.hadoop.conf.Configuration;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.ipc.RPC;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.ipc.RPC.Builder;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.ipc.RPC.Server;</div><div class="line"></div><div class="line">publci <span class="class"><span class="keyword">class</span> <span class="title">ServiceStart</span></span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span></div><div class="line"><span class="function">        <span class="keyword">throws</span> HadoopIllegalArgumentException, IOException </span>&#123;</div><div class="line"></div><div class="line">        Builder builder = <span class="keyword">new</span> RPC.Builder(<span class="keyword">new</span> Configuration());</div><div class="line">        builder.setBindAddress(<span class="string">"cluster1"</span>).setPort(<span class="number">10000</span>)</div><div class="line">            .setProtocol(LoginInter.class).setInstance(<span class="keyword">new</span> LoginServer());</div><div class="line">        Server server = builder.build();</div><div class="line">        server.start();</div><div class="line">        <span class="comment">// 多个业务逻辑处理</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> cn.itcast.hadoop.hdfs;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginServer</span> <span class="keyword">implements</span> <span class="title">LoginInter</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">login</span><span class="params">(String username, String passwd)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> username + <span class="string">"success!!"</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<pre><code>client
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> cn.itcast.hadoop.hdfs;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.io.IOException;</div><div class="line"><span class="keyword">import</span> java.net.InetSocketAddress;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.apache.hadoop.conf.Configuration;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.ipc.RPC;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginControl</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        <span class="comment">// TODO Auto-generated method stub</span></div><div class="line">        LoginInter proxy = RPC.getProxy(LoginInter.class, <span class="number">1L</span>,</div><div class="line">         <span class="keyword">new</span> InetSocketAddress(<span class="string">"192.168.1.222"</span>,<span class="number">10000</span>), <span class="keyword">new</span> Configuration());</div><div class="line">        String r = proxy.login(<span class="string">"femn"</span>, <span class="string">"femn"</span>);</div><div class="line">        System.out.println(r);</div><div class="line">        <span class="comment">// 当增加服务器提供服务时,客户端能够感知服务端.</span></div><div class="line">        <span class="comment">// 在不改变的情况下,知道去调用新服务器的服务</span></div><div class="line">        <span class="comment">// 服务调用动态转发和负载均衡的实现</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<pre><code>service and client
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> cn.itcast.hadoop.hdfs;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">LoginInter</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> versionId=<span class="number">1L</span>;</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">login</span><span class="params">(String username,String passwd)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="https://drive.google.com/file/d/0B9NEWVh_ricqMnp6Z0hvWVQ3dGs/view?usp=sharing" alt="hadoop_RPC"></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/09/23/hadoop_RPC/" data-id="cj7x62cov001707qsneq7ryan" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/09/23/hadoop_RPC/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/23/hadoop_RPC/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-hadoop_hdfs" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/09/23/hadoop_hdfs/">hadoop HDFS</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/09/23/hadoop_hdfs/">
+            <time datetime="2017-09-23T11:41:15.000Z" itemprop="datePublished">2017-09-23</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/hadoop/">hadoop</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/大数据/">大数据</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h4 id="hdfs的shell命令"><a href="#hdfs的shell命令" class="headerlink" title="hdfs的shell命令"></a>hdfs的shell命令</h4><p>/root/hadoop-2.8.1/tmp/dfs/namesecondary/current:保存namenode主机的文件<br>/root/hadoop-2.8.1/tmp/dfs/data/current/BP-992785269-127.0.0.1-1505977526476/current/finalized:保存datanode主机的 block块的地方</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">hadoop fs  <span class="comment"># 帮助命令</span></div><div class="line">hadoop fs -df -h /</div><div class="line">hadoop fs -du -s -h hdfs://cluster1:9000/*</div><div class="line">hadoop fs -rm -f -R hdfs://cluster1:9000/*</div><div class="line"></div><div class="line"><span class="comment"># 上传文件,保存在/root/hadoop-2.8.1/tmp/dfs</span></div><div class="line">hadoop fs -put install_hadoop.sh hdfs://cluster1:9000/</div><div class="line"></div><div class="line"><span class="comment"># 下载 只是权限变了</span></div><div class="line">hadoop fs -get hdfs://cluster1:9000/install_hadoop.sh ./ </div><div class="line"></div><div class="line"><span class="comment"># 创建目录</span></div><div class="line">hadoop fs -mkdir -p /wordcount/input <span class="comment"># 同下</span></div><div class="line">hadoop fs -mkdir -p hdfs://cluster1:9000/wordcount/input</div><div class="line"></div><div class="line"><span class="comment"># 浏览器查看文件</span></div><div class="line">http://192.168.1.222:50070</div><div class="line"><span class="comment"># 通过上面的浏览器--Utilities--Browse the file system就可以看到上传的文件</span></div><div class="line"></div><div class="line"><span class="comment"># 查看目录</span></div><div class="line">hadoop fs -ls /wordcount/output</div><div class="line"><span class="comment"># 查看文件内容</span></div><div class="line">hadoop fs -cat /wordcount/output/part-r-00000</div></pre></td></tr></table></figure>
+<p><img src="https://drive.google.com/file/d/0B9NEWVh_ricqeldhRlNjZTd5aHc/view?usp=sharing" alt="hdfs实现机制"></p>
+<h4 id="java客户端调用HDFS-API"><a href="#java客户端调用HDFS-API" class="headerlink" title="java客户端调用HDFS API"></a>java客户端调用HDFS API</h4><pre><code>安装eclipse,配置所需要的jar包和配置文件
+</code></pre><ol>
+<li>/root/hadoop-2.8.1/share/hadoop/common/下jar包,以及common jar中的依赖包common/bin 的所有jar</li>
+<li>/root/hadoop-2.8.1/share/hadoop/hdfs/下jar包,以及hdfs jar中的依赖包hdfs/bin 的所有jar,以及yarn,mapreduce目录下的</li>
+<li><p>将/root/hadoop-2.8.1/etc下的 core-site.xml和hdfs-site.xml文件放在Project的src目录下</p>
+<p> 代码实现</p>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> cn.itcast.hadoop.hdfs;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.io.FileInputStream;</div><div class="line"><span class="keyword">import</span> java.io.FileNotFoundException;</div><div class="line"><span class="keyword">import</span> java.io.FileOutputStream;</div><div class="line"><span class="keyword">import</span> java.io.IOException;</div><div class="line"><span class="keyword">import</span> java.net.URI;</div><div class="line"><span class="keyword">import</span> java.net.URISyntaxException;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.apache.commons.compress.utils.IOUtils;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.conf.Configuration;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.FSDataInputStream;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.FSDataOutputStream;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.FileStatus;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.FileSystem;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.LocatedFileStatus;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.Path;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.RemoteIterator;</div><div class="line"><span class="keyword">import</span> org.junit.Before;</div><div class="line"><span class="keyword">import</span> org.junit.Test;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HdfsUtil</span> </span>&#123;</div><div class="line">    </div><div class="line">    FileSystem fs = <span class="keyword">null</span>;</div><div class="line">    </div><div class="line">    <span class="meta">@Before</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> <span class="keyword">throws</span> IOException, InterruptedException, URISyntaxException </span>&#123;</div><div class="line">        Configuration conf = <span class="keyword">new</span> Configuration();</div><div class="line">        conf.set(<span class="string">"fs.defaultFS"</span>, <span class="string">"hdfs://cluster1:9000/"</span>);</div><div class="line">        <span class="comment">// 设置权限</span></div><div class="line">        fs = FileSystem.get(<span class="keyword">new</span> URI(<span class="string">"hdfs://cluster1:9000/"</span>),conf,<span class="string">"root"</span>);</div><div class="line">        <span class="comment">//fs需要哪些成员才能读写hdfs文件 </span></div><div class="line">        <span class="comment">// fs--&gt;RPCProxy--&gt;NameNode.open(src)</span></div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">download</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        <span class="comment">// input stream</span></div><div class="line">        Path src =<span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/install_hadoop.sh"</span>);</div><div class="line">        FSDataInputStream in =fs.open(src);</div><div class="line">        </div><div class="line">        <span class="comment">//ouput local</span></div><div class="line">        FileOutputStream os= <span class="keyword">new</span> FileOutputStream(<span class="string">"/root/Downloads/install2.sh"</span>);</div><div class="line">        IOUtils.copy(in, os);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">download2</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        fs.copyFromLocalFile(<span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/upload2.txt"</span>),</div><div class="line">                <span class="keyword">new</span> Path(<span class="string">"/root/Downloads/install2.sh"</span>)</div><div class="line">                );</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">upload</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        <span class="comment">// to upload a file to hdfs</span></div><div class="line">        Path dst =<span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/upload.txt"</span>);</div><div class="line">        FSDataOutputStream os =fs.create(dst);</div><div class="line">        </div><div class="line">        FileInputStream in= <span class="keyword">new</span> FileInputStream(<span class="string">"/root/Downloads/install2.sh"</span>);</div><div class="line">        IOUtils.copy(in, os);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">upload2</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        fs.copyFromLocalFile(<span class="keyword">new</span> Path(<span class="string">"/root/Downloads/install2.sh"</span>), </div><div class="line">                <span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/a/b/upload2.txt"</span>));</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    </div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">mkdir</span><span class="params">()</span> <span class="keyword">throws</span> IllegalArgumentException, IOException </span>&#123;</div><div class="line">        </div><div class="line">        fs.mkdirs(<span class="keyword">new</span> Path(<span class="string">"/a/b"</span>));</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rm</span><span class="params">()</span> <span class="keyword">throws</span> IllegalArgumentException, IOException </span>&#123;</div><div class="line">        fs.delete(<span class="keyword">new</span> Path(<span class="string">"/a"</span>),<span class="keyword">true</span>);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">listFiles</span><span class="params">()</span> <span class="keyword">throws</span> FileNotFoundException, IllegalArgumentException, IOException </span>&#123;</div><div class="line">        RemoteIterator&lt;LocatedFileStatus&gt; files = fs.listFiles(<span class="keyword">new</span> Path(<span class="string">"/"</span>), <span class="keyword">true</span>);</div><div class="line">        <span class="keyword">while</span>(files.hasNext()) &#123;</div><div class="line"></div><div class="line">            LocatedFileStatus file = files.next();</div><div class="line">            <span class="comment">//LocatedFileStatus 是通过RPC机制 得到的 fs也是类似</span></div><div class="line">            Path filepath = file.getPath();</div><div class="line">            String fileName = filepath.getName();</div><div class="line">            System.out.println(fileName);</div><div class="line">        &#125;</div><div class="line">        System.out.println(<span class="string">"--------------"</span>);</div><div class="line">        FileStatus[] listStatus = fs.listStatus(<span class="keyword">new</span> Path(<span class="string">"/"</span>));</div><div class="line">        <span class="keyword">for</span>(FileStatus status: listStatus) &#123;</div><div class="line">            String name =status.getPath().getName();</div><div class="line">            System.out.println(name);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="权限问题"><a href="#权限问题" class="headerlink" title="权限问题"></a>权限问题</h4><p>如果不是在虚拟机上测试的话,会有权限的问题,需要在eclipse的Run Configuration的Arguments中的VM arguments中增加如下信息<br>-DHADOOP_USER_NAME=root</p>
+<p>也可以将hdfs://cluster1:9000/设置为所有人可读写权限</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/09/23/hadoop_hdfs/" data-id="cj7x62coz001g07qsq3kt97c7" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/09/23/hadoop_hdfs/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/23/hadoop_hdfs/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-hadoop" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/09/23/hadoop/">hadoop简介</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/09/23/hadoop/">
+            <time datetime="2017-09-23T11:31:15.000Z" itemprop="datePublished">2017-09-23</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/hadoop/">hadoop</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/大数据/">大数据</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h4 id="介绍hadoop"><a href="#介绍hadoop" class="headerlink" title="介绍hadoop"></a>介绍hadoop</h4><p>在海量数据的场景下,为了解决分布式部署中的公共问题一些框架就出现了hadoop,zookeeper<br>hadoop:由很多的技术框架组成的一个生态系统.它是一个上层的应用软件(java编写的)<br>不关是用来做海量数据储存的,因为在解决海量数据的处理中,解决了一些很共同的问题,把解决这些的方法抽离出来,形成各种各样的框架.将这些框架单独拿出来也可以在项目中使用.</p>
+<p>hadoop解决问题:擅长海量离线日志分析</p>
+<p>海量数据的存储(HDFS):分布式集群的文件系统,区别本机的文件系统</p>
+<p>海量数据的分析(MapReduce:分析运算的模型,自己写运算逻辑(程序),写出来的就是MapReduce程序,给YARM运行),spark,storm,hive程序<br>Map程序:在不同节点并发运行<br>Reduce程序:全局处理,只在一同节点上运行,通过网络取得Map程序的结果.分组统计时,Reduce也可以有多个</p>
+<p>资源管理调度(YARN):集群</p>
+<h4 id="安装hadoop"><a href="#安装hadoop" class="headerlink" title="安装hadoop:"></a>安装hadoop:</h4><p>集群的安装是很繁琐的事,Cloudera这个公司开发的安装系统(脚本)之后,只需要在一个节点,在浏览器中打开Cloudera,然后选择你所需要的服务,点确定之后,所以的程序包自动下载并安装好,同时还提供对集群的管理监控</p>
+<p>但个人还是使用apache官方的hadoop</p>
+<pre><code>centos7 + hadoop.2.8.1 + virtualbox5
+[virtualbox5](https://www.femn.me/2017/09/20/virtualbox/)
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl https://file.femnyy.com/file/install_hadoop.sh | sudo sh</div></pre></td></tr></table></figure>
+<pre><code>注意:此脚本是在/root目录下执行,并且请在此目录提前下载好hadoop-2.8.1.tar.gz,之后的操作也是root用户操作
+</code></pre><h4 id="访问-http-192-168-1-222-50070"><a href="#访问-http-192-168-1-222-50070" class="headerlink" title="访问:http://192.168.1.222:50070"></a>访问:<a href="http://192.168.1.222:50070" target="_blank" rel="external">http://192.168.1.222:50070</a></h4><p>巨坑:所有的服务都成功开启,但就是在主机访问不了,关闭了防火墙也不行,弄了半天的virtualbox的网络设置(自认为是没有错的)也不行,没想到居然是配置文件的问题<br><img src="/2017/09/23/hadoop/error1.png" alt="配置文件的巨坑" title="配置文件的巨坑"></p>
+<h4 id="centos-7启动图形界面"><a href="#centos-7启动图形界面" class="headerlink" title="centos 7启动图形界面"></a>centos 7启动图形界面</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 方法一</span></div><div class="line">yum group list</div><div class="line">yum group install <span class="string">"GNOME Desktop"</span></div><div class="line">startx</div><div class="line"><span class="comment"># 当重新启动时执行,就可以进入系统了</span></div><div class="line"><span class="comment"># You might have to hit 1, then 2 to agree to the license, then C to continue.</span></div><div class="line">1--2--c--yes</div><div class="line"></div><div class="line"><span class="comment"># yum group install "GNOME Desktop" "Graphical Administration Tools"</span></div><div class="line"><span class="comment"># 开机时自动就是设置图形界面</span></div><div class="line"><span class="comment"># ln -sf /lib/systemd/system/runlevel5.target /etc/systemd/system/default.target </span></div><div class="line"><span class="comment"># reboot</span></div><div class="line"></div><div class="line"><span class="comment"># 方法二</span></div><div class="line">init 5</div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/09/23/hadoop/" data-id="cj7x62cot001107qs9npkmifn" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/09/23/hadoop/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/23/hadoop/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-virtualbox" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -277,7 +854,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/20/virtualbox/" data-id="cj7swqigw002kcrqjm5l6bj7l" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/20/virtualbox/" data-id="cj7x62crs003407qslj13lusr" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -414,7 +991,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/10/内存交换/" data-id="cj7swqih1002qcrqjm4qvhwoj" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/10/内存交换/" data-id="cj7x62crv003807qs5oa0hyhd" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -554,7 +1131,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/05/MER/" data-id="cj7swqifa000acrqjgnf7wwy3" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/05/MER/" data-id="cj7x62coa000607qsu846b124" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -691,7 +1268,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/05/BUB/" data-id="cj7swqien0000crqjxe4vce1x" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/05/BUB/" data-id="cj7x62cnp000007qsksrl65tk" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -845,7 +1422,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/23/shell-grep-sed-awk/" data-id="cj7swqigm0025crqjza4wiviq" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/23/shell-grep-sed-awk/" data-id="cj7x62cr7002p07qsx18qi3h5" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -997,7 +1574,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/18/pymongo/" data-id="cj7swqigd001qcrqjd4xqvnzq" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/18/pymongo/" data-id="cj7x62cqx002507qsaqhia0n9" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1075,922 +1652,6 @@
 
 
 
-    <article id="post-mongodb" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/18/mongodb/">mongodb基本命令</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/18/mongodb/">
-            <time datetime="2017-08-18T11:56:18.000Z" itemprop="datePublished">2017-08-18</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/数据库/">数据库</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>先去<a href="https://www.mongodb.com/" target="_blank" rel="external">mongodb官网</a>下载mongod,配置好环境变量.最好也再下个<a href="https://robomongo.org/" target="_blank" rel="external">robomongo</a>,进行更好的图形界面管理</p>
-<p><a href="https://docs.mongodb.com/manual/" target="_blank" rel="external">mongodb官方文档</a>    </p>
-<p><a href="http://docs.mongoing.com/manual-zh/" target="_blank" rel="external">mongodb中文文档</a></p>
-<h4 id="启动Mongod"><a href="#启动Mongod" class="headerlink" title="启动Mongod:"></a>启动Mongod:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongod --dbpath /home/python/data/mongodb  --logpath /home/python/data/<span class="built_in">log</span> --auth</div></pre></td></tr></table></figure>
-<p>或者用配置文件的方式启动:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">mongod -f ./mongod.conf</div><div class="line">vim ./mongod.conf</div><div class="line">    dbpath = /home/python/data/mongodb/</div><div class="line">    logpath = /home/python/data/<span class="built_in">log</span></div><div class="line">    port = 27017</div><div class="line">    auth = <span class="literal">true</span></div></pre></td></tr></table></figure></p>
-<h4 id="进入Mongo的CLI"><a href="#进入Mongo的CLI" class="headerlink" title="进入Mongo的CLI:"></a>进入Mongo的CLI:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">monogo -uusername -ppasswd 192.168.0.197:27017/db </div><div class="line"><span class="comment"># 如果有语言上的错误</span></div><div class="line"><span class="built_in">export</span> LC_ALL=C</div></pre></td></tr></table></figure>
-<h4 id="选择admin数据库-并认证"><a href="#选择admin数据库-并认证" class="headerlink" title="选择admin数据库,并认证:"></a>选择admin数据库,并认证:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">use admin</div><div class="line">db.auth(<span class="string">'username'</span>,<span class="string">'password'</span>)</div></pre></td></tr></table></figure>
-<p>指定好当前数据库后,用db命令查看,之后用密码登陆.</p>
-<p><em>查看所有的数据库</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">show dbs</div></pre></td></tr></table></figure>
-<h3 id="创建或选定数据库"><a href="#创建或选定数据库" class="headerlink" title="创建或选定数据库"></a>创建或选定数据库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">use 1 <span class="comment"># 该命令将创建一个新的数据库,如果它不存在,否则将返回现有的数据库.</span></div><div class="line">db.dropDatabase(<span class="string">'1'</span>)  <span class="comment"># 删除数据库</span></div></pre></td></tr></table></figure>
-<p><em>创建集合(表),删除表,显示所有表</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">db.createCollection(<span class="string">'test'</span>)</div><div class="line">db.test.drop()</div><div class="line">show collections</div></pre></td></tr></table></figure>
-<p><em>创建文档(记录)</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.test_table.insert(&#123;<span class="string">'1'</span>:1&#125;)</div></pre></td></tr></table></figure>
-<p><em>指定数据库,一定要先选定再创建,创建用户角色</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">use <span class="built_in">test</span></div><div class="line">db.createUser( &#123;</div><div class="line">user: <span class="string">"femn2014"</span>,</div><div class="line"><span class="built_in">pwd</span>: <span class="string">"femn2014"</span>,</div><div class="line">roles: [ &#123; role : <span class="string">"readWrite"</span>, db: <span class="string">"test"</span> &#125; ]</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p>role:”sysadmin”,”read”,”readWrite”,”sysadmin”和”root”角色只能在第一次创建一次,之后创建的必须是其它的角色,同时也要注意db:’xxx’要改变,如果指定的是admin数据库,则此用户可以看到所有的数据库,并只是针对db:’test’这个数据库有读写操作.</p>
-<p><em>指定数据库之后,查看用户</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">use <span class="built_in">test</span></div><div class="line">db.getUsers()</div></pre></td></tr></table></figure></p>
-<h3 id="一旦创建好用户之后-就必须要切换到admin数据库中-才能进行对用户角色的管理"><a href="#一旦创建好用户之后-就必须要切换到admin数据库中-才能进行对用户角色的管理" class="headerlink" title="一旦创建好用户之后,就必须要切换到admin数据库中,才能进行对用户角色的管理"></a>一旦创建好用户之后,就必须要切换到admin数据库中,才能进行对用户角色的管理</h3><p><em>用admin数据库,查看,管理所有数据库中的所有用户</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">use admin</div><div class="line">db.system.users.find()</div><div class="line">db.system.users.remove(&#123;user:<span class="string">'femn2014'</span>&#125;) 删除用户</div></pre></td></tr></table></figure></p>
-<h4 id="得到test表的索引"><a href="#得到test表的索引" class="headerlink" title="得到test表的索引"></a>得到test表的索引</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.test.getIndexes()</div></pre></td></tr></table></figure>
-<p><em>创建新的索引,此命令不会覆盖掉之前的索引</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.test.ensureIndex(&#123;<span class="string">'mobile'</span>:1&#125;)</div></pre></td></tr></table></figure>
-<p><em>创建二维索引,通过查询location这个数组,来得到文档</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">db.test.ensureIndex(&#123;<span class="string">"location"</span> : <span class="string">"2d"</span>&#125;,&#123;<span class="string">"background"</span> : <span class="literal">true</span>&#125;,</div><div class="line">    &#123;min:-180,max:180&#125;)</div></pre></td></tr></table></figure>
-<p>MongoDB的Geospatial Indexing 2d默认取值范围[-179,-179]到[180,180] 包含这两个点,超出范围将报错</p>
-<h4 id="备份Mongo"><a href="#备份Mongo" class="headerlink" title="备份Mongo:"></a>备份Mongo:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mongodump --host=192.168.1.217 --port=27017 --username=username \</div><div class="line">    --password=passwd --authenticationDatabase admin -dMongodb \</div><div class="line">    -cfemn -o /home/python/nosql_dump</div></pre></td></tr></table></figure>
-<h4 id="恢复Mongo"><a href="#恢复Mongo" class="headerlink" title="恢复Mongo:"></a>恢复Mongo:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">mongorestore -udba -pdba --host=60.205.140.13 --port=27017 \ </div><div class="line">    --authenticationDatabase admin -dbozhongboyue -cvideo \ </div><div class="line">    --drop /home/python/nosql_dump/1-5/bozhongboyue/video.bson</div><div class="line"><span class="comment"># 不经常使用如下命令</span></div><div class="line">mongoexport --host=192.168.1.217 --port=27017 --username=username \ </div><div class="line">    --password=passwd --authenticationDatabase admin -dMongodb -cfemn -o femn.json</div></pre></td></tr></table></figure>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/18/mongodb/" data-id="cj7swqig7001icrqjt3xrukza" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/18/mongodb/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/18/mongodb/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-ghost" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/18/ghost/">ghost下载与使用</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/18/ghost/">
-            <time datetime="2017-08-18T11:11:58.000Z" itemprop="datePublished">2017-08-18</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/server/">server</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h3 id="在VPS中-推荐下载最新的ghost"><a href="#在VPS中-推荐下载最新的ghost" class="headerlink" title="在VPS中,推荐下载最新的ghost"></a>在VPS中,推荐下载最新的<a href="https://docs.ghost.org/docs/installing-ghost-via-the-cli" target="_blank" rel="external">ghost</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">yum install gcc nodejs</div><div class="line">npm install -g ghost-cli</div><div class="line">mkdir /var/www/blog</div><div class="line"><span class="built_in">cd</span> /var/www/blog</div><div class="line">ghost install <span class="built_in">local</span></div><div class="line">http://localhost:2368/</div><div class="line"><span class="comment"># 将url换成你博客的地址</span></div><div class="line">vim config.development.json </div><div class="line">    url: http://www.femnyy.com</div><div class="line">ghost restart</div><div class="line">http://www.femnyy.com</div></pre></td></tr></table></figure>
-<p>配置一下nginx</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">vim /etc/nginx/conf.d/ghost.conf</div><div class="line">    server &#123; <span class="comment"># 定义一个虚拟主机</span></div><div class="line">        listen 80;</div><div class="line">        <span class="comment">#server_name myip;</span></div><div class="line">        <span class="comment">#server_name 0.0.0.0; 上面的公网IP也不行了,</span></div><div class="line">        <span class="comment">#server_name mydomians; error</span></div><div class="line">        server_name myip www.femnyy.com;</div><div class="line">        location / &#123;</div><div class="line">            proxy_set_header   X-Real-IP <span class="variable">$remote_addr</span>;</div><div class="line">            proxy_set_header   Host      <span class="variable">$http_host</span>;</div><div class="line">            proxy_pass         http://127.0.0.1:2368;</div><div class="line">            &#125;</div><div class="line">        &#125; </div><div class="line">    nginx -t</div><div class="line">    systemctl start nginx</div><div class="line">    systemctl <span class="built_in">enable</span> nginx</div><div class="line">    setsebool -P httpd_can_network_connect <span class="literal">true</span></div></pre></td></tr></table></figure>
-<p>访问 <a href="http://www.femnyy.com" target="_blank" rel="external">http://www.femnyy.com</a>  or <a href="http://myip/ghost" target="_blank" rel="external">http://myip/ghost</a></p>
-<h3 id="ghost-命令"><a href="#ghost-命令" class="headerlink" title="ghost 命令"></a>ghost 命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ghost -h</div><div class="line"><span class="comment"># 其它命令</span></div><div class="line">ghost ls/update/start/stop/restart</div></pre></td></tr></table></figure>
-<h3 id="ghost管理界面的一些基本操作"><a href="#ghost管理界面的一些基本操作" class="headerlink" title="ghost管理界面的一些基本操作"></a>ghost管理界面的一些基本操作</h3><p>同时在管理界面能操作的,就不要去动服务器中的ghost代码,本人能力有限,改了几次,配置都不能用了,只能重新安装(在旧版本中)</p>
-<ol>
-<li><p><a href="http://www.moiblog.net/2016/ghost-tag/" target="_blank" rel="external">设置标签</a>   再将Tab 设置成Navigation,同样新版本也可以操作Design了.</p>
-</li>
-<li><p>备份你的博客 导入博客<br> Labs –&gt; Export /Import</p>
-</li>
-<li><p>提高被搜索的概率<br> setting –&gt; Meta Date –&gt; 输入搜索时的关键字</p>
-</li>
-</ol>
-<h3 id="开始写博客"><a href="#开始写博客" class="headerlink" title="开始写博客"></a>开始写博客</h3><ol>
-<li><p><a href="http://blog.leanote.com/post/freewalk/Markdown-%E8%AF%AD%E6%B3%95%E6%89%8B%E5%86%8C" target="_blank" rel="external">有关Markdown的语法手册</a></p>
-</li>
-<li><p>图片的处理<br><a href="https://portal.qiniu.com/" target="_blank" rel="external">使用七牛的对象存储</a> 或者用<a href="https://sm.ms/" target="_blank" rel="external">sm.ms</a>支持https</p>
-</li>
-</ol>
-<h3 id="不推荐安装旧版本-旧版本安装不好友-想更新ghost版本也费劲-主要是有可以还安不成功"><a href="#不推荐安装旧版本-旧版本安装不好友-想更新ghost版本也费劲-主要是有可以还安不成功" class="headerlink" title="不推荐安装旧版本,旧版本安装不好友,想更新ghost版本也费劲,主要是有可以还安不成功"></a>不推荐安装旧版本,旧版本安装不好友,想更新ghost版本也费劲,主要是有可以还安不成功</h3><p><a href="https://hostpresto.com/community/tutorials/how-to-install-ghost-blogging-platform-on-centos-7/" target="_blank" rel="external">参考</a>于此<br> install nodejs and setting npm source<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">yum -y update</div><div class="line">yum install -y gcc-c++ make unzip netstat</div><div class="line">curl --silent --location https://rpm.nodesource.com/setup_4.x | bash -</div><div class="line">yum -y install nodejs</div><div class="line">node -v</div><div class="line">mkdir -p /var/www/</div><div class="line"><span class="built_in">cd</span> /var/www/</div><div class="line">wget https://ghost.org/zip/ghost-latest.zip</div><div class="line">unzip -uo ghost-latest.zip -d /var/www/ghost</div><div class="line"><span class="built_in">cd</span> ghost</div><div class="line">npm config <span class="built_in">set</span> registry http://registry.npmjs.org/</div><div class="line">npm config <span class="built_in">set</span> strict-ssl <span class="literal">false</span></div></pre></td></tr></table></figure></p>
-<p>其中当npm install –production,下载依赖包时,可能会遇到内存不足的问题,可以通过增加交换空间来<a href="https://www.digitalocean.com/community/tutorials/how-to-add-swap-on-ubuntu-12-04?comment=551" target="_blank" rel="external">解决</a></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">sudo dd <span class="keyword">if</span>=/dev/zero of=/swapfile bs=1024 count=1024k</div><div class="line">sudo mkswap /swapfile</div><div class="line">sudo swapon /swapfile</div><div class="line">vim /etc/fstab</div><div class="line"><span class="built_in">echo</span> 10 | sudo tee /proc/sys/vm/swappiness</div><div class="line"><span class="built_in">echo</span> vm.swappiness = 10 | sudo tee -a /etc/sysctl.conf</div><div class="line">sudo chown root:root /swapfile </div><div class="line">sudo chmod 0600 /swapfile</div></pre></td></tr></table></figure>
-<p> install ghost</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /var/www/ghost</div><div class="line">npm install --production</div><div class="line"><span class="comment"># start ghost</span></div><div class="line">cp config.example.js config.js</div><div class="line">vim config.js</div><div class="line">    config = &#123;</div><div class="line">        production: &#123;</div><div class="line">        url: <span class="string">'http://myip'</span></div><div class="line">sudo firewall-cmd --permanent --add-port=80/tcp</div><div class="line">sudo firewall-cmd --permanent --add-port=2368/tcp</div><div class="line">firewall-cmd --reload</div><div class="line">npm start --production</div><div class="line">ss -lnp     |grep 2368</div><div class="line">http://localhost:2368/ghost</div><div class="line"><span class="built_in">kill</span> -9 **</div></pre></td></tr></table></figure>
-<p> use pm2 manage ghost  之后就可以不用 nohup npm start –production 启动了</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">npm install -g pm2</div><div class="line"><span class="built_in">echo</span> <span class="string">"export NODE_ENV=production"</span> &amp;gt;&amp;gt; ~/.profile</div><div class="line">. ~/.profile</div><div class="line">pm2 start index.js --name ghost</div><div class="line"><span class="comment"># pm2其它命令</span></div><div class="line">pm2 show/start/stop ghost</div><div class="line">pm2 status/logs/save</div><div class="line"><span class="comment"># 自从我修改了default.hbs之后,pm2就用不了了,害得我还得去重新install ghost</span></div></pre></td></tr></table></figure>
-<p> install nginx<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">yum -y install epel-release</div><div class="line">yum -y update</div><div class="line">yum -y install nginx</div><div class="line"><span class="comment"># 配置方法和最新的ghost配置一样</span></div></pre></td></tr></table></figure></p>
-<p> 访问 <a href="http://www.femnyy.com" target="_blank" rel="external">http://www.femnyy.com</a> or <a href="http://myip/ghost" target="_blank" rel="external">http://myip/ghost</a></p>
-<p>如果是在国内安装的话,可能会比较慢,<a href="https://npm.taobao.org/" target="_blank" rel="external">推荐用淘宝镜像安装</a>,你可以使用我们定制的 cnpm (gzip 压缩支持) 命令行工具代替默认的 npm:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</div></pre></td></tr></table></figure>
-<h4 id="update-nodejs-npm"><a href="#update-nodejs-npm" class="headerlink" title="update nodejs npm"></a>update nodejs npm</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo npm cache clean -f</div><div class="line">sudo npm install -g n</div><div class="line">sudo n stable</div></pre></td></tr></table></figure>
-<p><a href="https://docs.ghost.org/" target="_blank" rel="external">ghost文档帮助</a></p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/18/ghost/" data-id="cj7swqig10018crqj5hne2dwu" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/18/ghost/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/18/ghost/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-vim_grammar" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/17/vim_grammar/">vim基本语法</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/17/vim_grammar/">
-            <time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/linux/">linux</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h3 id="普通模式下"><a href="#普通模式下" class="headerlink" title="普通模式下"></a>普通模式下</h3><pre><code>操作符
-&gt;G &gt;gg # 缩进 y复制 d删除
-C == c$  #c是修改,删除之后进入插入模式
-s == cl # l一个字符 aw一个单词(iw不涉及到空格,ciw推荐) ap一个段落
-S == ^cc # 删除一整行
-# g命令空间
-g~l # 反转大小写
-guw # 转化成小写
-gUU # 转化成大写
-:!nginx -s reload # 使用外部命令
-</code></pre><h4 id="当前文件中的移动"><a href="#当前文件中的移动" class="headerlink" title="当前文件中的移动"></a>当前文件中的移动</h4><pre><code>u # 撤消
-&lt;ctrl-r&gt; # 重做
-动作命令
-w b e ge # 对单词 动作的移动程度和方向
-W B E gE # 对字串 动作的移动程度和方向
-* 和 #符号  # 匹配光标当前的所有单词
-% # 匹配括号移动 
-f+ # 查找当前行的下一个&apos;+&apos;字符,定位到&apos;+&apos; F上一个
-t+ # 查找当前行的下一个&apos;+&apos;字符,定位到&apos;+&apos;的上一个字符 T上一个
-3fa → 在当前行查找第三个出现的a 
-
-; # 重复
-, # 退回
-yaw yt,  f,dt. d/ge&lt;CR&gt; # 查找动作告诉d操作符删除什么
-#Vim的文本对象由两个字符组成,第一个字符永远是i或a.文本对象自身并不是动作命令,不能用它们在文档中移动
-# 但我们却可以在可视化及操作符待决模式中使用文本对象
-#操作分隔符的文本对象 m{a-zA-Z}要在其内部
-a)==ab  a}==aB  at#一对XML标签 it #XML标签内部
-vi) ci)
-# 操作文本块的文本对象
-daw ciw
-
-# 设置位置标记
-m{a-zA-Z}#小写每个缓冲区局部可见,大写全局可见
-mm `m
-# Vim的自动位置标记
-&apos;&apos; # 当前文件中上次跳转动作之前的位置
-&apos;. # 上次修改过的地方
-&apos;^ #     插入
-&apos;[ # 上次修改或复制的起始位置
-&apos;] #             结束
-&apos;&lt; #     高亮选区
-&apos;&gt; #                 结束
-# 括号间的跳转
-%
-
-# 当不同文件之间的移动和跳转
-任何改变当前窗口中活动文件的命令,都可以称为跳转命令
-Vim会把执行跳转命令之前和之后的光标位置,记录到跳转列表中
-
-
-
-&apos;&lt;ff&gt;&apos;    
-@: # 重复上次的Ex命令
-:s%/old/new/g # 替换
-1&lt;ctrl-a&gt; # 对当前行的一下数字加1  1&lt;ctrl-x&gt;:减一
-
-# 重绘屏幕
-zz #把当前行显示在窗口正中
-&lt;ctrl-d&gt;(D) # 向下滚屏
-&lt;ctrl-u&gt;(U) #   上
-H/M/L # 跳到屏幕最上,中,下方
-
-# 可视化模式
-v
-
-# 命令行模式
-:
-
-# 命令行窗口
-q:
-
-# 替换模式
-R gR
-r{char} gr{char} # 覆盖一个字符之后,马上又回到普通模式
-
-#特别一点
-ga #查看任意字符的编码 分别以10,16,8进制的形式显示其字符编码
-J将下面的一整行,都提到光标行的末尾
-&lt;ctrl-g&gt; # 显示当前文件文件名及状态
-</code></pre><h4 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h4><pre><code># Vim操作的是寄存器,而并非剪贴板
-# &quot;{register}前缀的方式指定要用的寄存器,若不指明则使用无名寄存器
-&quot;ayiw &quot;bdd &quot;&quot;yiw &quot;+yy:delete c # 分别 对应寄存器a,b,&quot;,c中 
-&quot;ap   &quot;bp  &quot;&quot;p   :put c       # 对应的复制
-# x,s,d,c,y,p命令都会覆盖无名寄存器
-
-# 无名寄存器(&quot;&quot;) &quot;&quot;p==p
-yaw daw &quot;0p
-# 有名寄存器(&quot;a-&quot;z)
-# 黑洞寄存器(&quot;_)
-# 复制专用寄存器(&quot;0) y命令不仅会被拷贝到无名寄存器中,还拷贝到复制专用寄存器中
-
-# ubuntu 和mint默认安装的vim是不支持系统剪切、粘贴版的
-sudo apt-get install -y vim-gnome
-# 对于非GUI版本的vim,剪切板是不可用的,解决方案很简单,安装一下就是了:
-sudo apt-get install gvim
-
-# 系统剪贴板(&quot;+)
-# 将系统剪贴板的内容粘贴到Vim内部
-&quot;+p  # 插入模式下&lt;ctrl-r&gt;+,&quot;,a,0
-# 将Vim的文本捕获到系统剪贴板
-&quot;+yy
-&quot;%p # &quot;%当前文件名
-&quot;.p  # &quot;.上次插入的文本
-
-# 只读(read-only)寄存器:
-&quot;:,分别缓存最近命令
-&quot;.,最近插入文本
-&quot;%,当前文件名
-&quot;#,当前交替文件名
-
-# 代换单词
-yiw jww ve p
-yiw jww  ciw&lt;ctrl-r&gt;0&lt;Esc&gt;
-</code></pre><h4 id="宏-在录制一个宏时-要确保每条命令都可被重复执行-同时禁止使用鼠标"><a href="#宏-在录制一个宏时-要确保每条命令都可被重复执行-同时禁止使用鼠标" class="headerlink" title="宏:在录制一个宏时,要确保每条命令都可被重复执行,同时禁止使用鼠标"></a>宏:在录制一个宏时,要确保每条命令都可被重复执行,同时禁止使用鼠标</h4><h4 id="而且当动作命令-j-n-停止时-宏将中止运行"><a href="#而且当动作命令-j-n-停止时-宏将中止运行" class="headerlink" title="而且当动作命令(j,n)停止时,宏将中止运行"></a>而且当动作命令(j,n)停止时,宏将中止运行</h4><pre><code>#打任意数目的按键操作录制到寄存器,用于之后的回放
-# 把命令序列录制成宏
-qa #录制宏的开始 q{register},从而指定一个用于保存宏的寄存器
-A;&lt;Esc&gt;
-Ivar &lt;Esc&gt;
-q # 停止宏录制
-j @a j@@
-:reg a  # 查看寄存器的内容
-@a # @{register} 执行指定寄存器的内容,
-@@ # 重复最近高过的宏
-
-10@a # 加次数回放宏 .命令不能执行次数
-f+  s_+_&lt;Esc&gt;  qq;.q 22@q
-
-# 串行的运行宏 j :next
-
-    10@a # 加次数回放宏 .命令不能执行次数
-# 并行的运行宏
-
-    :&apos;&lt;,&apos;&gt;normal @a # 单个文件的多行并行运行宏
-
-    :args *.py # 建立目标文件列表
-    :edit!
-    :argdo normal @a
-    # 当在多个文件中 进行并行运行宏时,执行宏一旦失败,不方便找到到底哪个失败了
-    :wall
-
-# 给宏追加命令 
-qA # Vim会录制按键操作,但会把它们附加到寄存器a原有的内容之后
-# 编辑宏
-:put a # 将宏复制到缓冲区,当前光标的下方,而 &quot;ap 复制到当前光标之后
-# 在缓冲区进行对宏的编辑
-0 &quot;ay$ dd # 将宏从缓冲区复制回寄存器
-</code></pre><h4 id="插入模式"><a href="#插入模式" class="headerlink" title="插入模式"></a>插入模式</h4><pre><code>&lt;ctrl-h&gt;
-&lt;ctrl-w&gt;
-&lt;ctrl-u&gt; # 都是删除操作
-
-# 插入-普通模式
-&lt;ctrl-o&gt; #切换到插入-普通模式,在此后可执行一条普通模式下的命令后,再回到插入模式
-&lt;ctrl-o&gt;zz #
-
-# 复制专用寄存器(&quot;0) y命令不仅会被拷贝到无名寄存器中,还拷贝到复制专用寄存器中
-&lt;ctrl-r&gt;0 # 0就是寄存器的名字 在命令行中yaw,默认寄存器的名字是0
-&lt;ctrl-r&gt;&lt;ctrl-p&gt;0 # 它会按原义插入寄存器内的文本,并修正任何不必要的缩进
-&lt;ctrl-r&gt;=9*9&lt;CR&gt; # 表达式寄存器  &lt;ctrl-r&gt;=
-&lt;C-p&gt;或是&lt;C-n&gt;,自动补齐功
-
-&lt;ctrl-v&gt;065 # A用字符编码插入字符,vim所接受的字符编码共包含3位数
-&lt;ctrl-v&gt;u00bf # 编码超过3位的,可以用4位16进制编码来输入
-&lt;ctrl-v&gt;&lt;Tab&gt; # 如果后面跟一个非数字键,它会插入这个键本身所代表的字符
-</code></pre><h4 id="可视模式"><a href="#可视模式" class="headerlink" title="可视模式"></a>可视模式</h4><pre><code>v V &lt;ctrl-v&gt;
-o # 切换高亮选区的活动端
-gv # 重选上次的高亮选区
-yyp--&gt;Vr# # ####横编排
-&lt;ctrl-v&gt;3j$ #竖编排 
-= # 自动给缩进 
-</code></pre><h4 id="命令行-EX命令"><a href="#命令行-EX命令" class="headerlink" title="命令行(EX命令)"></a>命令行(EX命令)</h4><pre><code>@: # 在普通模式下执行 重复上次的Ex命令
-/
-&lt;ctrl-r&gt;= # 访问表达式寄存器也会激活命令行模式
-
-# 有些命令可以在插入和命令行模式下通用
-&lt;ctrl-r&gt;0 #复制寄存器的内容
-&lt;ctrl-h&gt;
-&lt;ctrl-w&gt;
-&lt;ctrl-u&gt; # 都是删除操作 
-
-/the/
-?the?
-
-:1,$ == :% # 整个文件
-:. # 光标所有行
-:0 #虚拟行 位于文件第一行上方
-
-# 删除行
-:3d == 3G+dd
-:.d # 删除当前行
-
-# 复制行t,移动行m
-:6t. # :[range]t{address} 把第六行复制到当前行下方
-:t6                        当前        第六行
-:t. == yyp
-:&apos;&lt;,&apos;&gt;t$ # 将高亮选区的内容复制到文本结尾处
-
-A;
-:&apos;&lt;,&apos;&gt;normal . == :&apos;&lt;,&apos;&gt;normal A; # 对高亮选区中的每一行,对其执行普通模式下的 . 命令. 
-
-# 自动补全Ex命令
-&lt;ctrl-d&gt; &lt;Tab&gt; &lt;Shfit-Tab&gt;
-:colors&lt;Tab&gt;
-:colorscheme &lt;Tab&gt;
-
-# 把当前光标的单词插入到命令行
-&lt;ctrl-r&gt;&lt;ctrl-w&gt;
-# 把当前光标的字串插入到命令行
-&lt;ctrl-r&gt;&lt;ctrl-a&gt;
-
-
-#  命令行窗口,就像一个常规的Vim缓冲区,只不过它的内容都对应着命令历史中的一个条目
-q: # 打开Ex 命令历史 k j键进行移动 ,&lt;CR&gt;将会把当前行的内容当成Ex命令执行  
-q/ # 打开查找
-:q #关闭命令行窗口 像操作普通Vim窗口一样 其它的操作也可以
-&lt;ctrl-f&gt; # 从命令行模式切换到命令行窗口
-
-# 运行shell
-:!{cmd} # 执行一次性命令
-:shell  # 启动一个交互的shell会话  exit  # 退出此shell并返回Vim
-# 也可以在普通模式下 &lt;ctrl-z&gt;挂起Vim进程,$jobs  $fg [作业号]
-:read !{cmd} # 将标准输出插入到光标下方
-:[range]write !{cmd} # 将range(默认是整个文件)每行内容,作为此命令的输入
-:%!sort -t &apos;,&apos; -k 2 # 以逗号分隔,按第二个字段进行排序
-
-
-:tabnew # 创建新标签页
-:split 文件路径 #分割窗口,如果不指定文件路径,默认是分割本文件
-:set ignorecase #查找单词时需要忽略大小写
-:set hlsearch # 可以将查找的内容设置成高亮
-:set history=200 #设置保存命令的条数
-</code></pre><h4 id="参数列表-vi的一个功能-是缓冲区列表-Vim增加的功能-的强力补充"><a href="#参数列表-vi的一个功能-是缓冲区列表-Vim增加的功能-的强力补充" class="headerlink" title="参数列表(vi的一个功能)是缓冲区列表(Vim增加的功能)的强力补充"></a>参数列表(vi的一个功能)是缓冲区列表(Vim增加的功能)的强力补充</h4><pre><code>vim vim_grammar.md linux.md    
-:ls #缓冲区列表 %哪个缓冲区在当前容器中可见 #代表轮换文件&lt;ctrl-^&gt;进行快速切换
-# Vim是用缓冲区列表对打开的文件进行管理的
-
-# 选择缓冲区
-:buffer N/bufname # N是Vim自动分配的编号由上面的命令行得知  bufname是文件名
-:bprev
-:bnext 
-:bfirst
-:blast  
-#退出(保存)所有的缓冲区
-:qall!
-:wall
-
-# 删除缓冲区
-:bdelete N1 N2
-
-# 用参数列表将缓冲区分组
-# 查看参数列表
-:args
-:args *.py # 建立目标文件列表
-
-#如果活动缓冲区的内容发生了变化,Vim会在离开缓冲区时自动将其设为隐藏(默认会有错误信息&apos;文件已修改但未保存&apos;)
-#&apos;hidden&apos;设置让我们用一条;argdo {cmd}或 bufdo{cmd}命令就可以修改一组缓冲区.
-</code></pre><h4 id="分割窗口"><a href="#分割窗口" class="headerlink" title="分割窗口"></a>分割窗口</h4><pre><code># 创建分割窗口
-&lt;ctrl-w&gt;s    
-&lt;ctrl-w&gt;v    
-:sp[lit] {file} #载入新文件
-:vsp[lit] {file}
-# 关闭窗口
-&lt;ctrl-w&gt;c    #关闭活动窗口  :clo[se]
-&lt;ctrl-w&gt;o    #保存活动容器,关闭其它所有窗口 :on[ly]
-# 切换窗口
-&lt;ctrl-w&gt;w    # 窗口循环切换
-&lt;ctrl-w&gt;h j k l    
-#改变窗口
-&lt;ctrl-w&gt;=    
-[N]&lt;ctrl-w&gt;_ # 最大化高度
-
-[N]&lt;ctrl-w&gt;| #       宽度
-[N]&lt;ctrl-w&gt;&lt; # &gt;
-</code></pre><h4 id="在Vim中-标签页是可以容纳一系列窗口的容器口"><a href="#在Vim中-标签页是可以容纳一系列窗口的容器口" class="headerlink" title="在Vim中,标签页是可以容纳一系列窗口的容器口"></a>在Vim中,标签页是可以容纳一系列窗口的容器口</h4><pre><code>:tabnew # 创建新标签页
-:tabe[dit] {filename} # 在新标签页打开{filename} 如果没有指定文件,会建立一个新标签页,里面包含一个空缓冲区
-:&lt;ctrl-w&gt;T  #当标签页中包含了不只一个窗口时,用此命令 把当前窗口移到一个新标签页
-:tabc[lose]  # 关闭当前所有标签页的窗口
-:tabo[nly]  # 关闭其它
-[N]gt #       下  :tabn[ext] 
-[N]gT # 切换到上一标签页  :tabp[revious]
-</code></pre><h4 id="打开文件"><a href="#打开文件" class="headerlink" title="打开文件"></a>打开文件</h4><pre><code>#Vim也有工作目录的概念,这各bash及其他shell是一样的
-#相对于活动文件目录下打开一个文件
-:edit %:h&lt;Tab&gt;  # %代表活动缓冲区的完整文件路径 :h修饰符会去除文件名 也就是此命令会被展开为当前文件所有目录的路径
-:set path+=app/** # 匹配app/目录下所有子目录
-:find 文件名
-
-# netrw管理文件系统
-# 打开文件管理器
-$ vim .
-:edit %:h ==:e . ==:Explore ==:E
-# 上面的操作都会代替当前的缓冲区内容
-# 当要保存到不存在的目录中时
-:!mkdir -p %:h #-p创建任何不存在的中间目录
-
-# 我们可以把任务委派给一个以sudo运行的shell进程,来完成工作
-:w !sudo tee % &gt;/dev/null # :w将缓冲区的内容作为sudo tee的标准输入,%是当前文件
-# 此时Vim会检测到该文件被一个外部程序改了,所以Vim会提示我们做出选择,是保留缓冲区的还是载入磁盘上的版本
-</code></pre><p>vim对于ctage的支持,<br>1.我们可以快速地跳到到函数及类的定义之处,实现浏览整个代码库的目的.(基于标签的跳转)<br>2.用于建立自动补全的单词列表</p>
-<h3 id="安装和运行ctage"><a href="#安装和运行ctage" class="headerlink" title="安装和运行ctage"></a>安装和运行ctage</h3><pre><code>sudo apt-get install exuberant-ctags
-
-sudo apt install linuxbrew-wrapper
-# 检测系统是否安装了ctags以及路径正确与否
-brew install ctags
-ctags --help
-</code></pre><h3 id="用ctags创建代码库的索引"><a href="#用ctags创建代码库的索引" class="headerlink" title="用ctags创建代码库的索引"></a>用ctags创建代码库的索引</h3><pre><code># 手动创建索引
-cd ~/app1.6
-ctags -R *
-# 应该可以用!cd /home/python/app1.6 &amp;&amp; ctags -R *
-# Linux下的C/C++的程序员,使用VIM+Ctags的组合来写程序也许是最佳的选择
-# 好像没有递归子目录,所以为子目录创建索引
-cd main &amp;&amp; ctags -R *
-cd ../app1.6 #必须要cd到此目录或者 main目录下,可由 :set tags 查看
-vim runner
-# 这样本地的所有代码,都正确的创建了索引,但源代码还是没有办法创建索引
-
-:tabnew /home/python/app1.6/runner.py
-:set tags?
-&lt;ctrl-]&gt; # 会从当前所在的关键字跳转到它的定义处 ,
-g&lt;ctrl-]&gt;
-
-&lt;ctrl-t&gt; # 充当着后退按钮 
-</code></pre>
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/17/vim_grammar/" data-id="cj7swqigt002icrqjptu235g9" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/17/vim_grammar/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/vim_grammar/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-linux-server-process" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/17/linux-server-process/">linux 服务与进程</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/17/linux-server-process/">
-            <time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/linux/">linux</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/server/">server</a>
-    </div>
-
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h3 id="linux启动流程"><a href="#linux启动流程" class="headerlink" title="linux启动流程"></a><a href="http://www.ruanyifeng.com/blog/2013/08/linux_boot_process.html" target="_blank" rel="external">linux启动流程</a></h3><p>通电 –&gt;BIOS(哪个磁盘有MBR) –&gt;MBR(哪个分区为要开启的OS) –&gt;OS –&gt;/boot(kernel) –&gt;init(PID:1) –&gt;/etc/rc*.d/ –&gt;/etc/init.d/ –&gt;用户登陆(/etc/profilc–&gt;~/.profile .bash_login .bash_profile–&gt;~/.bashrc)</p>
-<h3 id="添加启动项"><a href="#添加启动项" class="headerlink" title="添加启动项"></a>添加启动项</h3><p>/etc/rc[0~6].d 这7个目录中,每个目录分别存放着对应运行级别加载时需要关闭或启动的服务,每个脚本文件都对应着/etc/init.d/目录下具体的服务</p>
-<p>K开头的脚本文件代表运行级别加载时需要关闭的,S开头的代表需要执行,数字代表执行顺序<br>因此,当我们需要开机启动自己的脚本时,只需要将可执行脚本丢在/etc/init.d目录下,然后在/etc/rc*.d中建立软链接即可</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">sudo shmod 755 /etc/init.d/ssh</div><div class="line"><span class="built_in">cd</span> /etc/init.d</div><div class="line">sudo update-rc.d ssh defaults 95 5 . <span class="comment"># 执行顺序95,加入运行级别5级中</span></div><div class="line"><span class="comment">#即在rc*.d中各建立了一个软连接,因此也可以自己手动建立软连接,如下</span></div><div class="line">ln -s /etc/init.d/ssh /etc/rc5.d/S95sshd</div><div class="line">sudo /etc/init.d/ssh start</div><div class="line">sudo service S95sshd start</div><div class="line"></div><div class="line"><span class="comment"># 开机启动</span></div><div class="line">sudo apt-get install openssh-server</div><div class="line"><span class="comment"># 二选一</span></div><div class="line">sudo /etc/init.d/ssh start</div><div class="line">sudo service sshd start</div></pre></td></tr></table></figure>
-<h3 id="简单的启动命令"><a href="#简单的启动命令" class="headerlink" title="简单的启动命令"></a>简单的启动命令</h3><p>Linux 在启动的时候会执行 /etc/rc.local 里面的脚本,所以只要在这里添加执行命令就可以</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">vim /etc/rc.local</div><div class="line">/usr/bin/supervisord -c /etc/supervisor/supervisord.conf</div><div class="line"><span class="comment"># 如果是 Ubuntu 16.04 以上,rc.local 被当成了服务,而且默认是不会启动,需要手动启用一下服务</span></div><div class="line"><span class="comment"># 启动rc.local服务:</span></div><div class="line">sudo systemctl <span class="built_in">enable</span> rc-local.service</div><div class="line"></div><div class="line"><span class="comment"># 如果有图形桌面的话</span></div><div class="line">super键--search <span class="string">"startup"</span>--&gt;设置开机启动选项,最重要的就是找到程序的绝对路经写上就可以.可以通过如下命令查看:</div><div class="line">vim ~/.config/autostart/chromium-browser.desktop</div></pre></td></tr></table></figure>
-<p>也可以使用第三方包来<a href="http://apt.ubuntu.com/p/alacarte" target="_blank" rel="external">管理启动程序</a></p>
-<h3 id="定时任务"><a href="#定时任务" class="headerlink" title="定时任务"></a>定时任务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">vim /etc/crontab </div><div class="line"><span class="comment"># 权限要一致,且要可执行</span></div><div class="line"><span class="comment"># 分　时　日　月　周　命令</span></div><div class="line"><span class="comment"># 每天11点执行</span></div><div class="line">0 11 * * *  root  sh /home/python/xx.sh </div><div class="line"></div><div class="line"><span class="comment"># 每两个小时 </span></div><div class="line">0 */2 * * * <span class="built_in">echo</span> <span class="string">"Have a break now."</span> &gt;&gt; /tmp/test.txt</div><div class="line"></div><div class="line"><span class="comment"># 晚上11点到早上8点之间每两个小时和早上八点 </span></div><div class="line">0 23-7/2,8 * * * <span class="built_in">echo</span> <span class="string">"Have a good dream"</span> &gt;&gt; /tmp/test.txt</div><div class="line"></div><div class="line"><span class="comment"># 保存退出即生效(刚添加的任务会到2-3分钟后才开始生效)</span></div></pre></td></tr></table></figure>
-<h3 id="查看服务状态"><a href="#查看服务状态" class="headerlink" title="查看服务状态"></a>查看服务状态</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ubuntu centos</span></div><div class="line">service sshd status/stop/restart <span class="comment"># service 在rc*.d/的名字</span></div><div class="line"></div><div class="line">systemctl start docker <span class="comment">#centos启动服务</span></div><div class="line">systemctl <span class="built_in">enable</span> docker <span class="comment"># 开机启动</span></div><div class="line">systemctl status nginx</div><div class="line">systemctl start firewalld.service</div><div class="line">systemctl <span class="built_in">enable</span> firewalld.service</div><div class="line">systemctl daemon-reload <span class="comment"># 修改启动参数时的 </span></div><div class="line">systemctl restart docker</div><div class="line"><span class="comment"># 只有systmectl 状态 服务名</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># redhat 操作系统下</span></div><div class="line">chkconfig 命令</div><div class="line">chkconfig --list sshd</div></pre></td></tr></table></figure>
-<h3 id="进程有关的"><a href="#进程有关的" class="headerlink" title="进程有关的"></a>进程有关的</h3><p>“衍生出来的进程”正是 Linux 的父子进程的概念.<br>当我们登录系统后,会取得一个 bash shell,然后我们利用这个 bash 提供的接口去执行另一个命令,</p>
-<p>例如 bash 或者 ps 等.那些另外执行的命令也会被触发成为 PID,那个后来执行的命令产生的 PID 就是”子进程”,而原本的 bash 环境下,就称为”父进程”了<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">bash</div><div class="line">ps -o pid,ppid,tty,time,cmd</div><div class="line">    PID  PPID TT           TIME CMD</div><div class="line">    11373  4396 pts/12   00:00:00 bash</div><div class="line">    13043 11373 pts/12   00:00:00 bash</div><div class="line">    13110 13043 pts/12   00:00:00 ps -o pid,ppid,tty,time,cmd</div><div class="line">PID: 运行着的命令(CMD)的进程编号</div><div class="line">PPID:父进程号</div><div class="line">TTY: 命令所运行的位置(终端)</div><div class="line">TIME: 运行着的该命令所占用的CPU处理时间</div><div class="line">CMD: 该进程所运行的命令</div><div class="line"><span class="comment"># ps 仅仅显示本终端的进程</span></div></pre></td></tr></table></figure></p>
-<p>我所做的操作是在原来的 bash shell 中执行了 bash 命令,然后又执行了 ps -o pid,ppid,comm命令.我们可以看到<br>,第二个进程 bash 是第一个进程 bash 的子进程,而第三个进程ps是第二个进程的子进程</p>
-<p>新的进程要通过老的进程复制自身得到,这就是 fork.fork 是一个系统调用.<br>进程存活于内存中.每个进程都在内存中分配有属于自己的一片空间 (内存空间,包含栈、堆、全局静态区、文本常量区、程序代码区).</p>
-<p>当一个程序调用 fork 的时候,实际上就是将上面的内存空间,又复制出来一个,构成一个新的进程,<br>并在内核中为该进程创建新的附加信息 (比如新的 PID,而 PPID 为原进程的 PID).此后,两个进程分别地继续运行下去.<br>新的进程和原有进程有相同的运行状态(相同的变量值,相同的指令…).我们只能通过进程的附加信息来区分两者.</p>
-<h4 id="工作管理-job-control"><a href="#工作管理-job-control" class="headerlink" title="工作管理(job control)"></a>工作管理(job control)</h4><p>是用在 bash 环境下的,也就是说,当我们登录系统取得 bash shell 之后,在单一终端机下可以同时进行多个工作的行为管理.</p>
-<p>假如我们只有一个终端,因此在可以出现提示符让你操作的环境就成为前台(foreground),至于其他工作就可以放在后台(background)去暂停或运行<br>程序调用 exec 的时候,进程清空自身的内存空间,并根据新的程序文件重建程序代码、文本常量、全局静态、堆和栈(此时堆和栈大小都为 0),并开始运行.</p>
-<h4 id="直接将命令放到后台执行-amp"><a href="#直接将命令放到后台执行-amp" class="headerlink" title="直接将命令放到后台执行 ( &amp;)"></a>直接将命令放到后台执行 ( &amp;)</h4><h4 id="将目前工作放到后台并暂停-ctrl-z"><a href="#将目前工作放到后台并暂停-ctrl-z" class="headerlink" title="将目前工作放到后台并暂停(ctrl+z)"></a>将目前工作放到后台并暂停(ctrl+z)</h4><h4 id="将后台工作拿到前台来处理-fg-工作序号"><a href="#将后台工作拿到前台来处理-fg-工作序号" class="headerlink" title="将后台工作拿到前台来处理(fg %工作序号)"></a>将后台工作拿到前台来处理(fg %工作序号)</h4><h3 id="进程管理命令"><a href="#进程管理命令" class="headerlink" title="进程管理命令"></a>进程管理命令</h3><h4 id="ps-PID-CMD-PORT"><a href="#ps-PID-CMD-PORT" class="headerlink" title="ps: PID,CMD,PORT"></a>ps: PID,CMD,PORT</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">ps <span class="comment"># 仅仅显示本终端的进程</span></div><div class="line"></div><div class="line">-a <span class="comment"># 显示终端中进行的所有进程</span></div><div class="line">-x <span class="comment"># 会显示没有控制终端的进程</span></div><div class="line">-e <span class="comment"># 所有的进程</span></div><div class="line">-u <span class="comment"># 查看某个用户的所有进程</span></div><div class="line">-f <span class="comment"># 来查看格式化的信息列表</span></div><div class="line">ps -u femn <span class="comment"># 查看所有femn用户的进程 </span></div><div class="line">ps aux <span class="comment"># 可以对系统进程更加全面的了解</span></div><div class="line">ps -aux | less </div><div class="line"><span class="comment"># less是一个分页显示文件的工具工具,它允许你一页一页(或一个屏幕一个屏幕)地查看信息</span></div><div class="line"></div><div class="line">ps -ef <span class="comment"># 所有进程 PID PPID </span></div><div class="line">ps -efH <span class="comment"># 把输出的进程组成一个层级的格式 树状 </span></div><div class="line">ps axjf  <span class="comment"># 树状视图 等于 pstree</span></div><div class="line">ps -ef | grep python3 | cut -c 10-15 | xargs <span class="built_in">kill</span> -9 </div><div class="line"><span class="comment"># Kill 某个用户或命令的所有进程</span></div><div class="line">ps axjf |grep nginx</div><div class="line">pgrep nginx <span class="comment"># 单单的得到PID,和其子进程号</span></div><div class="line"></div><div class="line">ps -aux --sort -pcpu | head -n 10</div><div class="line"><span class="comment"># 根据 CPU 使用来升序排序 +pcpu倒序</span></div><div class="line">ps -aux --sort -pmem | head -n 10</div><div class="line"><span class="comment"># 根据 内存 使用来升序排序</span></div><div class="line">ps -aux --sort -pcpu,-pmem | head -n 10</div><div class="line"></div><div class="line"><span class="comment"># 仅仅得到本机的程序名相关的进程</span></div><div class="line">ps aux/-ef |grep ssserver <span class="comment"># 程序名(命令名)或者PID</span></div></pre></td></tr></table></figure>
-<h4 id="netstat-PID-CMD-PORT"><a href="#netstat-PID-CMD-PORT" class="headerlink" title="netstat:PID,CMD,PORT"></a>netstat:PID,CMD,PORT</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 会牵扯到此程序 相关联的socket服务,或其它的网络相接进程(网络是双向的)</span></div><div class="line">netstat -anp |grep ssh <span class="comment">#程序名  得到PID 端口号</span></div><div class="line">netstat -lnp |grep 8388  <span class="comment">#端口号 得到PID,进程名</span></div><div class="line">sudo lsof -i :8001   <span class="comment">#查看此端口 PID,User,进程名</span></div><div class="line"></div><div class="line">ll /proc/进程号  </div><div class="line">sudo lsof -p 1609</div><div class="line">killall http* 它支持通过进程名而不是进程号来结束进程,也支持通配符.</div></pre></td></tr></table></figure>
-<h4 id="top"><a href="#top" class="headerlink" title="top"></a>top</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">top <span class="comment"># 动态显示进程 q 退出, M 内存占用降序排序,P 按CPU占用降序排序 </span></div><div class="line">[top使用说明](http://www.linuxidc.com/Linux/2011-03/33582.htm)</div><div class="line">ssserver内存占用随时间升高</div><div class="line">free -m <span class="comment"># 内在的使用情况</span></div><div class="line"><span class="comment"># 查看目前进程正在实际被使用的内存,是used-(buffers+cache)</span></div><div class="line">htop <span class="comment"># 更加友好的显示top</span></div></pre></td></tr></table></figure>
-<h3 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h3><h4 id="sleeping"><a href="#sleeping" class="headerlink" title="sleeping"></a>sleeping</h4><p>D(sleeping),往往是由于 I/O(磁盘IO,网络IO,其他外设IO) 资源得不到满足,而引发等待</p>
-<p>举个例子,当 NFS 服务端关闭之时,若未事先 umount 相关目录,在 NFS 客户端执行 df 就会挂住整个登录会话,按 Ctrl+C 、Ctrl+Z 都无济于事.<br>断开连接再登录,执行 ps axf 则看到刚才的 df 进程状态位已变成了 D ,kill -9 无法杀灭.</p>
-<p>正确的处理方式,是马上恢复 NFS 服务端,再度提供服务,刚才挂起的 df 进程发现了其苦苦等待的资源,便完成任务,自动消亡.若 NFS 服务端无法恢复服务,在 reboot 之前也应将 /etc/mtab 里的相关 NFS mount 项删除,以免 reboot 过程例行调用 netfs stop 时再次发生等待资源,导致系统重启过程挂起.</p>
-<h3 id="zombile"><a href="#zombile" class="headerlink" title="zombile"></a>zombile</h3><p>Z(zombie) 之所以杀不死,是因为它已经死了,否则怎么叫 Zombie(僵尸).在UNIX/Linux中,每个进程都有一个父进程,进程号叫PID(Process ID), 相应地,父进程号就叫PPID(Parent PID).</p>
-<p>当进程死亡时,它会自动关闭已打开的文件,舍弃已占用的内存、交换空间等等系统资源,然后向其父进程返回一个退出状态值,报告死讯.如果程序有 bug,就会在这最后一步出问题.子进程说我死了,父进程却没听见,所以子进程便成了僵尸.在UNIX/Linux中消灭僵尸的手段比较残忍,执行 ps axjf 找出僵尸进程的父进程号(PPID,第一列),先杀其父,然后再由进程天子 init(其PID为1,PPID为0)来一起收拾父子僵尸.注意,子进程变成僵尸只是碍眼而已,并不碍事,如果僵尸的父进程当前有要务在身,则千万不可贸然杀之.</p>
-<p>这些进程已经死亡,但没有释放系统资源,包括内存和一些一些系统表等,如果这样的进程很多,会引发系统问题.用ps -el看出的进程状态如果是Z,就是僵尸进程.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ps -ef|grep defunc <span class="comment"># 可以找出僵尸进程</span></div><div class="line"><span class="comment"># 清除ZOMBIE(僵尸)进程可以使用如下方法:</span></div><div class="line"></div><div class="line"><span class="built_in">kill</span> –18 PPID (PPID是其父进程)</div><div class="line"><span class="comment"># 这个信号是告诉父进程,该子进程已经死亡了,请收回分配给他的资源.</span></div></pre></td></tr></table></figure></p>
-<p>如果不行则看能否终止其父进程(如果其父进程不需要的话).先看其父进程又无其他子进程,如果有,可能需要先kill其他子进程,也就是兄弟进程.方法是:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">kill</span> –15 PID1 PID2 <span class="comment"># (PID1,PID2是僵尸进程的父进程的其它子进程).</span></div><div class="line"><span class="built_in">kill</span> –15 PPID  <span class="comment"># 然后再kill父进程,这样僵尸进程就可能被完全杀掉了</span></div></pre></td></tr></table></figure></p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/17/linux-server-process/" data-id="cj7swqig2001acrqj42jeke1x" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/17/linux-server-process/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/linux-server-process/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <nav id="page-nav">
         <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
@@ -2008,45 +1669,45 @@ g&lt;ctrl-]&gt;
                     <li>
                         
                         <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/23/hadoop_MapReduce/" class="title">hadoop MapReduce</a></p>
+                            <p class="item-date"><time datetime="2017-09-23T12:01:15.000Z" itemprop="datePublished">2017-09-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/23/hadoop_RPC/" class="title">hadoop RPC</a></p>
+                            <p class="item-date"><time datetime="2017-09-23T11:51:15.000Z" itemprop="datePublished">2017-09-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/23/hadoop_hdfs/" class="title">hadoop HDFS</a></p>
+                            <p class="item-date"><time datetime="2017-09-23T11:41:15.000Z" itemprop="datePublished">2017-09-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/23/hadoop/" class="title">hadoop简介</a></p>
+                            <p class="item-date"><time datetime="2017-09-23T11:31:15.000Z" itemprop="datePublished">2017-09-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
                             <p class="item-title"><a href="/2017/09/20/virtualbox/" class="title">VirtualBox下虚拟机的网络配置</a></p>
                             <p class="item-date"><time datetime="2017-09-20T09:51:19.000Z" itemprop="datePublished">2017-09-20</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/C/">C</a></p>
-                            <p class="item-title"><a href="/2017/09/10/内存交换/" class="title">内存信息的生成与交换</a></p>
-                            <p class="item-date"><time datetime="2017-09-10T08:10:53.000Z" itemprop="datePublished">2017-09-10</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/python3/">python3</a></p>
-                            <p class="item-title"><a href="/2017/09/05/MER/" class="title">归并排序</a></p>
-                            <p class="item-date"><time datetime="2017-09-05T11:31:15.000Z" itemprop="datePublished">2017-09-05</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/python3/">python3</a></p>
-                            <p class="item-title"><a href="/2017/09/05/BUB/" class="title">冒泡和简单选择排序算法</a></p>
-                            <p class="item-date"><time datetime="2017-09-05T09:19:32.000Z" itemprop="datePublished">2017-09-05</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/shell/">shell</a></p>
-                            <p class="item-title"><a href="/2017/08/23/shell-grep-sed-awk/" class="title">shell_sed_awk</a></p>
-                            <p class="item-date"><time datetime="2017-08-23T09:05:44.000Z" itemprop="datePublished">2017-08-23</time></p>
                         </div>
                     </li>
                 
@@ -2059,7 +1720,7 @@ g&lt;ctrl-]&gt;
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -2068,7 +1729,7 @@ g&lt;ctrl-]&gt;
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">40</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">41</span></li></ul>
         </div>
     </div>
 
@@ -2077,7 +1738,7 @@ g&lt;ctrl-]&gt;
     <div class="widget-wrap">
         <h3 class="widget-title">tags</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -2086,7 +1747,7 @@ g&lt;ctrl-]&gt;
     <div class="widget-wrap">
         <h3 class="widget-title">tag cloud</h3>
         <div class="widget tagcloud">
-            <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/算法/" style="font-size: 20px;">算法</a> <a href="/tags/计算机/" style="font-size: 10px;">计算机</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
+            <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/大数据/" style="font-size: 20px;">大数据</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/计算机/" style="font-size: 10px;">计算机</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
         </div>
     </div>
 

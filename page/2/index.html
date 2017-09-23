@@ -155,11 +155,11 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                44
+                49
                 <span>posts</span>
             </div>
             <div class="article-info-block">
-                4
+                5
                 <span>tags</span>
             </div>
         </div>
@@ -214,6 +214,319 @@
 
             
             <section id="main">
+    <article id="post-mongodb" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/18/mongodb/">mongodb基本命令</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/18/mongodb/">
+            <time datetime="2017-08-18T11:56:18.000Z" itemprop="datePublished">2017-08-18</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/数据库/">数据库</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>先去<a href="https://www.mongodb.com/" target="_blank" rel="external">mongodb官网</a>下载mongod,配置好环境变量.最好也再下个<a href="https://robomongo.org/" target="_blank" rel="external">robomongo</a>,进行更好的图形界面管理</p>
+<p><a href="https://docs.mongodb.com/manual/" target="_blank" rel="external">mongodb官方文档</a>    </p>
+<p><a href="http://docs.mongoing.com/manual-zh/" target="_blank" rel="external">mongodb中文文档</a></p>
+<h4 id="启动Mongod"><a href="#启动Mongod" class="headerlink" title="启动Mongod:"></a>启动Mongod:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongod --dbpath /home/python/data/mongodb  --logpath /home/python/data/<span class="built_in">log</span> --auth</div></pre></td></tr></table></figure>
+<p>或者用配置文件的方式启动:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">mongod -f ./mongod.conf</div><div class="line">vim ./mongod.conf</div><div class="line">    dbpath = /home/python/data/mongodb/</div><div class="line">    logpath = /home/python/data/<span class="built_in">log</span></div><div class="line">    port = 27017</div><div class="line">    auth = <span class="literal">true</span></div></pre></td></tr></table></figure></p>
+<h4 id="进入Mongo的CLI"><a href="#进入Mongo的CLI" class="headerlink" title="进入Mongo的CLI:"></a>进入Mongo的CLI:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">monogo -uusername -ppasswd 192.168.0.197:27017/db </div><div class="line"><span class="comment"># 如果有语言上的错误</span></div><div class="line"><span class="built_in">export</span> LC_ALL=C</div></pre></td></tr></table></figure>
+<h4 id="选择admin数据库-并认证"><a href="#选择admin数据库-并认证" class="headerlink" title="选择admin数据库,并认证:"></a>选择admin数据库,并认证:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">use admin</div><div class="line">db.auth(<span class="string">'username'</span>,<span class="string">'password'</span>)</div></pre></td></tr></table></figure>
+<p>指定好当前数据库后,用db命令查看,之后用密码登陆.</p>
+<p><em>查看所有的数据库</em></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">show dbs</div></pre></td></tr></table></figure>
+<h3 id="创建或选定数据库"><a href="#创建或选定数据库" class="headerlink" title="创建或选定数据库"></a>创建或选定数据库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">use 1 <span class="comment"># 该命令将创建一个新的数据库,如果它不存在,否则将返回现有的数据库.</span></div><div class="line">db.dropDatabase(<span class="string">'1'</span>)  <span class="comment"># 删除数据库</span></div></pre></td></tr></table></figure>
+<p><em>创建集合(表),删除表,显示所有表</em></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">db.createCollection(<span class="string">'test'</span>)</div><div class="line">db.test.drop()</div><div class="line">show collections</div></pre></td></tr></table></figure>
+<p><em>创建文档(记录)</em></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.test_table.insert(&#123;<span class="string">'1'</span>:1&#125;)</div></pre></td></tr></table></figure>
+<p><em>指定数据库,一定要先选定再创建,创建用户角色</em></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">use <span class="built_in">test</span></div><div class="line">db.createUser( &#123;</div><div class="line">user: <span class="string">"femn2014"</span>,</div><div class="line"><span class="built_in">pwd</span>: <span class="string">"femn2014"</span>,</div><div class="line">roles: [ &#123; role : <span class="string">"readWrite"</span>, db: <span class="string">"test"</span> &#125; ]</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>role:”sysadmin”,”read”,”readWrite”,”sysadmin”和”root”角色只能在第一次创建一次,之后创建的必须是其它的角色,同时也要注意db:’xxx’要改变,如果指定的是admin数据库,则此用户可以看到所有的数据库,并只是针对db:’test’这个数据库有读写操作.</p>
+<p><em>指定数据库之后,查看用户</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">use <span class="built_in">test</span></div><div class="line">db.getUsers()</div></pre></td></tr></table></figure></p>
+<h3 id="一旦创建好用户之后-就必须要切换到admin数据库中-才能进行对用户角色的管理"><a href="#一旦创建好用户之后-就必须要切换到admin数据库中-才能进行对用户角色的管理" class="headerlink" title="一旦创建好用户之后,就必须要切换到admin数据库中,才能进行对用户角色的管理"></a>一旦创建好用户之后,就必须要切换到admin数据库中,才能进行对用户角色的管理</h3><p><em>用admin数据库,查看,管理所有数据库中的所有用户</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">use admin</div><div class="line">db.system.users.find()</div><div class="line">db.system.users.remove(&#123;user:<span class="string">'femn2014'</span>&#125;) 删除用户</div></pre></td></tr></table></figure></p>
+<h4 id="得到test表的索引"><a href="#得到test表的索引" class="headerlink" title="得到test表的索引"></a>得到test表的索引</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.test.getIndexes()</div></pre></td></tr></table></figure>
+<p><em>创建新的索引,此命令不会覆盖掉之前的索引</em></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.test.ensureIndex(&#123;<span class="string">'mobile'</span>:1&#125;)</div></pre></td></tr></table></figure>
+<p><em>创建二维索引,通过查询location这个数组,来得到文档</em></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">db.test.ensureIndex(&#123;<span class="string">"location"</span> : <span class="string">"2d"</span>&#125;,&#123;<span class="string">"background"</span> : <span class="literal">true</span>&#125;,</div><div class="line">    &#123;min:-180,max:180&#125;)</div></pre></td></tr></table></figure>
+<p>MongoDB的Geospatial Indexing 2d默认取值范围[-179,-179]到[180,180] 包含这两个点,超出范围将报错</p>
+<h4 id="备份Mongo"><a href="#备份Mongo" class="headerlink" title="备份Mongo:"></a>备份Mongo:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mongodump --host=192.168.1.217 --port=27017 --username=username \</div><div class="line">    --password=passwd --authenticationDatabase admin -dMongodb \</div><div class="line">    -cfemn -o /home/python/nosql_dump</div></pre></td></tr></table></figure>
+<h4 id="恢复Mongo"><a href="#恢复Mongo" class="headerlink" title="恢复Mongo:"></a>恢复Mongo:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">mongorestore -udba -pdba --host=60.205.140.13 --port=27017 \ </div><div class="line">    --authenticationDatabase admin -dbozhongboyue -cvideo \ </div><div class="line">    --drop /home/python/nosql_dump/1-5/bozhongboyue/video.bson</div><div class="line"><span class="comment"># 不经常使用如下命令</span></div><div class="line">mongoexport --host=192.168.1.217 --port=27017 --username=username \ </div><div class="line">    --password=passwd --authenticationDatabase admin -dMongodb -cfemn -o femn.json</div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/18/mongodb/" data-id="cj7x62cqp001x07qsb9ek1q2y" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/18/mongodb/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/18/mongodb/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-ghost" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/18/ghost/">ghost下载与使用</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/18/ghost/">
+            <time datetime="2017-08-18T11:11:58.000Z" itemprop="datePublished">2017-08-18</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/server/">server</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="在VPS中-推荐下载最新的ghost"><a href="#在VPS中-推荐下载最新的ghost" class="headerlink" title="在VPS中,推荐下载最新的ghost"></a>在VPS中,推荐下载最新的<a href="https://docs.ghost.org/docs/installing-ghost-via-the-cli" target="_blank" rel="external">ghost</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">yum install gcc nodejs</div><div class="line">npm install -g ghost-cli</div><div class="line">mkdir /var/www/blog</div><div class="line"><span class="built_in">cd</span> /var/www/blog</div><div class="line">ghost install <span class="built_in">local</span></div><div class="line">http://localhost:2368/</div><div class="line"><span class="comment"># 将url换成你博客的地址</span></div><div class="line">vim config.development.json </div><div class="line">    url: http://www.femnyy.com</div><div class="line">ghost restart</div><div class="line">http://www.femnyy.com</div></pre></td></tr></table></figure>
+<p>配置一下nginx</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">vim /etc/nginx/conf.d/ghost.conf</div><div class="line">    server &#123; <span class="comment"># 定义一个虚拟主机</span></div><div class="line">        listen 80;</div><div class="line">        <span class="comment">#server_name myip;</span></div><div class="line">        <span class="comment">#server_name 0.0.0.0; 上面的公网IP也不行了,</span></div><div class="line">        <span class="comment">#server_name mydomians; error</span></div><div class="line">        server_name myip www.femnyy.com;</div><div class="line">        location / &#123;</div><div class="line">            proxy_set_header   X-Real-IP <span class="variable">$remote_addr</span>;</div><div class="line">            proxy_set_header   Host      <span class="variable">$http_host</span>;</div><div class="line">            proxy_pass         http://127.0.0.1:2368;</div><div class="line">            &#125;</div><div class="line">        &#125; </div><div class="line">    nginx -t</div><div class="line">    systemctl start nginx</div><div class="line">    systemctl <span class="built_in">enable</span> nginx</div><div class="line">    setsebool -P httpd_can_network_connect <span class="literal">true</span></div></pre></td></tr></table></figure>
+<p>访问 <a href="http://www.femnyy.com" target="_blank" rel="external">http://www.femnyy.com</a>  or <a href="http://myip/ghost" target="_blank" rel="external">http://myip/ghost</a></p>
+<h3 id="ghost-命令"><a href="#ghost-命令" class="headerlink" title="ghost 命令"></a>ghost 命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ghost -h</div><div class="line"><span class="comment"># 其它命令</span></div><div class="line">ghost ls/update/start/stop/restart</div></pre></td></tr></table></figure>
+<h3 id="ghost管理界面的一些基本操作"><a href="#ghost管理界面的一些基本操作" class="headerlink" title="ghost管理界面的一些基本操作"></a>ghost管理界面的一些基本操作</h3><p>同时在管理界面能操作的,就不要去动服务器中的ghost代码,本人能力有限,改了几次,配置都不能用了,只能重新安装(在旧版本中)</p>
+<ol>
+<li><p><a href="http://www.moiblog.net/2016/ghost-tag/" target="_blank" rel="external">设置标签</a>   再将Tab 设置成Navigation,同样新版本也可以操作Design了.</p>
+</li>
+<li><p>备份你的博客 导入博客<br> Labs –&gt; Export /Import</p>
+</li>
+<li><p>提高被搜索的概率<br> setting –&gt; Meta Date –&gt; 输入搜索时的关键字</p>
+</li>
+</ol>
+<h3 id="开始写博客"><a href="#开始写博客" class="headerlink" title="开始写博客"></a>开始写博客</h3><ol>
+<li><p><a href="http://blog.leanote.com/post/freewalk/Markdown-%E8%AF%AD%E6%B3%95%E6%89%8B%E5%86%8C" target="_blank" rel="external">有关Markdown的语法手册</a></p>
+</li>
+<li><p>图片的处理<br><a href="https://portal.qiniu.com/" target="_blank" rel="external">使用七牛的对象存储</a> 或者用<a href="https://sm.ms/" target="_blank" rel="external">sm.ms</a>支持https</p>
+</li>
+</ol>
+<h3 id="不推荐安装旧版本-旧版本安装不好友-想更新ghost版本也费劲-主要是有可以还安不成功"><a href="#不推荐安装旧版本-旧版本安装不好友-想更新ghost版本也费劲-主要是有可以还安不成功" class="headerlink" title="不推荐安装旧版本,旧版本安装不好友,想更新ghost版本也费劲,主要是有可以还安不成功"></a>不推荐安装旧版本,旧版本安装不好友,想更新ghost版本也费劲,主要是有可以还安不成功</h3><p><a href="https://hostpresto.com/community/tutorials/how-to-install-ghost-blogging-platform-on-centos-7/" target="_blank" rel="external">参考</a>于此<br> install nodejs and setting npm source<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">yum -y update</div><div class="line">yum install -y gcc-c++ make unzip netstat</div><div class="line">curl --silent --location https://rpm.nodesource.com/setup_4.x | bash -</div><div class="line">yum -y install nodejs</div><div class="line">node -v</div><div class="line">mkdir -p /var/www/</div><div class="line"><span class="built_in">cd</span> /var/www/</div><div class="line">wget https://ghost.org/zip/ghost-latest.zip</div><div class="line">unzip -uo ghost-latest.zip -d /var/www/ghost</div><div class="line"><span class="built_in">cd</span> ghost</div><div class="line">npm config <span class="built_in">set</span> registry http://registry.npmjs.org/</div><div class="line">npm config <span class="built_in">set</span> strict-ssl <span class="literal">false</span></div></pre></td></tr></table></figure></p>
+<p>其中当npm install –production,下载依赖包时,可能会遇到内存不足的问题,可以通过增加交换空间来<a href="https://www.digitalocean.com/community/tutorials/how-to-add-swap-on-ubuntu-12-04?comment=551" target="_blank" rel="external">解决</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">sudo dd <span class="keyword">if</span>=/dev/zero of=/swapfile bs=1024 count=1024k</div><div class="line">sudo mkswap /swapfile</div><div class="line">sudo swapon /swapfile</div><div class="line">vim /etc/fstab</div><div class="line"><span class="built_in">echo</span> 10 | sudo tee /proc/sys/vm/swappiness</div><div class="line"><span class="built_in">echo</span> vm.swappiness = 10 | sudo tee -a /etc/sysctl.conf</div><div class="line">sudo chown root:root /swapfile </div><div class="line">sudo chmod 0600 /swapfile</div></pre></td></tr></table></figure>
+<p> install ghost</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /var/www/ghost</div><div class="line">npm install --production</div><div class="line"><span class="comment"># start ghost</span></div><div class="line">cp config.example.js config.js</div><div class="line">vim config.js</div><div class="line">    config = &#123;</div><div class="line">        production: &#123;</div><div class="line">        url: <span class="string">'http://myip'</span></div><div class="line">sudo firewall-cmd --permanent --add-port=80/tcp</div><div class="line">sudo firewall-cmd --permanent --add-port=2368/tcp</div><div class="line">firewall-cmd --reload</div><div class="line">npm start --production</div><div class="line">ss -lnp     |grep 2368</div><div class="line">http://localhost:2368/ghost</div><div class="line"><span class="built_in">kill</span> -9 **</div></pre></td></tr></table></figure>
+<p> use pm2 manage ghost  之后就可以不用 nohup npm start –production 启动了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">npm install -g pm2</div><div class="line"><span class="built_in">echo</span> <span class="string">"export NODE_ENV=production"</span> &amp;gt;&amp;gt; ~/.profile</div><div class="line">. ~/.profile</div><div class="line">pm2 start index.js --name ghost</div><div class="line"><span class="comment"># pm2其它命令</span></div><div class="line">pm2 show/start/stop ghost</div><div class="line">pm2 status/logs/save</div><div class="line"><span class="comment"># 自从我修改了default.hbs之后,pm2就用不了了,害得我还得去重新install ghost</span></div></pre></td></tr></table></figure>
+<p> install nginx<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">yum -y install epel-release</div><div class="line">yum -y update</div><div class="line">yum -y install nginx</div><div class="line"><span class="comment"># 配置方法和最新的ghost配置一样</span></div></pre></td></tr></table></figure></p>
+<p> 访问 <a href="http://www.femnyy.com" target="_blank" rel="external">http://www.femnyy.com</a> or <a href="http://myip/ghost" target="_blank" rel="external">http://myip/ghost</a></p>
+<p>如果是在国内安装的话,可能会比较慢,<a href="https://npm.taobao.org/" target="_blank" rel="external">推荐用淘宝镜像安装</a>,你可以使用我们定制的 cnpm (gzip 压缩支持) 命令行工具代替默认的 npm:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</div></pre></td></tr></table></figure>
+<h4 id="update-nodejs-npm"><a href="#update-nodejs-npm" class="headerlink" title="update nodejs npm"></a>update nodejs npm</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo npm cache clean -f</div><div class="line">sudo npm install -g n</div><div class="line">sudo n stable</div></pre></td></tr></table></figure>
+<p><a href="https://docs.ghost.org/" target="_blank" rel="external">ghost文档帮助</a></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/18/ghost/" data-id="cj7x62cor000z07qs3numpeki" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/18/ghost/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/18/ghost/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-linux_gcc" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -270,7 +583,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/17/linux_gcc/" data-id="cj7swqigb001ocrqjuagpwk2m" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/17/linux_gcc/" data-id="cj7x62ctm003n07qsi3mayr3d" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -348,6 +661,738 @@
 
 
 
+    <article id="post-vim_grammar" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/17/vim_grammar/">vim基本语法</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/17/vim_grammar/">
+            <time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/linux/">linux</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="普通模式下"><a href="#普通模式下" class="headerlink" title="普通模式下"></a>普通模式下</h3><pre><code>操作符
+&gt;G &gt;gg # 缩进 y复制 d删除
+C == c$  #c是修改,删除之后进入插入模式
+s == cl # l一个字符 aw一个单词(iw不涉及到空格,ciw推荐) ap一个段落
+S == ^cc # 删除一整行
+# g命令空间
+g~l # 反转大小写
+guw # 转化成小写
+gUU # 转化成大写
+:!nginx -s reload # 使用外部命令
+</code></pre><h4 id="当前文件中的移动"><a href="#当前文件中的移动" class="headerlink" title="当前文件中的移动"></a>当前文件中的移动</h4><pre><code>u # 撤消
+&lt;ctrl-r&gt; # 重做
+动作命令
+w b e ge # 对单词 动作的移动程度和方向
+W B E gE # 对字串 动作的移动程度和方向
+* 和 #符号  # 匹配光标当前的所有单词
+% # 匹配括号移动 
+f+ # 查找当前行的下一个&apos;+&apos;字符,定位到&apos;+&apos; F上一个
+t+ # 查找当前行的下一个&apos;+&apos;字符,定位到&apos;+&apos;的上一个字符 T上一个
+3fa → 在当前行查找第三个出现的a 
+
+; # 重复
+, # 退回
+yaw yt,  f,dt. d/ge&lt;CR&gt; # 查找动作告诉d操作符删除什么
+#Vim的文本对象由两个字符组成,第一个字符永远是i或a.文本对象自身并不是动作命令,不能用它们在文档中移动
+# 但我们却可以在可视化及操作符待决模式中使用文本对象
+#操作分隔符的文本对象 m{a-zA-Z}要在其内部
+a)==ab  a}==aB  at#一对XML标签 it #XML标签内部
+vi) ci)
+# 操作文本块的文本对象
+daw ciw
+
+# 设置位置标记
+m{a-zA-Z}#小写每个缓冲区局部可见,大写全局可见
+mm `m
+# Vim的自动位置标记
+&apos;&apos; # 当前文件中上次跳转动作之前的位置
+&apos;. # 上次修改过的地方
+&apos;^ #     插入
+&apos;[ # 上次修改或复制的起始位置
+&apos;] #             结束
+&apos;&lt; #     高亮选区
+&apos;&gt; #                 结束
+# 括号间的跳转
+%
+
+# 当不同文件之间的移动和跳转
+任何改变当前窗口中活动文件的命令,都可以称为跳转命令
+Vim会把执行跳转命令之前和之后的光标位置,记录到跳转列表中
+
+
+
+&apos;&lt;ff&gt;&apos;    
+@: # 重复上次的Ex命令
+:s%/old/new/g # 替换
+1&lt;ctrl-a&gt; # 对当前行的一下数字加1  1&lt;ctrl-x&gt;:减一
+
+# 重绘屏幕
+zz #把当前行显示在窗口正中
+&lt;ctrl-d&gt;(D) # 向下滚屏
+&lt;ctrl-u&gt;(U) #   上
+H/M/L # 跳到屏幕最上,中,下方
+
+# 可视化模式
+v
+
+# 命令行模式
+:
+
+# 命令行窗口
+q:
+
+# 替换模式
+R gR
+r{char} gr{char} # 覆盖一个字符之后,马上又回到普通模式
+
+#特别一点
+ga #查看任意字符的编码 分别以10,16,8进制的形式显示其字符编码
+J将下面的一整行,都提到光标行的末尾
+&lt;ctrl-g&gt; # 显示当前文件文件名及状态
+</code></pre><h4 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h4><pre><code># Vim操作的是寄存器,而并非剪贴板
+# &quot;{register}前缀的方式指定要用的寄存器,若不指明则使用无名寄存器
+&quot;ayiw &quot;bdd &quot;&quot;yiw &quot;+yy:delete c # 分别 对应寄存器a,b,&quot;,c中 
+&quot;ap   &quot;bp  &quot;&quot;p   :put c       # 对应的复制
+# x,s,d,c,y,p命令都会覆盖无名寄存器
+
+# 无名寄存器(&quot;&quot;) &quot;&quot;p==p
+yaw daw &quot;0p
+# 有名寄存器(&quot;a-&quot;z)
+# 黑洞寄存器(&quot;_)
+# 复制专用寄存器(&quot;0) y命令不仅会被拷贝到无名寄存器中,还拷贝到复制专用寄存器中
+
+# ubuntu 和mint默认安装的vim是不支持系统剪切、粘贴版的
+sudo apt-get install -y vim-gnome
+# 对于非GUI版本的vim,剪切板是不可用的,解决方案很简单,安装一下就是了:
+sudo apt-get install gvim
+
+# 系统剪贴板(&quot;+)
+# 将系统剪贴板的内容粘贴到Vim内部
+&quot;+p  # 插入模式下&lt;ctrl-r&gt;+,&quot;,a,0
+# 将Vim的文本捕获到系统剪贴板
+&quot;+yy
+&quot;%p # &quot;%当前文件名
+&quot;.p  # &quot;.上次插入的文本
+
+# 只读(read-only)寄存器:
+&quot;:,分别缓存最近命令
+&quot;.,最近插入文本
+&quot;%,当前文件名
+&quot;#,当前交替文件名
+
+# 代换单词
+yiw jww ve p
+yiw jww  ciw&lt;ctrl-r&gt;0&lt;Esc&gt;
+</code></pre><h4 id="宏-在录制一个宏时-要确保每条命令都可被重复执行-同时禁止使用鼠标"><a href="#宏-在录制一个宏时-要确保每条命令都可被重复执行-同时禁止使用鼠标" class="headerlink" title="宏:在录制一个宏时,要确保每条命令都可被重复执行,同时禁止使用鼠标"></a>宏:在录制一个宏时,要确保每条命令都可被重复执行,同时禁止使用鼠标</h4><h4 id="而且当动作命令-j-n-停止时-宏将中止运行"><a href="#而且当动作命令-j-n-停止时-宏将中止运行" class="headerlink" title="而且当动作命令(j,n)停止时,宏将中止运行"></a>而且当动作命令(j,n)停止时,宏将中止运行</h4><pre><code>#打任意数目的按键操作录制到寄存器,用于之后的回放
+# 把命令序列录制成宏
+qa #录制宏的开始 q{register},从而指定一个用于保存宏的寄存器
+A;&lt;Esc&gt;
+Ivar &lt;Esc&gt;
+q # 停止宏录制
+j @a j@@
+:reg a  # 查看寄存器的内容
+@a # @{register} 执行指定寄存器的内容,
+@@ # 重复最近高过的宏
+
+10@a # 加次数回放宏 .命令不能执行次数
+f+  s_+_&lt;Esc&gt;  qq;.q 22@q
+
+# 串行的运行宏 j :next
+
+    10@a # 加次数回放宏 .命令不能执行次数
+# 并行的运行宏
+
+    :&apos;&lt;,&apos;&gt;normal @a # 单个文件的多行并行运行宏
+
+    :args *.py # 建立目标文件列表
+    :edit!
+    :argdo normal @a
+    # 当在多个文件中 进行并行运行宏时,执行宏一旦失败,不方便找到到底哪个失败了
+    :wall
+
+# 给宏追加命令 
+qA # Vim会录制按键操作,但会把它们附加到寄存器a原有的内容之后
+# 编辑宏
+:put a # 将宏复制到缓冲区,当前光标的下方,而 &quot;ap 复制到当前光标之后
+# 在缓冲区进行对宏的编辑
+0 &quot;ay$ dd # 将宏从缓冲区复制回寄存器
+</code></pre><h4 id="插入模式"><a href="#插入模式" class="headerlink" title="插入模式"></a>插入模式</h4><pre><code>&lt;ctrl-h&gt;
+&lt;ctrl-w&gt;
+&lt;ctrl-u&gt; # 都是删除操作
+
+# 插入-普通模式
+&lt;ctrl-o&gt; #切换到插入-普通模式,在此后可执行一条普通模式下的命令后,再回到插入模式
+&lt;ctrl-o&gt;zz #
+
+# 复制专用寄存器(&quot;0) y命令不仅会被拷贝到无名寄存器中,还拷贝到复制专用寄存器中
+&lt;ctrl-r&gt;0 # 0就是寄存器的名字 在命令行中yaw,默认寄存器的名字是0
+&lt;ctrl-r&gt;&lt;ctrl-p&gt;0 # 它会按原义插入寄存器内的文本,并修正任何不必要的缩进
+&lt;ctrl-r&gt;=9*9&lt;CR&gt; # 表达式寄存器  &lt;ctrl-r&gt;=
+&lt;C-p&gt;或是&lt;C-n&gt;,自动补齐功
+
+&lt;ctrl-v&gt;065 # A用字符编码插入字符,vim所接受的字符编码共包含3位数
+&lt;ctrl-v&gt;u00bf # 编码超过3位的,可以用4位16进制编码来输入
+&lt;ctrl-v&gt;&lt;Tab&gt; # 如果后面跟一个非数字键,它会插入这个键本身所代表的字符
+</code></pre><h4 id="可视模式"><a href="#可视模式" class="headerlink" title="可视模式"></a>可视模式</h4><pre><code>v V &lt;ctrl-v&gt;
+o # 切换高亮选区的活动端
+gv # 重选上次的高亮选区
+yyp--&gt;Vr# # ####横编排
+&lt;ctrl-v&gt;3j$ #竖编排 
+= # 自动给缩进 
+</code></pre><h4 id="命令行-EX命令"><a href="#命令行-EX命令" class="headerlink" title="命令行(EX命令)"></a>命令行(EX命令)</h4><pre><code>@: # 在普通模式下执行 重复上次的Ex命令
+/
+&lt;ctrl-r&gt;= # 访问表达式寄存器也会激活命令行模式
+
+# 有些命令可以在插入和命令行模式下通用
+&lt;ctrl-r&gt;0 #复制寄存器的内容
+&lt;ctrl-h&gt;
+&lt;ctrl-w&gt;
+&lt;ctrl-u&gt; # 都是删除操作 
+
+/the/
+?the?
+
+:1,$ == :% # 整个文件
+:. # 光标所有行
+:0 #虚拟行 位于文件第一行上方
+
+# 删除行
+:3d == 3G+dd
+:.d # 删除当前行
+
+# 复制行t,移动行m
+:6t. # :[range]t{address} 把第六行复制到当前行下方
+:t6                        当前        第六行
+:t. == yyp
+:&apos;&lt;,&apos;&gt;t$ # 将高亮选区的内容复制到文本结尾处
+
+A;
+:&apos;&lt;,&apos;&gt;normal . == :&apos;&lt;,&apos;&gt;normal A; # 对高亮选区中的每一行,对其执行普通模式下的 . 命令. 
+
+# 自动补全Ex命令
+&lt;ctrl-d&gt; &lt;Tab&gt; &lt;Shfit-Tab&gt;
+:colors&lt;Tab&gt;
+:colorscheme &lt;Tab&gt;
+
+# 把当前光标的单词插入到命令行
+&lt;ctrl-r&gt;&lt;ctrl-w&gt;
+# 把当前光标的字串插入到命令行
+&lt;ctrl-r&gt;&lt;ctrl-a&gt;
+
+
+#  命令行窗口,就像一个常规的Vim缓冲区,只不过它的内容都对应着命令历史中的一个条目
+q: # 打开Ex 命令历史 k j键进行移动 ,&lt;CR&gt;将会把当前行的内容当成Ex命令执行  
+q/ # 打开查找
+:q #关闭命令行窗口 像操作普通Vim窗口一样 其它的操作也可以
+&lt;ctrl-f&gt; # 从命令行模式切换到命令行窗口
+
+# 运行shell
+:!{cmd} # 执行一次性命令
+:shell  # 启动一个交互的shell会话  exit  # 退出此shell并返回Vim
+# 也可以在普通模式下 &lt;ctrl-z&gt;挂起Vim进程,$jobs  $fg [作业号]
+:read !{cmd} # 将标准输出插入到光标下方
+:[range]write !{cmd} # 将range(默认是整个文件)每行内容,作为此命令的输入
+:%!sort -t &apos;,&apos; -k 2 # 以逗号分隔,按第二个字段进行排序
+
+
+:tabnew # 创建新标签页
+:split 文件路径 #分割窗口,如果不指定文件路径,默认是分割本文件
+:set ignorecase #查找单词时需要忽略大小写
+:set hlsearch # 可以将查找的内容设置成高亮
+:set history=200 #设置保存命令的条数
+</code></pre><h4 id="参数列表-vi的一个功能-是缓冲区列表-Vim增加的功能-的强力补充"><a href="#参数列表-vi的一个功能-是缓冲区列表-Vim增加的功能-的强力补充" class="headerlink" title="参数列表(vi的一个功能)是缓冲区列表(Vim增加的功能)的强力补充"></a>参数列表(vi的一个功能)是缓冲区列表(Vim增加的功能)的强力补充</h4><pre><code>vim vim_grammar.md linux.md    
+:ls #缓冲区列表 %哪个缓冲区在当前容器中可见 #代表轮换文件&lt;ctrl-^&gt;进行快速切换
+# Vim是用缓冲区列表对打开的文件进行管理的
+
+# 选择缓冲区
+:buffer N/bufname # N是Vim自动分配的编号由上面的命令行得知  bufname是文件名
+:bprev
+:bnext 
+:bfirst
+:blast  
+#退出(保存)所有的缓冲区
+:qall!
+:wall
+
+# 删除缓冲区
+:bdelete N1 N2
+
+# 用参数列表将缓冲区分组
+# 查看参数列表
+:args
+:args *.py # 建立目标文件列表
+
+#如果活动缓冲区的内容发生了变化,Vim会在离开缓冲区时自动将其设为隐藏(默认会有错误信息&apos;文件已修改但未保存&apos;)
+#&apos;hidden&apos;设置让我们用一条;argdo {cmd}或 bufdo{cmd}命令就可以修改一组缓冲区.
+</code></pre><h4 id="分割窗口"><a href="#分割窗口" class="headerlink" title="分割窗口"></a>分割窗口</h4><pre><code># 创建分割窗口
+&lt;ctrl-w&gt;s    
+&lt;ctrl-w&gt;v    
+:sp[lit] {file} #载入新文件
+:vsp[lit] {file}
+# 关闭窗口
+&lt;ctrl-w&gt;c    #关闭活动窗口  :clo[se]
+&lt;ctrl-w&gt;o    #保存活动容器,关闭其它所有窗口 :on[ly]
+# 切换窗口
+&lt;ctrl-w&gt;w    # 窗口循环切换
+&lt;ctrl-w&gt;h j k l    
+#改变窗口
+&lt;ctrl-w&gt;=    
+[N]&lt;ctrl-w&gt;_ # 最大化高度
+
+[N]&lt;ctrl-w&gt;| #       宽度
+[N]&lt;ctrl-w&gt;&lt; # &gt;
+</code></pre><h4 id="在Vim中-标签页是可以容纳一系列窗口的容器口"><a href="#在Vim中-标签页是可以容纳一系列窗口的容器口" class="headerlink" title="在Vim中,标签页是可以容纳一系列窗口的容器口"></a>在Vim中,标签页是可以容纳一系列窗口的容器口</h4><pre><code>:tabnew # 创建新标签页
+:tabe[dit] {filename} # 在新标签页打开{filename} 如果没有指定文件,会建立一个新标签页,里面包含一个空缓冲区
+:&lt;ctrl-w&gt;T  #当标签页中包含了不只一个窗口时,用此命令 把当前窗口移到一个新标签页
+:tabc[lose]  # 关闭当前所有标签页的窗口
+:tabo[nly]  # 关闭其它
+[N]gt #       下  :tabn[ext] 
+[N]gT # 切换到上一标签页  :tabp[revious]
+</code></pre><h4 id="打开文件"><a href="#打开文件" class="headerlink" title="打开文件"></a>打开文件</h4><pre><code>#Vim也有工作目录的概念,这各bash及其他shell是一样的
+#相对于活动文件目录下打开一个文件
+:edit %:h&lt;Tab&gt;  # %代表活动缓冲区的完整文件路径 :h修饰符会去除文件名 也就是此命令会被展开为当前文件所有目录的路径
+:set path+=app/** # 匹配app/目录下所有子目录
+:find 文件名
+
+# netrw管理文件系统
+# 打开文件管理器
+$ vim .
+:edit %:h ==:e . ==:Explore ==:E
+# 上面的操作都会代替当前的缓冲区内容
+# 当要保存到不存在的目录中时
+:!mkdir -p %:h #-p创建任何不存在的中间目录
+
+# 我们可以把任务委派给一个以sudo运行的shell进程,来完成工作
+:w !sudo tee % &gt;/dev/null # :w将缓冲区的内容作为sudo tee的标准输入,%是当前文件
+# 此时Vim会检测到该文件被一个外部程序改了,所以Vim会提示我们做出选择,是保留缓冲区的还是载入磁盘上的版本
+</code></pre><p>vim对于ctage的支持,<br>1.我们可以快速地跳到到函数及类的定义之处,实现浏览整个代码库的目的.(基于标签的跳转)<br>2.用于建立自动补全的单词列表</p>
+<h3 id="安装和运行ctage"><a href="#安装和运行ctage" class="headerlink" title="安装和运行ctage"></a>安装和运行ctage</h3><pre><code>sudo apt-get install exuberant-ctags
+
+sudo apt install linuxbrew-wrapper
+# 检测系统是否安装了ctags以及路径正确与否
+brew install ctags
+ctags --help
+</code></pre><h3 id="用ctags创建代码库的索引"><a href="#用ctags创建代码库的索引" class="headerlink" title="用ctags创建代码库的索引"></a>用ctags创建代码库的索引</h3><pre><code># 手动创建索引
+cd ~/app1.6
+ctags -R *
+# 应该可以用!cd /home/python/app1.6 &amp;&amp; ctags -R *
+# Linux下的C/C++的程序员,使用VIM+Ctags的组合来写程序也许是最佳的选择
+# 好像没有递归子目录,所以为子目录创建索引
+cd main &amp;&amp; ctags -R *
+cd ../app1.6 #必须要cd到此目录或者 main目录下,可由 :set tags 查看
+vim runner
+# 这样本地的所有代码,都正确的创建了索引,但源代码还是没有办法创建索引
+
+:tabnew /home/python/app1.6/runner.py
+:set tags?
+&lt;ctrl-]&gt; # 会从当前所在的关键字跳转到它的定义处 ,
+g&lt;ctrl-]&gt;
+
+&lt;ctrl-t&gt; # 充当着后退按钮 
+</code></pre>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/17/vim_grammar/" data-id="cj7x62crq003207qsbefrbp6g" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/17/vim_grammar/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/vim_grammar/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-linux-server-process" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/17/linux-server-process/">linux 服务与进程</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/17/linux-server-process/">
+            <time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/linux/">linux</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/server/">server</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="linux启动流程"><a href="#linux启动流程" class="headerlink" title="linux启动流程"></a><a href="http://www.ruanyifeng.com/blog/2013/08/linux_boot_process.html" target="_blank" rel="external">linux启动流程</a></h3><p>通电 –&gt;BIOS(哪个磁盘有MBR) –&gt;MBR(哪个分区为要开启的OS) –&gt;OS –&gt;/boot(kernel) –&gt;init(PID:1) –&gt;/etc/rc*.d/ –&gt;/etc/init.d/ –&gt;用户登陆(/etc/profilc–&gt;~/.profile .bash_login .bash_profile–&gt;~/.bashrc)</p>
+<h3 id="添加启动项"><a href="#添加启动项" class="headerlink" title="添加启动项"></a>添加启动项</h3><p>/etc/rc[0~6].d 这7个目录中,每个目录分别存放着对应运行级别加载时需要关闭或启动的服务,每个脚本文件都对应着/etc/init.d/目录下具体的服务</p>
+<p>K开头的脚本文件代表运行级别加载时需要关闭的,S开头的代表需要执行,数字代表执行顺序<br>因此,当我们需要开机启动自己的脚本时,只需要将可执行脚本丢在/etc/init.d目录下,然后在/etc/rc*.d中建立软链接即可</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">sudo shmod 755 /etc/init.d/ssh</div><div class="line"><span class="built_in">cd</span> /etc/init.d</div><div class="line">sudo update-rc.d ssh defaults 95 5 . <span class="comment"># 执行顺序95,加入运行级别5级中</span></div><div class="line"><span class="comment">#即在rc*.d中各建立了一个软连接,因此也可以自己手动建立软连接,如下</span></div><div class="line">ln -s /etc/init.d/ssh /etc/rc5.d/S95sshd</div><div class="line">sudo /etc/init.d/ssh start</div><div class="line">sudo service S95sshd start</div><div class="line"></div><div class="line"><span class="comment"># 开机启动</span></div><div class="line">sudo apt-get install openssh-server</div><div class="line"><span class="comment"># 二选一</span></div><div class="line">sudo /etc/init.d/ssh start</div><div class="line">sudo service sshd start</div></pre></td></tr></table></figure>
+<h3 id="简单的启动命令"><a href="#简单的启动命令" class="headerlink" title="简单的启动命令"></a>简单的启动命令</h3><p>Linux 在启动的时候会执行 /etc/rc.local 里面的脚本,所以只要在这里添加执行命令就可以</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">vim /etc/rc.local</div><div class="line">/usr/bin/supervisord -c /etc/supervisor/supervisord.conf</div><div class="line"><span class="comment"># 如果是 Ubuntu 16.04 以上,rc.local 被当成了服务,而且默认是不会启动,需要手动启用一下服务</span></div><div class="line"><span class="comment"># 启动rc.local服务:</span></div><div class="line">sudo systemctl <span class="built_in">enable</span> rc-local.service</div><div class="line"></div><div class="line"><span class="comment"># 如果有图形桌面的话</span></div><div class="line">super键--search <span class="string">"startup"</span>--&gt;设置开机启动选项,最重要的就是找到程序的绝对路经写上就可以.可以通过如下命令查看:</div><div class="line">vim ~/.config/autostart/chromium-browser.desktop</div></pre></td></tr></table></figure>
+<p>也可以使用第三方包来<a href="http://apt.ubuntu.com/p/alacarte" target="_blank" rel="external">管理启动程序</a></p>
+<h3 id="定时任务"><a href="#定时任务" class="headerlink" title="定时任务"></a>定时任务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">vim /etc/crontab </div><div class="line"><span class="comment"># 权限要一致,且要可执行</span></div><div class="line"><span class="comment"># 分　时　日　月　周　命令</span></div><div class="line"><span class="comment"># 每天11点执行</span></div><div class="line">0 11 * * *  root  sh /home/python/xx.sh </div><div class="line"></div><div class="line"><span class="comment"># 每两个小时 </span></div><div class="line">0 */2 * * * <span class="built_in">echo</span> <span class="string">"Have a break now."</span> &gt;&gt; /tmp/test.txt</div><div class="line"></div><div class="line"><span class="comment"># 晚上11点到早上8点之间每两个小时和早上八点 </span></div><div class="line">0 23-7/2,8 * * * <span class="built_in">echo</span> <span class="string">"Have a good dream"</span> &gt;&gt; /tmp/test.txt</div><div class="line"></div><div class="line"><span class="comment"># 保存退出即生效(刚添加的任务会到2-3分钟后才开始生效)</span></div></pre></td></tr></table></figure>
+<h3 id="查看服务状态"><a href="#查看服务状态" class="headerlink" title="查看服务状态"></a>查看服务状态</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ubuntu centos</span></div><div class="line">service sshd status/stop/restart <span class="comment"># service 在rc*.d/的名字</span></div><div class="line"></div><div class="line">systemctl start docker <span class="comment">#centos启动服务</span></div><div class="line">systemctl <span class="built_in">enable</span> docker <span class="comment"># 开机启动</span></div><div class="line">systemctl status nginx</div><div class="line">systemctl start firewalld.service</div><div class="line">systemctl <span class="built_in">enable</span> firewalld.service</div><div class="line">systemctl daemon-reload <span class="comment"># 修改启动参数时的 </span></div><div class="line">systemctl restart docker</div><div class="line"><span class="comment"># 只有systmectl 状态 服务名</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># redhat 操作系统下</span></div><div class="line">chkconfig 命令</div><div class="line">chkconfig --list sshd</div></pre></td></tr></table></figure>
+<h3 id="进程有关的"><a href="#进程有关的" class="headerlink" title="进程有关的"></a>进程有关的</h3><p>“衍生出来的进程”正是 Linux 的父子进程的概念.<br>当我们登录系统后,会取得一个 bash shell,然后我们利用这个 bash 提供的接口去执行另一个命令,</p>
+<p>例如 bash 或者 ps 等.那些另外执行的命令也会被触发成为 PID,那个后来执行的命令产生的 PID 就是”子进程”,而原本的 bash 环境下,就称为”父进程”了<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">bash</div><div class="line">ps -o pid,ppid,tty,time,cmd</div><div class="line">    PID  PPID TT           TIME CMD</div><div class="line">    11373  4396 pts/12   00:00:00 bash</div><div class="line">    13043 11373 pts/12   00:00:00 bash</div><div class="line">    13110 13043 pts/12   00:00:00 ps -o pid,ppid,tty,time,cmd</div><div class="line">PID: 运行着的命令(CMD)的进程编号</div><div class="line">PPID:父进程号</div><div class="line">TTY: 命令所运行的位置(终端)</div><div class="line">TIME: 运行着的该命令所占用的CPU处理时间</div><div class="line">CMD: 该进程所运行的命令</div><div class="line"><span class="comment"># ps 仅仅显示本终端的进程</span></div></pre></td></tr></table></figure></p>
+<p>我所做的操作是在原来的 bash shell 中执行了 bash 命令,然后又执行了 ps -o pid,ppid,comm命令.我们可以看到<br>,第二个进程 bash 是第一个进程 bash 的子进程,而第三个进程ps是第二个进程的子进程</p>
+<p>新的进程要通过老的进程复制自身得到,这就是 fork.fork 是一个系统调用.<br>进程存活于内存中.每个进程都在内存中分配有属于自己的一片空间 (内存空间,包含栈、堆、全局静态区、文本常量区、程序代码区).</p>
+<p>当一个程序调用 fork 的时候,实际上就是将上面的内存空间,又复制出来一个,构成一个新的进程,<br>并在内核中为该进程创建新的附加信息 (比如新的 PID,而 PPID 为原进程的 PID).此后,两个进程分别地继续运行下去.<br>新的进程和原有进程有相同的运行状态(相同的变量值,相同的指令…).我们只能通过进程的附加信息来区分两者.</p>
+<h4 id="工作管理-job-control"><a href="#工作管理-job-control" class="headerlink" title="工作管理(job control)"></a>工作管理(job control)</h4><p>是用在 bash 环境下的,也就是说,当我们登录系统取得 bash shell 之后,在单一终端机下可以同时进行多个工作的行为管理.</p>
+<p>假如我们只有一个终端,因此在可以出现提示符让你操作的环境就成为前台(foreground),至于其他工作就可以放在后台(background)去暂停或运行<br>程序调用 exec 的时候,进程清空自身的内存空间,并根据新的程序文件重建程序代码、文本常量、全局静态、堆和栈(此时堆和栈大小都为 0),并开始运行.</p>
+<h4 id="直接将命令放到后台执行-amp"><a href="#直接将命令放到后台执行-amp" class="headerlink" title="直接将命令放到后台执行 ( &amp;)"></a>直接将命令放到后台执行 ( &amp;)</h4><h4 id="将目前工作放到后台并暂停-ctrl-z"><a href="#将目前工作放到后台并暂停-ctrl-z" class="headerlink" title="将目前工作放到后台并暂停(ctrl+z)"></a>将目前工作放到后台并暂停(ctrl+z)</h4><h4 id="将后台工作拿到前台来处理-fg-工作序号"><a href="#将后台工作拿到前台来处理-fg-工作序号" class="headerlink" title="将后台工作拿到前台来处理(fg %工作序号)"></a>将后台工作拿到前台来处理(fg %工作序号)</h4><h3 id="进程管理命令"><a href="#进程管理命令" class="headerlink" title="进程管理命令"></a>进程管理命令</h3><h4 id="ps-PID-CMD-PORT"><a href="#ps-PID-CMD-PORT" class="headerlink" title="ps: PID,CMD,PORT"></a>ps: PID,CMD,PORT</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">ps <span class="comment"># 仅仅显示本终端的进程</span></div><div class="line"></div><div class="line">-a <span class="comment"># 显示终端中进行的所有进程</span></div><div class="line">-x <span class="comment"># 会显示没有控制终端的进程</span></div><div class="line">-e <span class="comment"># 所有的进程</span></div><div class="line">-u <span class="comment"># 查看某个用户的所有进程</span></div><div class="line">-f <span class="comment"># 来查看格式化的信息列表</span></div><div class="line">ps -u femn <span class="comment"># 查看所有femn用户的进程 </span></div><div class="line">ps aux <span class="comment"># 可以对系统进程更加全面的了解</span></div><div class="line">ps -aux | less </div><div class="line"><span class="comment"># less是一个分页显示文件的工具工具,它允许你一页一页(或一个屏幕一个屏幕)地查看信息</span></div><div class="line"></div><div class="line">ps -ef <span class="comment"># 所有进程 PID PPID </span></div><div class="line">ps -efH <span class="comment"># 把输出的进程组成一个层级的格式 树状 </span></div><div class="line">ps axjf  <span class="comment"># 树状视图 等于 pstree</span></div><div class="line">ps -ef | grep python3 | cut -c 10-15 | xargs <span class="built_in">kill</span> -9 </div><div class="line"><span class="comment"># Kill 某个用户或命令的所有进程</span></div><div class="line">ps axjf |grep nginx</div><div class="line">pgrep nginx <span class="comment"># 单单的得到PID,和其子进程号</span></div><div class="line"></div><div class="line">ps -aux --sort -pcpu | head -n 10</div><div class="line"><span class="comment"># 根据 CPU 使用来升序排序 +pcpu倒序</span></div><div class="line">ps -aux --sort -pmem | head -n 10</div><div class="line"><span class="comment"># 根据 内存 使用来升序排序</span></div><div class="line">ps -aux --sort -pcpu,-pmem | head -n 10</div><div class="line"></div><div class="line"><span class="comment"># 仅仅得到本机的程序名相关的进程</span></div><div class="line">ps aux/-ef |grep ssserver <span class="comment"># 程序名(命令名)或者PID</span></div></pre></td></tr></table></figure>
+<h4 id="netstat-PID-CMD-PORT"><a href="#netstat-PID-CMD-PORT" class="headerlink" title="netstat:PID,CMD,PORT"></a>netstat:PID,CMD,PORT</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 会牵扯到此程序 相关联的socket服务,或其它的网络相接进程(网络是双向的)</span></div><div class="line">netstat -anp |grep ssh <span class="comment">#程序名  得到PID 端口号</span></div><div class="line">netstat -lnp |grep 8388  <span class="comment">#端口号 得到PID,进程名</span></div><div class="line">sudo lsof -i :8001   <span class="comment">#查看此端口 PID,User,进程名</span></div><div class="line"></div><div class="line">ll /proc/进程号  </div><div class="line">sudo lsof -p 1609</div><div class="line">killall http* 它支持通过进程名而不是进程号来结束进程,也支持通配符.</div></pre></td></tr></table></figure>
+<h4 id="top"><a href="#top" class="headerlink" title="top"></a>top</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">top <span class="comment"># 动态显示进程 q 退出, M 内存占用降序排序,P 按CPU占用降序排序 </span></div><div class="line">[top使用说明](http://www.linuxidc.com/Linux/2011-03/33582.htm)</div><div class="line">ssserver内存占用随时间升高</div><div class="line">free -m <span class="comment"># 内在的使用情况</span></div><div class="line"><span class="comment"># 查看目前进程正在实际被使用的内存,是used-(buffers+cache)</span></div><div class="line">htop <span class="comment"># 更加友好的显示top</span></div></pre></td></tr></table></figure>
+<h3 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h3><h4 id="sleeping"><a href="#sleeping" class="headerlink" title="sleeping"></a>sleeping</h4><p>D(sleeping),往往是由于 I/O(磁盘IO,网络IO,其他外设IO) 资源得不到满足,而引发等待</p>
+<p>举个例子,当 NFS 服务端关闭之时,若未事先 umount 相关目录,在 NFS 客户端执行 df 就会挂住整个登录会话,按 Ctrl+C 、Ctrl+Z 都无济于事.<br>断开连接再登录,执行 ps axf 则看到刚才的 df 进程状态位已变成了 D ,kill -9 无法杀灭.</p>
+<p>正确的处理方式,是马上恢复 NFS 服务端,再度提供服务,刚才挂起的 df 进程发现了其苦苦等待的资源,便完成任务,自动消亡.若 NFS 服务端无法恢复服务,在 reboot 之前也应将 /etc/mtab 里的相关 NFS mount 项删除,以免 reboot 过程例行调用 netfs stop 时再次发生等待资源,导致系统重启过程挂起.</p>
+<h3 id="zombile"><a href="#zombile" class="headerlink" title="zombile"></a>zombile</h3><p>Z(zombie) 之所以杀不死,是因为它已经死了,否则怎么叫 Zombie(僵尸).在UNIX/Linux中,每个进程都有一个父进程,进程号叫PID(Process ID), 相应地,父进程号就叫PPID(Parent PID).</p>
+<p>当进程死亡时,它会自动关闭已打开的文件,舍弃已占用的内存、交换空间等等系统资源,然后向其父进程返回一个退出状态值,报告死讯.如果程序有 bug,就会在这最后一步出问题.子进程说我死了,父进程却没听见,所以子进程便成了僵尸.在UNIX/Linux中消灭僵尸的手段比较残忍,执行 ps axjf 找出僵尸进程的父进程号(PPID,第一列),先杀其父,然后再由进程天子 init(其PID为1,PPID为0)来一起收拾父子僵尸.注意,子进程变成僵尸只是碍眼而已,并不碍事,如果僵尸的父进程当前有要务在身,则千万不可贸然杀之.</p>
+<p>这些进程已经死亡,但没有释放系统资源,包括内存和一些一些系统表等,如果这样的进程很多,会引发系统问题.用ps -el看出的进程状态如果是Z,就是僵尸进程.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ps -ef|grep defunc <span class="comment"># 可以找出僵尸进程</span></div><div class="line"><span class="comment"># 清除ZOMBIE(僵尸)进程可以使用如下方法:</span></div><div class="line"></div><div class="line"><span class="built_in">kill</span> –18 PPID (PPID是其父进程)</div><div class="line"><span class="comment"># 这个信号是告诉父进程,该子进程已经死亡了,请收回分配给他的资源.</span></div></pre></td></tr></table></figure></p>
+<p>如果不行则看能否终止其父进程(如果其父进程不需要的话).先看其父进程又无其他子进程,如果有,可能需要先kill其他子进程,也就是兄弟进程.方法是:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">kill</span> –15 PID1 PID2 <span class="comment"># (PID1,PID2是僵尸进程的父进程的其它子进程).</span></div><div class="line"><span class="built_in">kill</span> –15 PPID  <span class="comment"># 然后再kill父进程,这样僵尸进程就可能被完全杀掉了</span></div></pre></td></tr></table></figure></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/17/linux-server-process/" data-id="cj7x62cqj001r07qs2u7tblrh" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/17/linux-server-process/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/linux-server-process/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-sshd-server" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/16/sshd-server/">sshd</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/16/sshd-server/">
+            <time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/server/">server</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h4 id="server"><a href="#server" class="headerlink" title="server"></a>server</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install openssh-server</div><div class="line">ps ef|grep ssh</div><div class="line">sudo /etc/init.d/ssh start 或者 service sshd start</div><div class="line"></div><div class="line"><span class="comment"># 创建一个普通用户</span></div><div class="line">useradd username</div><div class="line">passwd username</div><div class="line">vim /etc/ssh/sshd_config</div><div class="line">    Port 22333</div><div class="line">    PermitRootLogin no</div><div class="line">    TCPKeepAlive yes</div><div class="line">    ClientAliveInterval 360</div><div class="line">    ClientAliveCountMax 20</div><div class="line"></div><div class="line"><span class="comment"># 给普通用户附sudo权限</span></div><div class="line">chmod u+w /etc/sudoers</div><div class="line">vim /etc/sudoers</div><div class="line">    root            ALL=(ALL)                ALL</div><div class="line">    username            ALL=(ALL)                ALL</div><div class="line">chmod u-w /etc/sudoers</div><div class="line"></div><div class="line">/etc/init.d/ssh start</div><div class="line">service sshd restart</div><div class="line">firewall-cmd --permanent --add-port=22333/tcp</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure>
+<h4 id="client"><a href="#client" class="headerlink" title="client"></a>client</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -p 22333 username@ip</div></pre></td></tr></table></figure>
+<h3 id="SSH无密码登录"><a href="#SSH无密码登录" class="headerlink" title="SSH无密码登录"></a>SSH无密码登录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># client:生成SSH公钥</span></div><div class="line">ssh-keygen -t rsa -C <span class="string">"邮箱"</span> </div><div class="line"></div><div class="line"><span class="comment"># 将SSH公钥上传到Linux服务器</span></div><div class="line">ssh-copy-id -p 22 username@remote-server</div><div class="line"><span class="comment"># 将client端的gedit ~/.ssh/id_rsa.pub的内容放到server端~/.ssh/authorized_keys</span></div><div class="line"><span class="comment"># 等同于如下</span></div><div class="line">cat ~/.ssh/id_rsa.pub | ssh username@your_host \ </div><div class="line">    <span class="string">"cat - &gt;&gt; /home/username/.ssh/authorized_keys"</span></div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/16/sshd-server/" data-id="cj7x62crn002v07qst9qk349n" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/16/sshd-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/sshd-server/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-shadowsocks-server" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -415,7 +1460,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/16/shadowsocks-server/" data-id="cj7swqigl0023crqjevi7a2vi" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/16/shadowsocks-server/" data-id="cj7x62cr6002n07qsouit2yhn" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -546,7 +1591,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/16/CDN-server/" data-id="cj7swqiet0002crqj3xes4b4d" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/16/CDN-server/" data-id="cj7x62cnu000107qsv5iw5axs" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -615,135 +1660,6 @@
             
     
         <a href="https://www.femn.me/2017/08/16/CDN-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/CDN-server/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-sshd-server" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/16/sshd-server/">sshd</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/16/sshd-server/">
-            <time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/server/">server</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h4 id="server"><a href="#server" class="headerlink" title="server"></a>server</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install openssh-server</div><div class="line">ps ef|grep ssh</div><div class="line">sudo /etc/init.d/ssh start 或者 service sshd start</div><div class="line"></div><div class="line"><span class="comment"># 创建一个普通用户</span></div><div class="line">useradd username</div><div class="line">passwd username</div><div class="line">vim /etc/ssh/sshd_config</div><div class="line">    Port 22333</div><div class="line">    PermitRootLogin no</div><div class="line">    TCPKeepAlive yes</div><div class="line">    ClientAliveInterval 360</div><div class="line">    ClientAliveCountMax 20</div><div class="line"></div><div class="line"><span class="comment"># 给普通用户附sudo权限</span></div><div class="line">chmod u+w /etc/sudoers</div><div class="line">vim /etc/sudoers</div><div class="line">    root            ALL=(ALL)                ALL</div><div class="line">    username            ALL=(ALL)                ALL</div><div class="line">chmod u-w /etc/sudoers</div><div class="line"></div><div class="line">/etc/init.d/ssh start</div><div class="line">service sshd restart</div><div class="line">firewall-cmd --permanent --add-port=22333/tcp</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure>
-<h4 id="client"><a href="#client" class="headerlink" title="client"></a>client</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -p 22333 username@ip</div></pre></td></tr></table></figure>
-<h3 id="SSH无密码登录"><a href="#SSH无密码登录" class="headerlink" title="SSH无密码登录"></a>SSH无密码登录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># client:生成SSH公钥</span></div><div class="line">ssh-keygen -t rsa -C <span class="string">"邮箱"</span> </div><div class="line"></div><div class="line"><span class="comment"># 将SSH公钥上传到Linux服务器</span></div><div class="line">ssh-copy-id -p 22 username@remote-server</div><div class="line"><span class="comment"># 将client端的gedit ~/.ssh/id_rsa.pub的内容放到server端~/.ssh/authorized_keys</span></div><div class="line"><span class="comment"># 等同于如下</span></div><div class="line">cat ~/.ssh/id_rsa.pub | ssh username@your_host \ </div><div class="line">    <span class="string">"cat - &gt;&gt; /home/username/.ssh/authorized_keys"</span></div></pre></td></tr></table></figure>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/16/sshd-server/" data-id="cj7swqigo002bcrqj5aibpek2" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/16/sshd-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/sshd-server/">Comments</a>
     
 
         </footer>
@@ -832,7 +1748,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/15/vps-server/" data-id="cj7swqih0002ocrqjpdxpye2f" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/15/vps-server/" data-id="cj7x62crt003607qsuzqcbqse" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -961,7 +1877,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/14/python-fun-program/" data-id="cj7swqigg001wcrqj0lt8uwjg" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/14/python-fun-program/" data-id="cj7x62cr2002f07qs0h7y4oc3" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1039,565 +1955,6 @@
 
 
 
-    <article id="post-进程间通信" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/14/进程间通信/">进程间通信(IPC)</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/14/进程间通信/">
-            <time datetime="2017-08-14T08:10:53.000Z" itemprop="datePublished">2017-08-14</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/linux/">linux</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>程序(program)可执行文件(二进制文件)<br>程序的执行实例被称为进程(process),具有并行性,互不干扰的特点<br>Linux中的进程包含3段,和C差不多,分别为代码段,数据段和堆栈段</p>
-<p>使用fork函数得到的子进程是继承了整个父进程的地址空间<br>exec()只是用另一个新程序替换了当前进程的正文,数据,堆和栈<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">pid_t</span> result;</div><div class="line">    result = fork();</div><div class="line">    <span class="comment">// fork之后是你进程先执行还是子进程先执行是不确定的</span></div><div class="line">    <span class="keyword">if</span>(result == <span class="number">-1</span>)&#123;</div><div class="line">        perror(<span class="string">"fork"</span>);</div><div class="line">        <span class="built_in">exit</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(result == <span class="number">0</span>)&#123;<span class="comment">// fork的返回值 如果在子进程中则返回0</span></div><div class="line">        <span class="built_in">printf</span>(<span class="string">"child process:%d\n My PID is %d\n"</span>,result,getpid());</div><div class="line">        <span class="keyword">if</span>(execlp(<span class="string">"ps"</span>,<span class="string">"ps"</span>,<span class="string">"-ef"</span>,<span class="literal">NULL</span>)&lt;<span class="number">0</span>)&#123;</div><div class="line">            perror(<span class="string">"execlp error"</span>);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">else</span>&#123;<span class="comment">//如果在父进程中,则返回子进程ID</span></div><div class="line"></div><div class="line">        <span class="built_in">printf</span>(<span class="string">"father process:%d\n My PID is %d\n"</span>,result,getpid());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>管道pipe:单向的,先进先出,无结构的,固定大小的字节流.数据读出后将从管道中移走,其它读进程都不能再读到这些数据.<br>进程试图读空管道时,在有数据定稿管道之前,里程将一直阻塞.同样,管道已经满时,进程再试图琯管道,在其它进程从管道中移走数据之前,写进程将一直阻塞</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;errno.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">int</span> pipe_fd[<span class="number">2</span>];</div><div class="line">    <span class="keyword">if</span>(pipe(pipe_fd)&lt;<span class="number">0</span>)</div><div class="line">    &#123;   </div><div class="line">        <span class="built_in">printf</span>(<span class="string">"pipe create error\n"</span>);</div><div class="line">        <span class="keyword">return</span> <span class="number">-1</span>; </div><div class="line">    &#125;   </div><div class="line">    <span class="keyword">else</span></div><div class="line">    &#123;   </div><div class="line">        <span class="built_in">printf</span>(<span class="string">"pipe create success \n"</span>);</div><div class="line">    &#125;   </div><div class="line">    <span class="comment">// 其时的管理是创建在内核空间上的</span></div><div class="line">    close(pipe_fd[<span class="number">0</span>]);<span class="comment">//fd[0]文件描述符用于读取管道</span></div><div class="line">    close(pipe_fd[<span class="number">1</span>]); <span class="comment">//写入管道</span></div><div class="line"></div><div class="line"> &#125;</div></pre></td></tr></table></figure>
-<p>父进程写,子进程读</p>
-<p>有名管道(FIFO)</p>
-<p>信号(signal)<br>共享内存<br>消息队列(FIFO)<br>信号量<br>套接字(Socket)</p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/14/进程间通信/" data-id="cj7swqihf002wcrqj0zpvb0f5" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/14/进程间通信/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/14/进程间通信/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-python-closure" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/11/python-closure/">python 闭包</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/11/python-closure/">
-            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/python3/">python3</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h3 id="闭包-Closure-又称函数闭包-function-closures"><a href="#闭包-Closure-又称函数闭包-function-closures" class="headerlink" title="闭包(Closure)又称函数闭包(function closures)"></a>闭包(Closure)又称函数闭包(function closures)</h3><p>引用了自由变量的函数.这个被引用的自由变量将和这个函数一同存在,即使已经离开了创造它的环境也不例外.所以,有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体.闭包在运行时可以有多个实例,不同的引用环境和相同的函数组合可以产生不同的实例</p>
-<p>在一些语言中,在函数中可以(嵌套)定义另一个函数时,如果内部的函数引用了外部的函数的变量,则可能产生闭包.运行时,一旦外部的 函数被执行,一个闭包就形成了,闭包中包含了内部函数的代码,以及所需外部函数中的变量的引用.</p>
-<p>闭包被广泛使用于函数式编程语言</p>
-<p>闭包可以形象的把它理解为一个封闭的包裹(封闭作用域),这个包裹就是一个函数,当然还有函数内部对应的逻辑,包裹里面的东西就是自由变量,自由变量可以在随着包裹到处游荡.当然还得有个前提,这个包裹是被创建出来的.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(name)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner_func</span><span class="params">(age)</span>:</span> <span class="comment"># 闭包</span></div><div class="line">        <span class="comment"># name为自由变量</span></div><div class="line">        print( <span class="string">'name:'</span>, name, <span class="string">'age:'</span>, age)</div><div class="line">    <span class="keyword">return</span> inner_func</div><div class="line">bb = func(<span class="string">'the5fire'</span>)</div><div class="line">bb(<span class="number">26</span>)</div><div class="line"><span class="comment"># name: the5fire age: 26</span></div></pre></td></tr></table></figure>
-<p>这里面调用func的时候就产生了一个闭包——inner_func,并且该闭包持有自由变量——name,因此这也意味着,当函数func的生命周期结束之后,name这个变量依然存在,因为它被闭包引用了,所以不会被回收</p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/11/python-closure/" data-id="cj7swqige001scrqjuyftct8e" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/11/python-closure/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-closure/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-python-decorator" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/10/python-decorator/">python 装饰器</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/10/python-decorator/">
-            <time datetime="2017-08-10T15:31:24.000Z" itemprop="datePublished">2017-08-10</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/python3/">python3</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>装饰器(decorator):它能对任何可调用的对象进行包装,既能够用于方法也能够用于函数,想要对一个已有的模块做一些”修饰工作”,但又不让这个小装饰(小功能)侵入到原有的模块中的代码里去,</p>
-<p>在python中圆括号意味着调用函数.在没有圆括号的情况下,python会把函数当作普通对象</p>
-<p>函数名是某个函数的引用(reference),所以,我们可以对同一个函数设置不同的函数名.(可以理解为,函数也是对象,可以通过赋值来设置不同的对象名)</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; def succ(x):</div><div class="line">        <span class="built_in">return</span> x+1</div><div class="line"></div><div class="line">&gt;&gt;&gt; successor = succ</div><div class="line">&gt;&gt;&gt; successor(10) <span class="comment"># 11</span></div><div class="line">&gt;&gt;&gt; succ(10) <span class="comment"># 11</span></div><div class="line"><span class="comment"># successor和succ都指向同一个函数(应该是对象),都指向同一个内存区域.</span></div><div class="line">&gt;&gt;&gt; id(successor) <span class="comment"># 139701625513368</span></div><div class="line">&gt;&gt;&gt; id(succ) <span class="comment"># 139701625513368</span></div><div class="line">&gt;&gt;&gt; del succ</div><div class="line">&gt;&gt;&gt; successor(10) <span class="comment"># 11</span></div><div class="line">&gt;&gt;&gt; <span class="built_in">type</span>(successor) <span class="comment"># function</span></div></pre></td></tr></table></figure>
-<p>装饰器的两种类型:函数装饰器和类装饰器</p>
-<h3 id="函数装饰器"><a href="#函数装饰器" class="headerlink" title="函数装饰器"></a>函数装饰器</h3><p><em>无参数装饰器-包装无参数函数</em><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">decorator</span><span class="params">(func)</span>:</span></div><div class="line">    <span class="comment"># 装饰函数</span></div><div class="line">    print(<span class="string">'hello'</span>)</div><div class="line">    <span class="keyword">return</span> func</div><div class="line"><span class="meta">@decorator</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></div><div class="line">    <span class="comment"># 被装饰函数 回调函数 闭包函数(当有自由变量)</span></div><div class="line">    print(<span class="string">'foo end'</span>)</div><div class="line">    <span class="comment"># 其解释器将此方法解释为</span></div><div class="line">    <span class="comment"># foo = decorator(foo)</span></div><div class="line">    <span class="comment"># 把一个函数当参数传到另一个函数中,然后再回调</span></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    foo </div><div class="line">    <span class="comment"># hello</span></div><div class="line">    foo()</div><div class="line">    <span class="comment"># hello</span></div><div class="line">    <span class="comment"># foo end</span></div><div class="line">    </div><div class="line">    foo_text = decorator(foo)</div><div class="line">    print(type(foo_text))</div><div class="line">    <span class="comment"># hello</span></div><div class="line">    <span class="comment"># hello</span></div><div class="line">    <span class="comment"># &lt;class 'function'&gt;</span></div><div class="line">    foo_text()</div><div class="line">    <span class="comment"># foo end</span></div></pre></td></tr></table></figure></p>
-<p>装饰器的功能是将被装饰的函数当作参数传递给与装饰器对应的函数(名称相同的函数),并返回包装后的(被装饰)的函数</p>
-<p>下面这个例子向我们展示了decorator的本质:hello(foo)返回了wrapper()函数,所以,foo其实变成了wrapper的一个变量,而后面的foo()执行其实变成了wrapper()<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">(fn)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">()</span>:</span></div><div class="line">        print(<span class="string">"hello, %s"</span> % fn.__name__)</div><div class="line">        fn()</div><div class="line">        print(<span class="string">"goodby, %s"</span> % fn.__name__)</div><div class="line"></div><div class="line">    <span class="keyword">return</span> wrapper</div><div class="line"></div><div class="line"><span class="meta">@hello</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span> </div><div class="line">    print(<span class="string">"i am foo"</span>)</div><div class="line">    <span class="comment"># foo = hello(foo)</span></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    foo()</div><div class="line">    <span class="comment"># hello, foo</span></div><div class="line">    <span class="comment"># i am foo</span></div><div class="line">    <span class="comment"># goodby, foo</span></div></pre></td></tr></table></figure></p>
-<p>类似地<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 多个decorator</span></div><div class="line"><span class="meta">@decorator_one</span></div><div class="line"><span class="meta">@decorator_two</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line">    <span class="comment"># func = decorator_one(decorator_two(func))</span></div><div class="line"></div><div class="line"><span class="comment"># 带参数的decorator</span></div><div class="line"><span class="meta">@decorator(arg1, arg2)</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line">    <span class="comment"># func = decorator(arg1,arg2)(func)</span></div><div class="line">    <span class="comment"># 这意味着decorator(arg1, arg2)这个函数需要返回一个"真正的decorator"</span></div></pre></td></tr></table></figure></p>
-<p><em>无参数装饰器-包装带参数函数</em><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">decorator_func_args</span><span class="params">(func)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">handle_args</span><span class="params">(*args, **kwargs)</span>:</span></div><div class="line">        print(<span class="string">"handle args start"</span>)</div><div class="line">        func(*args, **kwargs)</div><div class="line">        print(<span class="string">"handle args end"</span>)</div><div class="line">    <span class="keyword">return</span> handle_args</div><div class="line"></div><div class="line"><span class="meta">@decorator_func_args</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo2</span><span class="params">(a, b=<span class="number">2</span>)</span>:</span></div><div class="line">    print(a,b)</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    foo2(<span class="number">1</span>)</div><div class="line">    <span class="comment"># handle args start</span></div><div class="line">    <span class="comment"># 1 2</span></div><div class="line">    <span class="comment"># handle args end</span></div><div class="line"></div><div class="line">    <span class="comment"># 先传递函数名,再传递参数</span></div><div class="line">    foo2_text = decorator_func_args(foo2)</div><div class="line">    print(<span class="string">'--'</span>)</div><div class="line">    foo2_text(<span class="number">1</span>)</div><div class="line">    <span class="comment"># --</span></div><div class="line">    <span class="comment"># handle args start</span></div><div class="line">    <span class="comment"># handle args start</span></div><div class="line">    <span class="comment"># 1 2</span></div><div class="line">    <span class="comment"># handle args end</span></div><div class="line">    <span class="comment"># handle args end</span></div></pre></td></tr></table></figure></p>
-<p><em>带参数装饰器 – 包装无参数函数</em><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">decorator_with_params</span><span class="params">(arg_of_decorator)</span>:</span></div><div class="line">    print(arg_of_decorator)</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">newDecorator</span><span class="params">(func)</span>:</span></div><div class="line">        print(func)</div><div class="line">        <span class="keyword">return</span> func</div><div class="line">    <span class="keyword">return</span> newDecorator</div><div class="line"></div><div class="line"><span class="meta">@decorator_with_params("deco_args")</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo3</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    foo3()</div><div class="line">    <span class="comment"># deco_args</span></div><div class="line">    <span class="comment"># &lt;function foo3 at 0x7fba7bfcf7b8&gt;</span></div><div class="line">    </div><div class="line">    <span class="comment"># 先传递参数,再传递函数名</span></div><div class="line">    foo3_text = decorator_with_params(<span class="string">"deco_args"</span>)</div><div class="line">    print(<span class="string">'--'</span>)</div><div class="line">    foo3 = foo3_text(foo3)</div><div class="line">    <span class="comment"># deco_args</span></div><div class="line">    <span class="comment"># &lt;function foo3 at 0x7fba7bfcf7b8&gt;</span></div><div class="line">    <span class="comment"># deco_args</span></div><div class="line">    <span class="comment"># --</span></div><div class="line">    <span class="comment"># &lt;function foo3 at 0x7fba7bfcf7b8&gt;</span></div><div class="line">    </div><div class="line">    func = decorator_with_params(<span class="string">'1'</span>)(foo3)</div><div class="line">    <span class="comment"># deco_args</span></div><div class="line">    <span class="comment"># &lt;function foo3 at 0x7ff913a6f730&gt;</span></div><div class="line">    <span class="comment"># 1</span></div><div class="line">    <span class="comment"># &lt;function foo3 at 0x7ff913a6f730&gt;</span></div></pre></td></tr></table></figure></p>
-<p><em>带参数装饰器– 包装带参数函数</em><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">decorator_with_params_and_func_args</span><span class="params">(arg_of_decorator)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">handle_func</span><span class="params">(func)</span>:</span></div><div class="line">        <span class="function"><span class="keyword">def</span> <span class="title">handle_args</span><span class="params">(*args, **kwargs)</span>:</span></div><div class="line">            print(<span class="string">"begin"</span>)</div><div class="line">            func(*args, **kwargs)</div><div class="line">            print(<span class="string">"end"</span>)</div><div class="line">            print(arg_of_decorator, func, args, kwargs)</div><div class="line">        <span class="keyword">return</span> handle_args</div><div class="line">    <span class="keyword">return</span> handle_func</div><div class="line"></div><div class="line"><span class="meta">@decorator_with_params_and_func_args("123")</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo4</span><span class="params">(a, b=<span class="number">2</span>)</span>:</span></div><div class="line">    print(<span class="string">"content"</span>)</div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    foo4(<span class="number">1</span>, b=<span class="number">3</span>)</div><div class="line">    <span class="comment"># begin</span></div><div class="line">    <span class="comment"># content</span></div><div class="line">    <span class="comment"># end</span></div><div class="line">    <span class="comment"># 123 &lt;function foo4 at 0x7f4f0f056730&gt; (1,) &#123;'b': 3&#125;</span></div><div class="line"></div><div class="line">    foo4_dec = decorator_with_params_and_func_args(<span class="string">"123"</span>)</div><div class="line">    print(<span class="string">'**'</span>)</div><div class="line">    foo4_func = foo4_dec(foo4)</div><div class="line">    print(<span class="string">'@@'</span>)</div><div class="line">    foo4_text = foo4_func(<span class="number">1</span>, b=<span class="number">3</span>)</div><div class="line">    <span class="comment"># **</span></div><div class="line">    <span class="comment"># @@</span></div><div class="line">    <span class="comment"># begin</span></div><div class="line">    <span class="comment"># begin</span></div><div class="line">    <span class="comment"># content</span></div><div class="line">    <span class="comment"># end</span></div><div class="line">    <span class="comment"># 123 &lt;function foo4 at 0x7f663fd82730&gt; (1,) &#123;'b': 3&#125;</span></div><div class="line">    <span class="comment"># end</span></div><div class="line">    <span class="comment"># 123 &lt;function decorator_with_params_and_func_args.&lt;locals&gt;.handle_func.</span></div><div class="line">        <span class="comment"># &lt;locals&gt;.handle_args at 0x7f663fd827b8&gt; (1,) &#123;'b': 3&#125;</span></div></pre></td></tr></table></figure></p>
-<p>给decorator参数赋值,返回handle_func对象<br>handle_func()函数接收foo4对象,返回handle_args对象<br>handle_args()函数接收传递给foo4的参数.<br>一个有点意义的例子</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">makeHtmlTag</span><span class="params">(tag, *args, **kwds)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">real_decorator</span><span class="params">(fn)</span>:</span></div><div class="line">        css_class = <span class="string">" class='&#123;0&#125;'"</span>.format(kwds[<span class="string">"css_class"</span>]) \</div><div class="line">            <span class="keyword">if</span> <span class="string">"css_class"</span> <span class="keyword">in</span> kwds <span class="keyword">else</span> <span class="string">""</span></div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrapped</span><span class="params">(*args, **kwds)</span>:</span></div><div class="line">            <span class="keyword">return</span> <span class="string">"&lt;"</span> + tag + css_class + <span class="string">"&gt;"</span> + fn(*args,**kwds) + <span class="string">"&lt;/"</span> + tag + <span class="string">"&gt;"</span></div><div class="line"></div><div class="line">        <span class="keyword">return</span> wrapped</div><div class="line"></div><div class="line">    <span class="keyword">return</span> real_decorator</div><div class="line"></div><div class="line"></div><div class="line"><span class="meta">@makeHtmlTag(tag="b", css_class="bold_css")</span></div><div class="line"><span class="meta">@makeHtmlTag(tag="i", css_class="italic_css")</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">(name)</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="string">"hello world &#123;0&#125;"</span>.format(name)</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    print(hello(<span class="string">'femn'</span>))</div><div class="line">    <span class="comment"># &lt;b class='bold_css'&gt;&lt;i class='italic_css'&gt;hello world femn&lt;/i&gt;&lt;/b&gt;</span></div></pre></td></tr></table></figure>
-<p>makeHtmlTag有两个参数.所以,为了让 hello = makeHtmlTag(arg1, arg2)(hello) 成功,<br>makeHtmlTag 必需返回一个decorator(这就是为什么我们在makeHtmlTag中加入了real_decorator()的原因),<br>这样一来,我们就可以进入到 decorator 的逻辑中去了——<br>decorator得返回一个wrapper,wrapper里回调hello. “</p>
-<h3 id="函数的元数据"><a href="#函数的元数据" class="headerlink" title="函数的元数据"></a>函数的元数据</h3><p>函数的一些属性:</p>
-<ol>
-<li><strong>name</strong>(函数名),</li>
-<li><strong>doc</strong>(描述)和</li>
-<li><strong>module</strong>(模块位置)<br>在使用装饰器的时候,函数会丢失这些元数据.<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">greeting</span><span class="params">(func)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">function_wrapper</span><span class="params">(x)</span>:</span></div><div class="line">        <span class="string">"""function_wrapper of greeting"""</span></div><div class="line">        print(<span class="string">"Hi, "</span> + func.__name__ + <span class="string">" returns:"</span>)</div><div class="line">        <span class="keyword">return</span> func(x)</div><div class="line">    <span class="keyword">return</span> function_wrapper</div><div class="line"></div><div class="line"><span class="meta">@greeting</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(x)</span>:</span></div><div class="line">    <span class="string">"""just some silly function"""</span></div><div class="line">    <span class="keyword">return</span> x + <span class="number">4</span></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    f(<span class="number">10</span>)</div><div class="line">    print(<span class="string">"function name: "</span> + f.__name__)</div><div class="line">    print(<span class="string">"docstring: "</span> + f.__doc__)</div><div class="line">    print(<span class="string">"module name:"</span> + f.__module__) <span class="string">")</span></div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>运行结果如下<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Hi, f returns:</div><div class="line">function name: function_wrapper</div><div class="line">docstring: function_wrapper of greeting</div><div class="line">module name:__main__</div></pre></td></tr></table></figure></p>
-<p>在正常情况下,f.<strong>name</strong>应该为f,而通过装饰器之后,由于没有保存函数的元数据,所以变成了function_wrapper.<br>每当定义一个装饰器时,应该总是记得为底层的包装函数添加functools库中的@wraps装饰器</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">greeting</span><span class="params">(func)</span>:</span></div><div class="line"><span class="meta">    @wraps(func)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">function_wrapper</span><span class="params">(x)</span>:</span></div><div class="line">        <span class="string">"""function_wrapper of greeting"""</span></div><div class="line">        print(<span class="string">"Hi, "</span> + func.__name__ + <span class="string">" returns:"</span>)</div><div class="line">        <span class="keyword">return</span> func(x)</div><div class="line">    <span class="keyword">return</span> function_wrapper</div><div class="line"></div><div class="line"><span class="meta">@greeting</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(x)</span>:</span></div><div class="line">    <span class="string">"""just some silly function"""</span></div><div class="line">    <span class="keyword">return</span> x + <span class="number">4</span></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    f(<span class="number">10</span>)</div><div class="line">    print(<span class="string">"function name: "</span> + f.__name__)</div><div class="line">    print(<span class="string">"docstring: "</span> + f.__doc__)</div><div class="line">    print(<span class="string">"module name:"</span> + f.__module__) <span class="string">")</span></div></pre></td></tr></table></figure>
-<p>运行结果如下<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Hi, f returns:</div><div class="line">function name: f</div><div class="line">docstring: just some silly function</div><div class="line">module name:__main__</div></pre></td></tr></table></figure></p>
-<h3 id="类装饰器"><a href="#类装饰器" class="headerlink" title="类装饰器"></a>类装饰器</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">myDecorator</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, fn)</span>:</span></div><div class="line">        print( <span class="string">"inside myDecorator.__init__()"</span>)</div><div class="line">        <span class="comment"># 在我们给某个函数decorator时被调用,所以</span></div><div class="line">        <span class="comment"># 需要有一个fn的参数,也就是被decorator的函数</span></div><div class="line">        self.fn = fn</div><div class="line"></div><div class="line">    <span class="comment"># 调用被decorator函数时被调用的</span></div><div class="line">    <span class="comment"># 也可以在这个传入fn __call__(self.fn)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self)</span>:</span></div><div class="line">        self.fn()</div><div class="line">        print( <span class="string">"inside myDecorator.__call__()"</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="meta">@myDecorator</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">aFunction</span><span class="params">()</span>:</span></div><div class="line">    print( <span class="string">"inside aFunction()"</span>)</div><div class="line">print( <span class="string">"Finished decorating aFunction()"</span>)</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    aFunction()</div><div class="line">    <span class="comment"># inside myDecorator.__init__()</span></div><div class="line">    <span class="comment"># Finished decorating aFunction()</span></div><div class="line">    <span class="comment"># inside aFunction()</span></div><div class="line">    <span class="comment"># inside myDecorator.__call__()</span></div></pre></td></tr></table></figure>
-<p>下面这个示例展示了通过URL的路由来调用相关注册的函数示例<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyApp</span><span class="params">()</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        self.func_map = &#123;&#125;</div><div class="line"></div><div class="line">    <span class="comment"># decorator类中没有__call__(),但是wrapper返回了原函数</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">register</span><span class="params">(self, name)</span>:</span></div><div class="line">        <span class="function"><span class="keyword">def</span> <span class="title">func_wrapper</span><span class="params">(func)</span>:</span></div><div class="line">            self.func_map[name] = func</div><div class="line">            <span class="keyword">return</span> func</div><div class="line"></div><div class="line">        <span class="keyword">return</span> func_wrapper</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call_method</span><span class="params">(self, name=None)</span>:</span></div><div class="line">        func = self.func_map.get(name, <span class="keyword">None</span>)</div><div class="line">        <span class="keyword">if</span> func <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">            <span class="keyword">raise</span> Exception(<span class="string">"No function registered against - "</span> + str(name))</div><div class="line">        <span class="keyword">return</span> func()</div><div class="line"></div><div class="line">app = MyApp()</div><div class="line"></div><div class="line"><span class="meta">@app.register('/')</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main_page_func</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="string">"This is the main page."</span></div><div class="line"></div><div class="line"><span class="meta">@app.register('/next_page')</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">next_page_func</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="string">"This is the next page."</span></div><div class="line"></div><div class="line">print(app.call_method(<span class="string">'/'</span>))</div><div class="line">print(app.call_method(<span class="string">'/next_page'</span>))</div><div class="line"><span class="comment"># This is the main page.</span></div><div class="line"><span class="comment"># This is the next page.</span></div></pre></td></tr></table></figure></p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/10/python-decorator/" data-id="cj7swqigf001ucrqjcoxx6mxc" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/10/python-decorator/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/10/python-decorator/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-linux-common-commands" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/08/linux-common-commands/">linux 常用命令</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/08/linux-common-commands/">
-            <time datetime="2017-08-08T16:05:43.000Z" itemprop="datePublished">2017-08-08</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/linux/">linux</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>###不需要记住所有的命令,使用man info查看帮助文档:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ls --<span class="built_in">help</span> </div><div class="line">man ls <span class="comment"># 帮助手册</span></div><div class="line">man -k passwd </div><div class="line">man -k nautilus <span class="comment"># 可以用来查询包含该关键字命令的文档</span></div><div class="line">info ls <span class="comment"># 帮助文档(书)</span></div><div class="line"><span class="comment"># 所有程序的文档 都会以TXT,HTML,PDF等方式保存在/usr/share/doc目录下</span></div></pre></td></tr></table></figure></p>
-<h3 id="用户与权限"><a href="#用户与权限" class="headerlink" title="用户与权限"></a>用户与权限</h3><p>用户:是限制使用者或进程可以使用,不可以使用哪些资源.<br>用户组:用来方便组织管理用户GID<br>UID:每个用户拥有一个,操作系统实际使用的是UID,而不是用户名.每个用户属于一个主组,属于一个或多个附属组(最多有31个),每个可登陆用户拥有一个指定的shell.<br>特别注意:每个进程以一个用户身份运行,并受到该用户可访问的资源限制.所以进程的权限与该用户的权限一样.<br>UID:用32位的二进制,用十进制查看,但系统为了兼容老式系统,用户ID限制在16位(65535个用户上限).root用户:ID为0,系统用户(1~499):没有一个登陆的shell,为某些服务创建的,比如说WEB服务,共享服务,ftp服务打印服务,这些用户仅仅是做为 这些进程去使用的,普通用户(500以上)</p>
-<p>Linux权限基于UGO模型进行控制,权限rwx对目录的影响:<br>r:可列出目录内容,w:可在目录中创建删除文件,<br>x:可访问目录内容(进入目录),目录必须拥有X权限,否则无法进入目录<br>rwx(4+2+1)</p>
-<p>默认权限:umask的值会从对象的全权限值中减掉<br>普通用户的umask:0002,root用户的为0022<br>目录的全权限 777-002<br>文件的全权限 666-002<br>umask: 显示 12位长的权限 UGO占用9bite<br>umask 0022 : 去设置默认权限</p>
-<p>但一个目录,只能属于一个组,当多个组需要共同使用这个目录时,UGO模型的权限就不行了.<br>ACL(Access Control List)是一种高级权限机制,允许我们对一个文件或目录进行灵活的复杂的权限设置.<br>允许针对不同用户,不同组对一个目标文件或目录进行权限设置,不受UGO模型限制.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line">who <span class="comment"># 显示哪些用户已经登陆系统</span></div><div class="line">whoami <span class="comment"># 显示当前用户</span></div><div class="line">id <span class="comment"># 查看当前用户信息</span></div><div class="line">passwd username <span class="comment"># 修改用户密码,默认是修改当前用户</span></div><div class="line"></div><div class="line"><span class="comment"># 用户组 /etc/group</span></div><div class="line">groupadd femnGroup</div><div class="line">groupdel femnGroup</div><div class="line"></div><div class="line"><span class="comment"># 用户 /etc/shadow</span></div><div class="line">useradd -G femnGroup femn1 </div><div class="line"><span class="comment"># 此femn1用户主属组是femn1,附属组是femnGroup</span></div><div class="line"></div><div class="line">useradd -d /home/femn1 -u 1000 femn1  <span class="comment"># femn1是用户名 -u用户ID</span></div><div class="line">sudo usermod -d /home/femn1 -s /bin/bash femn1 <span class="comment"># -s默认bash</span></div><div class="line">userdel femn1</div><div class="line">userdel -r femn1 <span class="comment"># 同时删除用户的家目录</span></div><div class="line"></div><div class="line"><span class="comment"># 改文件的UGO权限</span></div><div class="line">chmod -R 777 文件名  </div><div class="line">chmod u+rw,g+o</div><div class="line">chmod go+rw</div><div class="line">chmod a-x <span class="comment"># a代指ugo</span></div><div class="line"></div><div class="line"><span class="comment">#  chown改所属用户 -R  </span></div><div class="line">chown -R name:name 文件</div><div class="line">chown femn(用户名)learn.txt(文件名,如果是目录,则加上 -R参数)</div><div class="line"></div><div class="line"><span class="comment"># chgrp改所属组 -R递归修改目录下的所有文件的所属组</span></div><div class="line">chgrp -R femnGroup learn.txt</div><div class="line"></div><div class="line"><span class="comment"># umask的最前面的那位,是用来保留特殊权限的.</span></div><div class="line">chmod u+s 文件:</div><div class="line"><span class="comment"># 特殊权限一般是给可执行文件去用的.1770</span></div><div class="line"></div><div class="line">chmod g+s 目录:</div><div class="line"><span class="comment"># 在此目录下生成的文件或目录,都会继承此目录的用户组 2770</span></div><div class="line"></div><div class="line">chmod o+t 目录:</div><div class="line"><span class="comment"># 只能是本人可以删除自己的文件,即使是本组中的人员也不能删除别人的文件.4770</span></div><div class="line"></div><div class="line"><span class="comment"># ACL需要在挂载文件的时候打开ACL功能:</span></div><div class="line">mount -o acl /dev/sda5 /mnt</div><div class="line"></div><div class="line"><span class="comment"># 针对一个用户对文件进行ACL设置:</span></div><div class="line">setfacl -m u:name:rwx linux</div><div class="line">setfacl -m g:name:rw linux</div><div class="line">setfacl -x u:name linux</div><div class="line"></div><div class="line"><span class="comment"># 只要我们的文件系统打开了ACL功能,就可以查看一个文件或目录的ACL设置:</span></div><div class="line">getfacl linux</div></pre></td></tr></table></figure></p>
-<h3 id="磁盘和挂载"><a href="#磁盘和挂载" class="headerlink" title="磁盘和挂载"></a>磁盘和挂载</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">df -h <span class="comment"># 设备文件名称,本系统中的磁盘的使用大小情况</span></div><div class="line">df -at <span class="comment"># 文件系统, 磁盘的状态</span></div><div class="line">du -sh <span class="comment"># 显示此目录总所占空间</span></div><div class="line">du -sh ~/* | sort -nr </div><div class="line"><span class="comment"># 参数让结果按降序输出   管道命令将du命令的输出重定向到sort命令</span></div><div class="line"></div><div class="line"></div><div class="line">fdisk -l  <span class="comment"># 查看本机的所有磁盘,以及磁盘的分区情况</span></div><div class="line">fdisk /dev/sda <span class="comment"># 查看,创建,删除某个磁盘 分区</span></div><div class="line">dumpe2fs -h /dev/sdb3 <span class="comment"># 得到这个磁盘分区的所有信息</span></div><div class="line"></div><div class="line"><span class="comment"># 格式化之前先不要挂载 </span></div><div class="line">mkfs -t ext4 /dev/sda4 </div><div class="line">mkfs.ext4 /dev/sda4</div><div class="line"><span class="comment"># 将这个分区(或硬盘)格式化为ext4文件系统,格式化磁盘</span></div><div class="line">mke2fs -j -L <span class="string">"partition-label-name"</span> -b 4096 -i -c 128 /dev/sda4  </div><div class="line"><span class="comment"># 这样就可以传4.3G的大文件到U盘上了,只是这样格式,在Win不能用</span></div><div class="line"></div><div class="line"><span class="comment"># 挂载</span></div><div class="line">mount /dev/sdc1 /home/name/usb  </div><div class="line">mount -o remount,rw,auto /dev/sdc1 </div><div class="line"><span class="comment"># 将/dev/sdc1重新挂载,并加入参数rw,auto</span></div><div class="line">umount /home/name/usb     or /dev/sdc1 挂载点或设备文件名 </div><div class="line"><span class="comment"># -l参数是强制</span></div><div class="line">lsof |grep /dev/sdc1</div><div class="line"><span class="comment"># 当挂载不掉时,用下面的命令 ,会得到进程号</span></div><div class="line"></div><div class="line"><span class="comment"># 特殊设备loop挂载(镜像文件不刻录就挂载使用)</span></div><div class="line">mount -o loop /home/name/ubuntu-16.04-desktop-amd64.iso \</div><div class="line">    /hame/name/usb  </div><div class="line"><span class="comment">#使用 dd 命令写入下载好的 ISO 镜像到 U 盘中</span></div><div class="line">sudo dd <span class="keyword">if</span>=xxxxx.iso of=/dev/sdc &amp;&amp; sync</div><div class="line"></div><div class="line">nautilus .     <span class="comment"># 默认是打开home目录</span></div></pre></td></tr></table></figure>
-<p>传统的磁盘管理问题:<br>当分区大小不够用时无法扩展其大小,只能通过添加硬盘,创建新分区来扩充空间,但是新添加进来的硬盘是作为独立文件系统存在的,原有的文件系统并未得到扩充,上层应用很多时候只能访问一个文件系统,只能让现有磁盘下线,换上新的磁盘之后,再将原始数据导入.</p>
-<h3 id="LVM逻辑卷管理-Logical-volume-Manager"><a href="#LVM逻辑卷管理-Logical-volume-Manager" class="headerlink" title="LVM逻辑卷管理(Logical volume Manager)"></a><a href="https://www.qingsword.com/qing/924.html" target="_blank" rel="external">LVM</a>逻辑卷管理(Logical volume Manager)</h3><p>PE(physical extend)物理扩展:逻辑卷空间管理的最基本单位,默认是4M<br>PV(physica volume)物理卷:将底层磁盘格式化成物理卷,可以是物理硬盘上的分区,也可以是整块物理硬盘<br>VG(volume group)卷组:空间池是给来装PE的,我们可以将一个或多个PV,加入到VG当中,当创建好了VG会有/dev/vgname的目录<br>LV(logical volume)逻辑卷(操作系统最终使用的是逻辑卷格式化之后的数据)/dev/vgname/lvname的目录,每个的逻辑卷空间有可以来自不同的物理磁盘<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">1. 创建PV</div><div class="line"><span class="comment"># 整块物理硬盘创建PV</span></div><div class="line">sudo pvcreate /dev/sd[b-c]</div><div class="line"></div><div class="line"><span class="comment"># 物理硬盘上的分区创建PV</span></div><div class="line">fdisk /dev/sdb1 使用t将分区类型改成8e(LVM)</div><div class="line">partprobe <span class="comment"># 刷新分区表</span></div><div class="line">sudo pvcreate /dev/sdb1</div><div class="line"></div><div class="line">sudo pvs <span class="comment"># 查看创建好的PV</span></div><div class="line"></div><div class="line">2. PV创建好了就可以创建VG了</div><div class="line">sudo vgcreate vg0 /dev/sdb1</div><div class="line">sudo vgs <span class="comment"># 查看创建好的VG</span></div><div class="line">sudo pvs <span class="comment"># sdb1这个PV就属于vg0这个卷组池了</span></div><div class="line"></div><div class="line">3. 创建好卷组池就能从池中划分容量给逻辑卷(LV)了</div><div class="line">sudo lvcreate -n lv0 -L 10G vg0</div><div class="line"><span class="comment"># 从卷组vg0中拿出10G,分配给lv0,其中-n后面是lv自定义名称,</span></div><div class="line"><span class="comment"># -L后面跟需要从vg0中分配给lv0的大小以及从哪个VG分配</span></div><div class="line"></div><div class="line">4. 创建好lv后就可以格式化它,成为文件系统使用</div><div class="line">sudo mkfs.ext4 /dev/vg0/lv0</div><div class="line"><span class="comment"># 创建好的lv所在目录是"/dev/卷组名称/逻辑卷名称",</span></div><div class="line"><span class="comment"># 所以本例就是/dev/vg0/lv0,将它格式化成ext4文件系统</span></div><div class="line"></div><div class="line">5. 挂载和使用</div><div class="line">sudo mount /dev/vg0/lv0 /mnt</div><div class="line"></div><div class="line">6. 扩充VG</div><div class="line">sudo pvcreate /dev/sdd</div><div class="line"><span class="comment">#新增加一块硬盘sdd(20G),将它创建成PV后划分到vg0下,</span></div><div class="line"><span class="comment"># 此时vg0的容量将增加sdd硬盘的大小</span></div><div class="line">sudo vgextend vg0 /dev/sdd</div><div class="line"></div><div class="line">7. 扩充LV</div><div class="line">sudo vgs <span class="comment"># 先确保VG池中有足够的VFree空间可供使用</span></div><div class="line">sudo lvextend -L +5G /dev/vg0/lv0</div><div class="line">sudo resize2fs /dev/vg0/lv0 <span class="comment"># 更新</span></div></pre></td></tr></table></figure></p>
-<h3 id="安装和下载"><a href="#安装和下载" class="headerlink" title="安装和下载"></a>安装和下载</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">vim /proc/meminfo 文件来观察LINux系统上虚拟内存的当前状态.</div><div class="line">sudo dpkg -i **.deb <span class="comment"># 安装 查看-l</span></div><div class="line">dpkg -l |grep minitube</div><div class="line">sudo dpkg --purge minitube</div><div class="line"></div><div class="line">sudo apt install **</div><div class="line"></div><div class="line">curl https://wordpress.org/latest.tar.gz | tar -zxvf -</div><div class="line">curl url/install.sh | sh</div><div class="line"></div><div class="line">wget -O redis.tar.gz \</div><div class="line">    http://download.redis.io/releases/redis-3.2.0.tar.gz</div><div class="line">tar -zxvf redis.tar.gz -C /usr/src</div><div class="line">make -C /usr/src/redis \</div><div class="line">    &amp;&amp; make -C /usr/src/redis/src install </div><div class="line"></div><div class="line">wget https://ghost.org/zip/ghost-latest.zip</div><div class="line">unzip -uo ghost-latest.zip -d /var/www/ghost </div><div class="line"></div><div class="line">wget -qO- url/install.sh | sh</div><div class="line">wget --no-check-certificate url/install.sh -O ./install.sh</div><div class="line"></div><div class="line">curl -LOk https://ghost.org/zip/ghost-latest.zip</div><div class="line">unzip ghost-latest.zip -d ghost-temp</div><div class="line"></div><div class="line">curl http://localhost:8000/wrap?name=femn&amp;  get()</div><div class="line">http://localhost:8000/wrap -d name=femn    post()方法请求</div><div class="line"><span class="comment"># Siege对我们的应用在10秒内执行大约10个并发请求</span></div><div class="line">siege http://localhost:8000/?q=pants -c10 -t10s</div></pre></td></tr></table></figure>
-<h3 id="文件和目录操作"><a href="#文件和目录操作" class="headerlink" title="文件和目录操作"></a>文件和目录操作</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">    ll linux.md</div><div class="line">    <span class="comment"># ll 查看的信息 第二列是链接数量</span></div><div class="line">    ll |grep -v linux.md <span class="comment"># 取反</span></div><div class="line">    <span class="built_in">history</span> | grep -c rar <span class="comment"># 计算匹配的数量</span></div><div class="line">    touch file1 <span class="comment"># 创建文件</span></div><div class="line">    file file1 <span class="comment"># 查看文件类型</span></div><div class="line">    cp -Rf <span class="built_in">source</span> destination </div><div class="line">    <span class="comment"># -R 允许你通过命令递归地复制整个目录的内容.</span></div><div class="line">    <span class="comment"># -f 强制覆盖已经存在的目标文件,不提示 </span></div><div class="line">    <span class="comment"># -l 硬链接,它们是同一个文件,索引节点是相同的</span></div><div class="line">    \cp -R dir1 dir2 <span class="comment"># 同上</span></div><div class="line">    \cp -R content/themes/casper ../ghost/content/themes</div><div class="line">    rm -rf file1</div><div class="line">    tail -f -n 20 /etc/passwd</div><div class="line"></div><div class="line">    <span class="comment"># 软连接可以不用事先创建目录,硬连接必须先创建目录</span></div><div class="line">    sudo ln -s /home/femn/file /usr/share/nginx/html/file</div><div class="line">    mkdir ~/file</div><div class="line">    </div><div class="line">    <span class="comment"># mv排除文件</span></div><div class="line">    <span class="comment"># 将本路径下所有的文件移动到本路径下vimrc_config目录下,</span></div><div class="line">    <span class="comment"># 但vimrc_config本身不动</span></div><div class="line">    mv !(vimrc_config) vimrc_config</div><div class="line">    <span class="comment"># 但此命令不包括mv 隐藏文件</span></div><div class="line">    rm命令类似</div><div class="line">    </div><div class="line">    sort -t <span class="string">':'</span> -k 3 -n /etc/passwd</div><div class="line">    <span class="comment"># 按字段分隔数据,按分隔后的第几个进行排序 </span></div><div class="line"></div><div class="line">    scp -r -P 22 root@ip:/server/app/main/handlers \</div><div class="line">        ./main/handlers/</div><div class="line">    scp -P 22 ./1.txt python@ip:/usr/share/nginx/html/file/</div><div class="line">    <span class="comment"># 只需要file目录有写权限,普通用户就可以用了</span></div><div class="line">    rsync -av -e <span class="string">"ssh -p 22"</span> /home/python/app1.6/main/ \</div><div class="line">        root@ip:/server/app1.6/main/</div><div class="line">    rsync -av -e <span class="string">"ssh -p 22"</span> /home/python/oldapp_8000/ \</div><div class="line">        root@ip:/server/app/main/</div><div class="line"></div><div class="line"><span class="comment"># 截图</span></div><div class="line">    <span class="comment">#你将可以使用鼠标选取一个矩形框.在你放下鼠标左键的那一刻,</span></div><div class="line">    <span class="comment"># 一个该矩形框的截屏会以import后面跟的文件名保存在当前目录下</span></div><div class="line">    import screenshot.jpg </div><div class="line">    gnome-screenshot -a</div><div class="line"></div><div class="line"><span class="comment"># 改变视频文件大小(分辨率)http://blog.topspeedsnail.com/archives/1699</span></div><div class="line">    ffmpeg -i source.mpg -s 960x540 -c:a copy  destination.mp4</div><div class="line"><span class="comment"># Linux系统将每个对象当作文件来处理,这包括输入和输入的过程.Linux用文件描述符来标识每个文件对象.</span></div></pre></td></tr></table></figure>
-<h3 id="解压缩"><a href="#解压缩" class="headerlink" title="解压缩"></a>解压缩</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tar</span></div><div class="line">tar -zcvf /home/name/conclusion.tar.gz ./conclusion </div><div class="line">tar -zxvf ./conclusion.tar.gz </div><div class="line">tar -cvf /tmp/etc.tar /etc &lt;==仅打包,不压缩</div><div class="line"></div><div class="line"><span class="comment"># rar </span></div><div class="line">rar x file.rar <span class="comment"># 解压</span></div><div class="line"></div><div class="line"><span class="comment"># zip</span></div><div class="line">zip test.zip <span class="built_in">test</span> </div><div class="line">unzip test.zip</div></pre></td></tr></table></figure>
-<h3 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">printenv <span class="comment"># 查看所有全局环境变量</span></div><div class="line"><span class="built_in">set</span> <span class="comment"># 会显示为某个特定进程设置的所有环境变量</span></div><div class="line"><span class="comment"># 设置PATH环境变量</span></div><div class="line">vim ~/.profile</div><div class="line">    <span class="built_in">export</span> JAVA_HOME=/home/name/jdk1.8.0_92</div><div class="line">    <span class="built_in">export</span> ANT_HOME=/home/name/apache-ant-1.9.7</div><div class="line">    PATH=<span class="variable">$&#123;PATH&#125;</span>:/home/name/jdk1.8.0_92/bin:/home/name/apache/bin</div><div class="line"><span class="comment"># 设置局部变量(只能在定义的进程可见)</span></div><div class="line">femn=<span class="string">'hello,my name is femn'</span></div><div class="line"><span class="comment"># 设置全局变量</span></div><div class="line"><span class="built_in">export</span> femn  <span class="comment"># 记住不要再用美元符($) </span></div><div class="line"><span class="comment"># 删除环境变量</span></div><div class="line"><span class="built_in">unset</span> femn</div></pre></td></tr></table></figure>
-<h3 id="ubuntu-ip"><a href="#ubuntu-ip" class="headerlink" title="ubuntu ip"></a>ubuntu ip</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 禁用IPV6</span></div><div class="line">vim /etc/modprobe.d/blacklist.conf </div><div class="line"><span class="comment">#在文档最后添加 blacklist ipv6</span></div><div class="line"><span class="comment"># 设置一ip</span></div><div class="line">sudo ifconfig enp0s3 192.168.1.101 netmask 255.255.255.0</div><div class="line">sudo route add default gw 192.168.1.254</div><div class="line"><span class="comment"># 设置二ip</span></div><div class="line">sudo vim /etc/network/interfaces</div><div class="line">    auto enp0s3 </div><div class="line">    iface enp0s3 inet static <span class="comment"># dhcp</span></div><div class="line">    address 192.168.1.101</div><div class="line">    gateway 192.168.1.254</div><div class="line">    netmask 255.255.255.0</div><div class="line">    <span class="comment">#network 192.168.1.0  </span></div><div class="line">    <span class="comment">#broadcast 192.168.1.255 </span></div><div class="line"><span class="comment"># 配置DNS</span></div><div class="line">sudo vim/etc/resolv.conf</div><div class="line">    nameserver 127.0.1.1</div><div class="line">    <span class="comment"># nameserver 8.8.8.8</span></div><div class="line">    search DHCP HOST</div><div class="line">    </div><div class="line"><span class="comment"># 手动重启网络服务</span></div><div class="line">sudo /etc/init.d/networking restart</div><div class="line"><span class="comment">#实在没有生效 reboot</span></div><div class="line"></div><div class="line"><span class="comment"># /etc/hosts:ip与域名的对应关系,DNS记录信息,</span></div><div class="line"><span class="comment"># /etc/hostname:存放的是主机名.域名与主机名没有任何关系</span></div><div class="line">sudo hostname python-Vostro-3901 <span class="comment"># 修改主机名 ubuntu</span></div><div class="line">sudo hostnamectl <span class="built_in">set</span>-hostname intl.aliyun.centos7 </div><div class="line"><span class="comment"># 修改主机名 centos</span></div><div class="line"></div><div class="line"><span class="comment"># 永久修改主机名</span></div><div class="line">vim /etc/hostname <span class="comment"># ubuntu centos</span></div></pre></td></tr></table></figure>
-<h3 id="centos7-ip"><a href="#centos7-ip" class="headerlink" title="centos7 ip"></a>centos7 ip</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">vim /etc/sysconfig/network-scripts/ifcfg-网卡名字</div><div class="line">    BOOTPROTO=static <span class="comment">#dhcp改为static   </span></div><div class="line">    ONBOOT=yes <span class="comment">#开机启用本配置  </span></div><div class="line">    IPADDR=192.168.1.107 <span class="comment">#静态IP  </span></div><div class="line">    GATEWAY=192.168.1.254 <span class="comment"># 默认网关  </span></div><div class="line">    NETMASK=255.255.255.0 <span class="comment">#子网掩码  </span></div><div class="line">service network restart</div></pre></td></tr></table></figure>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/08/linux-common-commands/" data-id="cj7swqih2002scrqja5peatj2" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/08/linux-common-commands/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/08/linux-common-commands/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <nav id="page-nav">
         <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
@@ -1615,45 +1972,45 @@
                     <li>
                         
                         <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/23/hadoop_MapReduce/" class="title">hadoop MapReduce</a></p>
+                            <p class="item-date"><time datetime="2017-09-23T12:01:15.000Z" itemprop="datePublished">2017-09-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/23/hadoop_RPC/" class="title">hadoop RPC</a></p>
+                            <p class="item-date"><time datetime="2017-09-23T11:51:15.000Z" itemprop="datePublished">2017-09-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/23/hadoop_hdfs/" class="title">hadoop HDFS</a></p>
+                            <p class="item-date"><time datetime="2017-09-23T11:41:15.000Z" itemprop="datePublished">2017-09-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/23/hadoop/" class="title">hadoop简介</a></p>
+                            <p class="item-date"><time datetime="2017-09-23T11:31:15.000Z" itemprop="datePublished">2017-09-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
                             <p class="item-title"><a href="/2017/09/20/virtualbox/" class="title">VirtualBox下虚拟机的网络配置</a></p>
                             <p class="item-date"><time datetime="2017-09-20T09:51:19.000Z" itemprop="datePublished">2017-09-20</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/C/">C</a></p>
-                            <p class="item-title"><a href="/2017/09/10/内存交换/" class="title">内存信息的生成与交换</a></p>
-                            <p class="item-date"><time datetime="2017-09-10T08:10:53.000Z" itemprop="datePublished">2017-09-10</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/python3/">python3</a></p>
-                            <p class="item-title"><a href="/2017/09/05/MER/" class="title">归并排序</a></p>
-                            <p class="item-date"><time datetime="2017-09-05T11:31:15.000Z" itemprop="datePublished">2017-09-05</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/python3/">python3</a></p>
-                            <p class="item-title"><a href="/2017/09/05/BUB/" class="title">冒泡和简单选择排序算法</a></p>
-                            <p class="item-date"><time datetime="2017-09-05T09:19:32.000Z" itemprop="datePublished">2017-09-05</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/shell/">shell</a></p>
-                            <p class="item-title"><a href="/2017/08/23/shell-grep-sed-awk/" class="title">shell_sed_awk</a></p>
-                            <p class="item-date"><time datetime="2017-08-23T09:05:44.000Z" itemprop="datePublished">2017-08-23</time></p>
                         </div>
                     </li>
                 
@@ -1666,7 +2023,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -1675,7 +2032,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">40</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">41</span></li></ul>
         </div>
     </div>
 
@@ -1684,7 +2041,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">tags</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -1693,7 +2050,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">tag cloud</h3>
         <div class="widget tagcloud">
-            <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/算法/" style="font-size: 20px;">算法</a> <a href="/tags/计算机/" style="font-size: 10px;">计算机</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
+            <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/大数据/" style="font-size: 20px;">大数据</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/计算机/" style="font-size: 10px;">计算机</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
         </div>
     </div>
 
