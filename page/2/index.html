@@ -78,7 +78,7 @@
             <div id="search-form-wrap">
 
     <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
         <button type="submit" class="search-form-submit"></button>
     </form>
     <div class="ins-search">
@@ -97,10 +97,10 @@
 (function (window) {
     var INSIGHT_CONFIG = {
         TRANSLATION: {
-            POSTS: 'Posts',
+            POSTS: 'Entradas',
             PAGES: 'Pages',
-            CATEGORIES: 'Categories',
-            TAGS: 'Tags',
+            CATEGORIES: 'Categorias',
+            TAGS: 'Etiquetas',
             UNTITLED: '(Untitled)',
         },
         ROOT_URL: '/',
@@ -131,7 +131,7 @@
                 <td>
                     
     <div class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
     </div>
 
                 </td>
@@ -151,16 +151,16 @@
             <h2 id="name">leipengkai</h2>
             <h3 id="title">Python Developer</h3>
             <span id="location"><i class="fa fa-map-marker"></i>Shenzhen, China</span>
-            <a id="follow" target="_blank" href="https://github.com/leipengkai/">FOLLOW</a>
+            <a id="follow" target="_blank" href="https://github.com/leipengkai/">SEGUIR</a>
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                49
-                <span>posts</span>
+                52
+                <span>Entradas</span>
             </div>
             <div class="article-info-block">
                 5
-                <span>tags</span>
+                <span>Etiquetas</span>
             </div>
         </div>
         
@@ -214,6 +214,449 @@
 
             
             <section id="main">
+    <article id="post-BUB" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/09/05/BUB/">冒泡和简单选择排序算法</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/09/05/BUB/">
+            <time datetime="2017-09-05T09:19:32.000Z" itemprop="datePublished">2017-09-05</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/算法/">算法</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>冒泡排序(Bubble Sort又称为泡沫排序或气泡排序):<br>是一种简单的排序算法.它重复地走访过要排序的数列,一次比较两个元素,如果他们的顺序错误就把他们交换过来.走访数列的工作是重复地进行直到没有再需要交换,也就是说该数列已经排序完成.这个算法的名字由来是因为越小的元素会经由交换慢慢”浮”到数列的顶端,而最大数在第一次的外循环就固定了<br>实例分析</p>
+<p>以列表[5, 1, 4, 2, 8] 为例说明<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 第一次外循环</span></div><div class="line">( <span class="number">5</span> <span class="number">1</span> <span class="number">4</span> <span class="number">2</span> <span class="number">8</span> ) → ( <span class="number">1</span> <span class="number">5</span> <span class="number">4</span> <span class="number">2</span> <span class="number">8</span> ), <span class="number">5</span> &gt; <span class="number">1</span> 交换位置</div><div class="line">( <span class="number">1</span> <span class="number">5</span> <span class="number">4</span> <span class="number">2</span> <span class="number">8</span> ) → ( <span class="number">1</span> <span class="number">4</span> <span class="number">5</span> <span class="number">2</span> <span class="number">8</span> ), <span class="number">5</span> &gt; <span class="number">4</span> 交换位置</div><div class="line">( <span class="number">1</span> <span class="number">4</span> <span class="number">5</span> <span class="number">2</span> <span class="number">8</span> ) → ( <span class="number">1</span> <span class="number">4</span> <span class="number">2</span> <span class="number">5</span> <span class="number">8</span> ), <span class="number">5</span> &gt; <span class="number">2</span> 交换位置</div><div class="line">( <span class="number">1</span> <span class="number">4</span> <span class="number">2</span> <span class="number">5</span> <span class="number">8</span> ) → ( <span class="number">1</span> <span class="number">4</span> <span class="number">2</span> <span class="number">5</span> <span class="number">8</span> ), <span class="number">5</span> &lt; <span class="number">8</span> 位置不变</div><div class="line"><span class="comment"># 第二次外循环(除开最后一个元素8,对剩余的序列)</span></div><div class="line">( <span class="number">1</span> <span class="number">4</span> <span class="number">2</span> <span class="number">5</span> <span class="number">8</span> ) → ( <span class="number">1</span> <span class="number">4</span> <span class="number">2</span> <span class="number">5</span> <span class="number">8</span> ), <span class="number">1</span> &lt; <span class="number">4</span> 位置不变</div><div class="line">( <span class="number">1</span> <span class="number">4</span> <span class="number">2</span> <span class="number">5</span> <span class="number">8</span> ) → ( <span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">8</span> ), <span class="number">4</span> &gt; <span class="number">2</span> 交换位置</div><div class="line">( <span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">8</span> ) → ( <span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">8</span> ), <span class="number">4</span> &lt; <span class="number">5</span> 位置不变</div><div class="line"><span class="comment"># 第三次外循环(除开已经排序好的最后两个元素,</span></div><div class="line"><span class="comment"># 可以注意到上面的数组其实已经排序完成,但是程序本身并不知道</span></div><div class="line"><span class="comment"># 所以还要进行后续的循环,直到剩余的序列为 1)</span></div><div class="line">( <span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">8</span> ) → ( <span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">8</span> )</div><div class="line">( <span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">8</span> ) → ( <span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">8</span> )</div><div class="line"><span class="comment"># 第四次外循环(最后一次)</span></div><div class="line">( <span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">8</span> ) → ( <span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">8</span> )</div></pre></td></tr></table></figure></p>
+<p>代码实现:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">bubble_sort</span><span class="params">(lists)</span>:</span></div><div class="line">    <span class="comment"># 冒泡排序</span></div><div class="line">    count = len(lists)</div><div class="line">    n =  <span class="number">0</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, count):</div><div class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i + <span class="number">1</span>, count):</div><div class="line">            <span class="keyword">if</span> lists[i] &gt; lists[j]:</div><div class="line">                lists[i], lists[j] = lists[j], lists[i]</div><div class="line">                n+=<span class="number">1</span></div><div class="line">    print(n)</div><div class="line">    <span class="keyword">return</span> lists</div><div class="line">print(bubble_sort([<span class="number">5</span>,<span class="number">1</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">8</span>]))</div><div class="line">print(bubble_sort([<span class="number">8</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">1</span>]))</div><div class="line"><span class="comment"># 输出如下</span></div><div class="line"><span class="comment"># 4</span></div><div class="line"><span class="comment"># [1, 2, 4, 5, 8]</span></div><div class="line"><span class="comment"># 10</span></div><div class="line"><span class="comment"># [1, 2, 4, 5, 8]</span></div></pre></td></tr></table></figure></p>
+<p>简单选择排序算法:<br>在要排序的一组数中,选出最小(或者最大)的一个数与第1个位置的数交换;然后在剩下的数当中再找最小(或者最大)的与第2个位置的数交换,依次类推,直到第n-1个元素(倒数第二个数)和第n个元素(最后一个数)比较为止.</p>
+<p>以列表[5, 1, 4, 2, 8] 为例说明<br>第一趟: 1,5,4,3,8<br>第二趟: 1,3,4,5,8<br>第三趟: 1,3,4,5,8<br>第四趟: 1,3,4,5,8<br>第五趟: 1,3,4,5,8</p>
+<p>代码实现:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">`<span class="function"><span class="keyword">def</span> <span class="title">select_sort</span><span class="params">(lists)</span>:</span></div><div class="line">    count = len(lists)</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, count):</div><div class="line">        min = i</div><div class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i + <span class="number">1</span>, count):</div><div class="line">            <span class="keyword">if</span> lists[min] &gt; lists[j]:</div><div class="line">                min = j</div><div class="line">        lists[min], lists[i] = lists[i], lists[min]</div><div class="line">    <span class="keyword">return</span> lists</div><div class="line">print(select_sort([<span class="number">5</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">8</span>]))</div></pre></td></tr></table></figure></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/09/05/BUB/" data-id="cj81klqye000107pno624szwo" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/09/05/BUB/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/05/BUB/">Comentarios</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-shell-grep-sed-awk" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/23/shell-grep-sed-awk/">shell_sed_awk</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/23/shell-grep-sed-awk/">
+            <time datetime="2017-08-23T09:05:44.000Z" itemprop="datePublished">2017-08-23</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/shell/">shell</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="Sed全名为Stream-EDitor-即流式编辑器-行编辑器"><a href="#Sed全名为Stream-EDitor-即流式编辑器-行编辑器" class="headerlink" title="Sed全名为Stream EDitor,即流式编辑器,行编辑器"></a>Sed全名为Stream EDitor,即流式编辑器,行编辑器</h3><p>sed常用用法<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sed [options] <span class="string">'script(模式命令)'</span> input_file...</div><div class="line">sed [options] -f script_file(sed脚本) input_file...</div></pre></td></tr></table></figure></p>
+<p>options </p>
+<p>-n 静默模式,不打印模式空间中的内容</p>
+<p>-e 执行模式命令,适用于多脚本处理</p>
+<p>-i 直接操作原文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sed -n -e <span class="string">'1p'</span> -e <span class="string">'37,40p'</span> /etc/passwd &gt; passwd.txt &amp;&amp; cat passwd.txt </div><div class="line"><span class="comment"># 输出如下</span></div><div class="line">root:x:0:0:root:/root:/bin/bash</div><div class="line">rtkit:x:118:126:RealtimeKit,,,:/proc:/bin/<span class="literal">false</span></div><div class="line">saned:x:119:127::/var/lib/saned:/bin/<span class="literal">false</span></div><div class="line">usbmux:x:120:46:usbmux daemon,,,:/var/lib/usbmux:/bin/<span class="literal">false</span></div><div class="line">femn:x:1000:1000:femn,,,:/home/femn:/bin/bash</div></pre></td></tr></table></figure></p>
+<p>模式命令  s:替换 p:打印 d:删除 a:增加 g:表示一行上的替换所有的匹配<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">sed -e <span class="string">'1,37d'</span> /etc/passwd</div><div class="line"><span class="comment"># 输出如下</span></div><div class="line">saned:x:119:127::/var/lib/saned:/bin/<span class="literal">false</span></div><div class="line">usbmux:x:120:46:usbmux daemon,,,:/var/lib/usbmux:/bin/<span class="literal">false</span></div><div class="line">femn:x:1000:1000:femn,,,:/home/femn:/bin/bash</div><div class="line">mysql:x:121:130:MySQL Server,,,:/nonexistent:/bin/<span class="literal">false</span></div></pre></td></tr></table></figure></p>
+<p>a \:在模式匹配到的行后面添加新内容<br>i                   前面<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">sed -e <span class="string">'/root/i \this is head'</span> \</div><div class="line">    -e <span class="string">'/femn/a \this is tail\n'</span> passwd.txt </div><div class="line"><span class="comment"># 输出如下</span></div><div class="line">this is head</div><div class="line">root:x:0:0:root:/root:/bin/bash</div><div class="line">rtkit:x:118:126:RealtimeKit,,,:/proc:/bin/<span class="literal">false</span></div><div class="line">saned:x:119:127::/var/lib/saned:/bin/<span class="literal">false</span></div><div class="line">usbmux:x:120:46:usbmux daemon,,,:/var/lib/usbmux:/bin/<span class="literal">false</span></div><div class="line">femn:x:1000:1000:femn,,,:/home/femn:/bin/bash</div><div class="line">this is tail</div></pre></td></tr></table></figure></p>
+<p>匹配内容的行’/{content}/‘ 可以使用正则匹配<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sed -n -e <span class="string">'/\&lt;root\&gt;/s/bin/nologin/p'</span> -e <span class="string">'s/femn/hehe/p'</span> passwd.txt</div><div class="line"><span class="comment"># 输出如下</span></div><div class="line">root:x:0:0:root:/root:/nologin/bash</div><div class="line">hehe:x:1000:1000:femn,,,:/home/femn:/bin/bash</div></pre></td></tr></table></figure></p>
+<p>-f 指定文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">vim ss</div><div class="line">    /\&lt;root\&gt;/s/bin/nologin/p</div><div class="line">    s/femn/hehe/p</div><div class="line">sed -n -f ss passwd.txt</div></pre></td></tr></table></figure></p>
+<p>sed脚本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">vim ss.sh</div><div class="line">    <span class="comment">#!/bin/sed -f</span></div><div class="line">    /\&lt;root\&gt;/s/bin/nologin/p</div><div class="line">    s/femn/hehe/p</div><div class="line">chmod a+u ss.sh</div><div class="line">./ss.sh passwd.txt</div></pre></td></tr></table></figure>
+<p>删除注释和空行 显示删除之后的行数<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sed -e <span class="string">'/^#/d'</span> -e <span class="string">'/^$/d'</span> passwd.txt | wc -l</div><div class="line">wc -l !$   <span class="comment"># 上个文件多少行</span></div></pre></td></tr></table></figure></p>
+<p>个人的一个实用脚本,将中文符号换成英文<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash </span></div><div class="line"></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `ls /home/femn/blog/<span class="built_in">source</span>/_posts/*.md`</div><div class="line"><span class="keyword">do</span> </div><div class="line">    sed -i -e <span class="string">'s/:/:/g'</span> \</div><div class="line">        -e <span class="string">'s/;/;/g'</span> \</div><div class="line">        -e <span class="string">'s/,/,/g'</span> \</div><div class="line">        -e <span class="string">'s/././g'</span> \</div><div class="line">        -e <span class="string">'s/(/(/g'</span> \</div><div class="line">        -e <span class="string">'s/)/)/g'</span> \</div><div class="line">        -e <span class="string">'s/"/"/g'</span> \</div><div class="line">        -e <span class="string">'s/"/"/g'</span> \</div><div class="line">        -e <span class="string">"s/'/'/g"</span> \</div><div class="line">        -e <span class="string">"s/'/'/g"</span> \</div><div class="line">        <span class="string">"<span class="variable">$i</span>"</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure></p>
+<h3 id="awk擅于处理列"><a href="#awk擅于处理列" class="headerlink" title="awk擅于处理列"></a>awk擅于处理列</h3><p>awk的一些内建变量</p>
+<p>FS 输入字段分隔符 默认是空格或Tab    </p>
+<p>$0 当前记录(这个变量中存放着整个行  的内容)</p>
+<p>$1~$n 当前记录的第n个字段,字段间由FS分隔    </p>
+<p>OFS 输出字段分隔符, 默认也是空格</p>
+<p>NR 已经读出的记录数,就是行号    </p>
+<p>FNR 文件自己的行号</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">user_redis=`cat /etc/passwd|grep redis|awk -F : <span class="string">'&#123;print $1&#125;'</span>`</div><div class="line">awk  <span class="string">'BEGIN&#123;FS=":"&#125; &#123;print $1,$3,$6&#125;'</span> &lt; passwd.txt</div><div class="line"><span class="comment"># 如下输出</span></div><div class="line">root 0 /root</div><div class="line">rtkit 118 /proc</div><div class="line">saned 119 /var/lib/saned</div><div class="line">usbmux 120 /var/lib/usbmux</div><div class="line">femn 1000 /home/femn</div></pre></td></tr></table></figure>
+<p>匹配内容<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">awk  -F: <span class="string">'$1=="root" || $1 ~ /femn|mysql/ &#123;print NR, FNR, $1,$3,$6&#125;'</span> OFS=<span class="string">"\t"</span> passwd.txt</div><div class="line"><span class="comment"># 如下输出</span></div><div class="line">1   1   root    0   /root                </div><div class="line">5   5   femn    1000    /home/femn</div><div class="line"><span class="comment"># -F: 指定分隔符为':'去分隔文件 默认为空格或Tab</span></div><div class="line"><span class="comment"># ~ 表示匹配模式开始./ /中是模式.这就是一个正则表达式的匹配.!~ 表示取反</span></div></pre></td></tr></table></figure></p>
+<p>把指定的列输出到文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">awk <span class="string">'NR!=1&#123;if($1 ~ /root|femn/) print &gt; "1.txt"; \</span></div><div class="line"><span class="string">    else if($1 ~ /mysql/) print &gt; "2.txt"; \</span></div><div class="line"><span class="string">    else print &gt; "3.txt" &#125;'</span> passwd.txt</div><div class="line">vim 1.txt </div><div class="line">    emn:x:1000:1000:femn,,,:/home/femn:/bin/bash</div><div class="line">    <span class="comment"># NR!=1表示不处理表头,所以没有root的那一行</span></div><div class="line">vim 2.txt <span class="comment"># 是个空的</span></div><div class="line">vim 3.txt</div><div class="line">    rtkit:x:118:126:RealtimeKit,,,:/proc:/bin/<span class="literal">false</span></div><div class="line">    saned:x:119:127::/var/lib/saned:/bin/<span class="literal">false</span></div><div class="line">    usbmux:x:120:46:usbmux daemon,,,:/var/lib/usbmux:/bin/<span class="literal">false</span></div></pre></td></tr></table></figure></p>
+<p>注意其中的if-else-if语句,可见awk其实是个脚本解释器</p>
+<p>统计<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">ll *.txt | awk <span class="string">'&#123;print $5,$9&#125;'</span></div><div class="line"><span class="comment"># 输出如下</span></div><div class="line">46 1.txt</div><div class="line">0 2.txt</div><div class="line">151 3.txt</div><div class="line">229 passwd.txt</div><div class="line"></div><div class="line">ll *.txt |awk <span class="string">'&#123;sum+=$5&#125; END &#123;print sum&#125;'</span></div><div class="line"><span class="comment"># 输出如下</span></div><div class="line">426</div></pre></td></tr></table></figure></p>
+<p>统计每个用户的进程的占了多少内存,sum的RSS那一列<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps aux | awk <span class="string">'NR!=1&#123;a[$1]+=$6;&#125; END &#123; for(i in a) print i ", " a[i]"KB";&#125;'</span></div></pre></td></tr></table></figure></p>
+<p>按连接数查看客户端IP<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">netstat -ntu | awk <span class="string">'&#123;print $5&#125;'</span> | cut -d: -f1 | sort | uniq -c | sort -nr</div></pre></td></tr></table></figure></p>
+<p>awk脚本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">awk -F: <span class="string">'BEGIN &#123;i=1&#125; &#123; if ($7=="/bin/bash")  i+=1 &#125; END &#123;print "number "i&#125;'</span> &lt; /etc/passwd</div><div class="line"><span class="comment"># 输出如下</span></div><div class="line">number 3</div><div class="line"></div><div class="line">vim aa</div><div class="line">    BEGIN &#123;i=1&#125;</div><div class="line">    &#123; <span class="keyword">if</span> (<span class="variable">$7</span>==<span class="string">"/bin/bash"</span>)  i+=1 &#125;</div><div class="line">    END &#123;<span class="built_in">print</span> <span class="string">"number "</span>i&#125;</div><div class="line">cat /etc/passwd | awk -F: -f aa</div></pre></td></tr></table></figure></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/23/shell-grep-sed-awk/" data-id="cj81klr0j002k07pnom9dk25y" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/23/shell-grep-sed-awk/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/23/shell-grep-sed-awk/">Comentarios</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-pymongo" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/18/pymongo/">pymongo基本操作</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/18/pymongo/">
+            <time datetime="2017-08-18T14:48:02.000Z" itemprop="datePublished">2017-08-18</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>知道了大概的mongodb命令后,再下载Mongodb的python驱动,sudo pip3 install pymongo ,然后在python文件中导入相应的库,进行如下的配置:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">from pymongo import MongoClient</div><div class="line">_client = MongoClient(<span class="string">'127.0.0.1'</span>, 27017) <span class="comment">#主机IP,Port</span></div><div class="line"><span class="comment">#先创建一个名为Mongodb的数据库,再连接到此数据库</span></div><div class="line">_db = _client[<span class="string">'Mongodb'</span>]</div><div class="line">_db.authenticate(<span class="string">'username'</span>, <span class="string">'password'</span>)<span class="comment">#如果是设置了密码登陆时</span></div><div class="line"><span class="built_in">test</span> = _db[<span class="string">'test'</span>] <span class="comment"># 表名</span></div><div class="line">femn = _db[<span class="string">'femn'</span>]</div></pre></td></tr></table></figure>
+<h3 id="返回结果"><a href="#返回结果" class="headerlink" title="返回结果"></a>返回结果</h3><p><code>insert , insert_one , insert_many</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">insert(&#123;<span class="string">'name'</span>:<span class="number">1</span>&#125;)         <span class="comment"># &lt;class 'bson.objectid.ObjectId'&gt; </span></div><div class="line">insert([&#123;<span class="string">'name'</span>:<span class="number">1</span>&#125;,&#123;<span class="string">'name'</span>:<span class="number">2</span>&#125;])   <span class="comment"># [ObjectId('xx'),ObjectId('xx')]</span></div><div class="line">insert_one  <span class="comment"># r.inserted_id &lt;class 'bson.objectid.ObjectId'&gt;</span></div><div class="line">insert_many          <span class="comment"># &lt;class 'pymongo.results.InsertManyResult'&gt;</span></div><div class="line">print(r.inserted_ids) <span class="comment"># list [ObjectId('xx'), ObjectId('xx')]</span></div></pre></td></tr></table></figure></p>
+<p> <code>update</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;<span class="string">'ok'</span>: 1, <span class="string">'updatedExisting'</span>: True, <span class="string">'nModified'</span>: 1, <span class="string">'n'</span>: 1&#125;</div></pre></td></tr></table></figure></p>
+<p> <code>upsert=True</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;<span class="string">'ok'</span>:1,<span class="string">'nModified'</span>:0,<span class="string">'upserted'</span>:ObjectId(<span class="string">''</span>),<span class="string">'n'</span>:1,<span class="string">'updatedExisting'</span>:True&#125;</div></pre></td></tr></table></figure></p>
+<p> <code>update_one</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">r = db.test.update_one(&#123;<span class="string">'_id'</span>:<span class="string">'xx'</span>&#125;,&#123;<span class="string">'$set'</span>:&#123;<span class="string">'name'</span>:<span class="string">'femn'</span>&#125;&#125;) </div><div class="line"><span class="comment"># &lt;pymongo.results.UpdateResult object at 0x7f9cb2ebaaf8&gt;</span></div><div class="line">r.raw_result =&#123;<span class="string">'nModified'</span>: <span class="number">0</span>, <span class="string">'n'</span>: <span class="number">1</span>, <span class="string">'updatedExisting'</span>: <span class="keyword">True</span>, <span class="string">'ok'</span>: <span class="number">1</span>&#125;</div></pre></td></tr></table></figure></p>
+<p><code>delete_many delete_one</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">result = db.test.delete_many(&#123;<span class="string">'x'</span>: <span class="number">1</span>&#125;)      <span class="comment">#pymongo.results.DeleteResult</span></div><div class="line">result.deleted_count  <span class="comment"># 2</span></div><div class="line">result.raw_result <span class="comment"># &#123;'n': 2, 'ok': 1&#125;   </span></div><div class="line"> <span class="comment">#n表示匹配成功删除的个数 和delete_one是一样的</span></div></pre></td></tr></table></figure>
+<p><code>find find_one</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">find() find(&#123;&#125;)         <span class="comment"># return 一个pymongo.cursor.CursorType</span></div><div class="line">find_one(&#123;<span class="string">'_id'</span>:<span class="string">'xx'</span>&#125;)  <span class="comment"># return dict 如果没有则返回None</span></div><div class="line">find_one_and_update()   <span class="comment"># return dict</span></div></pre></td></tr></table></figure></p>
+<h3 id="find-find-one-命令"><a href="#find-find-one-命令" class="headerlink" title="find find_one 命令"></a>find find_one 命令</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">femn.find(filter=&#123;<span class="string">'field'</span>:<span class="string">'xx'</span>&#125;,</div><div class="line">    projection=&#123;<span class="string">'mobile'</span>:<span class="number">1</span>,<span class="string">'name'</span>:<span class="number">0</span>&#125;,limit=<span class="number">10</span>,skip=<span class="number">0</span>,</div><div class="line">    sort=[(<span class="string">'update_time'</span>:pymongo.DESCENDING)])</div><div class="line"></div><div class="line">femn.find(&#123;<span class="string">'name'</span>:xx&#125;,&#123;<span class="string">'name'</span>:<span class="number">1</span>&#125;).limit().skip().</div><div class="line">    sort=([(<span class="string">'update_time'</span>:pymongo.DESCENDING)])</div></pre></td></tr></table></figure>
+<p>filter中的多个查询操作符</p>
+<p><code>$all $in $nin 此字段可包含(或排除)多个值的文档</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">(&#123;filed:&#123;<span class="string">'$all'</span>:[]&#125;&#125;) </div><div class="line"><span class="comment"># 这个字段是数组并满足这个数组的值和指定的相同的文档</span></div><div class="line"></div><div class="line">(&#123;filed:&#123;<span class="string">'$in'</span>,<span class="string">'$nin'</span> :[<span class="string">'x'</span>]&#125;&#125;) </div><div class="line"><span class="comment"># 而这个只表示'x'在字段不管是数组类型的值,还是字符串类型的值,只要有这个'x'的文档就行</span></div></pre></td></tr></table></figure></p>
+<p><code>$regex 正规匹配字段的值</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(&#123;filed:&#123;<span class="string">'$regex'</span>: <span class="string">'%s'</span> % student_name&#125;&#125;) 就是    <span class="string">' *%s* '</span></div><div class="line">(&#123;filed:&#123;<span class="string">'$not'</span>:&#123;<span class="string">'$regex'</span>:<span class="string">'femn'</span>&#125;&#125;&#125;)</div></pre></td></tr></table></figure></p>
+<p><code>$exists 判断文档是否有此字段</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(&#123;filed: &#123;<span class="string">'$exists'</span>: <span class="keyword">False</span>&#125;&#125;)</div><div class="line"><span class="comment">#得到所有不存在flag字段的文档 可取True</span></div></pre></td></tr></table></figure></p>
+<p><code>$or 满足一个字段的值就行</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(&#123;<span class="string">'gender'</span>: <span class="string">'女'</span>, <span class="string">'$or'</span>: [&#123;<span class="string">'expand.expand_time'</span>: <span class="string">'2015-01-01'</span>&#125;,</div><div class="line">     &#123;<span class="string">'coin'</span>: &#123;<span class="string">'$lt'</span>: <span class="number">2</span>&#125;&#125;]&#125;)</div></pre></td></tr></table></figure></p>
+<p><code>$slice</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(&#123;<span class="string">'expand.expand_time'</span>:&#123;<span class="string">'$slice'</span>:[<span class="number">5</span>,<span class="number">3</span>]&#125;&#125;)</div><div class="line"><span class="comment"># 不是分片,去掉前5个后,再取3个 ,-5时去掉后5个取,取最后3个</span></div></pre></td></tr></table></figure></p>
+<p><code>混合包含和排除不能同时用</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(&#123;<span class="string">'album_id'</span>:&#123;<span class="string">'$in'</span>:[i]&#125;&#125;,projection=&#123;<span class="string">'play_count'</span>:<span class="number">1</span>,<span class="string">'cover_image'</span>:<span class="number">1</span>&#125;)</div></pre></td></tr></table></figure>
+<p>混合包含和排除不能同时用,既in:[],cover_image:1,comment:0不能同时使用,但可以 in:[],cover_image:1,comment:1</p>
+<p>其它的查询操作符 $eachMatch,$gt:2, $lte, $gte, $lt, ‘$slice’  $ne不等于</p>
+<h3 id="find-one-and-update命令"><a href="#find-one-and-update命令" class="headerlink" title="find_one_and_update命令"></a>find_one_and_update命令</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">find_one_and_update(q,u,p,upsert=<span class="keyword">False</span>,</div><div class="line">    return_document=ReturnDocument.AFTER)</div><div class="line"></div><div class="line">test.update(&#123;<span class="string">'name'</span>:<span class="string">'femn'</span>&#125;,</div><div class="line">    &#123;</div><div class="line">    <span class="comment"># update中的多个更新操作符</span></div><div class="line">    <span class="string">'$set'</span>:&#123;<span class="string">'name'</span>:<span class="string">'xx'</span>&#125;,</div><div class="line">    <span class="comment"># 改变某个字段的值</span></div><div class="line"></div><div class="line">    <span class="string">'$inc'</span>:&#123;<span class="string">'age'</span>:<span class="number">-1</span>&#125;,</div><div class="line">    <span class="comment"># 增加或减少 一个字段内容是数值的值</span></div><div class="line"></div><div class="line">    <span class="string">'$addToSet'</span>:&#123;<span class="string">'name_list'</span>:&#123;<span class="string">'$each'</span>:[<span class="string">''</span>,<span class="string">''</span>]&#125;&#125;,</div><div class="line">    <span class="comment"># 往一个数组的字段,添加不一样的内容,可避免反复添加</span></div><div class="line">    <span class="comment"># $each 一次性增加多个值</span></div><div class="line">    <span class="comment"># $push 往一个数组的字段中,可重复的添加一样的内容</span></div><div class="line"></div><div class="line">    <span class="string">'$pull'</span>:&#123;<span class="string">'list'</span>:&#123;<span class="string">'key'</span>:<span class="string">'value'</span>&#125;&#125;,</div><div class="line">    <span class="comment"># 删除数组中 所有key为value的数组都会删除掉 将所有匹配到的数据都删除</span></div><div class="line"></div><div class="line">    <span class="string">'$pullAll'</span>:&#123;<span class="string">'l'</span>:[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]&#125;</div><div class="line">    <span class="comment"># 一次性删除多个数组</span></div><div class="line">    &#125;)</div><div class="line"></div><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,&#123;<span class="string">'$set'</span>:</div><div class="line">    &#123;<span class="string">'recording'</span>:&#123;<span class="string">'openid'</span>:openid,<span class="string">'book_id'</span>:book_id&#125;&#125;&#125;)</div><div class="line"> <span class="comment"># recording 是一个Object类型</span></div><div class="line">test.find_one(&#123;<span class="string">'_id'</span>:bookcase_id,recording.book_id<span class="string">':book_id&#125;)</span></div></pre></td></tr></table></figure>
+<p>改变数值中的值 通过位置或者操作符$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 通过$</span></div><div class="line">test.update(&#123;<span class="string">"relationships.fname"</span>:<span class="string">"xiong"</span>,<span class="string">'_id'</span>:id&#125;,</div><div class="line">        &#123;$set:&#123;<span class="string">"relationships.$.age"</span>:<span class="number">22</span>&#125;&#125;) </div><div class="line"><span class="comment"># 通过位置用来定位查询文档已匹配的元素,并进行更新</span></div><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,</div><div class="line">    &#123;<span class="string">'$inc'</span>:&#123;<span class="string">'book_class.'</span>+str(i)+<span class="string">'.class_count'</span>:count&#125;&#125;)</div><div class="line"><span class="comment"># 指定一个数组中的一个字段改变 </span></div><div class="line"></div><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,</div><div class="line">    &#123;<span class="string">'activity_history'</span>:&#123;<span class="string">'click_total'</span>:<span class="number">1</span>,per:<span class="number">1</span>,<span class="string">'login'</span>:<span class="number">1</span>&#125;&#125;&#125;)</div><div class="line"><span class="comment"># 此方法不行 换成如下方法</span></div><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,</div><div class="line">    &#123;<span class="string">'$inc'</span>:&#123;<span class="string">'activity_history.0.click_total'</span>:<span class="number">1</span>,</div><div class="line">    <span class="string">'activity_history.0.2017-02'</span>:<span class="number">1</span>,</div><div class="line">    <span class="string">'activity_history.0.login'</span>:<span class="number">1</span>&#125;&#125;,)</div></pre></td></tr></table></figure>
+<h4 id="注意pull一个个的数组是个整体"><a href="#注意pull一个个的数组是个整体" class="headerlink" title="注意pull一个个的数组是个整体"></a>注意<a href="https://docs.mongodb.com/manual/reference/operator/update/pull/#up._S_pull" target="_blank" rel="external">pull</a>一个个的数组是个整体</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="string">'reservation_list'</span>:[&#123;<span class="string">'time'</span>:<span class="string">""</span>,<span class="string">'device_id'</span>:<span class="string">''</span>,</div><div class="line">        <span class="string">'order_book'</span>:[&#123;<span class="number">1</span>&#125;,&#123;<span class="number">2</span>&#125;]&#125;,&#123;...&#125;,&#123;...&#125;]</div><div class="line">    <span class="comment"># 错误的设计 不可能单独的删除order_book中的1,2还保留着...</span></div><div class="line">    <span class="comment"># 它会删除整个的那个数组reservation_list</span></div><div class="line"><span class="string">'reservation_list'</span>:[&#123;<span class="string">'device_id'</span>:<span class="string">''</span>,<span class="string">'book_id'</span>:<span class="string">''</span>,</div><div class="line">        <span class="string">'book_plu'</span>:<span class="string">''</span>,<span class="string">'shelf_number'</span>:<span class="number">101</span>&#125;]</div><div class="line">    <span class="comment"># 所以要将order_book中保存的信息,放出来</span></div></pre></td></tr></table></figure>
+<p><code>数组字段的内容album_id = [&#39;1&#39;,&#39;xx&#39;],不是JSON类型</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,&#123;<span class="string">'$pull'</span>:&#123;<span class="string">'album_id'</span>:<span class="string">'xx'</span>&#125;&#125;) </div><div class="line"><span class="comment"># album_id必须是数组</span></div><div class="line">&#123;<span class="string">'$pull'</span>: &#123;<span class="string">'album_id'</span>: &#123;<span class="string">'$in'</span>: [<span class="string">'xx'</span>]&#125;&#125;</div><div class="line"> <span class="comment">#也可以使用其它的查询操作符 $gt</span></div></pre></td></tr></table></figure></p>
+<p><code>删除以字典形式保存的数组</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"> &#123;<span class="string">'$pull'</span>: &#123;<span class="string">'praise'</span>: &#123;<span class="string">'user_id'</span>: user_id,<span class="string">'_id'</span>:<span class="string">'xx'</span>&#125;&#125; </div><div class="line">&#123;<span class="string">'$pull'</span>: &#123;<span class="string">'save_receiver_address'</span>: &#123;<span class="string">'flag'</span>: del_flag&#125;&#125;&#125;)</div></pre></td></tr></table></figure></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/18/pymongo/" data-id="cj81klr0b002407pny2whfh41" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/18/pymongo/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/18/pymongo/">Comentarios</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-mongodb" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -290,7 +733,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/18/mongodb/" data-id="cj7x62cqp001x07qsb9ek1q2y" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/18/mongodb/" data-id="cj81klr05001w07pn9u8rw7zz" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -358,7 +801,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/08/18/mongodb/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/18/mongodb/">Comments</a>
+        <a href="https://www.femn.me/2017/08/18/mongodb/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/18/mongodb/">Comentarios</a>
     
 
         </footer>
@@ -449,7 +892,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/18/ghost/" data-id="cj7x62cor000z07qs3numpeki" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/18/ghost/" data-id="cj81klqzj000w07pnt3bo6k0a" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -517,141 +960,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/08/18/ghost/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/18/ghost/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-linux_gcc" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/17/linux_gcc/">编译工具</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/17/linux_gcc/">
-            <time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/linux/">linux</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim bar.c</div></pre></td></tr></table></figure>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">foo</span><span class="params">(<span class="keyword">int</span> n)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">bar</span><span class="params">(<span class="keyword">int</span> m)</span></span>;</div><div class="line"></div><div class="line"><span class="keyword">int</span> </div><div class="line">main(<span class="keyword">void</span>)&#123;</div><div class="line">    <span class="keyword">int</span> a;</div><div class="line">    <span class="keyword">char</span> *s = <span class="string">"hello, world"</span>;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%s\n"</span>,&amp;s[<span class="number">7</span>]);</div><div class="line">    a = <span class="number">5</span>;</div><div class="line">    foo(a);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">int</span> </div><div class="line">foo(<span class="keyword">int</span> n)&#123;</div><div class="line">    <span class="keyword">int</span> b;</div><div class="line">    b = n;</div><div class="line">    b *=<span class="number">2</span>;</div><div class="line">    bar(b);</div><div class="line">    <span class="keyword">return</span> b;</div><div class="line">&#125;</div><div class="line"><span class="keyword">void</span> </div><div class="line">bar(<span class="keyword">int</span> m)&#123;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"hi,i am bar!\n"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="gcc程序编译"><a href="#gcc程序编译" class="headerlink" title="gcc程序编译"></a>gcc程序编译</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gcc -g -Wall bar.c -o bar</div></pre></td></tr></table></figure>
-<p>编译可分为四个阶段:<br>1.预处理:宏定义,头文件<br>2.编译:c–&gt;汇编语言<br>3.汇编:汇编成目标文件 .o (二进制文件)<br>4.链接:把所有的目标文件和库文件链接成一个可执行的文件</p>
-<h4 id="gcc-参数"><a href="#gcc-参数" class="headerlink" title="gcc 参数"></a>gcc 参数</h4><p>-I /home/include:指定头文件路径,先找预设路径<br>-L /usr/lib:库文件路径,先找指定目录,再找系统预设路径<br>-lfun:库文件中指定函数库 libfun.a<br>-static:静态链接库文件 .a为后缀,将所需要的函数copy到执行文件中<br>而动态链接库以 .so为后缀 指明当程序执行时,首先必须载入这个库,缺省操作<br>-Wall:生成所有的警告信息<br>-g:产生调试工具所必须的<br>-c:只生成一个.o后缀的目标文件</p>
-<h4 id="gdb程序调试"><a href="#gdb程序调试" class="headerlink" title="gdb程序调试"></a>gdb程序调试</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gdb bar</div></pre></td></tr></table></figure>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">break</span> main <span class="comment">//内存中main函数的入口地址 b 行号 ,b 文件名:行号</span></div><div class="line">run   <span class="comment">//r</span></div><div class="line"><span class="built_in">list</span>  <span class="comment">//l</span></div><div class="line">print a  <span class="comment">//殘值而已,不是我们赋的值  p</span></div><div class="line">print s <span class="comment">//也是殘值  print &amp;a next next next step next print &amp;b</span></div><div class="line">print s+<span class="number">90</span> <span class="comment">//通过gdb 可以在内存中任意跳转</span></div><div class="line">next   <span class="comment">//n</span></div><div class="line">print s</div><div class="line">next</div><div class="line">print s[<span class="number">7</span>]</div><div class="line">print &amp;s[<span class="number">7</span>]</div><div class="line">print a <span class="comment">//残值</span></div><div class="line">next</div><div class="line">print a</div><div class="line">step  <span class="comment">//进入foo子函数  s</span></div><div class="line">next</div><div class="line">next </div><div class="line">print n</div><div class="line">print b</div><div class="line">step <span class="comment">//进入bar函数</span></div><div class="line">print m</div><div class="line"><span class="keyword">continue</span> <span class="comment">//返回0 正常退出  c继续运行程序</span></div><div class="line">b <span class="number">5</span> <span class="keyword">if</span> i=<span class="number">10</span> 当i等于<span class="number">10</span>时第<span class="number">5</span>行断点生效</div><div class="line"><span class="keyword">delete</span> 断点编号 :删除断点</div><div class="line">quit <span class="comment">//q</span></div></pre></td></tr></table></figure>
-<h4 id="Makefile工程管理"><a href="#Makefile工程管理" class="headerlink" title="Makefile工程管理"></a>Makefile工程管理</h4><p>当有很多个文件都需要编译时,不可能一个一个的去gcc吧<br>通过make命令就能够使整个软件工程完成编译和链接<br>make在执行行,需要一个命名为Makefile的文件,它描述了整个工程的编译,链接等规则</p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/17/linux_gcc/" data-id="cj7x62ctm003n07qsi3mayr3d" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/17/linux_gcc/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/linux_gcc/">Comments</a>
+        <a href="https://www.femn.me/2017/08/18/ghost/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/18/ghost/">Comentarios</a>
     
 
         </footer>
@@ -1029,7 +1338,7 @@ g&lt;ctrl-]&gt;
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/17/vim_grammar/" data-id="cj7x62crq003207qsbefrbp6g" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/17/vim_grammar/" data-id="cj81klr2g003n07pnh7npw0fz" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1097,7 +1406,141 @@ g&lt;ctrl-]&gt;
 
             
     
-        <a href="https://www.femn.me/2017/08/17/vim_grammar/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/vim_grammar/">Comments</a>
+        <a href="https://www.femn.me/2017/08/17/vim_grammar/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/vim_grammar/">Comentarios</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-linux_gcc" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/17/linux_gcc/">编译工具</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/17/linux_gcc/">
+            <time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/linux/">linux</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim bar.c</div></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">foo</span><span class="params">(<span class="keyword">int</span> n)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">bar</span><span class="params">(<span class="keyword">int</span> m)</span></span>;</div><div class="line"></div><div class="line"><span class="keyword">int</span> </div><div class="line">main(<span class="keyword">void</span>)&#123;</div><div class="line">    <span class="keyword">int</span> a;</div><div class="line">    <span class="keyword">char</span> *s = <span class="string">"hello, world"</span>;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%s\n"</span>,&amp;s[<span class="number">7</span>]);</div><div class="line">    a = <span class="number">5</span>;</div><div class="line">    foo(a);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">int</span> </div><div class="line">foo(<span class="keyword">int</span> n)&#123;</div><div class="line">    <span class="keyword">int</span> b;</div><div class="line">    b = n;</div><div class="line">    b *=<span class="number">2</span>;</div><div class="line">    bar(b);</div><div class="line">    <span class="keyword">return</span> b;</div><div class="line">&#125;</div><div class="line"><span class="keyword">void</span> </div><div class="line">bar(<span class="keyword">int</span> m)&#123;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"hi,i am bar!\n"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="gcc程序编译"><a href="#gcc程序编译" class="headerlink" title="gcc程序编译"></a>gcc程序编译</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gcc -g -Wall bar.c -o bar</div></pre></td></tr></table></figure>
+<p>编译可分为四个阶段:<br>1.预处理:宏定义,头文件<br>2.编译:c–&gt;汇编语言<br>3.汇编:汇编成目标文件 .o (二进制文件)<br>4.链接:把所有的目标文件和库文件链接成一个可执行的文件</p>
+<h4 id="gcc-参数"><a href="#gcc-参数" class="headerlink" title="gcc 参数"></a>gcc 参数</h4><p>-I /home/include:指定头文件路径,先找预设路径<br>-L /usr/lib:库文件路径,先找指定目录,再找系统预设路径<br>-lfun:库文件中指定函数库 libfun.a<br>-static:静态链接库文件 .a为后缀,将所需要的函数copy到执行文件中<br>而动态链接库以 .so为后缀 指明当程序执行时,首先必须载入这个库,缺省操作<br>-Wall:生成所有的警告信息<br>-g:产生调试工具所必须的<br>-c:只生成一个.o后缀的目标文件</p>
+<h4 id="gdb程序调试"><a href="#gdb程序调试" class="headerlink" title="gdb程序调试"></a>gdb程序调试</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gdb bar</div></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">break</span> main <span class="comment">//内存中main函数的入口地址 b 行号 ,b 文件名:行号</span></div><div class="line">run   <span class="comment">//r</span></div><div class="line"><span class="built_in">list</span>  <span class="comment">//l</span></div><div class="line">print a  <span class="comment">//殘值而已,不是我们赋的值  p</span></div><div class="line">print s <span class="comment">//也是殘值  print &amp;a next next next step next print &amp;b</span></div><div class="line">print s+<span class="number">90</span> <span class="comment">//通过gdb 可以在内存中任意跳转</span></div><div class="line">next   <span class="comment">//n</span></div><div class="line">print s</div><div class="line">next</div><div class="line">print s[<span class="number">7</span>]</div><div class="line">print &amp;s[<span class="number">7</span>]</div><div class="line">print a <span class="comment">//残值</span></div><div class="line">next</div><div class="line">print a</div><div class="line">step  <span class="comment">//进入foo子函数  s</span></div><div class="line">next</div><div class="line">next </div><div class="line">print n</div><div class="line">print b</div><div class="line">step <span class="comment">//进入bar函数</span></div><div class="line">print m</div><div class="line"><span class="keyword">continue</span> <span class="comment">//返回0 正常退出  c继续运行程序</span></div><div class="line">b <span class="number">5</span> <span class="keyword">if</span> i=<span class="number">10</span> 当i等于<span class="number">10</span>时第<span class="number">5</span>行断点生效</div><div class="line"><span class="keyword">delete</span> 断点编号 :删除断点</div><div class="line">quit <span class="comment">//q</span></div></pre></td></tr></table></figure>
+<h4 id="Makefile工程管理"><a href="#Makefile工程管理" class="headerlink" title="Makefile工程管理"></a>Makefile工程管理</h4><p>当有很多个文件都需要编译时,不可能一个一个的去gcc吧<br>通过make命令就能够使整个软件工程完成编译和链接<br>make在执行行,需要一个命名为Makefile的文件,它描述了整个工程的编译,链接等规则</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/17/linux_gcc/" data-id="cj81klr03001u07pn6707n011" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/17/linux_gcc/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/linux_gcc/">Comentarios</a>
     
 
         </footer>
@@ -1186,7 +1629,7 @@ g&lt;ctrl-]&gt;
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/17/linux-server-process/" data-id="cj7x62cqj001r07qs2u7tblrh" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/17/linux-server-process/" data-id="cj81klqzy001j07pnczb35b0z" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1254,136 +1697,7 @@ g&lt;ctrl-]&gt;
 
             
     
-        <a href="https://www.femn.me/2017/08/17/linux-server-process/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/linux-server-process/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-sshd-server" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/16/sshd-server/">sshd</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/16/sshd-server/">
-            <time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/server/">server</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h4 id="server"><a href="#server" class="headerlink" title="server"></a>server</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install openssh-server</div><div class="line">ps ef|grep ssh</div><div class="line">sudo /etc/init.d/ssh start 或者 service sshd start</div><div class="line"></div><div class="line"><span class="comment"># 创建一个普通用户</span></div><div class="line">useradd username</div><div class="line">passwd username</div><div class="line">vim /etc/ssh/sshd_config</div><div class="line">    Port 22333</div><div class="line">    PermitRootLogin no</div><div class="line">    TCPKeepAlive yes</div><div class="line">    ClientAliveInterval 360</div><div class="line">    ClientAliveCountMax 20</div><div class="line"></div><div class="line"><span class="comment"># 给普通用户附sudo权限</span></div><div class="line">chmod u+w /etc/sudoers</div><div class="line">vim /etc/sudoers</div><div class="line">    root            ALL=(ALL)                ALL</div><div class="line">    username            ALL=(ALL)                ALL</div><div class="line">chmod u-w /etc/sudoers</div><div class="line"></div><div class="line">/etc/init.d/ssh start</div><div class="line">service sshd restart</div><div class="line">firewall-cmd --permanent --add-port=22333/tcp</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure>
-<h4 id="client"><a href="#client" class="headerlink" title="client"></a>client</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -p 22333 username@ip</div></pre></td></tr></table></figure>
-<h3 id="SSH无密码登录"><a href="#SSH无密码登录" class="headerlink" title="SSH无密码登录"></a>SSH无密码登录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># client:生成SSH公钥</span></div><div class="line">ssh-keygen -t rsa -C <span class="string">"邮箱"</span> </div><div class="line"></div><div class="line"><span class="comment"># 将SSH公钥上传到Linux服务器</span></div><div class="line">ssh-copy-id -p 22 username@remote-server</div><div class="line"><span class="comment"># 将client端的gedit ~/.ssh/id_rsa.pub的内容放到server端~/.ssh/authorized_keys</span></div><div class="line"><span class="comment"># 等同于如下</span></div><div class="line">cat ~/.ssh/id_rsa.pub | ssh username@your_host \ </div><div class="line">    <span class="string">"cat - &gt;&gt; /home/username/.ssh/authorized_keys"</span></div></pre></td></tr></table></figure>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/16/sshd-server/" data-id="cj7x62crn002v07qst9qk349n" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/16/sshd-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/sshd-server/">Comments</a>
+        <a href="https://www.femn.me/2017/08/17/linux-server-process/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/linux-server-process/">Comentarios</a>
     
 
         </footer>
@@ -1460,7 +1774,7 @@ g&lt;ctrl-]&gt;
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/16/shadowsocks-server/" data-id="cj7x62cr6002n07qsouit2yhn" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/16/shadowsocks-server/" data-id="cj81klr0i002h07pnihvdj7a3" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1528,7 +1842,7 @@ g&lt;ctrl-]&gt;
 
             
     
-        <a href="https://www.femn.me/2017/08/16/shadowsocks-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/shadowsocks-server/">Comments</a>
+        <a href="https://www.femn.me/2017/08/16/shadowsocks-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/shadowsocks-server/">Comentarios</a>
     
 
         </footer>
@@ -1591,7 +1905,7 @@ g&lt;ctrl-]&gt;
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/16/CDN-server/" data-id="cj7x62cnu000107qsv5iw5axs" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/16/CDN-server/" data-id="cj81klr2k003s07pnspb3m5bg" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1659,293 +1973,7 @@ g&lt;ctrl-]&gt;
 
             
     
-        <a href="https://www.femn.me/2017/08/16/CDN-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/CDN-server/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-vps-server" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/15/vps-server/">VPS搭建网站</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/15/vps-server/">
-            <time datetime="2017-08-15T11:16:14.000Z" itemprop="datePublished">2017-08-15</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/server/">server</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h3 id="空间-虚拟主机-虚拟空间"><a href="#空间-虚拟主机-虚拟空间" class="headerlink" title="空间(虚拟主机,虚拟空间)"></a>空间(虚拟主机,虚拟空间)</h3><p>它是利用软件在服务器上硬盘上划分出来的一部分容量.共享的是服务器资源.<br>没有独立的IP和操作系统.开通以后只有一个FTP权限.它所支持的程序也是在服务器上默认配置好的.空间一般都装有面板,是傻瓜化的操作<br>由于多台虚拟主机共享一台真实主机的资源,每个用户所要承担的各类费用大幅度降低.</p>
-<p>自从进入IT圈,以前使用国内的空间,感觉还行,速度快,但是后面的备案系统让大多数的站长跑到墙外来选择空间:<br>Godaddy、Dreamhost、Froghost、Photonvps等空间相信大多数的站长多多少少都会用过<br>但是随之而来的各种问题都让大家受到精神上的折磨,不过相信大家都是比较的喜欢捣鼓吧,从2012年开始很多的站长都选择到VPS行列中了,<br>以前高高在上的VPS现在已经沦为普通人都买得起用得起的产品了,但是想要好一点的,响应快一点的VPS主机价格还是很贵,</p>
-<p>VPS还是比较适合对网站空间要求比较高的朋友来使用的,独立IP,完全自主的控制权限这些都是一般的虚拟主机所没有的.</p>
-<p>自从2013年digitalocean把SSD的主机价格拉到5元每月之后,相信很多人都从Linode转过来了,不为什么,价格决定啊,而且性能上和高大上的Linode差别不是很多,<br>还是能得到大多数人的肯定,今年Vultr 的杀入,更是让大多数人目瞪口呆,因为价格更加便宜,而且内存上加到到768Ma,<br>而价格最优惠可以到2.5美金一个月,这样的产品绝对是对国人来说是一个杀伤力</p>
-<h3 id="VPS-Virtual-Private-Server-虚拟服务器"><a href="#VPS-Virtual-Private-Server-虚拟服务器" class="headerlink" title="VPS(Virtual Private Server)虚拟服务器"></a>VPS(Virtual Private Server)虚拟服务器</h3><p>VPS就是将一台真正的服务器主机(可以理解为独立服务器),分为多台虚拟服务器主机.<br>但是虚拟出来的每一台服务器都有主机独立的内存、CPU、硬盘,因此在性能上相当一台真实存在的主机,但是成本却是很低,降低了初学者进入VPS主机门槛<br>VPS提供商:<br><a href="https://www.vultr.com/" target="_blank" rel="external"> Vultar</a>,<a href="https://www.digitalocean.com/" target="_blank" rel="external">DigitalOcean</a>,<a href="https://www.linode.com/" target="_blank" rel="external">Linode</a>,<a href="https://virmach.com/" target="_blank" rel="external">virmach</a>, <a href="https://bandwagonhost.com/" target="_blank" rel="external">Bandwagon</a>,<a href="https://intl.aliyun.com/" target="_blank" rel="external">国际阿里云</a></p>
-<p>VPS除了可以用来做网站的服务器,还可以建立自己的ssh,vpn,shadowsocks等进行代理翻墙,可以一键快速配置Docker,GitLab,wonCloud.WordPress等其它应用.</p>
-<p>Vultr VPS采用的是KVM虚拟化技术(openvz 还是 kvm 还是 xen 或者是 vmare ).</p>
-<h3 id="1-购买VPS"><a href="#1-购买VPS" class="headerlink" title="1.购买VPS:"></a>1.购买VPS:</h3><p><a href="https://vultr.com/" target="_blank" rel="external">vultr官网</a></p>
-<p><a href="http://www.hostloc.com" target="_blank" rel="external">全球主机交流</a></p>
-<p><a href="http://tool.chinaz.com/" target="_blank" rel="external">站长工具</a></p>
-<h3 id="2-购买域名"><a href="#2-购买域名" class="headerlink" title="2.购买域名"></a>2.购买域名</h3><p><a href="https://www.name.com" target="_blank" rel="external">name.com</a> 购买域名的优惠码: privacyplease 注意:目前只支持paypal或信用卡支持,不支持支付宝</p>
-<h3 id="3-设置DNS-将域名记录到此DNS服务器上-并将域名指定到VPS上-域名解析成IP"><a href="#3-设置DNS-将域名记录到此DNS服务器上-并将域名指定到VPS上-域名解析成IP" class="headerlink" title="3.设置DNS(将域名记录到此DNS服务器上),并将域名指定到VPS上(域名解析成IP)"></a>3.设置DNS(将域名记录到此DNS服务器上),并将域名指定到VPS上(域名解析成IP)</h3><p><a href="http://www.chinaz.com/web/2013/0103/287946.shtml" target="_blank" rel="external">DNS解析</a> 可以通过My Account –&gt; My Domains –&gt;选择Quick Links这个下拉框的Manage Domain</p>
-<h4 id="推荐域名管理页面-添加解析域名记录"><a href="#推荐域名管理页面-添加解析域名记录" class="headerlink" title="推荐域名管理页面(添加解析域名记录)"></a>推荐域名管理页面(添加解析域名记录)</h4><p>将购买的域名放在<a href="https://www.dnspod.cn/" target="_blank" rel="external">dnspod</a>下进行管理:便于管理多个域名,只要再修改下name.com的DNS,换成dnspod的域名解析服务器,<br>以后就可以在这里添加解析自己的域名记录了</p>
-<p><a href="https://support.dnspod.cn/Kb/showarticle/tsid/177/#ChangeDomainNS" target="_blank" rel="external">修改DNS解析服务器</a></p>
-<h3 id="4-申请证书-支持泛域名"><a href="#4-申请证书-支持泛域名" class="headerlink" title="4.申请证书,支持泛域名"></a>4.申请证书,支持泛域名</h3><p><a href="http://51.ruyo.net/p/3804.html" target="_blank" rel="external">申请AlphaSSL免费证书教程</a></p>
-<p><a href="https://csr.chinassl.net/generator-csr.html" target="_blank" rel="external">1.生成CSR,KEY文件</a><br>注意: 邮箱:自己常用的邮箱 域名:*.femnyy.com</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 也可以用命令行生成</span></div><div class="line">openssl req -new -newkey rsa:2048 -nodes -keyout howsvps.key -out howsvps.csr</div><div class="line"><span class="comment">#注意在填写域名时,不需要添加二级域名:femnyy.com这样认证之后的这个证书,就可以是通配使用了</span></div><div class="line">并没有将admin@femnyy.com的链接发到我的邮箱上,如果并没有给你发邮箱的话,</div></pre></td></tr></table></figure>
-<p>2.注册域名邮箱,本人使用的是qq注册域名邮箱</p>
-<p>注意: 使用其他邮箱给 admin 邮箱发送一份邮件,能接收,说明没问题！ 不能使用关联的QQ邮箱<br>如果不能接收,检查你的域名 MX / TXT 是否解析到其他地方了<br>别名就是主机记录,别名主机就是记录值<br>然后再加一个成员管理admin</p>
-<p><a href="https://assl.loovit.com/" target="_blank" rel="external">3.免费SSL certificates</a><br>注意: 认证的邮箱 与上面的1步骤要一致</p>
-<p>4.选择你刚刚注册的域名邮箱</p>
-<p>5.邮件确认SSL证书申请,点击 I APPROVE,之后会再来一封.crt的文件 <a href="https://doub.io/wlzy-28/" target="_blank" rel="external">安装AlphaSLL教程</a></p>
-<p>6.再将<a href="https://www.alphassl.com/support/install-root-certificate.html" target="_blank" rel="external">中级证书</a>中,SHA-256 – Orders March 31, 2014 and After的代码,复制到.crt的文件,合成最终的.crt文件</p>
-<p>7.再将.crt key文件 复制到服务器上,nginx的配置如下,同腾讯的一样配置</p>
-<p>8.有了泛域名之后,就可以在 server_name 增加 *.femnyy.com;</p>
-<h3 id="4-上面的证书没有成功的话-那就用腾讯云SSL证书-免费一年"><a href="#4-上面的证书没有成功的话-那就用腾讯云SSL证书-免费一年" class="headerlink" title="4.上面的证书没有成功的话,那就用腾讯云SSL证书 免费一年"></a>4.上面的证书没有成功的话,那就用<a href="https://console.qcloud.com/ssl" target="_blank" rel="external">腾讯云SSL证书</a> 免费一年</h3><p>csr证书请求文件–交给CA签名后形成服务端自己的证书,认证通过之后,签证机构给你crt文件 crt+key = pem </p>
-<p>cat crt key = pem<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">vim /etc/nginx/conf.d/ghost</div><div class="line">    server &#123;</div><div class="line">        listen 80;</div><div class="line">        <span class="comment">#server_name puplic IP;</span></div><div class="line">        <span class="comment">#server_name 0.0.0.0; 上面的公网IP也不行了,</span></div><div class="line">        server_name www.femnyy.com puplic_IP yy.femnyy.com;</div><div class="line">        <span class="comment">#server_name femnyy.com;</span></div><div class="line">        rewrite ^(.*) https://<span class="variable">$host</span><span class="variable">$1</span> permanent;</div><div class="line">        <span class="built_in">return</span> 301 https://<span class="variable">$server_name</span><span class="variable">$request_uri</span>;</div><div class="line">    &#125;</div><div class="line">    server&#123;</div><div class="line">        listen  443;</div><div class="line">        server_name  www.femnyy.com;</div><div class="line">        ssl on; </div><div class="line">        <span class="comment">#index index.htm index.html;</span></div><div class="line">        ssl_certificate   /etc/nginx/conf.d/Nginx_ssl/server.crt;</div><div class="line">        ssl_certificate_key  /etc/nginx/conf.d/Nginx_ssl/server.key;</div><div class="line">        ssl_session_timeout 5m; </div><div class="line">        ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</div><div class="line">        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</div><div class="line">        ssl_prefer_server_ciphers on; </div><div class="line">        location / &#123;</div><div class="line">            proxy_set_header   X-Real-IP <span class="variable">$remote_addr</span>;</div><div class="line">            proxy_set_header   Host      <span class="variable">$http_host</span>;</div><div class="line">            proxy_pass         http://127.0.0.1:2368;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">firewall-cmd --permanent --add-port=443/tcp</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure></p>
-<h3 id="推荐管理主机的状态-nodequery"><a href="#推荐管理主机的状态-nodequery" class="headerlink" title="推荐管理主机的状态 nodequery"></a>推荐管理主机的状态 <a href="https://nodequery.com/" target="_blank" rel="external">nodequery</a></h3><h3 id="统计访问量"><a href="#统计访问量" class="headerlink" title="统计访问量"></a>统计访问量</h3><p>其实在dnspod下管理域名时,就会有流量统计这个功能,但本人使用<a href="https://www.cloudflare.com/" target="_blank" rel="external">cloudflare</a>加速网页之后,就没有此功能了<br>(<a href="https://www.femnyy.com/cdn/" target="_blank" rel="external">可以看下本人的CND设置</a>)</p>
-<p>所以使用<a href="https://www.google.com/intl/zh-CN/analytics/" target="_blank" rel="external">谷歌统计访问量</a><br>注册好了之后–&gt;管理–&gt; .js跟踪信息–&gt;代码跟踪–&gt;将网站跟踪的代码复制到ghost的code injection 的Blog Footer</p>
-<p>如果有github学生礼包的话,就可以<a href="https://education.github.com/" target="_blank" rel="external">登陆</a><br><a href="https://www.caoqq.net/github-pack.html" target="_blank" rel="external">此链接</a>,是教如何使用礼包教程<br>这样就可以免费使用digitalocean VPS和namecheap域名了(免费使用.me的域名一年).</p>
-<p>使用digitalocean<br>1.gmail注册的,用paypal必须要充$5,其它支付方式,好像不需要<br>注册时比较坑的时,要等两个小时,害得我不断的去注册个人信息 我去(英语不好哈哈)！同时还比较麻烦的就是在关联paypal的时候,还会发信息给注册paypal的邮箱,并要求回复信息,认证是本人.<br>2.创建实例,居然是用Droplets这个单词</p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/15/vps-server/" data-id="cj7x62crt003607qsuzqcbqse" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/15/vps-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/15/vps-server/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-python-fun-program" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/14/python-fun-program/">python 函数式编程</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/14/python-fun-program/">
-            <time datetime="2017-08-14T11:02:55.000Z" itemprop="datePublished">2017-08-14</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/python3/">python3</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>函数式编程最常见的技术就是对一个集合做Map,Reduce,Filter操作.这比起过程式的语言来说,在代码上要更容易阅读.(传统过程式的语言需要使用for/while循环,然后在各种变量中把数据倒过来倒过去的)</p>
-<p>函数式编程的准则:不依赖于外部的数据,而且也不改变外部数据的值,而是返回一个新的值给你</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">return_add_model_id</span><span class="params">(self, modelList)</span>:</span></div><div class="line">    func = <span class="keyword">lambda</span> x: modify_idKeys(x) <span class="comment"># 闭包</span></div><div class="line">    model_id = self._id</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">modify_idKeys</span><span class="params">(goods)</span>:</span>  </div><div class="line">        g = goods.copy()</div><div class="line">        <span class="keyword">for</span> keys, value <span class="keyword">in</span> goods.items():</div><div class="line">            <span class="keyword">if</span> keys == <span class="string">'_id'</span>:</div><div class="line">                g[model_id] = value</div><div class="line">                <span class="comment"># g.pop('_id'),还保留着</span></div><div class="line">                <span class="keyword">return</span> g</div><div class="line">    <span class="keyword">return</span> list(map(func, modelList))</div><div class="line"><span class="comment"># 依次执行函数得到结果,并将结果组成一个新的list对象后进行返回</span></div><div class="line"></div><div class="line">province_list = [&#123;<span class="string">'name'</span>: <span class="string">'北京市'</span>, <span class="string">'code'</span>: <span class="string">'11'</span>&#125;, \</div><div class="line">    &#123;<span class="string">'name'</span>:<span class="string">'天津市'</span>,<span class="string">'code'</span>:<span class="string">'12'</span>&#125;,&#123;<span class="string">'name'</span>:<span class="string">'河北省'</span>,<span class="string">'code'</span>:<span class="string">'13'</span>&#125;]</div><div class="line">remove_province_list = [<span class="string">'河北省'</span>]</div><div class="line"><span class="comment"># 函数式编程的filter 不仅可以做判断的依据,而且还可以修改其值</span></div><div class="line">list(filter(<span class="keyword">lambda</span> x: x.get(<span class="string">'name'</span>) <span class="keyword">not</span> <span class="keyword">in</span> remove_province_list \</div><div class="line">    <span class="keyword">and</span> x.pop(<span class="string">'code'</span>), province_list))</div><div class="line"><span class="comment"># [&#123;'name': '北京市'&#125;, &#123;'name': '天津市'&#125;]</span></div><div class="line"></div><div class="line">a = list(map(<span class="keyword">lambda</span> x, y : x*y, [<span class="number">1.2</span>, <span class="number">3</span>, <span class="number">5</span>], [<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>]))</div><div class="line">print(a)<span class="comment">#[2.4,12,30]</span></div><div class="line">a = reduce(<span class="keyword">lambda</span> x,y:x+y,a)</div><div class="line">print(a)<span class="comment">#44.4</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">toUpper</span><span class="params">(item)</span>:</span></div><div class="line">  <span class="keyword">return</span> item.upper()</div><div class="line"> </div><div class="line">list(map(toUpper, [<span class="string">"hao"</span>, <span class="string">"chen"</span>, <span class="string">"coolshell"</span>]))</div><div class="line"><span class="comment"># ['HAO', 'CHEN', 'COOLSHELL']</span></div></pre></td></tr></table></figure>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/14/python-fun-program/" data-id="cj7x62cr2002f07qs0h7y4oc3" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/14/python-fun-program/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/14/python-fun-program/">Comments</a>
+        <a href="https://www.femn.me/2017/08/16/CDN-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/CDN-server/">Comentarios</a>
     
 
         </footer>
@@ -1956,7 +1984,7 @@ g&lt;ctrl-]&gt;
 
 
     <nav id="page-nav">
-        <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+        <a class="extend prev" rel="prev" href="/">&laquo; Anterior</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/">Siguiente  &raquo;</a>
     </nav>
 </section>
             
@@ -1965,9 +1993,36 @@ g&lt;ctrl-]&gt;
    
         
     <div class="widget-wrap">
-        <h3 class="widget-title">recent</h3>
+        <h3 class="widget-title">Recientes</h3>
         <div class="widget">
             <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_hive/" class="title">hadoop hive</a></p>
+                            <p class="item-date"><time datetime="2017-09-27T11:41:15.000Z" itemprop="datePublished">2017-09-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/09/25/zookeeper/" class="title">zookeeper</a></p>
+                            <p class="item-date"><time datetime="2017-09-25T12:01:15.000Z" itemprop="datePublished">2017-09-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/23/hadoop_mapreduce/" class="title">hadoop MapReduce</a></p>
+                            <p class="item-date"><time datetime="2017-09-23T12:01:15.000Z" itemprop="datePublished">2017-09-23</time></p>
+                        </div>
+                    </li>
                 
                     <li>
                         
@@ -1987,33 +2042,6 @@ g&lt;ctrl-]&gt;
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
-                            <p class="item-title"><a href="/2017/09/23/hadoop_hdfs/" class="title">hadoop HDFS</a></p>
-                            <p class="item-date"><time datetime="2017-09-23T11:41:15.000Z" itemprop="datePublished">2017-09-23</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
-                            <p class="item-title"><a href="/2017/09/23/hadoop/" class="title">hadoop简介</a></p>
-                            <p class="item-date"><time datetime="2017-09-23T11:31:15.000Z" itemprop="datePublished">2017-09-23</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
-                            <p class="item-title"><a href="/2017/09/20/virtualbox/" class="title">VirtualBox下虚拟机的网络配置</a></p>
-                            <p class="item-date"><time datetime="2017-09-20T09:51:19.000Z" itemprop="datePublished">2017-09-20</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -2021,34 +2049,34 @@ g&lt;ctrl-]&gt;
     
         
     <div class="widget-wrap">
-        <h3 class="widget-title">categories</h3>
+        <h3 class="widget-title">Categorias</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
     
         
     <div class="widget-wrap">
-        <h3 class="widget-title">archives</h3>
+        <h3 class="widget-title">Archivos</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">41</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">41</span></li></ul>
         </div>
     </div>
 
     
         
     <div class="widget-wrap">
-        <h3 class="widget-title">tags</h3>
+        <h3 class="widget-title">Etiquetas</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
     
         
     <div class="widget-wrap">
-        <h3 class="widget-title">tag cloud</h3>
+        <h3 class="widget-title">Nube de etiquetas</h3>
         <div class="widget tagcloud">
             <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/大数据/" style="font-size: 20px;">大数据</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/计算机/" style="font-size: 10px;">计算机</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
         </div>
@@ -2057,7 +2085,7 @@ g&lt;ctrl-]&gt;
     
         
     <div class="widget-wrap widget-list">
-        <h3 class="widget-title">links</h3>
+        <h3 class="widget-title">Links</h3>
         <div class="widget">
             <ul>
                 

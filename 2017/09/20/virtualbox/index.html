@@ -13,7 +13,7 @@
 <meta property="og:description" content="基本思路 从主机可以通过静态IP访问到每一个虚拟机,从虚拟机中可以访问主机(主机也有一个固定的静态IP)(Host-only Adapter 模式)注意:这里设置是主机的IPV4,不是虚拟机的 虚拟机之间组成一个由静态IP构成的网络,而且虚拟机之间可以互相访问 (Internal Network 模式)注意,虚拟机之间的内网名字可以随便起,这里叫做 intnet.如果在配置在第二个虚拟机的时候,也">
 <meta property="og:image" content="https://drive.google.com/file/d/0B9NEWVh_ricqa1RRSnBCbWgwR1k/view?usp=sharing">
 <meta property="og:image" content="https://drive.google.com/file/d/0B9NEWVh_ricqTWI2OTU2dnQ1aFE/view?usp=sharing">
-<meta property="og:updated_time" content="2017-09-20T11:01:51.521Z">
+<meta property="og:updated_time" content="2017-09-25T04:17:55.879Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="VirtualBox下虚拟机的网络配置">
 <meta name="twitter:description" content="基本思路 从主机可以通过静态IP访问到每一个虚拟机,从虚拟机中可以访问主机(主机也有一个固定的静态IP)(Host-only Adapter 模式)注意:这里设置是主机的IPV4,不是虚拟机的 虚拟机之间组成一个由静态IP构成的网络,而且虚拟机之间可以互相访问 (Internal Network 模式)注意,虚拟机之间的内网名字可以随便起,这里叫做 intnet.如果在配置在第二个虚拟机的时候,也">
@@ -85,7 +85,7 @@
             <div id="search-form-wrap">
 
     <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
         <button type="submit" class="search-form-submit"></button>
     </form>
     <div class="ins-search">
@@ -104,10 +104,10 @@
 (function (window) {
     var INSIGHT_CONFIG = {
         TRANSLATION: {
-            POSTS: 'Posts',
+            POSTS: 'Entradas',
             PAGES: 'Pages',
-            CATEGORIES: 'Categories',
-            TAGS: 'Tags',
+            CATEGORIES: 'Categorias',
+            TAGS: 'Etiquetas',
             UNTITLED: '(Untitled)',
         },
         ROOT_URL: '/',
@@ -138,7 +138,7 @@
                 <td>
                     
     <div class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
     </div>
 
                 </td>
@@ -158,16 +158,16 @@
             <h2 id="name">leipengkai</h2>
             <h3 id="title">Python Developer</h3>
             <span id="location"><i class="fa fa-map-marker"></i>Shenzhen, China</span>
-            <a id="follow" target="_blank" href="https://github.com/leipengkai/">FOLLOW</a>
+            <a id="follow" target="_blank" href="https://github.com/leipengkai/">SEGUIR</a>
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                49
-                <span>posts</span>
+                52
+                <span>Entradas</span>
             </div>
             <div class="article-info-block">
                 5
-                <span>tags</span>
+                <span>Etiquetas</span>
             </div>
         </div>
         
@@ -271,6 +271,7 @@
 <p>修改静态IP,与虚拟机同一个网段,实现虚拟机之间的通信<br>注意:虚拟机内网我们选择 192.168.0. 这个网段<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">vi /etc/sysconfig/network-scripts/ifcfg-enp0s8</div><div class="line">    BOOTPROTO=static</div><div class="line">    ONBOOT=yes</div><div class="line">    IPADDR=192.168.0.2</div><div class="line">    PREFIX=24</div></pre></td></tr></table></figure></p>
 <p>实现连接internet<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">vi /etc/sysconfig/network-scripts/ifcfg-enp0s9</div><div class="line">    ONBOOT=yes</div></pre></td></tr></table></figure></p>
 <p>重新启动网络<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service network restart</div></pre></td></tr></table></figure></p>
+<p>或者使用些脚本来配置这三个网卡的信息,如果有错误请重新启动虚拟机就可以了<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl https://file.femnyy.com/file/centos7_net.sh |sudo sh</div></pre></td></tr></table></figure></p>
 <p><code>关机保存上面的配置好的虚拟机</code><br><code>clone虚拟机,然后进入clone后的虚拟机,修改如下配置及可</code></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 设置一个没有使用的IP</span></div><div class="line">vi /etc/sysconfig/network-scripts/ifcfg-enp0s3 </div><div class="line">    IPADDR=192.168.1.220</div><div class="line"><span class="comment"># 设置一个新的内网IP    </span></div><div class="line">vi /etc/sysconfig/network-scripts/ifcfg-enp0s8</div><div class="line">    IPADDR=192.168.0.2</div><div class="line"><span class="comment"># 因为internet的网络设置是DHCP,所以不用配置</span></div></pre></td></tr></table></figure>
 
@@ -283,7 +284,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/20/virtualbox/" data-id="cj7x62crs003407qslj13lusr" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/20/virtualbox/" data-id="cj81klr2i003q07pnqrmevgom" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -351,7 +352,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/09/20/virtualbox/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/20/virtualbox/">Comments</a>
+        <a href="https://www.femn.me/2017/09/20/virtualbox/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/20/virtualbox/">Comentarios</a>
     
 
         </footer>
@@ -361,7 +362,7 @@
 <nav id="article-nav">
     
         <a href="/2017/09/23/hadoop/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Newer</strong>
+            <strong class="article-nav-caption">Más nuevo</strong>
             <div class="article-nav-title">
                 
                     hadoop简介
@@ -371,7 +372,7 @@
     
     
         <a href="/2017/09/10/内存交换/" id="article-nav-older" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Older</strong>
+            <strong class="article-nav-caption">Más viejo</strong>
             <div class="article-nav-title">内存信息的生成与交换</div>
         </a>
     
@@ -398,9 +399,36 @@
    
         
     <div class="widget-wrap">
-        <h3 class="widget-title">recent</h3>
+        <h3 class="widget-title">Recientes</h3>
         <div class="widget">
             <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_hive/" class="title">hadoop hive</a></p>
+                            <p class="item-date"><time datetime="2017-09-27T11:41:15.000Z" itemprop="datePublished">2017-09-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/09/25/zookeeper/" class="title">zookeeper</a></p>
+                            <p class="item-date"><time datetime="2017-09-25T12:01:15.000Z" itemprop="datePublished">2017-09-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/23/hadoop_mapreduce/" class="title">hadoop MapReduce</a></p>
+                            <p class="item-date"><time datetime="2017-09-23T12:01:15.000Z" itemprop="datePublished">2017-09-23</time></p>
+                        </div>
+                    </li>
                 
                     <li>
                         
@@ -420,33 +448,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
-                            <p class="item-title"><a href="/2017/09/23/hadoop_hdfs/" class="title">hadoop HDFS</a></p>
-                            <p class="item-date"><time datetime="2017-09-23T11:41:15.000Z" itemprop="datePublished">2017-09-23</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
-                            <p class="item-title"><a href="/2017/09/23/hadoop/" class="title">hadoop简介</a></p>
-                            <p class="item-date"><time datetime="2017-09-23T11:31:15.000Z" itemprop="datePublished">2017-09-23</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
-                            <p class="item-title"><a href="/2017/09/20/virtualbox/" class="title">VirtualBox下虚拟机的网络配置</a></p>
-                            <p class="item-date"><time datetime="2017-09-20T09:51:19.000Z" itemprop="datePublished">2017-09-20</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -454,34 +455,34 @@
     
         
     <div class="widget-wrap">
-        <h3 class="widget-title">categories</h3>
+        <h3 class="widget-title">Categorias</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
     
         
     <div class="widget-wrap">
-        <h3 class="widget-title">archives</h3>
+        <h3 class="widget-title">Archivos</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">41</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">41</span></li></ul>
         </div>
     </div>
 
     
         
     <div class="widget-wrap">
-        <h3 class="widget-title">tags</h3>
+        <h3 class="widget-title">Etiquetas</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
     
         
     <div class="widget-wrap">
-        <h3 class="widget-title">tag cloud</h3>
+        <h3 class="widget-title">Nube de etiquetas</h3>
         <div class="widget tagcloud">
             <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/大数据/" style="font-size: 20px;">大数据</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/计算机/" style="font-size: 10px;">计算机</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
         </div>
@@ -490,7 +491,7 @@
     
         
     <div class="widget-wrap widget-list">
-        <h3 class="widget-title">links</h3>
+        <h3 class="widget-title">Links</h3>
         <div class="widget">
             <ul>
                 
