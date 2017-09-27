@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>hadoop HDFS HA高可用的集群搭建部署 | Femn</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="HDFS元数据的可靠性有保证，但hadoop的HA(高可用)不高HDFS HA高可用的集群搭建  7台机器的集群规划(512M,8G)cluster1 192.168.1.221 jdk,hadoop namenode zkfccluster2 192.168.1.222 jdk,hadoop namenode zkfccluster3 192.168.1.223 jdk,hadoop resou">
+<meta name="keywords" content="大数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hadoop HDFS HA高可用的集群搭建部署">
+<meta property="og:url" content="https://www.femn.me/2017/09/27/hadoop_cluster/index.html">
+<meta property="og:site_name" content="Femn">
+<meta property="og:description" content="HDFS元数据的可靠性有保证，但hadoop的HA(高可用)不高HDFS HA高可用的集群搭建  7台机器的集群规划(512M,8G)cluster1 192.168.1.221 jdk,hadoop namenode zkfccluster2 192.168.1.222 jdk,hadoop namenode zkfccluster3 192.168.1.223 jdk,hadoop resou">
+<meta property="og:image" content="https://www.femn.me/2017/09/27/hadoop_cluster/HDFS_HA.jpg">
+<meta property="og:image" content="https://www.femn.me/2017/09/27/hadoop_cluster/cluster_plan.jpg">
+<meta property="og:updated_time" content="2017-09-27T05:08:26.181Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="hadoop HDFS HA高可用的集群搭建部署">
+<meta name="twitter:description" content="HDFS元数据的可靠性有保证，但hadoop的HA(高可用)不高HDFS HA高可用的集群搭建  7台机器的集群规划(512M,8G)cluster1 192.168.1.221 jdk,hadoop namenode zkfccluster2 192.168.1.222 jdk,hadoop namenode zkfccluster3 192.168.1.223 jdk,hadoop resou">
+<meta name="twitter:image" content="https://www.femn.me/2017/09/27/hadoop_cluster/HDFS_HA.jpg">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="Femn" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/favicon.ico" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Femn</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/tags">Tags</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/4822598_105251_2.jpg" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">Tags</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/4822598_105251_2.jpg" />
+            <h2 id="name">leipengkai</h2>
+            <h3 id="title">Python Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>Shenzhen, China</span>
+            <a id="follow" target="_blank" href="https://github.com/leipengkai/">FOLLOW</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                52
+                <span>posts</span>
+            </div>
+            <div class="article-info-block">
+                5
+                <span>tags</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/leipengkai" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/femnyy" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://www.facebook.com/profile.php?id=100012089717648" target="_blank" title="facebook" class=tooltip>
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://www.instagram.com/leipengkai/" target="_blank" title="instagram" class=tooltip>
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://plus.google.com/108032606311958999451" target="_blank" title="google_plus" class=tooltip>
+                            <i class="fa fa-google_plus"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/atom.xml" target="_blank" title="rss" class=tooltip>
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-hadoop_cluster" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            hadoop HDFS HA高可用的集群搭建部署
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/09/27/hadoop_cluster/">
+            <time datetime="2017-09-27T11:41:15.000Z" itemprop="datePublished">2017-09-27</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/hadoop/">hadoop</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/大数据/">大数据</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>HDFS元数据的可靠性有保证，但hadoop的HA(高可用)不高<br><img src="/2017/09/27/hadoop_cluster/HDFS_HA.jpg" alt="HDFS HA实现机制" title="HDFS HA实现机制"><br>HDFS HA高可用的集群搭建 </p>
+<h4 id="7台机器的集群规划-512M-8G"><a href="#7台机器的集群规划-512M-8G" class="headerlink" title="7台机器的集群规划(512M,8G)"></a>7台机器的集群规划(512M,8G)</h4><p>cluster1 192.168.1.221 jdk,hadoop namenode zkfc<br>cluster2 192.168.1.222 jdk,hadoop namenode zkfc<br>cluster3 192.168.1.223 jdk,hadoop resourcemanager<br>cluster4 192.168.1.224 jdk,hadoop resourcemanager<br>zookeeper1 192.168.1.225 jdk,hadoop,zookeeper zookeeper journalnode datanode nodemanager<br>zookeeper2 192.168.1.226 jdk,hadoop,zookeeper zookeeper journalnode datanode nodemanager<br>zookeeper3 192.168.1.227 jdk,hadoop,zookeeper zookeeper journalnode datanode nodemanager<br><img src="/2017/09/27/hadoop_cluster/cluster_plan.jpg" alt="集群规划" title="集群规划"></p>
+<h4 id="实际操作-之后的所有操作都是root用户"><a href="#实际操作-之后的所有操作都是root用户" class="headerlink" title="实际操作(之后的所有操作都是root用户)"></a>实际操作(之后的所有操作都是root用户)</h4><p>前提</p>
+<ol>
+<li>修改了<a href="https://www.femn.me/2017/09/20/virtualbox/">网卡设置</a>，网络正常.</li>
+<li>在/root目录下有hadoop-2.8.1.tar.gz，jdk8.tar.gz和zookeeper-3.4.10.tar.gz这三个包</li>
+</ol>
+<p>在一台虚拟机上执行如下脚本(cluster1)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl https://file.femnyy.com/file/install_hadoop_cluster.sh | sudo sh</div></pre></td></tr></table></figure></p>
+<p>然后就clone 6台虚拟机,进入开启这6台虚拟机,修改IP,重新启动网络<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">vim /etc/sysconfig/network-scripts/ifcfg-enp0s3</div><div class="line">vim /etc/sysconfig/network-scripts/ifcfg-enp0s8</div><div class="line">service network restart</div><div class="line">ifconfig</div></pre></td></tr></table></figure></p>
+<p>然后在cluster1中执行SSH免密码登陆,分别对列出的主机执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-copy-id cluster1 cluster2 zookeeper1 zookeeper2 zookeeper3</div></pre></td></tr></table></figure>
+<p>在cluster3中执行如下命令,分别对列出的主机执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-copy-id zookeeper1 zookeeper2 zookeeper3</div></pre></td></tr></table></figure></p>
+<p>在zookeeper2在执行如下命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> 2 &gt; /root/zookeeper-3.4.10/data/myid</div></pre></td></tr></table></figure></p>
+<p>在zookeeper3在执行如下命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> 3 &gt; /root/zookeeper-3.4.10/data/myid</div></pre></td></tr></table></figure></p>
+<h4 id="环境配置好了之后-一定严格按下面步骤进行操作"><a href="#环境配置好了之后-一定严格按下面步骤进行操作" class="headerlink" title="环境配置好了之后,一定严格按下面步骤进行操作"></a>环境配置好了之后,一定严格按下面步骤进行操作</h4><pre><code>启动zookeeper集群(分别在zookeeper1-3上启动zk)
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">zkServer.sh start</div><div class="line"><span class="comment"># 查看状态,一个leader(通过选举得到),两个follower</span></div><div class="line">zkServer.sh status</div></pre></td></tr></table></figure>
+<pre><code>启动journalnode(分别在zookeeper1-3上执行)
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hadoop-daemon.sh start journalnode</div><div class="line"><span class="comment"># 检验是否有JournalNode进程</span></div><div class="line">jps</div></pre></td></tr></table></figure>
+<pre><code>格式化HDFS(在cluster1上执行)
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">hdfs namenode -format</div><div class="line"><span class="comment"># 格式化后会在根据core-site.xml中的hadoop.tmp.dir配置生成个文件,我是设置成/root/hadoop-2.8.1/tmp，然后将这个tmp目录cp到cluster2下</span></div><div class="line">scp -r /root/hadoop-2.8.1/tmp/ root@cluster2:/root/hadoop-2.8.1/</div><div class="line"><span class="comment"># 或者在cluster2执行如下命令,效果也是一样的</span></div><div class="line"><span class="comment"># hdfs namenode -bootstrapStandby</span></div></pre></td></tr></table></figure>
+<pre><code>格式化ZKFC(在cluster1上执行即可)
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">hdfs zkfc -formatZK</div><div class="line"><span class="comment"># 在zookeeper1在执行,查看建立的数据节点</span></div><div class="line">zkCli.sh</div><div class="line">ls / <span class="comment"># [zookeeper, hadoop-ha]</span></div><div class="line">ls /hadoop-ha <span class="comment"># [ns1]</span></div><div class="line">get /hadoop-ha/ns1 <span class="comment"># 因为没有运行,数据都是空的</span></div></pre></td></tr></table></figure>
+<p>如果改了配置文本想重新启动就不需要再启动上面的内容了,<br>比如改了所有虚拟机的hdfs-site.xml文件,只需要在cluster1 stop-dfs.sh 再运行start-dfs.sh就可以了</p>
+<p>如是下次重新启动时就启动zk集群和start-dfs.sh和start-yarn.sh,格式化一次就可以了</p>
+<pre><code>启动HDFS(在cluster1上执行即可)
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">start-dfs.sh</div></pre></td></tr></table></figure>
+<pre><code>启动YARN(在cluster3上执行)
+</code></pre><p>将Namenode和Resourcemanager分开是因为性能问题<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">start-yarn.sh</div></pre></td></tr></table></figure></p>
+<pre><code>启动YARN daemon(在cluster4上执行)
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yarn-daemon.sh start resourcemanager</div></pre></td></tr></table></figure>
+<p>访问<br>HDFS: <a href="http://cluster1:50070" target="_blank" rel="external">http://cluster1:50070</a><br>HDFS: <a href="http://cluster2:50070" target="_blank" rel="external">http://cluster2:50070</a><br>YARN: <a href="http://cluster3:8088" target="_blank" rel="external">http://cluster3:8088</a></p>
+<p>改进: dfs.datanode.http.address   datanode的HTTP服务器和端口         50075hdfs-site.xml  0.0.0.0:50075   </p>
+<h3 id="HDFS-HA-测试"><a href="#HDFS-HA-测试" class="headerlink" title="HDFS HA 测试"></a>HDFS HA 测试</h3><pre><code>测试上传
+</code></pre><p>在zookeeper1-3集群中在执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /root/hadoop-2.8.1/tmp/dfs/data/current/BP-xx/current/finalized/</div></pre></td></tr></table></figure></p>
+<p>在cluster1在执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">hadoop fs -put /root/hadoop-2.8.1.tar.gz /</div><div class="line"><span class="comment"># 执行完成后会在zookeeper1-3中 cd subdir0/subdir0/看到两个block块</span></div><div class="line">mkdir 1 &amp;&amp; <span class="built_in">cd</span> 1</div><div class="line">hadoop fs -get /hadoop-2.8.1.tar.gz</div></pre></td></tr></table></figure></p>
+<pre><code>测试namenode切换
+</code></pre><p>HDFS: <a href="http://cluster2:50070" target="_blank" rel="external">http://cluster2:50070</a><br>HDFS: <a href="http://cluster2:50070" target="_blank" rel="external">http://cluster2:50070</a><br>得知哪个是active状态,我的是cluster2是active<br>通过jps得到namenode的进程，将其kill</p>
+<h4 id="kill-cluster2-namenode-进程"><a href="#kill-cluster2-namenode-进程" class="headerlink" title="kill cluster2 namenode 进程"></a>kill cluster2 namenode 进程</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#  kill之后,可以再看http://cluster2:50070的和cluster1的状态,成功切换</span></div><div class="line"><span class="comment"># 所以也是在cluster2中重新启动NameNode</span></div><div class="line">hadoop-daemon.sh start namenode</div></pre></td></tr></table></figure>
+<h4 id="将cluster1这个虚拟机关机"><a href="#将cluster1这个虚拟机关机" class="headerlink" title="将cluster1这个虚拟机关机"></a>将cluster1这个虚拟机关机</h4><p>现在是cluster1为active,,cluster2至少要等30s才能切换.<br>然后重新启动cluster1之后执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hadoop-daemon.sh start zkfc</div><div class="line">hadoop-daemon.sh start namenode</div></pre></td></tr></table></figure>
+<h4 id="手动切换-但不推荐使用"><a href="#手动切换-但不推荐使用" class="headerlink" title="手动切换,但不推荐使用"></a>手动切换,但不推荐使用</h4><p>现在cluster2是active,在cluster1中执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hdfs haadmin -transitionToStandby nn2 --forcemanual</div><div class="line"><span class="comment"># namenode的状态</span></div><div class="line">hdfs haadmin -getServiceState nn2 <span class="comment"># standby</span></div></pre></td></tr></table></figure>
+<pre><code>查看Yarn状态
+</code></pre><p>在zookeeper1-3的随便一台在执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">zkCli.sh</div><div class="line">get /yarn-leader-election/yrc/ActiveBreadCrumb </div><div class="line"><span class="comment"># yrcrm1表明rm1(cluster3)是运行状态</span></div></pre></td></tr></table></figure></p>
+<p>也可以通过访问:<br>YARN:<a href="http://cluster3:8088" target="_blank" rel="external">http://cluster3:8088</a><br>YARN:<a href="http://cluster4:8088" target="_blank" rel="external">http://cluster4:8088</a><br>会自动跳转到运行状态的地址上</p>
+<pre><code>Yarn的HA测试
+</code></pre><p>我的是cluster3是active,在cluster4在执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hadoop jar hadoop-2.8.1/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.8.1.jar pi 5 5</div></pre></td></tr></table></figure></p>
+<p>在cluster3在杀死ResourceManager进程</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#重启启动 resourcemanager</span></div><div class="line">yarn-daemon.sh start resourcemanager</div></pre></td></tr></table></figure>
+<p>Yarn的HA不像HDFS的YA一样,YARN正在跑的程序突然中断则意味着程序的失败</p>
+<h3 id="动态增加DataNode节点和数量管理"><a href="#动态增加DataNode节点和数量管理" class="headerlink" title="动态增加DataNode节点和数量管理"></a>动态增加DataNode节点和数量管理</h3><p>在zookeeper3中kill掉datanode进程<br>再查看<a href="http://cluster1:50070的Live" target="_blank" rel="external">http://cluster1:50070的Live</a> Nodes数量,则会显示Live NOdes:2,Dead NOdes:1,block副本不会变多</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 在zookeeper1-3中</span></div><div class="line">vim /root/hadoop-2.8.1/tmp/dfs/data/current/VERSION</div><div class="line"><span class="comment"># 是由clusterID的决定这个datanode是否在同一个集群上</span></div></pre></td></tr></table></figure>
+<p>新加一个datanode节点,只需要hadoop包，然后启动datanode就行了</p>
+<p>clone一台zookeeper1的名为zookeeper4,并在zookeeper4运行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># zookeeper4 192.168.1.228 jdk,hadoop,zookeeper zookeeper journalnode datanode nodemanager </span></div><div class="line"><span class="comment"># vim /etc/sysconfig/network-scripts/ifcfg-enp0s3 # 为228 service network restart</span></div><div class="line">    rm -rf /root/hadoop-2.8.1/tmp</div><div class="line">    <span class="built_in">echo</span> <span class="string">"192.168.1.228 zookeeper4"</span>&gt;&gt; /etc/hosts</div><div class="line">    <span class="built_in">echo</span> <span class="string">"zookeeper4"</span>&gt;&gt; /root/hadoop-2.8.1/etc/hadoop/slaves </div><div class="line">    scp /etc/hosts root@cluster1:/etc/hosts</div><div class="line">    scp /etc/hosts root@cluster2:/etc/hosts</div><div class="line">    scp /etc/hosts root@cluster3:/etc/hosts</div><div class="line">    scp /etc/hosts root@cluster4:/etc/hosts</div><div class="line">    scp /etc/hosts root@zookeeper1:/etc/hosts</div><div class="line">    scp /etc/hosts root@zookeeper2:/etc/hosts</div><div class="line">    scp /etc/hosts root@zookeeper3:/etc/hosts</div><div class="line">    scp /root/hadoop-2.8.1/etc/hadoop/slaves root@cluster1:/root/hadoop-2.8.1/etc/hadoop/slaves</div><div class="line">    scp /root/hadoop-2.8.1/etc/hadoop/slaves root@cluster2:/root/hadoop-2.8.1/etc/hadoop/slaves</div><div class="line">    scp /root/hadoop-2.8.1/etc/hadoop/slaves root@cluster3:/root/hadoop-2.8.1/etc/hadoop/slaves</div><div class="line">    scp /root/hadoop-2.8.1/etc/hadoop/slaves root@cluster4:/root/hadoop-2.8.1/etc/hadoop/slaves</div><div class="line">    scp /root/hadoop-2.8.1/etc/hadoop/slaves root@zookeeper1:/root/hadoop-2.8.1/etc/hadoop/slaves</div><div class="line">    scp /root/hadoop-2.8.1/etc/hadoop/slaves root@zookeeper2:/root/hadoop-2.8.1/etc/hadoop/slaves</div><div class="line">    scp /root/hadoop-2.8.1/etc/hadoop/slaves root@zookeeper3:/root/hadoop-2.8.1/etc/hadoop/slaves</div><div class="line">    hadoop-daemon.sh start datanode</div><div class="line">    ll /root/hadoop-2.8.1/tmp/dfs/data/current/BP-1937453453-127.0.0.1-1506392610571/current/finalized/subdir0/subdir0</div><div class="line">    <span class="comment"># 会自动将block副本复制到这个节点上,来保存三个副本</span></div><div class="line">    <span class="comment"># 在cluster3,cluster14</span></div><div class="line">    <span class="comment"># yarn-daemon.sh start nodemanager</span></div><div class="line">    <span class="comment"># 在cluster1,cluster12刷新集群节点</span></div><div class="line">    <span class="comment"># hdfs dfsadmin -refreshNodes</span></div></pre></td></tr></table></figure></p>
+<p>现在再将zookeeper3的datanode启动起来<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hadoop-daemon.sh start datanode</div></pre></td></tr></table></figure></p>
+<p>目前将会有四个节点,四个副本,导致了数据的冗余,hadoop会自动的清除掉冗余的数据</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/09/27/hadoop_cluster/" data-id="cj82uoic8001b06p7c1d99801" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/09/27/hadoop_cluster/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/27/hadoop_cluster/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2017/09/27/hadoop_hive/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">hadoop hive(六)</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+        <section id="comments">
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+</section>
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">recent</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_cluster/" class="title">hadoop HDFS HA高可用的集群搭建部署</a></p>
+                            <p class="item-date"><time datetime="2017-09-27T11:41:15.000Z" itemprop="datePublished">2017-09-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_hive/" class="title">hadoop hive(六)</a></p>
+                            <p class="item-date"><time datetime="2017-09-27T11:31:15.000Z" itemprop="datePublished">2017-09-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/09/25/zookeeper/" class="title">zookeeper(五)</a></p>
+                            <p class="item-date"><time datetime="2017-09-25T12:01:15.000Z" itemprop="datePublished">2017-09-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/23/hadoop_mapreduce/" class="title">hadoop MapReduce Yarn(四)</a></p>
+                            <p class="item-date"><time datetime="2017-09-23T12:01:15.000Z" itemprop="datePublished">2017-09-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/23/hadoop_RPC/" class="title">hadoop RPC(三)</a></p>
+                            <p class="item-date"><time datetime="2017-09-23T11:51:15.000Z" itemprop="datePublished">2017-09-23</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">41</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/大数据/" style="font-size: 20px;">大数据</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/计算机/" style="font-size: 10px;">计算机</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+                    <li>
+                        <a href="https://hub.docker.com/">Hub_docker</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 leipengkai<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_config = function () {
+        
+            this.page.url = 'https://www.femn.me/2017/09/27/hadoop_cluster/';
+        
+        this.page.identifier = 'hadoop_cluster';
+    };
+    (function() { 
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'femn' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

@@ -78,7 +78,7 @@
             <div id="search-form-wrap">
 
     <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
         <button type="submit" class="search-form-submit"></button>
     </form>
     <div class="ins-search">
@@ -97,10 +97,10 @@
 (function (window) {
     var INSIGHT_CONFIG = {
         TRANSLATION: {
-            POSTS: 'Entradas',
+            POSTS: 'Posts',
             PAGES: 'Pages',
-            CATEGORIES: 'Categorias',
-            TAGS: 'Etiquetas',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
             UNTITLED: '(Untitled)',
         },
         ROOT_URL: '/',
@@ -131,7 +131,7 @@
                 <td>
                     
     <div class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
     </div>
 
                 </td>
@@ -151,16 +151,16 @@
             <h2 id="name">leipengkai</h2>
             <h3 id="title">Python Developer</h3>
             <span id="location"><i class="fa fa-map-marker"></i>Shenzhen, China</span>
-            <a id="follow" target="_blank" href="https://github.com/leipengkai/">SEGUIR</a>
+            <a id="follow" target="_blank" href="https://github.com/leipengkai/">FOLLOW</a>
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
                 52
-                <span>Entradas</span>
+                <span>posts</span>
             </div>
             <div class="article-info-block">
                 5
-                <span>Etiquetas</span>
+                <span>tags</span>
             </div>
         </div>
         
@@ -214,7 +214,7 @@
 
             
             <section id="main">
-    <article id="post-hadoop_hive" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-hadoop_cluster" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -222,7 +222,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/09/27/hadoop_hive/">hadoop hive</a>
+            <a class="article-title" href="/2017/09/27/hadoop_cluster/">hadoop HDFS HA高可用的集群搭建部署</a>
         </h1>
     
 
@@ -231,7 +231,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/09/27/hadoop_hive/">
+        <a href="/2017/09/27/hadoop_cluster/">
             <time datetime="2017-09-27T11:41:15.000Z" itemprop="datePublished">2017-09-27</time>
         </a>
     </div>
@@ -257,18 +257,62 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>hadoop工具:<a href="https://hive.apache.org" target="_blank" rel="external">hive</a>:它只是一个工具可在任意一个节点安装，和集群没有任何关系,<a href="https://hbase.apache.org/" target="_blank" rel="external">hbase</a><br>数据统计分量</p>
-<p>install mysql<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># https://dev.mysql.com/downloads/repo/yum/ 查看对应版本</span></div><div class="line">wget https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm</div><div class="line">rpm -ivh mysql57-community-release-el7-9.noarch.rpm</div><div class="line">yum install -y mysql-server</div><div class="line"><span class="built_in">echo</span> <span class="string">"skip-grant-tables"</span> &gt;&gt; /etc/my.cnf </div><div class="line">systemctl start mysqld</div><div class="line">mysql -uroot -proot</div><div class="line">    flush privileges;</div><div class="line">    ALTER USER <span class="string">'root'</span>@<span class="string">'localhost'</span> IDENTIFIED BY <span class="string">'root'</span>;</div><div class="line">sed -i -e <span class="string">'/^skip-grant-tables/d'</span> /etc/my.cnf </div><div class="line">systemctl restart mysqld</div><div class="line">mysql -uroot -proot</div><div class="line">    CREATE DATABASE `hive` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;</div><div class="line">    grant all privileges on *.* to root@localhost identified by <span class="string">'root'</span>;</div><div class="line">    flush privileges;</div><div class="line"><span class="built_in">echo</span> <span class="string">"skip-grant-tables"</span> &gt;&gt; /etc/my.cnf</div></pre></td></tr></table></figure></p>
-<p>cd /root<br>tar -zxvf apache-hive-2.1.1-bin.tar.gz<br>mv apache-hive-2.1.1-bin hive<br>mv hive hadoop-2.8.1/</p>
-<p>hive/lib目录下放mysql.jar<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">scp ./mysql-connector-java-5.1.44-bin.jar root@cluster1:/root/hadoop-2.8.1/hive/lib/</div></pre></td></tr></table></figure></p>
-<p><img src="https://drive.google.com/file/d/0B9NEWVh_ricqbWktLW9CZHVtOGc/view?usp=sharing" alt="hive"><br>cd hadoop-2.8.1/hive/conf/</p>
-<p>cp hive-default.xml.template hive-site.xml<br>vim hive-site.xml<br>    <configuration><br>    <property><br>        <name>javax.jdo.option.ConnectionURL</name><br>        <!-- <value>jdbc:mysql://localhost:3306/hive?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false</value> --><br>        <value>jdbc:mysql://localhost:3306/hive?useSSL=false</value><br>    </property><br>    <property><br>        <name>javax.jdo.option.ConnectionDriverName</name><br>        <value>com.mysql.jdbc.Driver</value><br>    </property><br>    <property><br>        <name>javax.jdo.option.ConnectionUserName</name><br>        <value>root</value><br>    </property><br>    <property><br>        <name>javax.jdo.option.ConnectionPassword</name><br>        <value>root</value><br>    </property><br>    <property><br>        <name>hive.metastore.schema.verification</name><br>        <value>false</value><br>    </property><br>    </configuration><br>配置环境变量</p>
-<pre><code class="bash"><span class="built_in">echo</span> <span class="string">"export HIVE_HOME=/root/hadoop-2.8.1/hive"</span> &gt;&gt; ~/.bashrc
-<span class="built_in">echo</span> <span class="string">"export PATH=\${PATH}:\${HIVE_HOME}/bin"</span> &gt;&gt; ~/.bashrc
-<span class="built_in">source</span> ~/.bashrc
-</code></pre>
-<p>hive在第一次登录的时候需要用如下命令初始化<br>schematool -dbType mysql -initSchema<br>hive –service metastore &amp; </p>
-<p>create database cluster1;<br>user cluster1;<br>create table order(id int,name string,money string);<br>数据本来只那里,只能用来查看</p>
+            <p>HDFS元数据的可靠性有保证，但hadoop的HA(高可用)不高<br><img src="/2017/09/27/hadoop_cluster/HDFS_HA.jpg" alt="HDFS HA实现机制" title="HDFS HA实现机制"><br>HDFS HA高可用的集群搭建 </p>
+<h4 id="7台机器的集群规划-512M-8G"><a href="#7台机器的集群规划-512M-8G" class="headerlink" title="7台机器的集群规划(512M,8G)"></a>7台机器的集群规划(512M,8G)</h4><p>cluster1 192.168.1.221 jdk,hadoop namenode zkfc<br>cluster2 192.168.1.222 jdk,hadoop namenode zkfc<br>cluster3 192.168.1.223 jdk,hadoop resourcemanager<br>cluster4 192.168.1.224 jdk,hadoop resourcemanager<br>zookeeper1 192.168.1.225 jdk,hadoop,zookeeper zookeeper journalnode datanode nodemanager<br>zookeeper2 192.168.1.226 jdk,hadoop,zookeeper zookeeper journalnode datanode nodemanager<br>zookeeper3 192.168.1.227 jdk,hadoop,zookeeper zookeeper journalnode datanode nodemanager<br><img src="/2017/09/27/hadoop_cluster/cluster_plan.jpg" alt="集群规划" title="集群规划"></p>
+<h4 id="实际操作-之后的所有操作都是root用户"><a href="#实际操作-之后的所有操作都是root用户" class="headerlink" title="实际操作(之后的所有操作都是root用户)"></a>实际操作(之后的所有操作都是root用户)</h4><p>前提</p>
+<ol>
+<li>修改了<a href="https://www.femn.me/2017/09/20/virtualbox/">网卡设置</a>，网络正常.</li>
+<li>在/root目录下有hadoop-2.8.1.tar.gz，jdk8.tar.gz和zookeeper-3.4.10.tar.gz这三个包</li>
+</ol>
+<p>在一台虚拟机上执行如下脚本(cluster1)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl https://file.femnyy.com/file/install_hadoop_cluster.sh | sudo sh</div></pre></td></tr></table></figure></p>
+<p>然后就clone 6台虚拟机,进入开启这6台虚拟机,修改IP,重新启动网络<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">vim /etc/sysconfig/network-scripts/ifcfg-enp0s3</div><div class="line">vim /etc/sysconfig/network-scripts/ifcfg-enp0s8</div><div class="line">service network restart</div><div class="line">ifconfig</div></pre></td></tr></table></figure></p>
+<p>然后在cluster1中执行SSH免密码登陆,分别对列出的主机执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-copy-id cluster1 cluster2 zookeeper1 zookeeper2 zookeeper3</div></pre></td></tr></table></figure>
+<p>在cluster3中执行如下命令,分别对列出的主机执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-copy-id zookeeper1 zookeeper2 zookeeper3</div></pre></td></tr></table></figure></p>
+<p>在zookeeper2在执行如下命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> 2 &gt; /root/zookeeper-3.4.10/data/myid</div></pre></td></tr></table></figure></p>
+<p>在zookeeper3在执行如下命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> 3 &gt; /root/zookeeper-3.4.10/data/myid</div></pre></td></tr></table></figure></p>
+<h4 id="环境配置好了之后-一定严格按下面步骤进行操作"><a href="#环境配置好了之后-一定严格按下面步骤进行操作" class="headerlink" title="环境配置好了之后,一定严格按下面步骤进行操作"></a>环境配置好了之后,一定严格按下面步骤进行操作</h4><pre><code>启动zookeeper集群(分别在zookeeper1-3上启动zk)
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">zkServer.sh start</div><div class="line"><span class="comment"># 查看状态,一个leader(通过选举得到),两个follower</span></div><div class="line">zkServer.sh status</div></pre></td></tr></table></figure>
+<pre><code>启动journalnode(分别在zookeeper1-3上执行)
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hadoop-daemon.sh start journalnode</div><div class="line"><span class="comment"># 检验是否有JournalNode进程</span></div><div class="line">jps</div></pre></td></tr></table></figure>
+<pre><code>格式化HDFS(在cluster1上执行)
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">hdfs namenode -format</div><div class="line"><span class="comment"># 格式化后会在根据core-site.xml中的hadoop.tmp.dir配置生成个文件,我是设置成/root/hadoop-2.8.1/tmp，然后将这个tmp目录cp到cluster2下</span></div><div class="line">scp -r /root/hadoop-2.8.1/tmp/ root@cluster2:/root/hadoop-2.8.1/</div><div class="line"><span class="comment"># 或者在cluster2执行如下命令,效果也是一样的</span></div><div class="line"><span class="comment"># hdfs namenode -bootstrapStandby</span></div></pre></td></tr></table></figure>
+<pre><code>格式化ZKFC(在cluster1上执行即可)
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">hdfs zkfc -formatZK</div><div class="line"><span class="comment"># 在zookeeper1在执行,查看建立的数据节点</span></div><div class="line">zkCli.sh</div><div class="line">ls / <span class="comment"># [zookeeper, hadoop-ha]</span></div><div class="line">ls /hadoop-ha <span class="comment"># [ns1]</span></div><div class="line">get /hadoop-ha/ns1 <span class="comment"># 因为没有运行,数据都是空的</span></div></pre></td></tr></table></figure>
+<p>如果改了配置文本想重新启动就不需要再启动上面的内容了,<br>比如改了所有虚拟机的hdfs-site.xml文件,只需要在cluster1 stop-dfs.sh 再运行start-dfs.sh就可以了</p>
+<p>如是下次重新启动时就启动zk集群和start-dfs.sh和start-yarn.sh,格式化一次就可以了</p>
+<pre><code>启动HDFS(在cluster1上执行即可)
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">start-dfs.sh</div></pre></td></tr></table></figure>
+<pre><code>启动YARN(在cluster3上执行)
+</code></pre><p>将Namenode和Resourcemanager分开是因为性能问题<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">start-yarn.sh</div></pre></td></tr></table></figure></p>
+<pre><code>启动YARN daemon(在cluster4上执行)
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yarn-daemon.sh start resourcemanager</div></pre></td></tr></table></figure>
+<p>访问<br>HDFS: <a href="http://cluster1:50070" target="_blank" rel="external">http://cluster1:50070</a><br>HDFS: <a href="http://cluster2:50070" target="_blank" rel="external">http://cluster2:50070</a><br>YARN: <a href="http://cluster3:8088" target="_blank" rel="external">http://cluster3:8088</a></p>
+<p>改进: dfs.datanode.http.address   datanode的HTTP服务器和端口         50075hdfs-site.xml  0.0.0.0:50075   </p>
+<h3 id="HDFS-HA-测试"><a href="#HDFS-HA-测试" class="headerlink" title="HDFS HA 测试"></a>HDFS HA 测试</h3><pre><code>测试上传
+</code></pre><p>在zookeeper1-3集群中在执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /root/hadoop-2.8.1/tmp/dfs/data/current/BP-xx/current/finalized/</div></pre></td></tr></table></figure></p>
+<p>在cluster1在执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">hadoop fs -put /root/hadoop-2.8.1.tar.gz /</div><div class="line"><span class="comment"># 执行完成后会在zookeeper1-3中 cd subdir0/subdir0/看到两个block块</span></div><div class="line">mkdir 1 &amp;&amp; <span class="built_in">cd</span> 1</div><div class="line">hadoop fs -get /hadoop-2.8.1.tar.gz</div></pre></td></tr></table></figure></p>
+<pre><code>测试namenode切换
+</code></pre><p>HDFS: <a href="http://cluster2:50070" target="_blank" rel="external">http://cluster2:50070</a><br>HDFS: <a href="http://cluster2:50070" target="_blank" rel="external">http://cluster2:50070</a><br>得知哪个是active状态,我的是cluster2是active<br>通过jps得到namenode的进程，将其kill</p>
+<h4 id="kill-cluster2-namenode-进程"><a href="#kill-cluster2-namenode-进程" class="headerlink" title="kill cluster2 namenode 进程"></a>kill cluster2 namenode 进程</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#  kill之后,可以再看http://cluster2:50070的和cluster1的状态,成功切换</span></div><div class="line"><span class="comment"># 所以也是在cluster2中重新启动NameNode</span></div><div class="line">hadoop-daemon.sh start namenode</div></pre></td></tr></table></figure>
+<h4 id="将cluster1这个虚拟机关机"><a href="#将cluster1这个虚拟机关机" class="headerlink" title="将cluster1这个虚拟机关机"></a>将cluster1这个虚拟机关机</h4><p>现在是cluster1为active,,cluster2至少要等30s才能切换.<br>然后重新启动cluster1之后执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hadoop-daemon.sh start zkfc</div><div class="line">hadoop-daemon.sh start namenode</div></pre></td></tr></table></figure>
+<h4 id="手动切换-但不推荐使用"><a href="#手动切换-但不推荐使用" class="headerlink" title="手动切换,但不推荐使用"></a>手动切换,但不推荐使用</h4><p>现在cluster2是active,在cluster1中执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hdfs haadmin -transitionToStandby nn2 --forcemanual</div><div class="line"><span class="comment"># namenode的状态</span></div><div class="line">hdfs haadmin -getServiceState nn2 <span class="comment"># standby</span></div></pre></td></tr></table></figure>
+<pre><code>查看Yarn状态
+</code></pre><p>在zookeeper1-3的随便一台在执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">zkCli.sh</div><div class="line">get /yarn-leader-election/yrc/ActiveBreadCrumb </div><div class="line"><span class="comment"># yrcrm1表明rm1(cluster3)是运行状态</span></div></pre></td></tr></table></figure></p>
+<p>也可以通过访问:<br>YARN:<a href="http://cluster3:8088" target="_blank" rel="external">http://cluster3:8088</a><br>YARN:<a href="http://cluster4:8088" target="_blank" rel="external">http://cluster4:8088</a><br>会自动跳转到运行状态的地址上</p>
+<pre><code>Yarn的HA测试
+</code></pre><p>我的是cluster3是active,在cluster4在执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hadoop jar hadoop-2.8.1/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.8.1.jar pi 5 5</div></pre></td></tr></table></figure></p>
+<p>在cluster3在杀死ResourceManager进程</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#重启启动 resourcemanager</span></div><div class="line">yarn-daemon.sh start resourcemanager</div></pre></td></tr></table></figure>
+<p>Yarn的HA不像HDFS的YA一样,YARN正在跑的程序突然中断则意味着程序的失败</p>
+<h3 id="动态增加DataNode节点和数量管理"><a href="#动态增加DataNode节点和数量管理" class="headerlink" title="动态增加DataNode节点和数量管理"></a>动态增加DataNode节点和数量管理</h3><p>在zookeeper3中kill掉datanode进程<br>再查看<a href="http://cluster1:50070的Live" target="_blank" rel="external">http://cluster1:50070的Live</a> Nodes数量,则会显示Live NOdes:2,Dead NOdes:1,block副本不会变多</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 在zookeeper1-3中</span></div><div class="line">vim /root/hadoop-2.8.1/tmp/dfs/data/current/VERSION</div><div class="line"><span class="comment"># 是由clusterID的决定这个datanode是否在同一个集群上</span></div></pre></td></tr></table></figure>
+<p>新加一个datanode节点,只需要hadoop包，然后启动datanode就行了</p>
+<p>clone一台zookeeper1的名为zookeeper4,并在zookeeper4运行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># zookeeper4 192.168.1.228 jdk,hadoop,zookeeper zookeeper journalnode datanode nodemanager </span></div><div class="line"><span class="comment"># vim /etc/sysconfig/network-scripts/ifcfg-enp0s3 # 为228 service network restart</span></div><div class="line">    rm -rf /root/hadoop-2.8.1/tmp</div><div class="line">    <span class="built_in">echo</span> <span class="string">"192.168.1.228 zookeeper4"</span>&gt;&gt; /etc/hosts</div><div class="line">    <span class="built_in">echo</span> <span class="string">"zookeeper4"</span>&gt;&gt; /root/hadoop-2.8.1/etc/hadoop/slaves </div><div class="line">    scp /etc/hosts root@cluster1:/etc/hosts</div><div class="line">    scp /etc/hosts root@cluster2:/etc/hosts</div><div class="line">    scp /etc/hosts root@cluster3:/etc/hosts</div><div class="line">    scp /etc/hosts root@cluster4:/etc/hosts</div><div class="line">    scp /etc/hosts root@zookeeper1:/etc/hosts</div><div class="line">    scp /etc/hosts root@zookeeper2:/etc/hosts</div><div class="line">    scp /etc/hosts root@zookeeper3:/etc/hosts</div><div class="line">    scp /root/hadoop-2.8.1/etc/hadoop/slaves root@cluster1:/root/hadoop-2.8.1/etc/hadoop/slaves</div><div class="line">    scp /root/hadoop-2.8.1/etc/hadoop/slaves root@cluster2:/root/hadoop-2.8.1/etc/hadoop/slaves</div><div class="line">    scp /root/hadoop-2.8.1/etc/hadoop/slaves root@cluster3:/root/hadoop-2.8.1/etc/hadoop/slaves</div><div class="line">    scp /root/hadoop-2.8.1/etc/hadoop/slaves root@cluster4:/root/hadoop-2.8.1/etc/hadoop/slaves</div><div class="line">    scp /root/hadoop-2.8.1/etc/hadoop/slaves root@zookeeper1:/root/hadoop-2.8.1/etc/hadoop/slaves</div><div class="line">    scp /root/hadoop-2.8.1/etc/hadoop/slaves root@zookeeper2:/root/hadoop-2.8.1/etc/hadoop/slaves</div><div class="line">    scp /root/hadoop-2.8.1/etc/hadoop/slaves root@zookeeper3:/root/hadoop-2.8.1/etc/hadoop/slaves</div><div class="line">    hadoop-daemon.sh start datanode</div><div class="line">    ll /root/hadoop-2.8.1/tmp/dfs/data/current/BP-1937453453-127.0.0.1-1506392610571/current/finalized/subdir0/subdir0</div><div class="line">    <span class="comment"># 会自动将block副本复制到这个节点上,来保存三个副本</span></div><div class="line">    <span class="comment"># 在cluster3,cluster14</span></div><div class="line">    <span class="comment"># yarn-daemon.sh start nodemanager</span></div><div class="line">    <span class="comment"># 在cluster1,cluster12刷新集群节点</span></div><div class="line">    <span class="comment"># hdfs dfsadmin -refreshNodes</span></div></pre></td></tr></table></figure></p>
+<p>现在再将zookeeper3的datanode启动起来<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hadoop-daemon.sh start datanode</div></pre></td></tr></table></figure></p>
+<p>目前将会有四个节点,四个副本,导致了数据的冗余,hadoop会自动的清除掉冗余的数据</p>
 
         
         </div>
@@ -279,7 +323,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/27/hadoop_hive/" data-id="cj81klqzm001107pnjqqhjs0v" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+    <a data-url="https://www.femn.me/2017/09/27/hadoop_cluster/" data-id="cj82uoic8001b06p7c1d99801" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -347,7 +391,156 @@
 
             
     
-        <a href="https://www.femn.me/2017/09/27/hadoop_hive/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/27/hadoop_hive/">Comentarios</a>
+        <a href="https://www.femn.me/2017/09/27/hadoop_cluster/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/27/hadoop_cluster/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-hadoop_hive" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/09/27/hadoop_hive/">hadoop hive(六)</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/09/27/hadoop_hive/">
+            <time datetime="2017-09-27T11:31:15.000Z" itemprop="datePublished">2017-09-27</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/hadoop/">hadoop</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/大数据/">大数据</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>hadoop工具:<a href="https://hive.apache.org" target="_blank" rel="external">hive</a>:它只是一个工具可在任意一个节点安装，和集群没有任何关系,<a href="https://hbase.apache.org/" target="_blank" rel="external">hbase</a></p>
+<img src="/2017/09/27/hadoop_hive/hive.jpg" alt="hive的作用" title="hive的作用">
+<h4 id="安装使用hive"><a href="#安装使用hive" class="headerlink" title="安装使用hive"></a>安装使用hive</h4><pre><code>install mysql 
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># https://dev.mysql.com/downloads/repo/yum/ 查看对应版本</span></div><div class="line">wget https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm</div><div class="line">rpm -ivh mysql57-community-release-el7-9.noarch.rpm</div><div class="line">yum install -y mysql-server</div><div class="line"><span class="built_in">echo</span> <span class="string">"skip-grant-tables"</span> &gt;&gt; /etc/my.cnf </div><div class="line">systemctl start mysqld</div><div class="line">mysql -uroot -proot</div><div class="line">    flush privileges;</div><div class="line">    ALTER USER <span class="string">'root'</span>@<span class="string">'localhost'</span> IDENTIFIED BY <span class="string">'root'</span>;</div><div class="line">sed -i -e <span class="string">'/^skip-grant-tables/d'</span> /etc/my.cnf </div><div class="line">systemctl restart mysqld</div><div class="line">mysql -uroot -proot</div><div class="line">    CREATE DATABASE `hive` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;</div><div class="line">    grant all privileges on *.* to root@localhost identified by <span class="string">'root'</span>;</div><div class="line">    flush privileges;</div></pre></td></tr></table></figure>
+<pre><code>install hive
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /root</div><div class="line">tar -zxvf apache-hive-2.1.1-bin.tar.gz</div><div class="line">mv apache-hive-2.1.1-bin hive</div><div class="line">mv hive hadoop-2.8.1/</div><div class="line"><span class="built_in">cd</span> hadoop-2.8.1/hive/conf/</div><div class="line"><span class="comment"># cp hive-default.xml.template hive-site.xml</span></div><div class="line">cp hive-env.sh.template hive-env.sh</div><div class="line">cp hive-log4j2.properties.template hive-log4j2.properties</div><div class="line">cp hive-exec-log4j2.properties.template hive-exec-log4j2.properties</div><div class="line">vim hive-site.xml</div><div class="line">    &lt;configuration&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;</div><div class="line">        &lt;value&gt;jdbc:mysql://localhost:3306/hive?createDatabaseIfNotExist=<span class="literal">true</span>&amp;amp;useUnicode=<span class="literal">true</span>&amp;amp;characterEncoding=UTF-8&amp;amp;useSSL=<span class="literal">false</span>&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt;</div><div class="line">        &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt;</div><div class="line">        &lt;value&gt;root&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt;</div><div class="line">        &lt;value&gt;root&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;hive.metastore.schema.verification&lt;/name&gt;</div><div class="line">        &lt;value&gt;<span class="literal">false</span>&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;/configuration&gt;</div></pre></td></tr></table></figure>
+<pre><code>hive/lib目录下放mysql.jar
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">scp ./mysql-connector-java-5.1.44-bin.jar root@cluster1:/root/hadoop-2.8.1/hive/lib/</div></pre></td></tr></table></figure>
+<pre><code>配置环境变量
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> <span class="string">"export HIVE_HOME=/root/hadoop-2.8.1/hive"</span> &gt;&gt; ~/.bashrc</div><div class="line"><span class="built_in">echo</span> <span class="string">"export PATH=\$&#123;PATH&#125;:\$&#123;HIVE_HOME&#125;/bin"</span> &gt;&gt; ~/.bashrc</div><div class="line"><span class="built_in">echo</span> <span class="string">"export HIVE_CONF_DIR=\$&#123;HIVE_HOME&#125;/conf"</span> &gt;&gt; ~/.bashrc</div><div class="line"><span class="built_in">source</span> ~/.bashrc</div></pre></td></tr></table></figure>
+<pre><code>启动hive
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 启动三台datanode</span></div><div class="line">zkServer.sh start </div><div class="line">hadoop-daemon.sh start journalnode</div><div class="line"><span class="comment"># 启动start-dfs.sh</span></div><div class="line">start-dfs.sh </div><div class="line"><span class="comment"># hive在第一次登录的时候需要用如下命令初始化    </span></div><div class="line">schematool -dbType mysql -initSchema</div><div class="line"><span class="comment"># 启动hive metastore进程</span></div><div class="line">hive --service metastore &amp; </div><div class="line"><span class="comment"># 运行hive</span></div><div class="line">hive</div></pre></td></tr></table></figure>
+<p>创建一些数据<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">vim /root/d.data</div><div class="line">1 iphone8 64G 8000</div><div class="line">2 iphone7 64G 7000</div><div class="line">3 iphone6 64G 6000</div><div class="line">4 iphone5 64G 5000</div><div class="line">5 iphone4 64G 4000</div></pre></td></tr></table></figure></p>
+<pre><code>hive语法
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">SHOW TABLES;</div><div class="line">create table t_order(id int,name string,container string,price double)</div><div class="line">row format delimited </div><div class="line">fields terminated by <span class="string">' '</span>;</div><div class="line">SHOW TABLES;</div><div class="line"><span class="comment"># 数据本来只那里,只能用来查看</span></div><div class="line"><span class="comment"># 所以不能使用 insert into **</span></div><div class="line"></div><div class="line"><span class="comment"># 向表中加载数据</span></div><div class="line">load data <span class="built_in">local</span> inpath <span class="string">'/root/d.data'</span> into table t_order;</div><div class="line"><span class="comment"># 查看与统计</span></div><div class="line">select * from t_order;</div><div class="line">select count(*) from t_order; <span class="comment"># 执行的MapReduce程序</span></div></pre></td></tr></table></figure>
+<pre><code>通过mysql查看hive上传的时的表的信息
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">user hive;</div><div class="line">show tables;</div><div class="line"><span class="comment"># 记录元数据的表</span></div><div class="line">select * from DBS;</div><div class="line"><span class="comment"># DB_LOCATION_URI: hdfs://ns1/user/hive/warehouse</span></div><div class="line"><span class="comment"># 查看数据库的内容 http://cluster1:50070/explorer.html#/user/hive/warehouse</span></div><div class="line"></div><div class="line"><span class="comment"># 查看在hive中创建的表</span></div><div class="line">select * from TBLS;</div><div class="line"><span class="comment"># 表中的字段</span></div><div class="line">select * from COLUMNS_V2;</div></pre></td></tr></table></figure>
+<p>用hive创建数据库或表就相当于在hdfs中创建目录</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/09/27/hadoop_hive/" data-id="cj82uoicb001f06p783tsoku9" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/09/27/hadoop_hive/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/27/hadoop_hive/">Comments</a>
     
 
         </footer>
@@ -365,7 +558,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/09/25/zookeeper/">zookeeper</a>
+            <a class="article-title" href="/2017/09/25/zookeeper/">zookeeper(五)</a>
         </h1>
     
 
@@ -421,7 +614,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/25/zookeeper/" data-id="cj81klr2d003l07pnhirgo9hg" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+    <a data-url="https://www.femn.me/2017/09/25/zookeeper/" data-id="cj82uoidj003j06p7qzhjts61" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -489,7 +682,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/09/25/zookeeper/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/25/zookeeper/">Comentarios</a>
+        <a href="https://www.femn.me/2017/09/25/zookeeper/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/25/zookeeper/">Comments</a>
     
 
         </footer>
@@ -507,7 +700,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/09/23/hadoop_mapreduce/">hadoop MapReduce</a>
+            <a class="article-title" href="/2017/09/23/hadoop_mapreduce/">hadoop MapReduce Yarn(四)</a>
         </h1>
     
 
@@ -562,7 +755,7 @@
 <p>注意:如果使用jar包运行的话，必须得指定成hdfs的文件系统格式<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">FileInputFormat.setInputPaths(job, <span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/"</span>));</div><div class="line">FileOutputFormat.setOutputPath(job, <span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/wc/output"</span>));</div></pre></td></tr></table></figure></p>
 <p>查看运行的结果<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hadoop fs -cat  hdfs://cluster1:9000/wc/output/part-r-00000</div></pre></td></tr></table></figure></p>
 <h4 id="将信息打印到控制台"><a href="#将信息打印到控制台" class="headerlink" title="将信息打印到控制台"></a>将信息打印到控制台</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> HADOOP_ROOT_LOGGER=DEBUG,console</div></pre></td></tr></table></figure>
-<p>vim flow.txt<br>    13431776451 100 500<br>    12947589034 1000 100000<br>    12935848599 100000 50000000<br>hadoop fs -rm -f -R hdfs://cluster1:9000/*<br>hadoop fs -put flow.txt hdfs://cluster1:9000/<br>hadoop jar flow.jar cn.itcast.hadoop.flowsum.FlowRunner hdfs://cluster1:9000/ hdfs://cluster1:9000/wc/ouput<br>总结MR程序的提交运行模式</p>
+<p>总结MR程序的提交运行模式</p>
 <pre><code>本地模式
 </code></pre><p>在eclipse里面直接运行main方法,不添加mapred-site.xml和yarn-site.xml<br>也会提交给localjobnumber执行,输出输出数据按如下设置保存在对应路径下:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">FileInputFormat.setInputPaths(job, <span class="keyword">new</span> Path(<span class="string">"/"</span>));</div><div class="line">FileOutputFormat.setOutputPath(job, <span class="keyword">new</span> Path(<span class="string">"/wc/output"</span>));</div></pre></td></tr></table></figure></p>
 <pre><code>集群模式运行
@@ -576,7 +769,8 @@
 </ol>
 <p>Map进程数不是由block大小决定的,而是由一个切片(split)对应一个Map进程<br>Map task的并发数量是由切片的数量决定的,有多少个切片就启动多少个Map task</p>
 <p>切片是个逻辑概念,指文件中数据中偏移量范围,block是物理概念<br>切片的具体大小应该根据所处理的文件大小来调整</p>
-<img src="/2017/09/23/hadoop_mapreduce/shuffle.jpg" alt="Shuffle:分组,排序以及各种内存和磁盘缓存机制" title="Shuffle:分组,排序以及各种内存和磁盘缓存机制">
+<img src="/2017/09/23/hadoop_mapreduce/shuffle.jpg" alt="MapReduce,Shuffle:分组,排序以及各种内存和磁盘缓存机制" title="MapReduce,Shuffle:分组,排序以及各种内存和磁盘缓存机制">
+<img src="/2017/09/23/hadoop_mapreduce/yarn.jpg" alt="yarn的资源分配和调度" title="yarn的资源分配和调度">
 
         
         </div>
@@ -587,7 +781,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/23/hadoop_mapreduce/" data-id="cj81klr0k002m07pnn3r0tsu6" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+    <a data-url="https://www.femn.me/2017/09/23/hadoop_mapreduce/" data-id="cj82uoicc001h06p78hk047ai" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -655,173 +849,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/09/23/hadoop_mapreduce/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/23/hadoop_mapreduce/">Comentarios</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-hadoop_MapReduce" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/09/23/hadoop_MapReduce/">hadoop MapReduce</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/09/23/hadoop_MapReduce/">
-            <time datetime="2017-09-23T12:01:15.000Z" itemprop="datePublished">2017-09-23</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/hadoop/">hadoop</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/大数据/">大数据</a>
-    </div>
-
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h4 id="hadoop运行jar包"><a href="#hadoop运行jar包" class="headerlink" title="hadoop运行jar包"></a>hadoop运行jar包</h4><p>运行一个mapreduce程序job(打包成一个jar包)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">hadoop jar </div><div class="line"><span class="built_in">cd</span> /root/hadoop-2.8.1/share/hadoop/mapreduce</div><div class="line"><span class="comment"># 用mapreduce计算圆周率 map的任务数量 每一map的取样数</span></div><div class="line">hadoop jar hadoop-mapreduce-examples-2.8.1.jar pi 5 5</div><div class="line"><span class="comment"># yarn 创建了tmp ,同时mapreduce程序创建了user目录</span></div><div class="line"></div><div class="line"><span class="comment"># 运行计算单词出现的次数</span></div><div class="line"><span class="comment"># wordcount 将此目录下的所有文件进行统计 结果输出到此目录下</span></div><div class="line">vim test.txt</div><div class="line">    hello world</div><div class="line">    hello femn</div><div class="line">    hello leipengkai</div><div class="line">    hello friend</div><div class="line"></div><div class="line">hadoop fs -put test.txt /wordcount/input</div><div class="line">hadoop jar hadoop-mapreduce-examples-2.8.1.jar wordcount \</div><div class="line">    /wordcount/input /wordcount/output</div></pre></td></tr></table></figure></p>
-<h3 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h3><p>处理海量数据的运算, 即使是一个很简单的逻辑,要把它变成分布式运行的程序将会面临很多的其它问题:</p>
-<p>运算代码程序的资源分发和启动程序的环境配置,以及代码分发到哪些datanode上,并且还得监控datanode运行状态是否正常 以及datanode的调试汇总</p>
-<p>解决思路:运算往数据方移动,而不是数据移动到运算这方来.</p>
-<p>MapReduce分成两个步骤去完成业务逻辑:<br>Map逻辑和Reduce逻辑都会在分布在datanode中,先执行Map,再执行Reduce.在Map程序时可高并发执行</p>
-<p>实例代码</p>
-<pre><code>vim WCMAP.java
-</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> cn.itcast.hadoop.wcmapreduce;</div><div class="line"><span class="keyword">import</span> java.io.IOException;</div><div class="line"><span class="keyword">import</span> java.util.StringTokenizer;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.apache.hadoop.io.LongWritable;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.io.Text;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.mapred.OutputCollector;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.Mapper;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.util.StringUtils;</div><div class="line"></div><div class="line"><span class="comment">// 4个泛型中,前两个是指定map输入数据类型,KEY是输入的key类型,</span></div><div class="line"><span class="comment">// VALUEIN是输入的value的类型,后面两个是map输出给reduce的输出数据类型</span></div><div class="line"></div><div class="line"><span class="comment">// 默认情况下,框架传递给我们的map的输入数据中,</span></div><div class="line"><span class="comment">// key是要处理的文本(block)中一行的起始偏移量,这一行的内容作为value</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WCMap</span> <span class="keyword">extends</span> <span class="title">Mapper</span>&lt;<span class="title">LongWritable</span>, <span class="title">Text</span>, <span class="title">Text</span>, <span class="title">LongWritable</span>&gt;</span>&#123;</div><div class="line"><span class="comment">// Long,String,String,Long等内存对象 经过序列化之后再通过网络传递到节点中</span></div><div class="line"><span class="comment">// hadoop实现了自己的序列化机制 去掉多余的java序列化信息	</span></div><div class="line">    </div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> LongWritable one =<span class="keyword">new</span> LongWritable(<span class="number">1</span>);</div><div class="line">    <span class="keyword">private</span> Text word = <span class="keyword">new</span> Text();</div><div class="line">    <span class="comment">// map()框架第每读一行数据就调用一次该方法,</span></div><div class="line">    <span class="comment">// 对节点中的文本处理完所有的map之后才进入reduce</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">map</span><span class="params">(LongWritable key,Text value,Context context)</span></span></div><div class="line"><span class="function">            <span class="keyword">throws</span> IOException, InterruptedException</span>&#123;</div><div class="line">        <span class="comment">// 具体业务逻辑就写在这个方法体中,而且我们业务要处理的数据已经被框架传递进来</span></div><div class="line"><span class="comment">// 在方法的参数中key-value中</span></div><div class="line">        <span class="comment">// key是这一行数据的起始偏移量 value是这一行的文本内容 </span></div><div class="line">        <span class="comment">// context传到reduce的工具不用自己去找节点</span></div><div class="line">        String line = value.toString();</div><div class="line">        <span class="keyword">char</span> split = <span class="string">' '</span>;</div><div class="line">        String[] words =StringUtils.split(line, split);</div><div class="line">        <span class="comment">//</span></div><div class="line">        <span class="comment">//遍历这个单词数组输出为k-v形式 k:单词 v:1</span></div><div class="line">        <span class="keyword">for</span> (String word: words) &#123;</div><div class="line">            context.write(<span class="keyword">new</span> Text(word), <span class="keyword">new</span> LongWritable(<span class="number">1</span>));</div><div class="line">        &#125;</div><div class="line"><span class="comment">//	 StringTokenizer itr = new StringTokenizer(value.toString());</span></div><div class="line"><span class="comment">//	 while(itr.hasMoreTokens()) &#123;</span></div><div class="line"><span class="comment">//		 word.set(itr.nextToken());</span></div><div class="line"><span class="comment">//		 context.write(word, one);</span></div><div class="line"><span class="comment">//		 &#125;</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<pre><code>vim WCReduce.java
-</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> cn.itcast.hadoop.wcmapreduce;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.io.IOException;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.apache.hadoop.io.LongWritable;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.io.Text;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.Reducer;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WCReduce</span> <span class="keyword">extends</span> <span class="title">Reducer</span>&lt;<span class="title">Text</span>, <span class="title">LongWritable</span>, <span class="title">Text</span>, <span class="title">LongWritable</span>&gt; </span>&#123;</div><div class="line">    <span class="comment">// 框架在map处理完之后,将所有的k-v缓存起来,进行分级,然后传递一个组,&lt;k,vs&#123;&#125;&gt;</span></div><div class="line">    <span class="comment">//调用一次reduce方法  &lt;hello,&#123;1,1...&#125;&gt;</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">reduce</span><span class="params">(Text key, Iterable&lt;LongWritable&gt; values,Context context)</span> </span></div><div class="line"><span class="function">                    <span class="keyword">throws</span> IOException, InterruptedException </span>&#123;</div><div class="line">        <span class="comment">// TODO Auto-generated method stub</span></div><div class="line"><span class="comment">//		super.reduce(key, values, context);</span></div><div class="line">        <span class="keyword">long</span> count = <span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span> (LongWritable v:values) &#123;</div><div class="line">            count += v.get();</div><div class="line">        &#125;</div><div class="line">        context.write(key, <span class="keyword">new</span> LongWritable(count));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<pre><code>vim WCRunner.java
-</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> cn.itcast.hadoop.wcmapreduce;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.io.IOException;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.apache.hadoop.conf.Configuration;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.Path;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.io.LongWritable;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.io.Text;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.Job;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.lib.input.FileInputFormat;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;</div><div class="line"></div><div class="line"><span class="comment">//import org.apache.hadoop.mapred.jobcontrol.Job;</span></div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WCRunner</span> </span>&#123;</div><div class="line">    <span class="comment">//用来描述一个特定的作业</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException, InterruptedException </span>&#123;</div><div class="line">        <span class="comment">// TODO Auto-generated method stub</span></div><div class="line">        Configuration conf = <span class="keyword">new</span> Configuration();</div><div class="line">        conf.set(<span class="string">"mapreduce.job.jar"</span>,<span class="string">"/root/wc.jar"</span>);    </div><div class="line">        Job job = Job.getInstance(conf);</div><div class="line"></div><div class="line">        <span class="comment">//设置整个job手忙脚乱的那些类在哪个jar包中</span></div><div class="line">        job.setJarByClass(WCRunner.class);</div><div class="line">        <span class="comment">//该作业使用哪个类作为逻辑处理中的map,哪个作为reduce</span></div><div class="line">        job.setMapperClass(WCMap.class);</div><div class="line">        job.setReducerClass(WCReduce.class);</div><div class="line"></div><div class="line">        <span class="comment">//指定map输出数据类型k-v</span></div><div class="line">        job.setMapOutputKeyClass(Text.class);</div><div class="line">        job.setMapOutputValueClass(LongWritable.class);</div><div class="line"></div><div class="line">        <span class="comment">//指定reduce输出数据类型k-v</span></div><div class="line">        job.setOutputKeyClass(Text.class);</div><div class="line">        job.setOutputValueClass(LongWritable.class);</div><div class="line"></div><div class="line">        <span class="comment">//该作业要处理的数据所在的路径以及输出结果存放路径</span></div><div class="line">        <span class="comment">// hdfs只有一个test.txt文件</span></div><div class="line">        FileInputFormat.setInputPaths(job, <span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/"</span>));</div><div class="line"></div><div class="line">        FileOutputFormat.setOutputPath(job, <span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/wc/output"</span>));</div><div class="line">        </div><div class="line">        <span class="comment">//提交集群运行</span></div><div class="line">        <span class="comment">//yarn机制</span></div><div class="line">        job.waitForCompletion(<span class="keyword">true</span>);</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="在本地测试可以启动Bebug模式-直接在虚拟机下用eclipse运行WCRunner"><a href="#在本地测试可以启动Bebug模式-直接在虚拟机下用eclipse运行WCRunner" class="headerlink" title="在本地测试可以启动Bebug模式,直接在虚拟机下用eclipse运行WCRunner"></a>在本地测试可以启动Bebug模式,直接在虚拟机下用eclipse运行WCRunner</h4><p>注意:如果是eclipse它会自动加载core-site.xml和hdfs-site.xml的配置文件,<br>所以可以写成如下,也是读取hdfs文件系统<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">FileInputFormat.setInputPaths(job, <span class="keyword">new</span> Path(<span class="string">"/"</span>));</div><div class="line">FileOutputFormat.setOutputPath(job, <span class="keyword">new</span> Path(<span class="string">"/wc/output"</span>));</div></pre></td></tr></table></figure></p>
-<p>使用dhfs的话，可以不用启动yarn,只启动dhfs，这时的Mapreduce程序将跑在本机<br>不通过yarn分配</p>
-<p>如果想要yarn分配在Node Manage运行Mapreduce,则在src下加上mapred-site.xml和yarn-site.xml文件<br>并加上如下代码,再运行<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conf.set(<span class="string">"mapreduce.job.jar"</span>,<span class="string">"/root/wc.jar"</span>);</div></pre></td></tr></table></figure></p>
-<p>也可以不用从hdfs中读写文件:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">FileInputFormat.setInputPaths(job, <span class="keyword">new</span> Path(<span class="string">"/root/test.txt"</span>));</div><div class="line">FileOutputFormat.setOutputPath(job, <span class="keyword">new</span> Path(<span class="string">"/root/output"</span>));</div></pre></td></tr></table></figure></p>
-<h4 id="在集群中运行-将将整个项目打包成jar-让hadoop-yarn分发运行Mapreduce程序"><a href="#在集群中运行-将将整个项目打包成jar-让hadoop-yarn分发运行Mapreduce程序" class="headerlink" title="在集群中运行,将将整个项目打包成jar,让hadoop yarn分发运行Mapreduce程序"></a>在集群中运行,将将整个项目打包成jar,让hadoop yarn分发运行Mapreduce程序</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">hadoop fs -rm -f -R hdfs://cluster1:9000/*</div><div class="line">hadoop fs -put test.txt hdfs://cluster1:9000/</div><div class="line">hadoop jar wc.jar cn.itcast.hadoop.wcmapreduce.WCRunner </div><div class="line"><span class="comment"># -Dmapreduce.input.fileinputformat.input.dir.recursive=true</span></div></pre></td></tr></table></figure>
-<p>注意:如果使用jar包运行的话，必须得指定成hdfs的文件系统格式<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">FileInputFormat.setInputPaths(job, <span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/"</span>));</div><div class="line">FileOutputFormat.setOutputPath(job, <span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/wc/output"</span>));</div></pre></td></tr></table></figure></p>
-<p>查看运行的结果<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hadoop fs -cat  hdfs://cluster1:9000/wc/output/part-r-00000</div></pre></td></tr></table></figure></p>
-<h4 id="将信息打印到控制台"><a href="#将信息打印到控制台" class="headerlink" title="将信息打印到控制台"></a>将信息打印到控制台</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> HADOOP_ROOT_LOGGER=DEBUG,console</div></pre></td></tr></table></figure>
-<p>vim flow.txt<br>    13431776451 100 500<br>    12947589034 1000 100000<br>    12935848599 100000 50000000<br>hadoop fs -rm -f -R hdfs://cluster1:9000/*<br>hadoop fs -put flow.txt hdfs://cluster1:9000/<br>hadoop jar flow.jar cn.itcast.hadoop.flowsum.FlowRunner hdfs://cluster1:9000/ hdfs://cluster1:9000/wc/ouput<br>总结MR程序的提交运行模式</p>
-<pre><code>本地模式
-</code></pre><p>在eclipse里面直接运行main方法,不添加mapred-site.xml和yarn-site.xml<br>也会提交给localjobnumber执行,输出输出数据按如下设置保存在对应路径下:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">FileInputFormat.setInputPaths(job, <span class="keyword">new</span> Path(<span class="string">"/"</span>));</div><div class="line">FileOutputFormat.setOutputPath(job, <span class="keyword">new</span> Path(<span class="string">"/wc/output"</span>));</div></pre></td></tr></table></figure></p>
-<pre><code>集群模式运行
-</code></pre><ol>
-<li><p>将项目打成jar包,上传到服务器上，然后用hadoop命令提交:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hadoop jar wc.jar cn.itcast.hadoop.wcmapreduce.WCRunner</div></pre></td></tr></table></figure>
-</li>
-<li><p>在eclipse中运行main,在src下加上mapred-site.xml和yarn-site.xml文件<br>并加上如下代码,再运行</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conf.set(<span class="string">"mapreduce.job.jar"</span>,<span class="string">"/root/wc.jar"</span>);</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>Map进程数不是由block大小决定的,而是由一个切片(split)对应一个Map进程<br>Map task的并发数量是由切片的数量决定的,有多少个切片就启动多少个Map task</p>
-<p>切片是个逻辑概念,指文件中数据中偏移量范围,block是物理概念<br>切片的具体大小应该根据所处理的文件大小来调整</p>
-<p>Shuffle:分组,排序以及各种内存和磁盘缓存机制</p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/09/23/hadoop_MapReduce/" data-id="cj81klqzx001g07pn5f068j08" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/09/23/hadoop_MapReduce/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/23/hadoop_MapReduce/">Comentarios</a>
+        <a href="https://www.femn.me/2017/09/23/hadoop_mapreduce/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/23/hadoop_mapreduce/">Comments</a>
     
 
         </footer>
@@ -839,7 +867,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/09/23/hadoop_RPC/">hadoop RPC</a>
+            <a class="article-title" href="/2017/09/23/hadoop_RPC/">hadoop RPC(三)</a>
         </h1>
     
 
@@ -883,7 +911,8 @@
 </code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> cn.itcast.hadoop.hdfs;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.io.IOException;</div><div class="line"><span class="keyword">import</span> java.net.InetSocketAddress;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.apache.hadoop.conf.Configuration;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.ipc.RPC;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginControl</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        <span class="comment">// TODO Auto-generated method stub</span></div><div class="line">        LoginInter proxy = RPC.getProxy(LoginInter.class, <span class="number">1L</span>,</div><div class="line">         <span class="keyword">new</span> InetSocketAddress(<span class="string">"192.168.1.222"</span>,<span class="number">10000</span>), <span class="keyword">new</span> Configuration());</div><div class="line">        String r = proxy.login(<span class="string">"femn"</span>, <span class="string">"femn"</span>);</div><div class="line">        System.out.println(r);</div><div class="line">        <span class="comment">// 当增加服务器提供服务时,客户端能够感知服务端.</span></div><div class="line">        <span class="comment">// 在不改变的情况下,知道去调用新服务器的服务</span></div><div class="line">        <span class="comment">// 服务调用动态转发和负载均衡的实现,使用zookeeper可以很容易的实现</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <pre><code>service and client
 </code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> cn.itcast.hadoop.hdfs;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">LoginInter</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> versionId=<span class="number">1L</span>;</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">login</span><span class="params">(String username,String passwd)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><img src="https://drive.google.com/file/d/0B9NEWVh_ricqMnp6Z0hvWVQ3dGs/view?usp=sharing" alt="hadoop_RPC"></p>
+<img src="/2017/09/23/hadoop_RPC/RPC.jpg" alt="RPC实现机制" title="RPC实现机制">
+<img src="/2017/09/23/hadoop_RPC/RPC_zookeeper.jpg" alt="zookeeper实现:服务调用动态转发和负载均衡的实现" title="zookeeper实现:服务调用动态转发和负载均衡的实现">
 
         
         </div>
@@ -894,7 +923,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/23/hadoop_RPC/" data-id="cj81klqzr001607pn6spa9cbt" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+    <a data-url="https://www.femn.me/2017/09/23/hadoop_RPC/" data-id="cj82uoic6001906p7bifvxwlb" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -962,7 +991,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/09/23/hadoop_RPC/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/23/hadoop_RPC/">Comentarios</a>
+        <a href="https://www.femn.me/2017/09/23/hadoop_RPC/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/23/hadoop_RPC/">Comments</a>
     
 
         </footer>
@@ -980,7 +1009,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/09/23/hadoop_hdfs/">hadoop HDFS</a>
+            <a class="article-title" href="/2017/09/23/hadoop_hdfs/">hadoop HDFS(二)</a>
         </h1>
     
 
@@ -1015,81 +1044,19 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h4 id="hdfs的shell命令"><a href="#hdfs的shell命令" class="headerlink" title="hdfs的shell命令"></a>hdfs的shell命令</h4><p>/root/hadoop-2.8.1/tmp/dfs/namesecondary/current:保存namenode主机的文件<br>/root/hadoop-2.8.1/tmp/dfs/data/current/BP-992785269-127.0.0.1-1505977526476/current/finalized:保存datanode主机的 block块的地方</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">hadoop fs  <span class="comment"># 帮助命令</span></div><div class="line">hadoop fs -df -h /</div><div class="line">hadoop fs -du -s -h hdfs://cluster1:9000/*</div><div class="line">hadoop fs -rm -f -R hdfs://cluster1:9000/*</div><div class="line"></div><div class="line"><span class="comment"># 上传文件,保存在/root/hadoop-2.8.1/tmp/dfs</span></div><div class="line">hadoop fs -put install_hadoop.sh hdfs://cluster1:9000/</div><div class="line"></div><div class="line"><span class="comment"># 下载 只是权限变了</span></div><div class="line">hadoop fs -get hdfs://cluster1:9000/install_hadoop.sh ./ </div><div class="line"></div><div class="line"><span class="comment"># 创建目录</span></div><div class="line">hadoop fs -mkdir -p /wordcount/input <span class="comment"># 同下</span></div><div class="line">hadoop fs -mkdir -p hdfs://cluster1:9000/wordcount/input</div><div class="line"></div><div class="line"><span class="comment"># 浏览器查看文件</span></div><div class="line">http://192.168.1.222:50070</div><div class="line"><span class="comment"># 通过上面的浏览器--Utilities--Browse the file system就可以看到上传的文件</span></div><div class="line"></div><div class="line"><span class="comment"># 查看目录</span></div><div class="line">hadoop fs -ls /wordcount/output</div><div class="line"><span class="comment"># 查看文件内容</span></div><div class="line">hadoop fs -cat /wordcount/output/part-r-00000</div></pre></td></tr></table></figure>
-<p><img src="https://drive.google.com/file/d/0B9NEWVh_ricqeldhRlNjZTd5aHc/view?usp=sharing" alt="hdfs实现机制"></p>
+            <h4 id="hdfs的shell命令"><a href="#hdfs的shell命令" class="headerlink" title="hdfs的shell命令"></a>hdfs的shell命令</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">hadoop fs  <span class="comment"># 帮助命令</span></div><div class="line">hadoop fs -df -h /</div><div class="line">hadoop fs -du -s -h hdfs://cluster1:9000/*</div><div class="line">hadoop fs -rm -f -R hdfs://cluster1:9000/*</div><div class="line"></div><div class="line"><span class="comment"># 上传文件,保存在/root/hadoop-2.8.1/tmp/dfs</span></div><div class="line">hadoop fs -put install_hadoop.sh hdfs://cluster1:9000/</div><div class="line"></div><div class="line"><span class="comment"># 下载 只是权限变了</span></div><div class="line">hadoop fs -get hdfs://cluster1:9000/install_hadoop.sh ./ </div><div class="line"></div><div class="line"><span class="comment"># 创建目录</span></div><div class="line">hadoop fs -mkdir -p /wordcount/input <span class="comment"># 同下</span></div><div class="line">hadoop fs -mkdir -p hdfs://cluster1:9000/wordcount/input</div><div class="line"></div><div class="line"><span class="comment"># 浏览器查看文件</span></div><div class="line">http://192.168.1.222:50070</div><div class="line"><span class="comment"># 通过上面的浏览器--Utilities--Browse the file system就可以看到上传的文件</span></div><div class="line"></div><div class="line"><span class="comment"># 查看目录</span></div><div class="line">hadoop fs -ls /wordcount/output</div><div class="line"><span class="comment"># 查看文件内容</span></div><div class="line">hadoop fs -cat /wordcount/output/part-r-00000</div></pre></td></tr></table></figure>
+<img src="/2017/09/23/hadoop_hdfs/HDFS.jpg" alt="HDFS实现机制" title="HDFS实现机制">
+<p>/root/hadoop-2.8.1/tmp/dfs/data/current/BP-XX/current/finalized:保存datanode主机的 block块的地方</p>
 <h4 id="java客户端调用HDFS-API"><a href="#java客户端调用HDFS-API" class="headerlink" title="java客户端调用HDFS API"></a>java客户端调用HDFS API</h4><pre><code>安装eclipse,配置所需要的jar包和配置文件
 </code></pre><ol>
 <li>/root/hadoop-2.8.1/share/hadoop/common/下jar包,以及common jar中的依赖包common/bin 的所有jar</li>
 <li>/root/hadoop-2.8.1/share/hadoop/hdfs/下jar包,以及hdfs jar中的依赖包hdfs/bin 的所有jar,以及yarn,mapreduce目录下的</li>
 <li><p>将/root/hadoop-2.8.1/etc下的 core-site.xml和hdfs-site.xml文件放在Project的src目录下</p>
-<p> 代码实现</p>
+<p> <code>代码实现</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> cn.itcast.hadoop.hdfs;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.io.FileInputStream;</div><div class="line"><span class="keyword">import</span> java.io.FileNotFoundException;</div><div class="line"><span class="keyword">import</span> java.io.FileOutputStream;</div><div class="line"><span class="keyword">import</span> java.io.IOException;</div><div class="line"><span class="keyword">import</span> java.net.URI;</div><div class="line"><span class="keyword">import</span> java.net.URISyntaxException;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.apache.commons.compress.utils.IOUtils;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.conf.Configuration;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.FSDataInputStream;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.FSDataOutputStream;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.FileStatus;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.FileSystem;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.LocatedFileStatus;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.Path;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.RemoteIterator;</div><div class="line"><span class="keyword">import</span> org.junit.Before;</div><div class="line"><span class="keyword">import</span> org.junit.Test;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HdfsUtil</span> </span>&#123;</div><div class="line">    </div><div class="line">    FileSystem fs = <span class="keyword">null</span>;</div><div class="line">    </div><div class="line">    <span class="meta">@Before</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> <span class="keyword">throws</span> IOException, InterruptedException, URISyntaxException </span>&#123;</div><div class="line">        Configuration conf = <span class="keyword">new</span> Configuration();</div><div class="line">        conf.set(<span class="string">"fs.defaultFS"</span>, <span class="string">"hdfs://cluster1:9000/"</span>);</div><div class="line">        <span class="comment">// 设置权限</span></div><div class="line">        fs = FileSystem.get(<span class="keyword">new</span> URI(<span class="string">"hdfs://cluster1:9000/"</span>),conf,</div><div class="line">            <span class="string">"root"</span>);</div><div class="line">        <span class="comment">//如果在集群中只需要指定dfs.nameservices的值即可:hdfs://ns1/</span></div><div class="line">        <span class="comment">//fs需要哪些成员才能读写hdfs文件 </span></div><div class="line">        <span class="comment">// fs--&gt;RPCProxy--&gt;NameNode.open(src)</span></div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">download</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        <span class="comment">// input stream</span></div><div class="line">        Path src =<span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/install_hadoop.sh"</span>);</div><div class="line">        FSDataInputStream in =fs.open(src);</div><div class="line">        </div><div class="line">        <span class="comment">//ouput local</span></div><div class="line">        FileOutputStream os= </div><div class="line">            <span class="keyword">new</span> FileOutputStream(<span class="string">"/root/Downloads/install2.sh"</span>);</div><div class="line">        IOUtils.copy(in, os);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">download2</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        fs.copyFromLocalFile(</div><div class="line">                <span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/upload2.txt"</span>),</div><div class="line">                <span class="keyword">new</span> Path(<span class="string">"/root/Downloads/install2.sh"</span>)</div><div class="line">                );</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">upload</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        <span class="comment">// to upload a file to hdfs</span></div><div class="line">        Path dst =<span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/upload.txt"</span>);</div><div class="line">        FSDataOutputStream os =fs.create(dst);</div><div class="line">        </div><div class="line">        FileInputStream in= </div><div class="line">            <span class="keyword">new</span> FileInputStream(<span class="string">"/root/Downloads/install2.sh"</span>);</div><div class="line">        IOUtils.copy(in, os);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">upload2</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        fs.copyFromLocalFile(</div><div class="line">                <span class="keyword">new</span> Path(<span class="string">"/root/Downloads/install2.sh"</span>), </div><div class="line">                <span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/a/b/upload2.txt"</span>));</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    </div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">mkdir</span><span class="params">()</span> <span class="keyword">throws</span> IllegalArgumentException, IOException </span>&#123;</div><div class="line">        </div><div class="line">        fs.mkdirs(<span class="keyword">new</span> Path(<span class="string">"/a/b"</span>));</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rm</span><span class="params">()</span> <span class="keyword">throws</span> IllegalArgumentException, IOException </span>&#123;</div><div class="line">        fs.delete(<span class="keyword">new</span> Path(<span class="string">"/a"</span>),<span class="keyword">true</span>);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">listFiles</span><span class="params">()</span> <span class="keyword">throws</span> FileNotFoundException, IllegalArgumentException, IOException </span>&#123;</div><div class="line">        RemoteIterator&lt;LocatedFileStatus&gt; files = fs.listFiles(<span class="keyword">new</span> Path(<span class="string">"/"</span>), <span class="keyword">true</span>);</div><div class="line">        <span class="keyword">while</span>(files.hasNext()) &#123;</div><div class="line"></div><div class="line">            LocatedFileStatus file = files.next();</div><div class="line">            <span class="comment">//LocatedFileStatus 是通过RPC机制 得到的 fs也是类似</span></div><div class="line">            Path filepath = file.getPath();</div><div class="line">            String fileName = filepath.getName();</div><div class="line">            System.out.println(fileName);</div><div class="line">        &#125;</div><div class="line">        System.out.println(<span class="string">"--------------"</span>);</div><div class="line">        FileStatus[] listStatus = fs.listStatus(<span class="keyword">new</span> Path(<span class="string">"/"</span>));</div><div class="line">        <span class="keyword">for</span>(FileStatus status: listStatus) &#123;</div><div class="line">            String name =status.getPath().getName();</div><div class="line">            System.out.println(name);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 </li>
 </ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> cn.itcast.hadoop.hdfs;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.io.FileInputStream;</div><div class="line"><span class="keyword">import</span> java.io.FileNotFoundException;</div><div class="line"><span class="keyword">import</span> java.io.FileOutputStream;</div><div class="line"><span class="keyword">import</span> java.io.IOException;</div><div class="line"><span class="keyword">import</span> java.net.URI;</div><div class="line"><span class="keyword">import</span> java.net.URISyntaxException;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.apache.commons.compress.utils.IOUtils;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.conf.Configuration;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.FSDataInputStream;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.FSDataOutputStream;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.FileStatus;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.FileSystem;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.LocatedFileStatus;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.Path;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.RemoteIterator;</div><div class="line"><span class="keyword">import</span> org.junit.Before;</div><div class="line"><span class="keyword">import</span> org.junit.Test;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HdfsUtil</span> </span>&#123;</div><div class="line">    </div><div class="line">    FileSystem fs = <span class="keyword">null</span>;</div><div class="line">    </div><div class="line">    <span class="meta">@Before</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> <span class="keyword">throws</span> IOException, InterruptedException, URISyntaxException </span>&#123;</div><div class="line">        Configuration conf = <span class="keyword">new</span> Configuration();</div><div class="line">        conf.set(<span class="string">"fs.defaultFS"</span>, <span class="string">"hdfs://cluster1:9000/"</span>);</div><div class="line">        <span class="comment">// 设置权限</span></div><div class="line">        fs = FileSystem.get(<span class="keyword">new</span> URI(<span class="string">"hdfs://cluster1:9000/"</span>),conf,<span class="string">"root"</span>);</div><div class="line">        <span class="comment">//如果在集群中只需要指定dfs.nameservices的值即可:hdfs://ns1/</span></div><div class="line">        <span class="comment">//fs需要哪些成员才能读写hdfs文件 </span></div><div class="line">        <span class="comment">// fs--&gt;RPCProxy--&gt;NameNode.open(src)</span></div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">download</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        <span class="comment">// input stream</span></div><div class="line">        Path src =<span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/install_hadoop.sh"</span>);</div><div class="line">        FSDataInputStream in =fs.open(src);</div><div class="line">        </div><div class="line">        <span class="comment">//ouput local</span></div><div class="line">        FileOutputStream os= <span class="keyword">new</span> FileOutputStream(<span class="string">"/root/Downloads/install2.sh"</span>);</div><div class="line">        IOUtils.copy(in, os);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">download2</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        fs.copyFromLocalFile(<span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/upload2.txt"</span>),</div><div class="line">                <span class="keyword">new</span> Path(<span class="string">"/root/Downloads/install2.sh"</span>)</div><div class="line">                );</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">upload</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        <span class="comment">// to upload a file to hdfs</span></div><div class="line">        Path dst =<span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/upload.txt"</span>);</div><div class="line">        FSDataOutputStream os =fs.create(dst);</div><div class="line">        </div><div class="line">        FileInputStream in= <span class="keyword">new</span> FileInputStream(<span class="string">"/root/Downloads/install2.sh"</span>);</div><div class="line">        IOUtils.copy(in, os);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">upload2</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        fs.copyFromLocalFile(<span class="keyword">new</span> Path(<span class="string">"/root/Downloads/install2.sh"</span>), </div><div class="line">                <span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/a/b/upload2.txt"</span>));</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    </div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">mkdir</span><span class="params">()</span> <span class="keyword">throws</span> IllegalArgumentException, IOException </span>&#123;</div><div class="line">        </div><div class="line">        fs.mkdirs(<span class="keyword">new</span> Path(<span class="string">"/a/b"</span>));</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rm</span><span class="params">()</span> <span class="keyword">throws</span> IllegalArgumentException, IOException </span>&#123;</div><div class="line">        fs.delete(<span class="keyword">new</span> Path(<span class="string">"/a"</span>),<span class="keyword">true</span>);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">listFiles</span><span class="params">()</span> <span class="keyword">throws</span> FileNotFoundException, IllegalArgumentException, IOException </span>&#123;</div><div class="line">        RemoteIterator&lt;LocatedFileStatus&gt; files = fs.listFiles(<span class="keyword">new</span> Path(<span class="string">"/"</span>), <span class="keyword">true</span>);</div><div class="line">        <span class="keyword">while</span>(files.hasNext()) &#123;</div><div class="line"></div><div class="line">            LocatedFileStatus file = files.next();</div><div class="line">            <span class="comment">//LocatedFileStatus 是通过RPC机制 得到的 fs也是类似</span></div><div class="line">            Path filepath = file.getPath();</div><div class="line">            String fileName = filepath.getName();</div><div class="line">            System.out.println(fileName);</div><div class="line">        &#125;</div><div class="line">        System.out.println(<span class="string">"--------------"</span>);</div><div class="line">        FileStatus[] listStatus = fs.listStatus(<span class="keyword">new</span> Path(<span class="string">"/"</span>));</div><div class="line">        <span class="keyword">for</span>(FileStatus status: listStatus) &#123;</div><div class="line">            String name =status.getPath().getName();</div><div class="line">            System.out.println(name);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h4 id="权限问题"><a href="#权限问题" class="headerlink" title="权限问题"></a>权限问题</h4><p>如果不是在虚拟机上测试的话,会有权限的问题,需要在eclipse的Run Configuration的Arguments中的VM arguments中增加如下信息<br>-DHADOOP_USER_NAME=root</p>
-<p>也可以将hdfs://cluster1:9000/设置为所有人可读写权限</p>
-<p>元数据的可靠性有保证，但hadoop的HA(高可用)不高</p>
-<p>HA高可用的集群搭建</p>
-<ol>
-<li>clone三台之后,修改主机名为zookeeper1,zookeeper2,zookeeper3,修改/etc/hosts</li>
-<li>修改IP /etc/sysconfig/network-scripts/  在的三个IP</li>
-<li>关闭防火墙</li>
-<li>ssh免登陆<br>ssh keygen -t rsa</li>
-<li>安装JDK,配置环境变量</li>
-</ol>
-<p>实际操作<br>7台机器 集群规划<br><img src="https://drive.google.com/file/d/0B9NEWVh_ricqWDVEeXo3aGdvRjQ/view?usp=sharing" alt="集群规划"></p>
-<p>cluster1 192.168.1.221 jdk,hadoop namenode zkfc<br>cluster2 192.168.1.222 jdk,hadoop namenode zkfc<br>cluster3 192.168.1.223 dk,hadoop resourcemanager<br>cluster4 192.168.1.224 jdk,hadoop resourcemanager<br>zookeeper1 192.168.1.225 jdk,hadoop,zookeeper zookeeper journalnode datanode nodemanager<br>zookeeper2 192.168.1.226 jdk,hadoop,zookeeper zookeeper journalnode datanode nodemanager<br>zookeeper3 192.168.1.227 jdk,hadoop,zookeeper zookeeper journalnode datanode nodemanager </p>
-<p>在一台虚拟机上执行如下脚本(cluster1)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl https://file.femnyy.com/file/install_hadoop_true.sh | sudo sh</div></pre></td></tr></table></figure></p>
-<p>前提:修改了<a href="https://www.femn.me/2017/09/20/virtualbox/">网卡设置</a>，网络正常.同时在/root目录下有hadoop-2.8.1.tar.gz，jdk8.tar.gz和zookeeper-3.4.10.tar.gz这三个包</p>
-<p>然后就clone 6台虚拟机,进入开启这6台虚拟机,修改IP,重新启动网络<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">vim /etc/sysconfig/network-scripts/ifcfg-enp0s3</div><div class="line">vim /etc/sysconfig/network-scripts/ifcfg-enp0s8</div><div class="line">service network restart</div><div class="line">ifconfig</div></pre></td></tr></table></figure></p>
-<p>然后在cluster1中执行SSH免密码登陆</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-copy-id cluster1 cluster2 zookeeper1 zookeeper2 zookeeper3</div></pre></td></tr></table></figure>
-<p>在cluster3中执行如下命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-copy-id zookeeper1 zookeeper2 zookeeper3</div></pre></td></tr></table></figure></p>
-<p>在zookeeper2在执行如下命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> 2 &gt; /root/zookeeper-3.4.10/data/myid</div></pre></td></tr></table></figure></p>
-<p>在zookeeper3在执行如下命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span> 3 &gt; /root/zookeeper-3.4.10/data/myid</div></pre></td></tr></table></figure></p>
-<h4 id="环境配置好了之后-一定严格按下面步骤进行操作"><a href="#环境配置好了之后-一定严格按下面步骤进行操作" class="headerlink" title="环境配置好了之后,一定严格按下面步骤进行操作"></a>环境配置好了之后,一定严格按下面步骤进行操作</h4><pre><code>启动zookeeper集群(分别在zookeeper1-3上启动zk)
-</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">zkServer.sh start</div><div class="line"><span class="comment"># 查看状态,一个leader,两个follower</span></div><div class="line">zkServer.sh status</div></pre></td></tr></table></figure>
-<pre><code>启动journalnode(分别在zookeeper1-3上执行)
-</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hadoop-daemon.sh start journalnode</div><div class="line"><span class="comment"># 检验是否有JournalNode进程</span></div><div class="line">jps</div></pre></td></tr></table></figure>
-<pre><code>格式化HDFS 
-</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 在cluster1上执行</span></div><div class="line">hdfs namenode -format</div><div class="line"><span class="comment"># 格式化后会在根据core-site.xml中的hadoop.tmp.dir配置生成个文件,我是设置成/root/hadoop-2.8.1/tmp，然后将这个tmp目录cp到cluster2下</span></div><div class="line">scp -r /root/hadoop-2.8.1/tmp/ root@cluster2:/root/hadoop-2.8.1/</div><div class="line"><span class="comment"># 或者在cluster2执行如下命令,效果也是一样的</span></div><div class="line">hdfs namenode -bootstrapStandby</div></pre></td></tr></table></figure>
-<pre><code>格式化ZKFC(在cluster1上执行即可)
-</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">hdfs zkfc -formatZK</div><div class="line"><span class="comment"># 在zookeeper1在执行,查看建立的数据节点</span></div><div class="line">zkCli.ss </div><div class="line">ls / <span class="comment"># [zookeeper, hadoop-ha]</span></div><div class="line">ls /hadoop-ha <span class="comment"># [ns1]</span></div><div class="line">get /hadoop-ha/ns1 <span class="comment"># 因为没有运行,数据都是空的</span></div><div class="line"></div><div class="line"></div><div class="line">如果改了配置文本想重新启动就不需要再启动上面的内容了,</div><div class="line">比如改了所有虚拟机的hdfs-site.xml文件,只需要在cluster1 stop-dfs.sh 再运行start-dfs.sh就可以了</div><div class="line"></div><div class="line">如是下次重新启动时就启动zk集群和start-dfs.sh和start-yarn.sh,就可以了</div></pre></td></tr></table></figure>
-<pre><code>启动HDFS(在cluster1上执行即可)
-</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">start-dfs.sh</div></pre></td></tr></table></figure>
-<pre><code>启动YARN(在cluster3上执行)
-</code></pre><p>将Namenode和Resourcemanager分开是因为性能问题<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">start-yarn.sh</div></pre></td></tr></table></figure></p>
-<pre><code>启动YARN daemon(在cluster4上执行)
-</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yarn-daemon.sh start resourcemanager</div></pre></td></tr></table></figure>
-<p>访问<br>HDFS: <a href="http://cluster1:50070" target="_blank" rel="external">http://cluster1:50070</a><br>HDFS: <a href="http://cluster2:50070" target="_blank" rel="external">http://cluster2:50070</a><br>YARN: <a href="http://cluster3:8088" target="_blank" rel="external">http://cluster3:8088</a></p>
-<p>改进: dfs.datanode.http.address   datanode的HTTP服务器和端口         50075hdfs-site.xml  0.0.0.0:50075   </p>
-<h3 id="HDFS-HA-测试"><a href="#HDFS-HA-测试" class="headerlink" title="HDFS HA 测试"></a>HDFS HA 测试</h3><pre><code>测试上传
-</code></pre><p>在zookeeper1-3集群中在执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /root/hadoop-2.8.1/tmp/dfs/data/current/BP-xx/current/finalized/</div></pre></td></tr></table></figure></p>
-<p>在cluster1在执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">hadoop fs -put /root/hadoop-2.8.1.tar.gz /</div><div class="line"><span class="comment"># 执行完成后会在zookeeper1-3中 cd subdir0/subdir0/看到两个block块</span></div><div class="line">mkdir 1 &amp;&amp; <span class="built_in">cd</span> 1</div><div class="line">hadoop fs -get /hadoop-2.8.1.tar.gz</div></pre></td></tr></table></figure></p>
-<pre><code>测试namenode切换
-</code></pre><p>HDFS: <a href="http://cluster2:50070知道哪个是active状态,通过jps得到namenode的进程，将其kill,我的是cluster2是active" target="_blank" rel="external">http://cluster2:50070知道哪个是active状态,通过jps得到namenode的进程，将其kill,我的是cluster2是active</a><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#  kill之后,可以再看http://cluster2:50070的和cluster1的状态,成功切换</span></div><div class="line"><span class="comment"># 所以也是在cluster2中重新启动NameNode</span></div><div class="line">hadoop-daemon.sh start namenode</div></pre></td></tr></table></figure></p>
-<p>现在是cluster1为active,然后将cluster1这个虚拟机关机,cluster2至少要等30s才能切换.<br>然后重新启动cluster1之后执行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hadoop-daemon.sh start zkfc</div><div class="line">hadoop-daemon.sh start namenode</div></pre></td></tr></table></figure>
-<p>现在cluster2是active,在cluster1中执行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 也可以成功切换,但不推荐使用</span></div><div class="line">hdfs haadmin -transitionToStandby nn2 --forcemanual</div><div class="line"><span class="comment"># namenode的状态</span></div><div class="line">hdfs haadmin -getServiceState nn2 <span class="comment"># standby</span></div></pre></td></tr></table></figure>
-<pre><code>查看Yarn状态
-</code></pre><p>在zookeeper1-3的随便一台在执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">zkCli.sh</div><div class="line">get /yarn-leader-election/yrc/ActiveBreadCrumb <span class="comment"># yrcrm1表明rm1(cluster3)是运行状态</span></div></pre></td></tr></table></figure></p>
-<p>也可以通过<a href="http://cluster3:8088来查看，会自动跳转到运行状态的地址上" target="_blank" rel="external">http://cluster3:8088来查看，会自动跳转到运行状态的地址上</a></p>
-<pre><code>Yarn的HA测试
-</code></pre><p>在cluster4在执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hadoop jar hadoop-2.8.1/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.8.1.jar pi 5 5</div></pre></td></tr></table></figure></p>
-<p>在cluster3在杀死ResourceManager进程</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#重启启动 resourcemanager</span></div><div class="line">yarn-daemon.sh start resourcemanager</div></pre></td></tr></table></figure>
-<p>Yarn的HA不像HDFS的YA一样,YARN正在跑的程序突然中断则意味着程序的失败</p>
-<pre><code>动态增加DataNode节点和数量管理
-</code></pre><p>在zookeeper3中kill掉datanode进程<br>再查看<a href="http://cluster1:50070的Live" target="_blank" rel="external">http://cluster1:50070的Live</a> Nodes数量,则会显示Live NOdes:2,Dead NOdes:1,block副本不会变多</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 在zookeeper1-3中</span></div><div class="line">vim /root/hadoop-2.8.1/tmp/dfs/data/current/VERSION</div><div class="line"><span class="comment"># 是由clusterID的决定这个datanode是否在同一个集群上</span></div></pre></td></tr></table></figure>
-<p>新加一个datanode节点,只需要hadoop包，然后启动datanode就行了</p>
-<p>clone一台zookeeper1的名为zookeeper4,并在zookeeper4运行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># zookeeper4 192.168.1.228 jdk,hadoop,zookeeper zookeeper journalnode datanode nodemanager </span></div><div class="line"><span class="comment"># vim /etc/sysconfig/network-scripts/ifcfg-enp0s3 # 为228 service network restart</span></div><div class="line">    rm -rf /root/hadoop-2.8.1/tmp</div><div class="line">    <span class="built_in">echo</span> <span class="string">"192.168.1.228 zookeeper4"</span>&gt;&gt; /etc/hosts</div><div class="line">    <span class="built_in">echo</span> <span class="string">"zookeeper4"</span>&gt;&gt; /root/hadoop-2.8.1/etc/hadoop/slaves </div><div class="line">    scp /etc/hosts root@cluster1:/etc/hosts</div><div class="line">    scp /etc/hosts root@cluster2:/etc/hosts</div><div class="line">    scp /etc/hosts root@cluster3:/etc/hosts</div><div class="line">    scp /etc/hosts root@cluster4:/etc/hosts</div><div class="line">    scp /etc/hosts root@zookeeper1:/etc/hosts</div><div class="line">    scp /etc/hosts root@zookeeper2:/etc/hosts</div><div class="line">    scp /etc/hosts root@zookeeper3:/etc/hosts</div><div class="line">    scp /root/hadoop-2.8.1/etc/hadoop/slaves root@cluster1:/root/hadoop-2.8.1/etc/hadoop/slaves</div><div class="line">    scp /root/hadoop-2.8.1/etc/hadoop/slaves root@cluster2:/root/hadoop-2.8.1/etc/hadoop/slaves</div><div class="line">    scp /root/hadoop-2.8.1/etc/hadoop/slaves root@cluster3:/root/hadoop-2.8.1/etc/hadoop/slaves</div><div class="line">    scp /root/hadoop-2.8.1/etc/hadoop/slaves root@cluster4:/root/hadoop-2.8.1/etc/hadoop/slaves</div><div class="line">    scp /root/hadoop-2.8.1/etc/hadoop/slaves root@zookeeper1:/root/hadoop-2.8.1/etc/hadoop/slaves</div><div class="line">    scp /root/hadoop-2.8.1/etc/hadoop/slaves root@zookeeper2:/root/hadoop-2.8.1/etc/hadoop/slaves</div><div class="line">    scp /root/hadoop-2.8.1/etc/hadoop/slaves root@zookeeper3:/root/hadoop-2.8.1/etc/hadoop/slaves</div><div class="line">    hadoop-daemon.sh start datanode</div><div class="line">    ll /root/hadoop-2.8.1/tmp/dfs/data/current/BP-1937453453-127.0.0.1-1506392610571/current/finalized/subdir0/subdir0</div><div class="line">    <span class="comment"># 会自动将block副本复制到这个节点上,来保存三个副本</span></div></pre></td></tr></table></figure></p>
-<p>不需要下面的操作<br>在cluster3,cluster14<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yarn-daemon.sh start nodemanager</div></pre></td></tr></table></figure></p>
-<p>在cluster1,cluster12刷新集群节点<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hdfs dfsadmin -refreshNodes</div></pre></td></tr></table></figure></p>
-<p>现在再将zookeeper3的datanode启动起来<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hadoop-daemon.sh start datanode</div></pre></td></tr></table></figure></p>
-<p>目前将会有四个节点,四个副本,导致了数据的冗余,hadoop会自动的清除掉冗余的数据</p>
 
         
         </div>
@@ -1100,7 +1067,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/23/hadoop_hdfs/" data-id="cj81klqzo001407pnzbyf7prx" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+    <a data-url="https://www.femn.me/2017/09/23/hadoop_hdfs/" data-id="cj82uoich001r06p7fld1cmx4" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1168,7 +1135,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/09/23/hadoop_hdfs/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/23/hadoop_hdfs/">Comentarios</a>
+        <a href="https://www.femn.me/2017/09/23/hadoop_hdfs/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/23/hadoop_hdfs/">Comments</a>
     
 
         </footer>
@@ -1186,7 +1153,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/09/23/hadoop/">hadoop简介</a>
+            <a class="article-title" href="/2017/09/23/hadoop/">hadoop简介与安装(一)</a>
         </h1>
     
 
@@ -1221,16 +1188,21 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h4 id="介绍hadoop"><a href="#介绍hadoop" class="headerlink" title="介绍hadoop"></a>介绍hadoop</h4><p>在海量数据的场景下,为了解决分布式部署中的公共问题一些框架就出现了hadoop,zookeeper<br>hadoop:由很多的技术框架组成的一个生态系统.它是一个上层的应用软件(java编写的)<br>不关是用来做海量数据储存的,因为在解决海量数据的处理中,解决了一些很共同的问题,把解决这些的方法抽离出来,形成各种各样的框架.将这些框架单独拿出来也可以在项目中使用.</p>
-<p>hadoop解决问题:<br>海量数据的存储(HDFS):分布式集群的文件系统,区别本机的文件系统</p>
-<p>海量数据的分析(运算模型)(MapReduce:分析运算的模型,自己写运算逻辑(程序),写出来的就是MapReduce程序,给YARM运行),spark,storm,hive程序<br>Map程序:在不同节点并发运行<br>Reduce程序:全局处理,只在一同节点上运行,通过网络取得Map程序的结果.分组统计时,Reduce也可以有多个</p>
-<p>MapReduce:擅长海量离线日志分析<br>spark:实时的迭代运算<br>storm:实时的流计算</p>
-<p>资源管理调度(YARN):集群</p>
-<h4 id="安装hadoop"><a href="#安装hadoop" class="headerlink" title="安装hadoop:"></a>安装hadoop:</h4><p>集群的安装是很繁琐的事,Cloudera这个公司开发的安装系统(脚本)之后,只需要在一个节点,在浏览器中打开Cloudera,然后选择你所需要的服务,点确定之后,所以的程序包自动下载并安装好,同时还提供对集群的管理监控</p>
-<p>但个人还是使用apache官方的hadoop,伪分布式部署</p>
-<pre><code>centos7 + hadoop.2.8.1 + virtualbox5
-</code></pre><p><a href="https://www.femn.me/2017/09/20/virtualbox/">virtualbox5配置</a><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl https://file.femnyy.com/file/install_hadoop.sh | sudo sh</div></pre></td></tr></table></figure></p>
-<pre><code>注意:此脚本是在/root目录下执行,并且请在此目录提前下载好hadoop-2.8.1.tar.gz,之后的操作也是root用户操作
+            <h4 id="介绍hadoop"><a href="#介绍hadoop" class="headerlink" title="介绍hadoop"></a>介绍hadoop</h4><p>在海量数据的场景下,为了解决分布式部署中的公共问题一些框架就出现了hadoop,zookeeper<br>hadoop:由很多的技术框架组成的一个生态系统.它是一个上层的应用软件(java编写的)<br>不关是用来做海量数据储存的,因为在解决海量数据的处理中,解决了一些分布式很共同的问题,把解决这些的方法抽离出来,形成各种各样的框架.将这些框架单独拿出来也可以在项目中使用.</p>
+<p>hadoop三个主要框架:</p>
+<h4 id="海量数据的存储-HDFS-分布式集群的文件系统-区别本机的文件系统"><a href="#海量数据的存储-HDFS-分布式集群的文件系统-区别本机的文件系统" class="headerlink" title="海量数据的存储(HDFS):分布式集群的文件系统,区别本机的文件系统"></a>海量数据的存储(HDFS):分布式集群的文件系统,区别本机的文件系统</h4><h4 id="海量数据的分析-运算模型-MapReduce-分析运算的模型-自己写运算逻辑-程序-写出来的就是MapReduce程序-通过YARM分配到节点之后运行MapReduce程序"><a href="#海量数据的分析-运算模型-MapReduce-分析运算的模型-自己写运算逻辑-程序-写出来的就是MapReduce程序-通过YARM分配到节点之后运行MapReduce程序" class="headerlink" title="海量数据的分析(运算模型)(MapReduce):分析运算的模型,自己写运算逻辑(程序),写出来的就是MapReduce程序,通过YARM分配到节点之后运行MapReduce程序"></a>海量数据的分析(运算模型)(MapReduce):分析运算的模型,自己写运算逻辑(程序),写出来的就是MapReduce程序,通过YARM分配到节点之后运行MapReduce程序</h4><p>Map程序:在不同节点并发运行<br>Reduce程序:全局处理,只在一同节点上运行,通过网络取得Map程序的结果.在分组统计时,Reduce也可以有多个</p>
+<p>MAPREDUCE:可由hive工具编写<br>MapReduce:擅长海量离线日志分析<br>spark:实时的迭代运算<br>storm:实时的流计算</p>
+<h4 id="资源管理调度-YARN-集群"><a href="#资源管理调度-YARN-集群" class="headerlink" title="资源管理调度(YARN):集群"></a>资源管理调度(YARN):集群</h4><h4 id="安装hadoop"><a href="#安装hadoop" class="headerlink" title="安装hadoop:"></a>安装hadoop:</h4><p>集群的安装是很繁琐的事,Cloudera这个公司开发的安装系统(脚本)之后,只需要在一个节点,在浏览器中打开Cloudera,然后选择你所需要的服务,点确定之后,所以的程序包自动下载并安装好,同时还提供对集群的管理监控</p>
+<p>但个人还是使用apache官方的hadoop</p>
+<pre><code>环境为: centos7 + hadoop.2.8.1 + virtualbox5 + jdk8
+</code></pre><p>前提:</p>
+<ol>
+<li><a href="https://www.femn.me/2017/09/20/virtualbox/">virtualbox5网络配置</a>,联网成功</li>
+<li>vim /etc/sysconfig/network-scripts/ifcfg-enp0s3 设置IP为192.168.1.222,并重启network</li>
+<li>在/root目录下执行如下脚本,并且请在此目录提前下载好hadoop-2.8.1.tar.gz</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl https://file.femnyy.com/file/install_hadoop.sh | sudo sh</div></pre></td></tr></table></figure>
+<pre><code>注意:之后的所有操作也是root用户操作
 </code></pre><h4 id="访问-http-192-168-1-222-50070"><a href="#访问-http-192-168-1-222-50070" class="headerlink" title="访问:http://192.168.1.222:50070"></a>访问:<a href="http://192.168.1.222:50070" target="_blank" rel="external">http://192.168.1.222:50070</a></h4><p>巨坑:所有的服务都成功开启,但就是在主机访问不了,关闭了防火墙也不行,弄了半天的virtualbox的网络设置(自认为是没有错的)也不行,没想到居然是配置文件的问题<br><img src="/2017/09/23/hadoop/error1.png" alt="配置文件的巨坑" title="配置文件的巨坑"></p>
 <h4 id="centos-7启动图形界面"><a href="#centos-7启动图形界面" class="headerlink" title="centos 7启动图形界面"></a>centos 7启动图形界面</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 方法一</span></div><div class="line">yum group list</div><div class="line">yum group install <span class="string">"GNOME Desktop"</span></div><div class="line">startx</div><div class="line"><span class="comment"># 当重新启动时执行,就可以进入系统了</span></div><div class="line"><span class="comment"># You might have to hit 1, then 2 to agree to the license, then C to continue.</span></div><div class="line">1--2--c--yes</div><div class="line"></div><div class="line"><span class="comment"># yum group install "GNOME Desktop" "Graphical Administration Tools"</span></div><div class="line"><span class="comment"># 开机时自动就是设置图形界面</span></div><div class="line"><span class="comment"># ln -sf /lib/systemd/system/runlevel5.target /etc/systemd/system/default.target </span></div><div class="line"><span class="comment"># reboot</span></div><div class="line"></div><div class="line"><span class="comment"># 方法二</span></div><div class="line">init 5</div></pre></td></tr></table></figure>
 
@@ -1243,7 +1215,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/23/hadoop/" data-id="cj81klqzk000y07pn77xyg3xr" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+    <a data-url="https://www.femn.me/2017/09/23/hadoop/" data-id="cj82uoidf003a06p7k2u71vkz" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1311,7 +1283,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/09/23/hadoop/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/23/hadoop/">Comentarios</a>
+        <a href="https://www.femn.me/2017/09/23/hadoop/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/23/hadoop/">Comments</a>
     
 
         </footer>
@@ -1365,14 +1337,16 @@
 <li>从主机,从虚拟机都可以访问internet (NET 模式)</li>
 </ol>
 <h3 id="具体操作"><a href="#具体操作" class="headerlink" title="具体操作"></a>具体操作</h3><p><code>在Virtualbox中设置全局变量的 Host-only Networks</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">打开Virtualbox--任务栏--File--Preferences--Network--Host-only Networks</div></pre></td></tr></table></figure></p>
-<p><img src="https://drive.google.com/file/d/0B9NEWVh_ricqa1RRSnBCbWgwR1k/view?usp=sharing" alt="如图"><br><code>配置虚拟机的网卡</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">选择一个虚拟机--Settings--Network--&gt;设置三个网卡</div></pre></td></tr></table></figure></p>
-<p><img src="https://drive.google.com/file/d/0B9NEWVh_ricqTWI2OTU2dnQ1aFE/view?usp=sharing" alt="如图"></p>
+ <img src="/2017/09/20/virtualbox/host-only.jpg" alt="Virtualbox的host-only设置" title="Virtualbox的host-only设置">
+<p><code>配置虚拟机的网卡</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">选择一个虚拟机--Settings--Network--&gt;设置三个网卡</div></pre></td></tr></table></figure></p>
+<img src="/2017/09/20/virtualbox/network.jpg" alt="Virtualbox三个网卡的设置" title="Virtualbox三个网卡的设置">
 <p><code>保存,启动虚拟机,安装系统</code><br><code>进入虚拟机内部配置网卡</code></p>
 <p>修改静态IP,与主机同一个网段,实现主机与虚拟机的通信<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">vi /etc/sysconfig/network-scripts/ifcfg-enp0s3 </div><div class="line">    BOOTPROTO=static</div><div class="line">    ONBOOT=yes</div><div class="line">    IPADDR=192.168.1.220</div><div class="line">    PREFIX=24</div><div class="line">    BROADCAST=192.168.1.255</div></pre></td></tr></table></figure></p>
 <p>修改静态IP,与虚拟机同一个网段,实现虚拟机之间的通信<br>注意:虚拟机内网我们选择 192.168.0. 这个网段<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">vi /etc/sysconfig/network-scripts/ifcfg-enp0s8</div><div class="line">    BOOTPROTO=static</div><div class="line">    ONBOOT=yes</div><div class="line">    IPADDR=192.168.0.2</div><div class="line">    PREFIX=24</div></pre></td></tr></table></figure></p>
 <p>实现连接internet<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">vi /etc/sysconfig/network-scripts/ifcfg-enp0s9</div><div class="line">    ONBOOT=yes</div></pre></td></tr></table></figure></p>
 <p>重新启动网络<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service network restart</div></pre></td></tr></table></figure></p>
-<p>或者使用些脚本来配置这三个网卡的信息,如果有错误请重新启动虚拟机就可以了<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl https://file.femnyy.com/file/centos7_net.sh |sudo sh</div></pre></td></tr></table></figure></p>
+<p><code>或者使用如下脚本来配置这三个网卡的信息,如果有错误请重新启动虚拟机就可以了</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl https://file.femnyy.com/file/centos7_net.sh |sudo sh</div></pre></td></tr></table></figure></p>
+<p>注意:此脚本的host-only为192.168.1.221网段,internal为192.168.0.221网段</p>
 <p><code>关机保存上面的配置好的虚拟机</code><br><code>clone虚拟机,然后进入clone后的虚拟机,修改如下配置及可</code></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 设置一个没有使用的IP</span></div><div class="line">vi /etc/sysconfig/network-scripts/ifcfg-enp0s3 </div><div class="line">    IPADDR=192.168.1.220</div><div class="line"><span class="comment"># 设置一个新的内网IP    </span></div><div class="line">vi /etc/sysconfig/network-scripts/ifcfg-enp0s8</div><div class="line">    IPADDR=192.168.0.2</div><div class="line"><span class="comment"># 因为internet的网络设置是DHCP,所以不用配置</span></div></pre></td></tr></table></figure>
 
@@ -1385,7 +1359,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/20/virtualbox/" data-id="cj81klr2i003q07pnqrmevgom" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+    <a data-url="https://www.femn.me/2017/09/20/virtualbox/" data-id="cj82uoidq003r06p73397j3qy" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1453,7 +1427,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/09/20/virtualbox/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/20/virtualbox/">Comentarios</a>
+        <a href="https://www.femn.me/2017/09/20/virtualbox/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/20/virtualbox/">Comments</a>
     
 
         </footer>
@@ -1522,7 +1496,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/10/内存交换/" data-id="cj81klr0w003307pnehbcysnj" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+    <a data-url="https://www.femn.me/2017/09/10/内存交换/" data-id="cj82uoidg003c06p7w75iam88" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1590,7 +1564,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/09/10/内存交换/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/10/内存交换/">Comentarios</a>
+        <a href="https://www.femn.me/2017/09/10/内存交换/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/10/内存交换/">Comments</a>
     
 
         </footer>
@@ -1662,7 +1636,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/05/MER/" data-id="cj81klqy8000007pn0tpimnak" class="article-share-link"><i class="fa fa-share"></i>Compartir</a>
+    <a data-url="https://www.femn.me/2017/09/05/MER/" data-id="cj82uoib9000606p7lz65rkd5" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1730,7 +1704,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/09/05/MER/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/05/MER/">Comentarios</a>
+        <a href="https://www.femn.me/2017/09/05/MER/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/05/MER/">Comments</a>
     
 
         </footer>
@@ -1741,7 +1715,7 @@
 
 
     <nav id="page-nav">
-        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/">Siguiente  &raquo;</a>
+        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
 </section>
             
@@ -1750,7 +1724,7 @@
    
         
     <div class="widget-wrap">
-        <h3 class="widget-title">Recientes</h3>
+        <h3 class="widget-title">recent</h3>
         <div class="widget">
             <ul id="recent-post" class="no-thumbnail">
                 
@@ -1758,7 +1732,7 @@
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
-                            <p class="item-title"><a href="/2017/09/27/hadoop_hive/" class="title">hadoop hive</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_cluster/" class="title">hadoop HDFS HA高可用的集群搭建部署</a></p>
                             <p class="item-date"><time datetime="2017-09-27T11:41:15.000Z" itemprop="datePublished">2017-09-27</time></p>
                         </div>
                     </li>
@@ -1766,8 +1740,17 @@
                     <li>
                         
                         <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_hive/" class="title">hadoop hive(六)</a></p>
+                            <p class="item-date"><time datetime="2017-09-27T11:31:15.000Z" itemprop="datePublished">2017-09-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
                             <p class="item-category"></p>
-                            <p class="item-title"><a href="/2017/09/25/zookeeper/" class="title">zookeeper</a></p>
+                            <p class="item-title"><a href="/2017/09/25/zookeeper/" class="title">zookeeper(五)</a></p>
                             <p class="item-date"><time datetime="2017-09-25T12:01:15.000Z" itemprop="datePublished">2017-09-25</time></p>
                         </div>
                     </li>
@@ -1776,7 +1759,7 @@
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
-                            <p class="item-title"><a href="/2017/09/23/hadoop_mapreduce/" class="title">hadoop MapReduce</a></p>
+                            <p class="item-title"><a href="/2017/09/23/hadoop_mapreduce/" class="title">hadoop MapReduce Yarn(四)</a></p>
                             <p class="item-date"><time datetime="2017-09-23T12:01:15.000Z" itemprop="datePublished">2017-09-23</time></p>
                         </div>
                     </li>
@@ -1785,16 +1768,7 @@
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
-                            <p class="item-title"><a href="/2017/09/23/hadoop_MapReduce/" class="title">hadoop MapReduce</a></p>
-                            <p class="item-date"><time datetime="2017-09-23T12:01:15.000Z" itemprop="datePublished">2017-09-23</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
-                            <p class="item-title"><a href="/2017/09/23/hadoop_RPC/" class="title">hadoop RPC</a></p>
+                            <p class="item-title"><a href="/2017/09/23/hadoop_RPC/" class="title">hadoop RPC(三)</a></p>
                             <p class="item-date"><time datetime="2017-09-23T11:51:15.000Z" itemprop="datePublished">2017-09-23</time></p>
                         </div>
                     </li>
@@ -1806,7 +1780,7 @@
     
         
     <div class="widget-wrap">
-        <h3 class="widget-title">Categorias</h3>
+        <h3 class="widget-title">categories</h3>
         <div class="widget">
             <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
         </div>
@@ -1815,7 +1789,7 @@
     
         
     <div class="widget-wrap">
-        <h3 class="widget-title">Archivos</h3>
+        <h3 class="widget-title">archives</h3>
         <div class="widget">
             <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">41</span></li></ul>
         </div>
@@ -1824,7 +1798,7 @@
     
         
     <div class="widget-wrap">
-        <h3 class="widget-title">Etiquetas</h3>
+        <h3 class="widget-title">tags</h3>
         <div class="widget">
             <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
         </div>
@@ -1833,7 +1807,7 @@
     
         
     <div class="widget-wrap">
-        <h3 class="widget-title">Nube de etiquetas</h3>
+        <h3 class="widget-title">tag cloud</h3>
         <div class="widget tagcloud">
             <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/大数据/" style="font-size: 20px;">大数据</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/计算机/" style="font-size: 10px;">计算机</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
         </div>
@@ -1842,7 +1816,7 @@
     
         
     <div class="widget-wrap widget-list">
-        <h3 class="widget-title">Links</h3>
+        <h3 class="widget-title">links</h3>
         <div class="widget">
             <ul>
                 
