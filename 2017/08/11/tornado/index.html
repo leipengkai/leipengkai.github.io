@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>tornado | Femn</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="Tornado 是一个Python web框架和异步网络库,起初由 FriendFeed(后该公司被facebook收购,目前tornado由facebook开发维护)开发.由于非阻塞的特性,他在处理Http长连接、websocket等保持连接时间较长的请求时,并发能力很强. Tornado大体上可以被分为4个主要的部分: web框架 (包括创建web应用的 RequestHandler 类,还有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tornado">
+<meta property="og:url" content="https://www.femn.me/2017/08/11/tornado/index.html">
+<meta property="og:site_name" content="Femn">
+<meta property="og:description" content="Tornado 是一个Python web框架和异步网络库,起初由 FriendFeed(后该公司被facebook收购,目前tornado由facebook开发维护)开发.由于非阻塞的特性,他在处理Http长连接、websocket等保持连接时间较长的请求时,并发能力很强. Tornado大体上可以被分为4个主要的部分: web框架 (包括创建web应用的 RequestHandler 类,还有">
+<meta property="og:updated_time" content="2017-10-03T02:14:01.308Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tornado">
+<meta name="twitter:description" content="Tornado 是一个Python web框架和异步网络库,起初由 FriendFeed(后该公司被facebook收购,目前tornado由facebook开发维护)开发.由于非阻塞的特性,他在处理Http长连接、websocket等保持连接时间较长的请求时,并发能力很强. Tornado大体上可以被分为4个主要的部分: web框架 (包括创建web应用的 RequestHandler 类,还有">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="Femn" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/favicon.ico" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Femn</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/tags">Tags</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/4822598_105251_2.jpg" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">Tags</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/4822598_105251_2.jpg" />
+            <h2 id="name">leipengkai</h2>
+            <h3 id="title">Python Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>Shenzhen, China</span>
+            <a id="follow" target="_blank" href="https://github.com/leipengkai/">FOLLOW</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                55
+                <span>posts</span>
+            </div>
+            <div class="article-info-block">
+                5
+                <span>tags</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/leipengkai" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/femnyy" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://www.facebook.com/profile.php?id=100012089717648" target="_blank" title="facebook" class=tooltip>
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://www.instagram.com/leipengkai/" target="_blank" title="instagram" class=tooltip>
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://plus.google.com/108032606311958999451" target="_blank" title="google_plus" class=tooltip>
+                            <i class="fa fa-google_plus"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/atom.xml" target="_blank" title="rss" class=tooltip>
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-tornado" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            tornado
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/11/tornado/">
+            <time datetime="2017-08-11T11:29:40.000Z" itemprop="datePublished">2017-08-11</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>Tornado 是一个Python web框架和异步网络库,起初由 FriendFeed(后该公司被facebook收购,目前tornado由facebook开发维护)开发.由于非阻塞的特性,他在处理Http长连接、websocket等保持连接时间较长的请求时,并发能力很强.</p>
+<p><a href="http://tornado.moelove.info/zh/latest/guide.html" target="_blank" rel="external">Tornado</a>大体上可以被分为4个主要的部分:</p>
+<h4 id="web框架-包括创建web应用的-RequestHandler-类-还有很多其他支持的类"><a href="#web框架-包括创建web应用的-RequestHandler-类-还有很多其他支持的类" class="headerlink" title="web框架 (包括创建web应用的 RequestHandler 类,还有很多其他支持的类)."></a>web框架 (包括创建web应用的 RequestHandler 类,还有很多其他支持的类).</h4><p>tornado是非阻塞式服务器,是实时Web服务的一个理想框架.</p>
+<h5 id="tornado-web-Application类的实例化"><a href="#tornado-web-Application类的实例化" class="headerlink" title="tornado.web.Application类的实例化:"></a>tornado.web.Application类的实例化:</h5><p>传递给Application类<strong>init</strong>方法的最重要的参数是handlers(是一个元组组成的列表,其中每个元组的第一个元素是一个用于匹配的正则表达式,第二个元素是一个RequestHanlder类).它告诉Tornado应该用哪个类来响应请求(如果一个正则表达式包含一个捕获分组(即,正则表达式中的部分被括号括起来),匹配的内容将作为相应HTTP请求的参数传到RequestHandler对象中).settings参数则是对这个app的一些设置.</p>
+<p>一旦Application对象被创建,我们可以将其传递给Tornado的HTTPServer对象,然后使用我们在命令行指定的端口进行监听(通过options对象取出.)最后,在程序准备好接收HTTP请求后,我们创建一个Tornado的IOLoop的实例.<br>一般的web应用是阻塞性质的,也就是说当一个请求被处理时,这个进程就会被挂起直至请求完成.这意味着应用程序被有效的锁定直至处理结束,很明显这在可扩展性上出现了问题.<br>不过,Tornado给了我们更好的方法来处理这种情况.应用程序在等待第一个处理完成的过程中,让I/O循环打开以便服务于其他客户端,直到处理完成时启动一个请求并给予反馈,而不再是等待请求完成的过程中挂起进程.</p>
+<p>Application对象是负责全局配置的,包括映射请求转发给处理程序的路由表.static,template的内容.Application实例中的所有属性,BaseHandler中使用Application实例中的属性,以便所有的Handler都可以使用其属性.</p>
+<h5 id="Tornado的请求处理函数类-当处理一个请求时-Tornado将这个类实例化-并调用与HTTP请求方法所对应的方法-get-post方法"><a href="#Tornado的请求处理函数类-当处理一个请求时-Tornado将这个类实例化-并调用与HTTP请求方法所对应的方法-get-post方法" class="headerlink" title="Tornado的请求处理函数类.当处理一个请求时,Tornado将这个类实例化,并调用与HTTP请求方法所对应的方法(get,post方法)"></a>Tornado的请求处理函数类.当处理一个请求时,Tornado将这个类实例化,并调用与HTTP请求方法所对应的方法(get,post方法)</h5><p>tornado.web.RequestHandler的生命周期是initialize() -&gt; prepare() -&gt; get()/post() -&gt; on_finish()</p>
+<ol>
+<li><p>initialize() 在构造函数后调用,一般用于定义参数,不可异步</p>
+</li>
+<li><p>prepare() 在具体的get()/post()/put()/delete()等执行前调用,一般用于加载登录信息,过滤请求等,可异步</p>
+</li>
+<li><p>get()/post() 处理请求</p>
+</li>
+<li><p>on_finish() 请求后的清理,保存缓存,session等,该方法不能传递任何数据到客户端,所以不能操作cookie,可异步</p>
+</li>
+<li><p>getcurrentuser() 第一次使用实例中的currentuser参数且为None时会调用该方法,因为不能异步,所以需要通过异步来获取的,请写在prepare()中,blogxtg便是在prepare()中异步从redis读取.</p>
+</li>
+</ol>
+<p>RequestHandler类有一系列有用的内建方法,包括get_argument</p>
+<p>RequestHandler的另一个有用的方法是write,它以一个字符串作为函数的参数,并将其写入到HTTP响应中</p>
+<p>Tornado默认实现了几个常用的处理器<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ErrorHandler :生成指定状态码的错误响应.</div><div class="line">RedirectHandler :重定向请求.</div><div class="line">StaticFileHandler :处理静态文件请求.</div><div class="line">FallbackHandler :使可以在Tornado中混合使用其他HTTP服务器.</div></pre></td></tr></table></figure></p>
+<h5 id="其它的Web-模块"><a href="#其它的Web-模块" class="headerlink" title="其它的Web 模块"></a>其它的Web 模块</h5><ol>
+<li><p>escape - XHTML, JSON, URL 的编码/解码方法</p>
+</li>
+<li><p>database - 对 MySQLdb 的简单封装,使其更容易使用</p>
+</li>
+<li><p>template - 基于 Python 的 web 模板系统</p>
+</li>
+<li><p>httpclient - 非阻塞式 HTTP 客户端,它被设计用来和 web 及 httpserver 协同工作</p>
+</li>
+<li><p>auth - 第三方认证的实现(包括 Google OpenID/OAuth、Facebook Platform、Yahoo BBAuth、FriendFeed OpenID/OAuth、Twitter OAuth)</p>
+</li>
+<li><p>locale - 针对本地化和翻译的支持</p>
+</li>
+<li><p>options - 命令行和配置文件解析工具,针对服务器环境做了优化</p>
+</li>
+<li><p>Tornado可以解析URLencoded和multipart结构的POST请求</p>
+</li>
+</ol>
+<h5 id="Tornado模板是被Python表达式和控制语句标记的简单文本文件"><a href="#Tornado模板是被Python表达式和控制语句标记的简单文本文件" class="headerlink" title="Tornado模板是被Python表达式和控制语句标记的简单文本文件"></a>Tornado模板是被Python表达式和控制语句标记的简单文本文件</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Tornado模板是被Python表达式和控制语句标记的简单文本文件.</span></div><div class="line"><span class="comment"># 填充表达式:&#123;&#123;&#125;&#125;,控制流语句&#123;% %&#125;&#123;% end %&#125;</span></div><div class="line"><span class="comment"># 你也可以在你的控制语句块中间使用&#123;% set foo = 'bar' %&#125;来设置变量.</span></div><div class="line"></div><div class="line"><span class="comment"># template_path参数告诉Tornado在哪里寻找模板文件</span></div><div class="line"><span class="comment"># 模板是一个允许你嵌入Python代码片段的HTML文件.</span></div><div class="line"></div><div class="line"><span class="comment"># 在模板中使用参数</span></div><div class="line">&#123;&#123;wood&#125;&#125;</div><div class="line">&#123;% <span class="keyword">for</span> book <span class="keyword">in</span> books %&#125;</div><div class="line">    &lt;li&gt;&#123;&#123; book &#125;&#125;&lt;/li&gt;</div><div class="line">&#123;% end %&#125; &#125;&#125;</div><div class="line"><span class="comment"># 在模板中使用函数</span></div><div class="line"></div><div class="line"><span class="comment"># 渲染模板</span></div><div class="line">self.render(<span class="string">'index.html'</span>)</div><div class="line"><span class="comment"># 这段代码告诉Tornado在templates文件夹下找到一个名为index.html的文件,</span></div><div class="line"><span class="comment"># 读取其中的内容,并且发送给浏览器.</span></div><div class="line"></div><div class="line"><span class="comment"># 继承模板与重写标签</span></div><div class="line">&#123;% extend base.html%&#125;</div><div class="line">&#123;% block body %&#125;重写body block</div><div class="line"><span class="comment"># 子模板不能在block标签定义内容.</span></div></pre></td></tr></table></figure>
+<p>如果你想编写一个可扩展的社交应用、实时分析引擎,或RESTful API,那么简单而强大的Python,以及Tornado正是为你准备的！</p>
+<h5 id="提供静态文件"><a href="#提供静态文件" class="headerlink" title="提供静态文件"></a>提供静态文件</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># static_path参数指定了你应用程序放置静态资源(如图像、CSS文件、JavaScript文件等)的目录</span></div><div class="line">&lt;link rel=<span class="string">"stylesheet"</span> href=<span class="string">"&#123;&#123; static_url("</span>style.css<span class="string">") &#125;&#125;"</span>&gt;</div></pre></td></tr></table></figure>
+<h5 id="模板扩展-模块"><a href="#模板扩展-模块" class="headerlink" title="模板扩展(模块)"></a>模板扩展(模块)</h5><p>大多数站点希望复用像header、footer和布局网格这样的内容.在这一章中,我们将看到如何使用扩展Tornado模板或UI模块完成这一工作.一个拥有样式、布局和header/footer细节的主模版,以及一个处理页面的轻量级的子模板.</p>
+<p>tornado通过extends和block语句支持模板继承,这就让你拥有了编写能够在合适的地方复用的流体模板的控制权和灵活性.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment"># 为了扩展一个已经存在的模板,你只需要在新的模板文件的顶部放上一句</span></div><div class="line"><span class="comment"># &#123;% extends "filename.html" %&#125;.</span></div><div class="line"></div><div class="line"><span class="comment"># 比如,为了在新模板中扩展一个父模板(在这里假设为main.html),你可以这样使用:</span></div><div class="line">&#123;% extends <span class="string">"main.html"</span> %&#125;</div><div class="line"><span class="comment"># 这就使得新文件继承main.html的所有标签,并且覆写为期望的内容.</span></div></pre></td></tr></table></figure>
+<h5 id="UI模块是封装模板中包含的标记、样式以及行为的可复用组件-使模板部分模块化"><a href="#UI模块是封装模板中包含的标记、样式以及行为的可复用组件-使模板部分模块化" class="headerlink" title="UI模块是封装模板中包含的标记、样式以及行为的可复用组件(使模板部分模块化)"></a>UI模块是封装模板中包含的标记、样式以及行为的可复用组件(使模板部分模块化)</h5><p>1.它所定义的元素通常用于多个模板交叉复用或在同一个模板中重复使用</p>
+<p>2.模块本身是一个继承自Tornado的UIModule类的简单Python类,并定义了一个render方法.<br>当一个模板使用 module Foo(…) 标签引用一个模块时,Tornado的模板引擎调用模块的render方法,然后返回一个字符串来替换模板中的模块标签.</p>
+<p>UI模块也可以在渲染后的页面中嵌入自己的JavaScript和CSS文件,或指定额外包含的JavaScript或CSS文件.<br>你可以定义可选的embedded_javascript、embedded_css、javascript_files和css_files方法来实现这一方法<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;% module xsrf_form_html() %&#125;跨网站攻击</div></pre></td></tr></table></figure></p>
+<p>3.一个非常有用的做法是让模块指向一个模板文件而不是在模块类中直接渲染字符串</p>
+<h5 id="Tornado默认会自动转义-escape-模板中的内容-把标签转换为相应的HTML实体-而不会被作为一个HTML元素解释-以免被浏览器执行-防止你的访客进行恶意攻击的"><a href="#Tornado默认会自动转义-escape-模板中的内容-把标签转换为相应的HTML实体-而不会被作为一个HTML元素解释-以免被浏览器执行-防止你的访客进行恶意攻击的" class="headerlink" title="Tornado默认会自动转义(escape)模板中的内容,把标签转换为相应的HTML实体,而不会被作为一个HTML元素解释(以免被浏览器执行).防止你的访客进行恶意攻击的."></a>Tornado默认会自动转义(escape)模板中的内容,把标签转换为相应的HTML实体,而不会被作为一个HTML元素解释(以免被浏览器执行).防止你的访客进行恶意攻击的.</h5><p>举个例子,如果Burt想在footer中使用模板变量设置email联系链接,他将不会得到期望的HTML链接.考虑下面的模板片段:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;% set mailLink = <span class="string">"&lt;a href="</span>mailto:contact@burtsbooks.com<span class="string">"&gt;Contact Us&lt;/a&gt;"</span> %&#125;</div><div class="line">&#123;&#123; mailLink &#125;&#125;<span class="string">'</span></div><div class="line"><span class="string"># 它会在页面源代码中渲染成如下代码:</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">&amp;lt;a href=&amp;quot;mailto:contact@burtsbooks.com&amp;quot;&amp;gt;Contact Us&amp;lt;/a&amp;gt;</span></div><div class="line"><span class="string"># 此时自动转义被运行了,很明显,这无法让人们联系上Burt.</span></div></pre></td></tr></table></figure>
+<p>为了处理这种情况,你可以禁用自动转义,一种方法是在Application构造函数中传递autoescape=None,另一种方法是在每页的基础上修改自动转义行为,如下所示:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">&#123;% autoescape <span class="keyword">None</span> %&#125;</div><div class="line">&#123;&#123; mailLink &#125;&#125;</div><div class="line"><span class="comment"># 这些autoescape块不需要结束标签,并且可以设置xhtml_escape来开启自动转义(默认行为)</span></div><div class="line"><span class="comment"># 或None来关闭.</span></div><div class="line"></div><div class="line"><span class="comment"># 然而,在理想的情况下,你希望保持自动转义开启以便继续防护你的网站.</span></div><div class="line"><span class="comment"># 因此,你可以使用&#123;% raw %&#125;指令来输出不转义的内容.</span></div><div class="line"></div><div class="line">&#123;% raw mailLink %&#125;</div><div class="line"><span class="comment"># 需要特别注意的是,当你使用诸如Tornado的linkify()和xsrf_form_html()函数时</span></div><div class="line"><span class="comment"># 自动转义的设置被改变了.所以如果你希望在前面代码的footer中使用linkify()来包含链接</span></div><div class="line"><span class="comment"># 你可以使用一个&#123;% raw %&#125;块:</span></div><div class="line"></div><div class="line">&#123;% block footer %&#125;</div><div class="line">&lt;p&gt;</div><div class="line">    For more information about our selection, hours <span class="keyword">or</span> events, please email us at</div><div class="line">    &lt;a href="mailto:contact@burtsbooks.com"&gt;contact@burtsbooks.com&lt;/a&gt;.</div><div class="line">&lt;/p&gt;</div><div class="line"></div><div class="line">&lt;p class="small"&gt;</div><div class="line">    Follow us on Facebook at</div><div class="line">    &#123;% raw linkify(<span class="string">"https://fb.me/burtsbooks"</span>, extra_params=<span class="string">'ref=website'</span>) %&#125;.</div><div class="line">    &#123;% apply linkify <span class="keyword">or</span> 自定义方法%&#125; Application中get_template_namespace</div><div class="line">&lt;/p&gt;</div><div class="line">&#123;% end %&#125;</div><div class="line"><span class="comment"># 这样,你可以既利用linkify()简记的好处,又可以保持在其他地方自动转义的好处 &#125;&#125;' &#125;&#125;</span></div></pre></td></tr></table></figure>
+<h4 id="异步网络库-IOLoop-and-IOStream-为HTTP组件提供构建模块-也可以用来实现其他协议"><a href="#异步网络库-IOLoop-and-IOStream-为HTTP组件提供构建模块-也可以用来实现其他协议" class="headerlink" title="异步网络库 (IOLoop and IOStream), 为HTTP组件提供构建模块,也可以用来实现其他协议."></a>异步网络库 (IOLoop and IOStream), 为HTTP组件提供构建模块,也可以用来实现其他协议.</h4><p>实时web功能需要为每个用户提供一个多数时间被闲置的长连接, 在传统的同步web服务器中,这意味着要为每个用户提供一个线程, 当然每个线程的开销都是很昂贵的.</p>
+<p>为了尽量减少并发连接造成的开销,Tornado使用了一种单线程事件循环的方式. 这就意味着所有的应用代码都应该是异步非阻塞的, 因为在同一时间只有一个操作是有效的</p>
+<p>大部分Web应用都是阻塞性质的,也就是说当一个请求被处理时,这个进程就会被挂起直至请求完成.在大多数情况下,Tornado处理的Web请求完成得足够快使得这个问题并不需要被关注.然而,对于那些需要一些时间来完成的操作(像大数据库的请求或外部API),这意味着应用程序被有效的锁定直至处理结束,很明显这在可扩展性上出现了问题.</p>
+<p>Tornado默认在函数处理返回时关闭客户端的连接.在通常情况下,这正是你想要的.但是当我们处理一个需要回调函数的异步请求时,我们需要连接保持开启状态直到回调函数执行完毕.</p>
+<p>tornado.web.asynchronous 装饰器可以用来代替异步处理. 当使用这个装饰器的时候, 响应不会自动发送; 而请求将一直保持开放直到callback调用 RequestHandler.finish</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainHandler</span><span class="params">(tornado.web.RequestHandler)</span>:</span></div><div class="line"><span class="meta">    @tornado.web.asynchronous</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></div><div class="line">        http = tornado.httpclient.AsyncHTTPClient()</div><div class="line">        http.fetch(<span class="string">"http://friendfeed-api.com/v2/feed/bret"</span>,</div><div class="line">                   callback=self.on_response)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_response</span><span class="params">(self, response)</span>:</span></div><div class="line">        <span class="keyword">if</span> response.error: <span class="keyword">raise</span> tornado.web.HTTPError(<span class="number">500</span>)</div><div class="line">        json = tornado.escape.json_decode(response.body)</div><div class="line">        self.write(<span class="string">"Fetched "</span> + str(len(json[<span class="string">"entries"</span>])) + <span class="string">" entries "</span></div><div class="line">                   <span class="string">"from the FriendFeed API"</span>)</div><div class="line">        self.finish()</div></pre></td></tr></table></figure>
+<p>记住当你使用@tornado.web.asynchonous装饰器时,Tornado永远不会自己关闭连接.<br>你必须在你的RequestHandler对象中调用finish方法来显式地告诉Tornado关闭连接.(否则,请求将可能挂起,浏览器可能不会显示我们已经发送给客户端的数据.)</p>
+<p>不过,Tornado给了我们更好的方法来处理这种情况.应用程序在等待第一个处理完成的过程中,让I/O循环打开以便服务于其他客户端,直到处理完成时启动一个请求并给予反馈,而不再是等待请求完成的过程中挂起进程.</p>
+<p>目前非阻塞IO的框架在近几年的web技术中特别火,比如node.js,而tornado依靠底层基于epoll(Linux)或者kqueue(BSD和MAC OSX)的IOLoop实现非阻塞IO,而且经过FriendFeed的实践,已经证明他是绝对优秀可靠的非阻塞IO框架,再加上他协程特性,让基于他的异步代码可以像阻塞多线程框架的同步代码一样易读易维护.</p>
+<h4 id="协程库-tornado-gen-允许异步代码写的像同步代码一样直观-而不用链式回调的方式"><a href="#协程库-tornado-gen-允许异步代码写的像同步代码一样直观-而不用链式回调的方式" class="headerlink" title="协程库 (tornado.gen) 允许异步代码写的像同步代码一样直观,而不用链式回调的方式."></a>协程库 (tornado.gen) 允许异步代码写的像同步代码一样直观,而不用链式回调的方式.</h4><p>tornado.gen模块,可以提供一个更整洁的方式来执行异步请求.</p>
+<p>tornado.gen.Task对象的一个实例,将我们想要的调用和传给该调用函数的参数传递给那个函数.<br>这里,yield的使用返回程序对Tornado的控制,允许在HTTP请求进行中执行其他任务.<br>当HTTP请求完成时,RequestHandler方法在其停止的地方恢复.这种构建的美在于它在请求处理程序中返回HTTP响应,而不是回调函数中</p>
+<p>Tornado的异步功能可以非常方便的创建依赖于缓慢查询或外部服务的Web应用<br>使用 @tornado.gen.coroutine 装饰器是做异步(协程)最简单的方式. 这允许你使用 yield 关键 字执行非阻塞I/O, 并且直到协程返回才发送响应.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainHandler</span><span class="params">(tornado.web.RequestHandler)</span>:</span></div><div class="line"><span class="meta">    @tornado.gen.coroutine</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></div><div class="line">        http = tornado.httpclient.AsyncHTTPClient()</div><div class="line">        response = <span class="keyword">yield</span> http.fetch(<span class="string">"http://friendfeed-api.com/v2/feed/bret"</span>)</div><div class="line">        json = tornado.escape.json_decode(response.body)</div><div class="line">        self.write(<span class="string">"Fetched "</span> + str(len(json[<span class="string">"entries"</span>])) + <span class="string">" entries "</span></div><div class="line">                   <span class="string">"from the FriendFeed API"</span>)</div></pre></td></tr></table></figure>
+<p>协程使用了Python的 yield 关键字代替链式回调来将程序挂起和恢复执行</p>
+<p>调用协程时,几乎所有的情况下, 任何一个调用协程的函数都必须是协程它自身, 并且在 调用的时候使用 yield 关键字</p>
+<h4 id="HTTP的服务端和客户端实现-HTTPServer-and-AsyncHTTPClient"><a href="#HTTP的服务端和客户端实现-HTTPServer-and-AsyncHTTPClient" class="headerlink" title="HTTP的服务端和客户端实现 (HTTPServer and AsyncHTTPClient)."></a>HTTP的服务端和客户端实现 (HTTPServer and AsyncHTTPClient).</h4><p>单线程server<br>tornado不仅仅是一个web framework,他还是一个简易的web server,这让他可以直接作为一个server来接收处理http请求,而不需要依靠wsgi容器.但是这个webserver过于简单,只支持单进程,所以在生产环境中,官方推荐的多进程多主机部署,启动多个tornado server实例分别监听不同端口,在上层通过类似nginx的成熟高效的http server来做负载均衡,将请求转发到合适端口的tornado实例中.<a href="http://www.tornadoweb.org/en/stable/guide/running.html" target="_blank" rel="external">(参考tornado官方文档运行部署篇)</a></p>
+<h5 id="使用Tornado进行长轮询-应该有点-即时通讯IM"><a href="#使用Tornado进行长轮询-应该有点-即时通讯IM" class="headerlink" title="使用Tornado进行长轮询(应该有点 即时通讯IM)"></a>使用Tornado进行长轮询(应该有点 即时通讯IM)</h5><p>Tornado异步架构的另一个优势是它能够轻松处理HTTP长轮询.这是一个处理实时更新的方法,它既可以应用到简单的数字标记通知,也可以实现复杂的多用户聊天室.</p>
+<p>在大多数情况下,你至少希望将结果缓存以便两次相同搜索项的请求不会导致再次向远程API执行完整请求.</p>
+<p>在前端使用像JavaScript这样的工具处理异步应用,让客户端承担更多工作,以提高你应用的扩展性.</p>
+<p>部署提供实时更新的Web应用对于Web程序员而言是一项长期的挑战.更新用户状态、发送新消息提醒、或者任何一个需要在初始文档完成加载后由服务器向浏览器发送消息方法的全局活动.</p>
+<p>所谓的”服务器推送”技术允许Web应用实时发布更新,同时保持合理的资源使用以及确保可预知的扩展.对于一个可行的服务器推送技术而言,它必须在现有的浏览器上表现良好.最流行的技术是让浏览器发起连接来模拟服务器推送更新.这种方式的HTTP连接被称为长轮询或Comet请求.</p>
+<p>长轮询意味着浏览器只需启动一个HTTP请求,其连接的服务器会有意保持开启.浏览器只需要等待更新可用时服务器”推送”响应.当服务器发送响应并关闭连接后,(或者浏览器端客户请求超时),客户端只需打开一个新的连接并等待下一个更新.</p>
+<h5 id="长轮询的好处"><a href="#长轮询的好处" class="headerlink" title="长轮询的好处"></a>长轮询的好处</h5><p>HTTP长轮询的主要吸引力在于其极大地减少了Web服务器的负载.相对于客户端制造大量的短而频繁的请求(以及每次处理HTTP头部产生的开销),服务器端只有当其接收一个初始请求和再次发送响应时处理连接.大部分时间没有新的数据,连接也不会消耗任何处理器资源.</p>
+<p>浏览器兼容性是另一个巨大的好处.任何支持AJAX请求的浏览器都可以执行推送请求.不需要任何浏览器插件或其他附加组件.对比其他服务器端推送技术,HTTP长轮询最终成为了被广泛使用的少数几个可行方案之一.</p>
+<p>我们已经接触过长轮询的一些使用.实际上,前面提到的状态更新、消息通知以及聊天消息都是目前流行的网站功能.像Google Docs这样的站点使用长轮询同步协作,两个人可以同时编辑文档并看到对方的改变.Twitter使用长轮询指示浏览器在新状态更新可用时展示通知.Facebook使用这项技术在其聊天功能中.长轮询如此流行的一个原因是它改善了应用的用户体验:访客不再需要不断地刷新页面来获取最新的内容</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/11/tornado/" data-id="cj8dvpf0i003x07tnqnenyoam" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/11/tornado/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/tornado/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2017/08/14/进程间通信/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    进程间通信(IPC)
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2017/08/11/python-closure/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">python 闭包</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+        <section id="comments">
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+</section>
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">recent</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/28/storm/" class="title">hadoop storm(八)</a></p>
+                            <p class="item-date"><time datetime="2017-09-28T11:41:15.000Z" itemprop="datePublished">2017-09-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/28/hbase/" class="title">hadoop hbase(七)</a></p>
+                            <p class="item-date"><time datetime="2017-09-28T11:31:15.000Z" itemprop="datePublished">2017-09-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_cluster/" class="title">hadoop HDFS HA高可用的集群搭建部署(六)</a></p>
+                            <p class="item-date"><time datetime="2017-09-27T11:41:15.000Z" itemprop="datePublished">2017-09-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_hive/" class="title">hadoop hive(五)</a></p>
+                            <p class="item-date"><time datetime="2017-09-27T11:31:15.000Z" itemprop="datePublished">2017-09-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/09/25/zookeeper/" class="title">zookeeper(五)</a></p>
+                            <p class="item-date"><time datetime="2017-09-25T12:01:15.000Z" itemprop="datePublished">2017-09-25</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">42</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/大数据/" style="font-size: 20px;">大数据</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/计算机/" style="font-size: 10px;">计算机</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+                    <li>
+                        <a href="https://hub.docker.com/">Hub_docker</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 leipengkai<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_config = function () {
+        
+            this.page.url = 'https://www.femn.me/2017/08/11/tornado/';
+        
+        this.page.identifier = 'tornado';
+    };
+    (function() { 
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'femn' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

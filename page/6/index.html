@@ -155,7 +155,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                52
+                55
                 <span>posts</span>
             </div>
             <div class="article-info-block">
@@ -214,6 +214,444 @@
 
             
             <section id="main">
+    <article id="post-pip管理" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/04/pip管理/">pip管理工具</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/04/pip管理/">
+            <time datetime="2017-08-04T08:10:53.000Z" itemprop="datePublished">2017-08-04</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h4 id="分别使用不同python版本-进行安装应用"><a href="#分别使用不同python版本-进行安装应用" class="headerlink" title="分别使用不同python版本 进行安装应用"></a>分别使用不同python版本 进行安装应用</h4><p>install pip 以及普通用户安装包的路径<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo apt install -y python-pip</div><div class="line"><span class="built_in">which</span> pip</div><div class="line">python2.7 -m pip install tornado</div><div class="line">~/.<span class="built_in">local</span>/lib/python2.7/site-packages/tornado</div></pre></td></tr></table></figure></p>
+<p>install pip3 以及普通用户安装包的路径<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo apt install -y python3-pip</div><div class="line"><span class="built_in">which</span> pip3</div><div class="line">python3.5 -m pip install bson</div><div class="line">~/.<span class="built_in">local</span>/lib/python3.5/site-packages/bson</div></pre></td></tr></table></figure></p>
+<p>root用户安装包之后的路径<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo python3.5 -m pip install tornado</div><div class="line">/usr/<span class="built_in">local</span>/lib/python3.5/dist-packages/tornado</div></pre></td></tr></table></figure></p>
+<p>更新pip<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo python2.7 -m pip install -U pip</div><div class="line">sudo pip3 install -U pip</div><div class="line"><span class="comment"># sudo pip install -U pip 更新的还是pip3</span></div></pre></td></tr></table></figure></p>
+<p>一键导出/安装所有安装包列表<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo pip3 freeze &gt; requirements.txt</div><div class="line">sudo pip3 install -U -r requirements.txt</div></pre></td></tr></table></figure></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/04/pip管理/" data-id="cj8dvpeza002p07tn0xm4r82e" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/04/pip管理/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/pip管理/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-linux_firewall" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/04/linux_firewall/">linux防火墙设置</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/04/linux_firewall/">
+            <time datetime="2017-08-04T08:10:53.000Z" itemprop="datePublished">2017-08-04</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/linux/">linux</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h4 id="以在Ubuntu-16-04上为Docker-Swarm配置Linux防火墙为例子"><a href="#以在Ubuntu-16-04上为Docker-Swarm配置Linux防火墙为例子" class="headerlink" title="以在Ubuntu 16.04上为Docker Swarm配置Linux防火墙为例子"></a>以在Ubuntu 16.04上为Docker Swarm配置Linux防火墙为例子</h4><pre><code>介绍
+</code></pre><p>DockerSwarm 是Docker的一项功能,可以很容易地大规模投放Docker窗主机和容器. Docker窗群,或码头集群,该功能是由一个或多个主机Dockerized作为经典的节点,任何数量的工作节点组成.设置这样的系统需要仔细操纵Linux防火墙.</p>
+<p>Docker Swarm正常工作所需的网络端口有:</p>
+<p>TCP端口2376进行安全Docker窗客户端通信.此端口是Docker Machine工作所必需的. Docker机器用于编排Docker主机.<br>TCP端口2377 .此端口用于Docker Swarm或群集的节点之间的通信.它只需要在管理器节点上打开.<br>TCP和UDP端口7946的节点之间的通信(容器网络发现).<br>UDP端口4789的覆盖网络通信(容器入口联网).<br>注意:除了这些端口,端口22 (SSH的流量),并在集群上运行需要提供特定服务的其他端口必须是开放.</p>
+<pre><code>预前准备
+</code></pre><p>设置组成集群的主机,包括至少一个群集管理器和一个群组工作者.您可以按照教程如何提供和管理远程Docker在Ubuntu 16.04Docker主机设置这些.<br>注意:您会注意到命令(在这篇文章中所有的命令)不能与前缀sudo .这是因为它假设您正在使用的登录到服务器docker-machine ssh使用Docker窗机设置后命令.</p>
+<p>在本文中,您将学习如何使用所有Linux发行版上提供的不同防火墙管理应用程序在Ubuntu 16.04上配置Linux防火墙.这些防火墙管理应用程序是FirewallD,IPTables工具和UFW,简单的防火墙. .虽然本教程包含三种方法,每种方法都提供相同的结果,因此您可以选择最熟悉的方法.</p>
+<pre><code>UFW
+</code></pre><p>UFW是Ubuntu发行版上的默认防火墙应用程序,包括Ubuntu 16.04<br>如果你只是设置你的Docker主机,UFW已经安装.您只需要启用和配置它</p>
+<p>在将用作Swarm管理器的节点上执行以下命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ufw allow 22/tcp</div><div class="line">ufw allow 2376/tcp</div><div class="line">ufw allow 2377/tcp</div><div class="line">ufw allow 7946/tcp</div><div class="line">ufw allow 7946/udp</div><div class="line">ufw allow 4789/udp</div></pre></td></tr></table></figure></p>
+<p>之后,重新加载并启用UFW:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ufw reload</div><div class="line">ufw <span class="built_in">enable</span></div></pre></td></tr></table></figure>
+<p>这可能不是必需的,但是在任何时候更改并重新启动防火墙时,都不必重新启动Docker守护程序:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">systemctl restart docker</div></pre></td></tr></table></figure>
+<p>然后在将用作工作线程的每个节点上,执行以下命令:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">ufw allow 22/tcp</div><div class="line">ufw allow 2376/tcp</div><div class="line">ufw allow 7946/tcp </div><div class="line">ufw allow 7946/udp </div><div class="line">ufw allow 4789/udp </div><div class="line">ufw reload</div><div class="line">ufw <span class="built_in">enable</span></div><div class="line">systemctl restart docker</div></pre></td></tr></table></figure>
+<p>关闭防火墙<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ufw <span class="built_in">disable</span></div></pre></td></tr></table></figure></p>
+<pre><code>FirewallD
+</code></pre><p>FirewallD是Fedora,CentOS和基于它们的其他Linux发行版上的默认防火墙应用程序.但FirewallD也可用于其他Linux发行版,包括Ubuntu 16.04.</p>
+<p>如果您选择使用FirewallD而不是UFW,请首先卸载UFW:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">apt-get purge ufw</div><div class="line"><span class="comment"># 然后安装FirewallD:</span></div><div class="line">apt-get install firewalld</div><div class="line">systemctl status firewalld</div><div class="line">systemctl start firewalld</div><div class="line">systemctl <span class="built_in">enable</span> firewalld <span class="comment"># 开机启动</span></div></pre></td></tr></table></figure>
+<p>当开机启动时会生成如下文件:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Created symlink from /etc/systemd/system/dbus-org.fedoraproject.FirewallD1.service</div><div class="line">     to /usr/lib/systemd/system/firewalld.service.</div><div class="line">Created symlink from /etc/systemd/system/basic.target.wants/firewalld.service </div><div class="line">    to /usr/lib/systemd/system/firewalld.service.</div></pre></td></tr></table></figure></p>
+<p>在将是Swarm管理器的节点上,使用以下命令打开必要的端口:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">firewall-cmd --add-port=22/tcp --permanent</div><div class="line">firewall-cmd --add-port=2376/tcp --permanent</div><div class="line">firewall-cmd --add-port=2377/tcp --permanent</div><div class="line">firewall-cmd --add-port=7946/tcp --permanent</div><div class="line">firewall-cmd --add-port=7946/udp --permanent</div><div class="line">firewall-cmd --add-port=4789/udp --permanent</div><div class="line"><span class="comment"># firewall-cmd --permanent --add-service=https</span></div></pre></td></tr></table></figure>
+<p>注意 :如果你犯了一个错误,需要删除的条目,输入<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">firewall-cmd --remove-port=port-number/tcp --permanent</div></pre></td></tr></table></figure></p>
+<p>重新加载防火墙:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">firewall-cmd --reload</div><div class="line"><span class="comment"># 查看防火墙</span></div><div class="line">firewall-cmd --list-all</div><div class="line">vim /etc/firewalld/zones/public.xml</div></pre></td></tr></table></figure></p>
+<p>然后重新启动Docker.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">systemctl restart docker</div></pre></td></tr></table></figure></p>
+<p>然后在将用作Swarm工作程序的每个节点上,执行以下命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">firewall-cmd --add-port=22/tcp --permanent</div><div class="line">firewall-cmd --add-port=2376/tcp --permanent</div><div class="line">firewall-cmd --add-port=7946/tcp --permanent</div><div class="line">firewall-cmd --add-port=7946/udp --permanent</div><div class="line">firewall-cmd --add-port=4789/udp --permanent</div><div class="line">firewall-cmd --reload</div><div class="line">systemctl restart docker</div></pre></td></tr></table></figure></p>
+<p>关闭防火墙<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">systemctl stop firewalld</div><div class="line">systemctl <span class="built_in">disable</span> firewalld</div><div class="line"><span class="comment"># 查看</span></div><div class="line">firewall-cmd --zone=public --query-service=ssh</div></pre></td></tr></table></figure></p>
+<pre><code>IPTables
+</code></pre><p>要在任何Linux发行版上使用IPtables,您必须首先卸载任何其他防火墙实用程序.如果您从FirewallD或UFW切换,请先卸载它们.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">apt-get purge ufw firewalld</div><div class="line">apt-get install iptables-persistent</div></pre></td></tr></table></figure>
+<p>接下来,使用此命令清除所有现有规则:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">netfilter-persistent flush</div></pre></td></tr></table></figure>
+<p>现在,您可以添加使用规则, iptables实用程序.第一组命令应该在将用作Swarm管理器的节点上执行.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">iptables -A INPUT -p tcp --dport 22 -j ACCEPT</div><div class="line">iptables -A INPUT -p tcp --dport 2376 -j ACCEPT</div><div class="line">iptables -A INPUT -p tcp --dport 2377 -j ACCEPT</div><div class="line">iptables -A INPUT -p tcp --dport 7946 -j ACCEPT</div><div class="line">iptables -A INPUT -p udp --dport 7946 -j ACCEPT</div><div class="line">iptables -A INPUT -p udp --dport 4789 -j ACCEPT</div><div class="line"><span class="comment"># 输入所有命令后,将规则保存到磁盘:</span></div><div class="line">netfilter-persistent save</div><div class="line"></div><div class="line"><span class="comment"># 然后重新启动Docker.</span></div><div class="line">sudo systemctl restart docker</div></pre></td></tr></table></figure>
+<p>在将用作Swarm工作程序的节点上,执行以下命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">iptables -A INPUT -p tcp --dport 22 -j ACCEPT</div><div class="line">iptables -A INPUT -p tcp --dport 2376 -j ACCEPT</div><div class="line">iptables -A INPUT -p tcp --dport 7946 -j ACCEPT</div><div class="line">iptables -A INPUT -p udp --dport 7946 -j ACCEPT</div><div class="line">iptables -A INPUT -p udp --dport 4789 -j ACCEPT</div><div class="line">netfilter-persistent save</div><div class="line">sudo systemctl restart docker</div></pre></td></tr></table></figure></p>
+<p>如果您希望在使用此方法后切换到FirewallD或UFW,正确的方法是首先停止防火墙:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">sudo netfilter-persistent stop</div><div class="line"></div><div class="line"><span class="comment"># 然后刷新规则:</span></div><div class="line">sudo netfilter-persistent flush</div><div class="line"></div><div class="line"><span class="comment"># 最后,将现在的空表保存到磁盘:</span></div><div class="line">sudo netfilter-persistent save</div><div class="line"></div><div class="line"><span class="comment"># 然后可以切换到UFW或FirewallD.</span></div></pre></td></tr></table></figure>
+<pre><code>查看开启端口
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 查看本机的端口开启情况 </span></div><div class="line">sudo nmap -sTU localhost</div><div class="line"><span class="comment"># 查看局域网的端口开启情况</span></div><div class="line">sudo nmap -PS 192.168.1.222</div><div class="line"><span class="comment"># 查看远程服务器的端口开启情况</span></div><div class="line">nc -zv 45.76.0.178 22 22334</div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/04/linux_firewall/" data-id="cj8dvpf00003907tntpraxjut" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/04/linux_firewall/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/linux_firewall/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-character_and_encode" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/04/character_and_encode/">字符</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/04/character_and_encode/">
+            <time datetime="2017-08-04T08:10:52.000Z" itemprop="datePublished">2017-08-04</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>信息的存储单位:位(bit)–&gt;字节(Byte=8bit,已经可以表示所有的英语符号)–&gt;字符(char=2Byte)  1K =1024byte 1M = 1024K G T P</p>
+<p>字节是电脑最小的处理单元 一个字节:0x01</p>
+<p>字符:也是一个信息单位,它是各种文字和符号的总称.比如人类 各国看得懂的文字,符号,图形符号,数字.</p>
+<p>字符编码:是指对于字符集中的字符,将其编码为特定的二进制数,以便计算机处理.</p>
+<p>解码:将计算机处理后的二进制信息,转换成人类看得懂的字符.</p>
+<p>字符集和字符编码往往被认为是同文义的概念.ASCII字符编码既表示了字符集也表示了的对应的字符编码.</p>
+<p>ASCII字符集:共有128个字符(美国,本身只需要一个字节),包含显示字符(英文大小写,阿拉伯数字)和控制字符(回车,空格键)</p>
+<p>GB2312字符集:中国标准的简体中文字符集,其中还有一个中国的GBK字符集</p>
+<p>Unicode字符集:世界各国语言中使用到的所有字符.用了4个字节,2个字符.汉字’严’的Unicode编码是十六进制数4E25,转化成二进制有15位</p>
+<p>UTF-8:是一种针对Unicode的可变长度字符编码,它使用一到四个字节来表示字符.ASCII字符继续用一个字节表示.中文可能用到4个字节.</p>
+<p>先来一个关于简单的ASCII字符集,解码和编码的例子<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">a = <span class="number">12</span></div><div class="line">b = oct(a)</div><div class="line">print(b) <span class="comment">#0o14 </span></div><div class="line"><span class="comment"># 为了将整数转换为二进制,八进制或十六进制的文本串,可以分别使用bin(),oct()或hex()</span></div><div class="line"><span class="comment"># 如果你不想输出0b,0o或者0x的前缀的话</span></div><div class="line"><span class="comment"># 可以使用format()函数.比如:format(x, 'b') 'o' 'x'</span></div><div class="line"><span class="comment"># 编码 虽然没有用encode()方法</span></div><div class="line">print([n <span class="keyword">for</span> n <span class="keyword">in</span> <span class="string">b'ahello'</span>])<span class="comment">#[97, 104, 101, 108, 108, 111]</span></div><div class="line"><span class="comment"># 索引和迭代动作返回的是字节的值而不是字节字符串</span></div><div class="line"><span class="comment"># 编码与解码	</span></div><div class="line">print([int(n).to_bytes(<span class="number">1</span>,<span class="string">'big'</span>).decode(<span class="string">'utf-8'</span>) <span class="keyword">for</span> n <span class="keyword">in</span> <span class="string">b'ahello'</span>])</div><div class="line"><span class="comment"># 成功 所以说再次证明 电脑最小的操作单位是字节 ,而不是字节的值这是人看得懂的</span></div><div class="line"><span class="comment"># ['a', 'h', 'e', 'l', 'l', 'o']</span></div></pre></td></tr></table></figure></p>
+<p>中文字符集的例子</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">print(sys.getdefaultencoding())<span class="comment">#utf-8</span></div><div class="line">c =<span class="string">'严'</span>.encode(<span class="string">'utf-8'</span>)<span class="comment">#b'\xe4\xb8\xa5'</span></div><div class="line">print(<span class="string">b'\xe4\xb8\xa5'</span>[<span class="number">0</span>])<span class="comment">#228</span></div><div class="line">print(len(c))<span class="comment"># 3个字节</span></div><div class="line">print(c.decode())<span class="comment"># 严</span></div><div class="line"><span class="comment"># 字节的低位高位排列方式 big从低到高 little从高到低</span></div><div class="line"></div><div class="line"><span class="keyword">from</span> idna <span class="keyword">import</span> unicode</div><div class="line">unicode(<span class="string">b'\xe4\xb8\xa5'</span>,<span class="string">'utf-8'</span>)</div><div class="line"></div><div class="line"><span class="comment"># 解码</span></div><div class="line"><span class="comment"># 多个字节的解码转换出来的 数字不太理解 虽然也是十进制的</span></div><div class="line">print(int().from_bytes(c, <span class="string">'little'</span>)) <span class="comment">#10860772</span></div><div class="line"><span class="comment"># 将字节byte转换为整数 并指定字节顺序</span></div><div class="line">print(int().from_bytes(c, <span class="string">'big'</span>)) <span class="comment"># 14989477</span></div><div class="line">print(<span class="string">'--------------------'</span>) <span class="comment"># 14989477</span></div><div class="line"></div><div class="line"><span class="comment"># 编码</span></div><div class="line">print(int(<span class="number">10860772</span>).to_bytes(<span class="number">3</span>, <span class="string">'little'</span>))</div><div class="line"><span class="comment"># b'\xe4\xb8\xa5'</span></div><div class="line">print(int(<span class="number">14989477</span>).to_bytes(<span class="number">3</span>, <span class="string">'big'</span>).decode(<span class="string">'utf-8'</span>))</div><div class="line"><span class="comment"># b'\xe4\xb8\xa5'</span></div><div class="line"></div><div class="line"><span class="comment"># 为了将一个大整数转换为一个字节字符串,使用 int.to_bytes() 方法</span></div><div class="line"><span class="comment"># 并像下面这样指定字节数和字节顺序</span></div><div class="line">print(int(<span class="number">14989477</span>).to_bytes(<span class="number">3</span>, <span class="string">'big'</span>))</div><div class="line"><span class="comment"># b'\xe4\xb8\xa5'</span></div><div class="line">print(int(<span class="number">14989477</span>).to_bytes(<span class="number">8</span>, <span class="string">'big'</span>))</div><div class="line"><span class="comment"># b'\x00\x00\x00\x00\x00\xe4\xb8\xa5'</span></div></pre></td></tr></table></figure>
+<h3 id="u’’-–-gt-str"><a href="#u’’-–-gt-str" class="headerlink" title="u’’ –&gt; str"></a>u’’ –&gt; str</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">s = <span class="string">'\u6211'</span></div><div class="line">s = s.encode(<span class="string">'utf-8'</span>).strip().decode()</div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/04/character_and_encode/" data-id="cj8dvpexx000v07tncieczk01" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/04/character_and_encode/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/character_and_encode/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-basic_sequence" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -298,7 +736,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/basic_sequence/" data-id="cj82uoibm000m06p7brhtxsuj" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/basic_sequence/" data-id="cj8dvpexn000g07tnydpp24mf" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -428,7 +866,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/01/hello-world/" data-id="cj82uoicd001j06p7kl4p3gsc" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/01/hello-world/" data-id="cj8dvpeyu002107tnm35r6m8p" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -524,7 +962,25 @@
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
-                            <p class="item-title"><a href="/2017/09/27/hadoop_cluster/" class="title">hadoop HDFS HA高可用的集群搭建部署</a></p>
+                            <p class="item-title"><a href="/2017/09/28/storm/" class="title">hadoop storm(八)</a></p>
+                            <p class="item-date"><time datetime="2017-09-28T11:41:15.000Z" itemprop="datePublished">2017-09-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/28/hbase/" class="title">hadoop hbase(七)</a></p>
+                            <p class="item-date"><time datetime="2017-09-28T11:31:15.000Z" itemprop="datePublished">2017-09-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_cluster/" class="title">hadoop HDFS HA高可用的集群搭建部署(六)</a></p>
                             <p class="item-date"><time datetime="2017-09-27T11:41:15.000Z" itemprop="datePublished">2017-09-27</time></p>
                         </div>
                     </li>
@@ -533,7 +989,7 @@
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
-                            <p class="item-title"><a href="/2017/09/27/hadoop_hive/" class="title">hadoop hive(六)</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_hive/" class="title">hadoop hive(五)</a></p>
                             <p class="item-date"><time datetime="2017-09-27T11:31:15.000Z" itemprop="datePublished">2017-09-27</time></p>
                         </div>
                     </li>
@@ -547,24 +1003,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
-                            <p class="item-title"><a href="/2017/09/23/hadoop_mapreduce/" class="title">hadoop MapReduce Yarn(四)</a></p>
-                            <p class="item-date"><time datetime="2017-09-23T12:01:15.000Z" itemprop="datePublished">2017-09-23</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
-                            <p class="item-title"><a href="/2017/09/23/hadoop_RPC/" class="title">hadoop RPC(三)</a></p>
-                            <p class="item-date"><time datetime="2017-09-23T11:51:15.000Z" itemprop="datePublished">2017-09-23</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -574,7 +1012,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -583,7 +1021,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">41</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">42</span></li></ul>
         </div>
     </div>
 
@@ -592,7 +1030,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">tags</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 

@@ -14,7 +14,7 @@
 <meta property="og:description" content="hadoop运行jar包运行一个mapreduce程序job(打包成一个jar包)1234567891011121314151617hadoop jar cd /root/hadoop-2.8.1/share/hadoop/mapreduce# 用mapreduce计算圆周率 map的任务数量 每一map的取样数hadoop jar hadoop-mapreduce-examples-2.8.1.">
 <meta property="og:image" content="https://www.femn.me/2017/09/23/hadoop_mapreduce/shuffle.jpg">
 <meta property="og:image" content="https://www.femn.me/2017/09/23/hadoop_mapreduce/yarn.jpg">
-<meta property="og:updated_time" content="2017-09-27T07:20:56.007Z">
+<meta property="og:updated_time" content="2017-10-03T01:38:50.540Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hadoop MapReduce Yarn(四)">
 <meta name="twitter:description" content="hadoop运行jar包运行一个mapreduce程序job(打包成一个jar包)1234567891011121314151617hadoop jar cd /root/hadoop-2.8.1/share/hadoop/mapreduce# 用mapreduce计算圆周率 map的任务数量 每一map的取样数hadoop jar hadoop-mapreduce-examples-2.8.1.">
@@ -163,7 +163,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                52
+                55
                 <span>posts</span>
             </div>
             <div class="article-info-block">
@@ -277,11 +277,11 @@
 <pre><code>vim WCRunner.java
 </code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> cn.itcast.hadoop.wcmapreduce;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.io.IOException;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.apache.hadoop.conf.Configuration;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.fs.Path;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.io.LongWritable;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.io.Text;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.Job;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.lib.input.FileInputFormat;</div><div class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;</div><div class="line"></div><div class="line"><span class="comment">//import org.apache.hadoop.mapred.jobcontrol.Job;</span></div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WCRunner</span> </span>&#123;</div><div class="line">    <span class="comment">//用来描述一个特定的作业</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException, InterruptedException </span>&#123;</div><div class="line">        <span class="comment">// TODO Auto-generated method stub</span></div><div class="line">        Configuration conf = <span class="keyword">new</span> Configuration();</div><div class="line">        conf.set(<span class="string">"mapreduce.job.jar"</span>,<span class="string">"/root/wc.jar"</span>);    </div><div class="line">        Job job = Job.getInstance(conf);</div><div class="line"></div><div class="line">        <span class="comment">//设置整个job手忙脚乱的那些类在哪个jar包中</span></div><div class="line">        job.setJarByClass(WCRunner.class);</div><div class="line">        <span class="comment">//该作业使用哪个类作为逻辑处理中的map,哪个作为reduce</span></div><div class="line">        job.setMapperClass(WCMap.class);</div><div class="line">        job.setReducerClass(WCReduce.class);</div><div class="line"></div><div class="line">        <span class="comment">//指定map输出数据类型k-v</span></div><div class="line">        job.setMapOutputKeyClass(Text.class);</div><div class="line">        job.setMapOutputValueClass(LongWritable.class);</div><div class="line"></div><div class="line">        <span class="comment">//指定reduce输出数据类型k-v</span></div><div class="line">        job.setOutputKeyClass(Text.class);</div><div class="line">        job.setOutputValueClass(LongWritable.class);</div><div class="line"></div><div class="line">        <span class="comment">//该作业要处理的数据所在的路径以及输出结果存放路径</span></div><div class="line">        <span class="comment">// hdfs只有一个test.txt文件</span></div><div class="line">        FileInputFormat.setInputPaths(job, <span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/"</span>));</div><div class="line"></div><div class="line">        FileOutputFormat.setOutputPath(job, <span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/wc/output"</span>));</div><div class="line">        </div><div class="line">        <span class="comment">//提交集群运行</span></div><div class="line">        <span class="comment">//yarn机制</span></div><div class="line">        job.waitForCompletion(<span class="keyword">true</span>);</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h4 id="在本地测试可以启动Bebug模式-直接在虚拟机下用eclipse运行WCRunner"><a href="#在本地测试可以启动Bebug模式-直接在虚拟机下用eclipse运行WCRunner" class="headerlink" title="在本地测试可以启动Bebug模式,直接在虚拟机下用eclipse运行WCRunner"></a>在本地测试可以启动Bebug模式,直接在虚拟机下用eclipse运行WCRunner</h4><p>注意:如果是eclipse它会自动加载core-site.xml和hdfs-site.xml的配置文件,<br>所以可以写成如下,也是读取hdfs文件系统<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">FileInputFormat.setInputPaths(job, <span class="keyword">new</span> Path(<span class="string">"/"</span>));</div><div class="line">FileOutputFormat.setOutputPath(job, <span class="keyword">new</span> Path(<span class="string">"/wc/output"</span>));</div></pre></td></tr></table></figure></p>
-<p>使用dhfs的话，可以不用启动yarn,只启动dhfs，这时的Mapreduce程序将跑在本机<br>不通过yarn分配</p>
+<p>使用dhfs的话,可以不用启动yarn,只启动dhfs,这时的Mapreduce程序将跑在本机<br>不通过yarn分配</p>
 <p>如果想要yarn分配在Node Manage运行Mapreduce,则在src下加上mapred-site.xml和yarn-site.xml文件<br>并加上如下代码,再运行<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conf.set(<span class="string">"mapreduce.job.jar"</span>,<span class="string">"/root/wc.jar"</span>);</div></pre></td></tr></table></figure></p>
 <p>也可以不用从hdfs中读写文件:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">FileInputFormat.setInputPaths(job, <span class="keyword">new</span> Path(<span class="string">"/root/test.txt"</span>));</div><div class="line">FileOutputFormat.setOutputPath(job, <span class="keyword">new</span> Path(<span class="string">"/root/output"</span>));</div></pre></td></tr></table></figure></p>
 <h4 id="在集群中运行-将将整个项目打包成jar-让hadoop-yarn分发运行Mapreduce程序"><a href="#在集群中运行-将将整个项目打包成jar-让hadoop-yarn分发运行Mapreduce程序" class="headerlink" title="在集群中运行,将将整个项目打包成jar,让hadoop yarn分发运行Mapreduce程序"></a>在集群中运行,将将整个项目打包成jar,让hadoop yarn分发运行Mapreduce程序</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">hadoop fs -rm -f -R hdfs://cluster1:9000/*</div><div class="line">hadoop fs -put test.txt hdfs://cluster1:9000/</div><div class="line">hadoop jar wc.jar cn.itcast.hadoop.wcmapreduce.WCRunner </div><div class="line"><span class="comment"># -Dmapreduce.input.fileinputformat.input.dir.recursive=true</span></div></pre></td></tr></table></figure>
-<p>注意:如果使用jar包运行的话，必须得指定成hdfs的文件系统格式<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">FileInputFormat.setInputPaths(job, <span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/"</span>));</div><div class="line">FileOutputFormat.setOutputPath(job, <span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/wc/output"</span>));</div></pre></td></tr></table></figure></p>
+<p>注意:如果使用jar包运行的话,必须得指定成hdfs的文件系统格式<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">FileInputFormat.setInputPaths(job, <span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/"</span>));</div><div class="line">FileOutputFormat.setOutputPath(job, <span class="keyword">new</span> Path(<span class="string">"hdfs://cluster1:9000/wc/output"</span>));</div></pre></td></tr></table></figure></p>
 <p>查看运行的结果<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hadoop fs -cat  hdfs://cluster1:9000/wc/output/part-r-00000</div></pre></td></tr></table></figure></p>
 <h4 id="将信息打印到控制台"><a href="#将信息打印到控制台" class="headerlink" title="将信息打印到控制台"></a>将信息打印到控制台</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> HADOOP_ROOT_LOGGER=DEBUG,console</div></pre></td></tr></table></figure>
 <p>总结MR程序的提交运行模式</p>
@@ -289,7 +289,7 @@
 </code></pre><p>在eclipse里面直接运行main方法,不添加mapred-site.xml和yarn-site.xml<br>也会提交给localjobnumber执行,输出输出数据按如下设置保存在对应路径下:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">FileInputFormat.setInputPaths(job, <span class="keyword">new</span> Path(<span class="string">"/"</span>));</div><div class="line">FileOutputFormat.setOutputPath(job, <span class="keyword">new</span> Path(<span class="string">"/wc/output"</span>));</div></pre></td></tr></table></figure></p>
 <pre><code>集群模式运行
 </code></pre><ol>
-<li><p>将项目打成jar包,上传到服务器上，然后用hadoop命令提交:</p>
+<li><p>将项目打成jar包,上传到服务器上,然后用hadoop命令提交:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hadoop jar wc.jar cn.itcast.hadoop.wcmapreduce.WCRunner</div></pre></td></tr></table></figure>
 </li>
 <li><p>在eclipse中运行main,在src下加上mapred-site.xml和yarn-site.xml文件<br>并加上如下代码,再运行</p>
@@ -310,7 +310,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/23/hadoop_mapreduce/" data-id="cj82uoicc001h06p78hk047ai" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/23/hadoop_mapreduce/" data-id="cj8dvpeys001y07tn6z4v42hf" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -433,7 +433,25 @@
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
-                            <p class="item-title"><a href="/2017/09/27/hadoop_cluster/" class="title">hadoop HDFS HA高可用的集群搭建部署</a></p>
+                            <p class="item-title"><a href="/2017/09/28/storm/" class="title">hadoop storm(八)</a></p>
+                            <p class="item-date"><time datetime="2017-09-28T11:41:15.000Z" itemprop="datePublished">2017-09-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/28/hbase/" class="title">hadoop hbase(七)</a></p>
+                            <p class="item-date"><time datetime="2017-09-28T11:31:15.000Z" itemprop="datePublished">2017-09-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_cluster/" class="title">hadoop HDFS HA高可用的集群搭建部署(六)</a></p>
                             <p class="item-date"><time datetime="2017-09-27T11:41:15.000Z" itemprop="datePublished">2017-09-27</time></p>
                         </div>
                     </li>
@@ -442,7 +460,7 @@
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
-                            <p class="item-title"><a href="/2017/09/27/hadoop_hive/" class="title">hadoop hive(六)</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_hive/" class="title">hadoop hive(五)</a></p>
                             <p class="item-date"><time datetime="2017-09-27T11:31:15.000Z" itemprop="datePublished">2017-09-27</time></p>
                         </div>
                     </li>
@@ -456,24 +474,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
-                            <p class="item-title"><a href="/2017/09/23/hadoop_mapreduce/" class="title">hadoop MapReduce Yarn(四)</a></p>
-                            <p class="item-date"><time datetime="2017-09-23T12:01:15.000Z" itemprop="datePublished">2017-09-23</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
-                            <p class="item-title"><a href="/2017/09/23/hadoop_RPC/" class="title">hadoop RPC(三)</a></p>
-                            <p class="item-date"><time datetime="2017-09-23T11:51:15.000Z" itemprop="datePublished">2017-09-23</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -483,7 +483,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -492,7 +492,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">41</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">42</span></li></ul>
         </div>
     </div>
 
@@ -501,7 +501,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">tags</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 

@@ -155,7 +155,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                52
+                55
                 <span>posts</span>
             </div>
             <div class="article-info-block">
@@ -214,6 +214,476 @@
 
             
             <section id="main">
+    <article id="post-linux-common-commands" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/08/linux-common-commands/">linux 常用命令</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/08/linux-common-commands/">
+            <time datetime="2017-08-08T16:05:43.000Z" itemprop="datePublished">2017-08-08</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/linux/">linux</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>###不需要记住所有的命令,使用man info查看帮助文档:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ls --<span class="built_in">help</span> </div><div class="line">man ls <span class="comment"># 帮助手册</span></div><div class="line">man -k passwd </div><div class="line">man -k nautilus <span class="comment"># 可以用来查询包含该关键字命令的文档</span></div><div class="line">info ls <span class="comment"># 帮助文档(书)</span></div><div class="line"><span class="comment"># 所有程序的文档 都会以TXT,HTML,PDF等方式保存在/usr/share/doc目录下</span></div></pre></td></tr></table></figure></p>
+<h3 id="用户与权限"><a href="#用户与权限" class="headerlink" title="用户与权限"></a>用户与权限</h3><p>用户:是限制使用者或进程可以使用,不可以使用哪些资源.<br>用户组:用来方便组织管理用户GID<br>UID:每个用户拥有一个,操作系统实际使用的是UID,而不是用户名.每个用户属于一个主组,属于一个或多个附属组(最多有31个),每个可登陆用户拥有一个指定的shell.<br>特别注意:每个进程以一个用户身份运行,并受到该用户可访问的资源限制.所以进程的权限与该用户的权限一样.<br>UID:用32位的二进制,用十进制查看,但系统为了兼容老式系统,用户ID限制在16位(65535个用户上限).root用户:ID为0,系统用户(1~499):没有一个登陆的shell,为某些服务创建的,比如说WEB服务,共享服务,ftp服务打印服务,这些用户仅仅是做为 这些进程去使用的,普通用户(500以上)</p>
+<p>Linux权限基于UGO模型进行控制,权限rwx对目录的影响:<br>r:可列出目录内容,w:可在目录中创建删除文件,<br>x:可访问目录内容(进入目录),目录必须拥有X权限,否则无法进入目录<br>rwx(4+2+1)</p>
+<p>默认权限:umask的值会从对象的全权限值中减掉<br>普通用户的umask:0002,root用户的为0022<br>目录的全权限 777-002<br>文件的全权限 666-002<br>umask: 显示 12位长的权限 UGO占用9bite<br>umask 0022 : 去设置默认权限</p>
+<p>但一个目录,只能属于一个组,当多个组需要共同使用这个目录时,UGO模型的权限就不行了.<br>ACL(Access Control List)是一种高级权限机制,允许我们对一个文件或目录进行灵活的复杂的权限设置.<br>允许针对不同用户,不同组对一个目标文件或目录进行权限设置,不受UGO模型限制.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line">who <span class="comment"># 显示哪些用户已经登陆系统</span></div><div class="line">whoami <span class="comment"># 显示当前用户</span></div><div class="line">id <span class="comment"># 查看当前用户信息</span></div><div class="line">passwd username <span class="comment"># 修改用户密码,默认是修改当前用户</span></div><div class="line"></div><div class="line"><span class="comment"># 用户组 /etc/group</span></div><div class="line">groupadd femnGroup</div><div class="line">groupdel femnGroup</div><div class="line"></div><div class="line"><span class="comment"># 用户 /etc/shadow</span></div><div class="line">useradd -G femnGroup femn1 </div><div class="line"><span class="comment"># 此femn1用户主属组是femn1,附属组是femnGroup</span></div><div class="line"></div><div class="line">useradd -d /home/femn1 -u 1000 femn1  <span class="comment"># femn1是用户名 -u用户ID</span></div><div class="line">sudo usermod -d /home/femn1 -s /bin/bash femn1 <span class="comment"># -s默认bash</span></div><div class="line">userdel femn1</div><div class="line">userdel -r femn1 <span class="comment"># 同时删除用户的家目录</span></div><div class="line"></div><div class="line"><span class="comment"># 改文件的UGO权限</span></div><div class="line">chmod -R 777 文件名  </div><div class="line">chmod u+rw,g+o</div><div class="line">chmod go+rw</div><div class="line">chmod a-x <span class="comment"># a代指ugo</span></div><div class="line"></div><div class="line"><span class="comment">#  chown改所属用户 -R  </span></div><div class="line">chown -R name:name 文件</div><div class="line">chown femn(用户名)learn.txt(文件名,如果是目录,则加上 -R参数)</div><div class="line"></div><div class="line"><span class="comment"># chgrp改所属组 -R递归修改目录下的所有文件的所属组</span></div><div class="line">chgrp -R femnGroup learn.txt</div><div class="line"></div><div class="line"><span class="comment"># umask的最前面的那位,是用来保留特殊权限的.</span></div><div class="line">chmod u+s 文件:</div><div class="line"><span class="comment"># 特殊权限一般是给可执行文件去用的.1770</span></div><div class="line"></div><div class="line">chmod g+s 目录:</div><div class="line"><span class="comment"># 在此目录下生成的文件或目录,都会继承此目录的用户组 2770</span></div><div class="line"></div><div class="line">chmod o+t 目录:</div><div class="line"><span class="comment"># 只能是本人可以删除自己的文件,即使是本组中的人员也不能删除别人的文件.4770</span></div><div class="line"></div><div class="line"><span class="comment"># ACL需要在挂载文件的时候打开ACL功能:</span></div><div class="line">mount -o acl /dev/sda5 /mnt</div><div class="line"></div><div class="line"><span class="comment"># 针对一个用户对文件进行ACL设置:</span></div><div class="line">setfacl -m u:name:rwx linux</div><div class="line">setfacl -m g:name:rw linux</div><div class="line">setfacl -x u:name linux</div><div class="line"></div><div class="line"><span class="comment"># 只要我们的文件系统打开了ACL功能,就可以查看一个文件或目录的ACL设置:</span></div><div class="line">getfacl linux</div></pre></td></tr></table></figure></p>
+<h3 id="磁盘和挂载"><a href="#磁盘和挂载" class="headerlink" title="磁盘和挂载"></a>磁盘和挂载</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">df -h <span class="comment"># 设备文件名称,本系统中的磁盘的使用大小情况</span></div><div class="line">df -at <span class="comment"># 文件系统, 磁盘的状态</span></div><div class="line">du -sh <span class="comment"># 显示此目录总所占空间</span></div><div class="line">du -sh ~/* | sort -nr </div><div class="line"><span class="comment"># 参数让结果按降序输出   管道命令将du命令的输出重定向到sort命令</span></div><div class="line"></div><div class="line"></div><div class="line">fdisk -l  <span class="comment"># 查看本机的所有磁盘,以及磁盘的分区情况</span></div><div class="line">fdisk /dev/sda <span class="comment"># 查看,创建,删除某个磁盘 分区</span></div><div class="line">dumpe2fs -h /dev/sdb3 <span class="comment"># 得到这个磁盘分区的所有信息</span></div><div class="line"></div><div class="line"><span class="comment"># 格式化之前先不要挂载 </span></div><div class="line">mkfs -t ext4 /dev/sda4 </div><div class="line">mkfs.ext4 /dev/sda4</div><div class="line"><span class="comment"># 将这个分区(或硬盘)格式化为ext4文件系统,格式化磁盘</span></div><div class="line">mke2fs -j -L <span class="string">"partition-label-name"</span> -b 4096 -i -c 128 /dev/sda4  </div><div class="line"><span class="comment"># 这样就可以传4.3G的大文件到U盘上了,只是这样格式,在Win不能用</span></div><div class="line"></div><div class="line"><span class="comment"># 挂载</span></div><div class="line">mount /dev/sdc1 /home/name/usb  </div><div class="line">mount -o remount,rw,auto /dev/sdc1 </div><div class="line"><span class="comment"># 将/dev/sdc1重新挂载,并加入参数rw,auto</span></div><div class="line">umount /home/name/usb     or /dev/sdc1 挂载点或设备文件名 </div><div class="line"><span class="comment"># -l参数是强制</span></div><div class="line">lsof |grep /dev/sdc1</div><div class="line"><span class="comment"># 当挂载不掉时,用下面的命令 ,会得到进程号</span></div><div class="line"></div><div class="line"><span class="comment"># 特殊设备loop挂载(镜像文件不刻录就挂载使用)</span></div><div class="line">mount -o loop /home/name/ubuntu-16.04-desktop-amd64.iso \</div><div class="line">    /hame/name/usb  </div><div class="line"><span class="comment">#使用 dd 命令写入下载好的 ISO 镜像到 U 盘中</span></div><div class="line">sudo dd <span class="keyword">if</span>=xxxxx.iso of=/dev/sdc &amp;&amp; sync</div><div class="line"></div><div class="line">nautilus .     <span class="comment"># 默认是打开home目录</span></div></pre></td></tr></table></figure>
+<p>传统的磁盘管理问题:<br>当分区大小不够用时无法扩展其大小,只能通过添加硬盘,创建新分区来扩充空间,但是新添加进来的硬盘是作为独立文件系统存在的,原有的文件系统并未得到扩充,上层应用很多时候只能访问一个文件系统,只能让现有磁盘下线,换上新的磁盘之后,再将原始数据导入.</p>
+<h3 id="LVM逻辑卷管理-Logical-volume-Manager"><a href="#LVM逻辑卷管理-Logical-volume-Manager" class="headerlink" title="LVM逻辑卷管理(Logical volume Manager)"></a><a href="https://www.qingsword.com/qing/924.html" target="_blank" rel="external">LVM</a>逻辑卷管理(Logical volume Manager)</h3><p>PE(physical extend)物理扩展:逻辑卷空间管理的最基本单位,默认是4M<br>PV(physica volume)物理卷:将底层磁盘格式化成物理卷,可以是物理硬盘上的分区,也可以是整块物理硬盘<br>VG(volume group)卷组:空间池是给来装PE的,我们可以将一个或多个PV,加入到VG当中,当创建好了VG会有/dev/vgname的目录<br>LV(logical volume)逻辑卷(操作系统最终使用的是逻辑卷格式化之后的数据)/dev/vgname/lvname的目录,每个的逻辑卷空间有可以来自不同的物理磁盘<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">1. 创建PV</div><div class="line"><span class="comment"># 整块物理硬盘创建PV</span></div><div class="line">sudo pvcreate /dev/sd[b-c]</div><div class="line"></div><div class="line"><span class="comment"># 物理硬盘上的分区创建PV</span></div><div class="line">fdisk /dev/sdb1 使用t将分区类型改成8e(LVM)</div><div class="line">partprobe <span class="comment"># 刷新分区表</span></div><div class="line">sudo pvcreate /dev/sdb1</div><div class="line"></div><div class="line">sudo pvs <span class="comment"># 查看创建好的PV</span></div><div class="line"></div><div class="line">2. PV创建好了就可以创建VG了</div><div class="line">sudo vgcreate vg0 /dev/sdb1</div><div class="line">sudo vgs <span class="comment"># 查看创建好的VG</span></div><div class="line">sudo pvs <span class="comment"># sdb1这个PV就属于vg0这个卷组池了</span></div><div class="line"></div><div class="line">3. 创建好卷组池就能从池中划分容量给逻辑卷(LV)了</div><div class="line">sudo lvcreate -n lv0 -L 10G vg0</div><div class="line"><span class="comment"># 从卷组vg0中拿出10G,分配给lv0,其中-n后面是lv自定义名称,</span></div><div class="line"><span class="comment"># -L后面跟需要从vg0中分配给lv0的大小以及从哪个VG分配</span></div><div class="line"></div><div class="line">4. 创建好lv后就可以格式化它,成为文件系统使用</div><div class="line">sudo mkfs.ext4 /dev/vg0/lv0</div><div class="line"><span class="comment"># 创建好的lv所在目录是"/dev/卷组名称/逻辑卷名称",</span></div><div class="line"><span class="comment"># 所以本例就是/dev/vg0/lv0,将它格式化成ext4文件系统</span></div><div class="line"></div><div class="line">5. 挂载和使用</div><div class="line">sudo mount /dev/vg0/lv0 /mnt</div><div class="line"></div><div class="line">6. 扩充VG</div><div class="line">sudo pvcreate /dev/sdd</div><div class="line"><span class="comment">#新增加一块硬盘sdd(20G),将它创建成PV后划分到vg0下,</span></div><div class="line"><span class="comment"># 此时vg0的容量将增加sdd硬盘的大小</span></div><div class="line">sudo vgextend vg0 /dev/sdd</div><div class="line"></div><div class="line">7. 扩充LV</div><div class="line">sudo vgs <span class="comment"># 先确保VG池中有足够的VFree空间可供使用</span></div><div class="line">sudo lvextend -L +5G /dev/vg0/lv0</div><div class="line">sudo resize2fs /dev/vg0/lv0 <span class="comment"># 更新</span></div></pre></td></tr></table></figure></p>
+<h3 id="安装和下载"><a href="#安装和下载" class="headerlink" title="安装和下载"></a>安装和下载</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">vim /proc/meminfo 文件来观察LINux系统上虚拟内存的当前状态.</div><div class="line">sudo dpkg -i **.deb <span class="comment"># 安装 查看-l</span></div><div class="line">dpkg -l |grep minitube</div><div class="line">sudo dpkg --purge minitube</div><div class="line"></div><div class="line">sudo apt install **</div><div class="line"></div><div class="line">curl https://wordpress.org/latest.tar.gz | tar -zxvf -</div><div class="line">curl url/install.sh | sh</div><div class="line"></div><div class="line">wget -O redis.tar.gz \</div><div class="line">    http://download.redis.io/releases/redis-3.2.0.tar.gz</div><div class="line">tar -zxvf redis.tar.gz -C /usr/src</div><div class="line">make -C /usr/src/redis \</div><div class="line">    &amp;&amp; make -C /usr/src/redis/src install </div><div class="line"><span class="comment"># tar解压重命名</span></div><div class="line">mkdir ./jdk8 &amp;&amp; tar -xzvf jdk8.tar.gz -C ./jdk8 --strip-components 1</div><div class="line"></div><div class="line">wget https://ghost.org/zip/ghost-latest.zip</div><div class="line">unzip -uo ghost-latest.zip -d /var/www/ghost </div><div class="line"></div><div class="line">wget -qO- url/install.sh | sh</div><div class="line">wget --no-check-certificate url/install.sh -O ./install.sh</div><div class="line"></div><div class="line">curl -LOk https://ghost.org/zip/ghost-latest.zip</div><div class="line">unzip ghost-latest.zip -d ghost-temp</div><div class="line"></div><div class="line">curl http://localhost:8000/wrap?name=femn&amp;  get()</div><div class="line">http://localhost:8000/wrap -d name=femn    post()方法请求</div><div class="line"><span class="comment"># Siege对我们的应用在10秒内执行大约10个并发请求</span></div><div class="line">siege http://localhost:8000/?q=pants -c10 -t10s</div></pre></td></tr></table></figure>
+<h3 id="文件和目录操作"><a href="#文件和目录操作" class="headerlink" title="文件和目录操作"></a>文件和目录操作</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">    ll linux.md</div><div class="line">    <span class="comment"># ll 查看的信息 第二列是链接数量</span></div><div class="line">    ll |grep -v linux.md <span class="comment"># 取反</span></div><div class="line">    <span class="built_in">history</span> | grep -c rar <span class="comment"># 计算匹配的数量</span></div><div class="line">    touch file1 <span class="comment"># 创建文件</span></div><div class="line">    file file1 <span class="comment"># 查看文件类型</span></div><div class="line">    cp -Rf <span class="built_in">source</span> destination </div><div class="line">    <span class="comment"># -R 允许你通过命令递归地复制整个目录的内容.</span></div><div class="line">    <span class="comment"># -f 强制覆盖已经存在的目标文件,不提示 </span></div><div class="line">    <span class="comment"># -l 硬链接,它们是同一个文件,索引节点是相同的</span></div><div class="line">    \cp -R dir1 dir2 <span class="comment"># 同上</span></div><div class="line">    \cp -R content/themes/casper ../ghost/content/themes</div><div class="line">    rm -rf file1</div><div class="line">    tail -f -n 20 /etc/passwd</div><div class="line"></div><div class="line">    <span class="comment"># 软连接可以不用事先创建目录,硬连接必须先创建目录</span></div><div class="line">    sudo ln -s /home/femn/file /usr/share/nginx/html/file</div><div class="line">    mkdir ~/file</div><div class="line">    </div><div class="line">    <span class="comment"># mv排除文件</span></div><div class="line">    <span class="comment"># 将本路径下所有的文件移动到本路径下vimrc_config目录下,</span></div><div class="line">    <span class="comment"># 但vimrc_config本身不动</span></div><div class="line">    mv !(vimrc_config) vimrc_config</div><div class="line">    <span class="comment"># 但此命令不包括mv 隐藏文件</span></div><div class="line">    rm命令类似</div><div class="line">    </div><div class="line">    sort -t <span class="string">':'</span> -k 3 -n /etc/passwd</div><div class="line">    <span class="comment"># 按字段分隔数据,按分隔后的第几个进行排序 </span></div><div class="line"></div><div class="line">    scp -r -P 22 root@ip:/server/app/main/handlers \</div><div class="line">        ./main/handlers/</div><div class="line">    scp -P 22 ./1.txt python@ip:/usr/share/nginx/html/file/</div><div class="line">    <span class="comment"># 只需要file目录有写权限,普通用户就可以用了</span></div><div class="line">    rsync -av -e <span class="string">"ssh -p 22"</span> /home/python/app1.6/main/ \</div><div class="line">        root@ip:/server/app1.6/main/</div><div class="line">    rsync -av -e <span class="string">"ssh -p 22"</span> /home/python/oldapp_8000/ \</div><div class="line">        root@ip:/server/app/main/</div><div class="line"></div><div class="line"><span class="comment"># 截图</span></div><div class="line">    <span class="comment">#你将可以使用鼠标选取一个矩形框.在你放下鼠标左键的那一刻,</span></div><div class="line">    <span class="comment"># 一个该矩形框的截屏会以import后面跟的文件名保存在当前目录下</span></div><div class="line">    import screenshot.jpg </div><div class="line">    gnome-screenshot -a</div><div class="line"></div><div class="line"><span class="comment"># 改变视频文件大小(分辨率)http://blog.topspeedsnail.com/archives/1699</span></div><div class="line">    ffmpeg -i source.mpg -s 960x540 -c:a copy  destination.mp4</div><div class="line"><span class="comment"># Linux系统将每个对象当作文件来处理,这包括输入和输入的过程.Linux用文件描述符来标识每个文件对象.</span></div></pre></td></tr></table></figure>
+<h3 id="解压缩"><a href="#解压缩" class="headerlink" title="解压缩"></a>解压缩</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tar</span></div><div class="line">tar -zcvf /home/name/conclusion.tar.gz ./conclusion </div><div class="line">tar -zxvf ./conclusion.tar.gz </div><div class="line">tar -cvf /tmp/etc.tar /etc &lt;==仅打包,不压缩</div><div class="line"></div><div class="line"><span class="comment"># rar </span></div><div class="line">rar x file.rar <span class="comment"># 解压</span></div><div class="line"></div><div class="line"><span class="comment"># zip</span></div><div class="line">zip test.zip <span class="built_in">test</span> </div><div class="line">unzip test.zip</div></pre></td></tr></table></figure>
+<h3 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">printenv <span class="comment"># 查看所有全局环境变量</span></div><div class="line"><span class="built_in">set</span> <span class="comment"># 会显示为某个特定进程设置的所有环境变量</span></div><div class="line"><span class="comment"># 设置PATH环境变量</span></div><div class="line">vim ~/.profile</div><div class="line">    <span class="built_in">export</span> JAVA_HOME=/home/name/jdk1.8.0_92</div><div class="line">    <span class="built_in">export</span> ANT_HOME=/home/name/apache-ant-1.9.7</div><div class="line">    PATH=<span class="variable">$&#123;PATH&#125;</span>:/home/name/jdk1.8.0_92/bin:/home/name/apache/bin</div><div class="line"><span class="comment"># 设置局部变量(只能在定义的进程可见)</span></div><div class="line">femn=<span class="string">'hello,my name is femn'</span></div><div class="line"><span class="comment"># 设置全局变量</span></div><div class="line"><span class="built_in">export</span> femn  <span class="comment"># 记住不要再用美元符($) </span></div><div class="line"><span class="comment"># 删除环境变量</span></div><div class="line"><span class="built_in">unset</span> femn</div></pre></td></tr></table></figure>
+<h3 id="ubuntu-ip"><a href="#ubuntu-ip" class="headerlink" title="ubuntu ip"></a>ubuntu ip</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 禁用IPV6</span></div><div class="line">vim /etc/modprobe.d/blacklist.conf </div><div class="line"><span class="comment">#在文档最后添加 blacklist ipv6</span></div><div class="line"><span class="comment"># 设置一ip</span></div><div class="line">sudo ifconfig enp0s3 192.168.1.101 netmask 255.255.255.0</div><div class="line">sudo route add default gw 192.168.1.254</div><div class="line"><span class="comment"># 设置二ip</span></div><div class="line">sudo vim /etc/network/interfaces</div><div class="line">    auto enp0s3 </div><div class="line">    iface enp0s3 inet static <span class="comment"># dhcp</span></div><div class="line">    address 192.168.1.101</div><div class="line">    gateway 192.168.1.254</div><div class="line">    netmask 255.255.255.0</div><div class="line">    <span class="comment">#network 192.168.1.0  </span></div><div class="line">    <span class="comment">#broadcast 192.168.1.255 </span></div><div class="line"><span class="comment"># 配置DNS</span></div><div class="line">sudo vim/etc/resolv.conf</div><div class="line">    nameserver 127.0.1.1</div><div class="line">    <span class="comment"># nameserver 8.8.8.8</span></div><div class="line">    search DHCP HOST</div><div class="line">    </div><div class="line"><span class="comment"># 手动重启网络服务</span></div><div class="line">sudo /etc/init.d/networking restart</div><div class="line"><span class="comment">#实在没有生效 reboot</span></div><div class="line"></div><div class="line"><span class="comment"># /etc/hosts:ip与域名的对应关系,DNS记录信息,</span></div><div class="line"><span class="comment"># /etc/hostname:存放的是主机名.域名与主机名没有任何关系</span></div><div class="line">sudo hostname python-Vostro-3901 <span class="comment"># 修改主机名 ubuntu</span></div><div class="line">sudo hostnamectl <span class="built_in">set</span>-hostname intl.aliyun.centos7 </div><div class="line"><span class="comment"># 修改主机名 centos</span></div><div class="line"></div><div class="line"><span class="comment"># 永久修改主机名</span></div><div class="line">vim /etc/hostname <span class="comment"># ubuntu centos</span></div></pre></td></tr></table></figure>
+<h3 id="centos7-ip"><a href="#centos7-ip" class="headerlink" title="centos7 ip"></a>centos7 ip</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">vim /etc/sysconfig/network-scripts/ifcfg-网卡名字</div><div class="line">    BOOTPROTO=static <span class="comment">#dhcp改为static   </span></div><div class="line">    ONBOOT=yes <span class="comment">#开机启用本配置  </span></div><div class="line">    IPADDR=192.168.1.107 <span class="comment">#静态IP  </span></div><div class="line">    GATEWAY=192.168.1.254 <span class="comment"># 默认网关  </span></div><div class="line">    NETMASK=255.255.255.0 <span class="comment">#子网掩码  </span></div><div class="line">service network restart</div></pre></td></tr></table></figure>
+<pre><code>查看开启端口
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 查看本机的端口开启情况 </span></div><div class="line">sudo nmap -sTU localhost</div><div class="line"><span class="comment"># 查看局域网的端口开启情况</span></div><div class="line">sudo nmap -PS 192.168.1.222</div><div class="line"><span class="comment"># 查看远程服务器的端口开启情况</span></div><div class="line">nc -zv 45.76.0.178 22 22334</div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/08/linux-common-commands/" data-id="cj8dvpeyx002707tnr1d77lw0" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/08/linux-common-commands/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/08/linux-common-commands/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-python-object" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/06/python-object/">python 对象</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/06/python-object/">
+            <time datetime="2017-08-06T09:26:18.000Z" itemprop="datePublished">2017-08-06</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/面向对象/">面向对象</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="面向对象编程-Object-Oriented-Programming-简称OOP"><a href="#面向对象编程-Object-Oriented-Programming-简称OOP" class="headerlink" title="面向对象编程:Object Oriented Programming,简称OOP"></a>面向对象编程:Object Oriented Programming,简称OOP</h3><p>把一组数据结构和处理它们的方法组成对象(object),把相同行为的对象归纳为类(class),<br>通过类的封装(encapsulation)隐藏内部细节<br>通过继承(inheritance)实现类的特化(specialization)(重写)/泛化(generalization)<br>通过多态(polymorphism)实现基于对象类型的动态分派(dynamic dispatch)</p>
+<h4 id="多态-不同对象的相同方法的不同行为"><a href="#多态-不同对象的相同方法的不同行为" class="headerlink" title="多态:不同对象的相同方法的不同行为"></a>多态:不同对象的相同方法的不同行为</h4><p>   在JAVA在继承-重写才能体现多态,在python中,不知道对象到底是什么类型,但是又要对对象做点什么的时候,都会用到多态.很多的函数和运算符都是多态.唯一能毁掉多态的就是显式的检查类型<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="number">1</span>+<span class="number">2</span> <span class="comment"># 3</span></div><div class="line"><span class="string">'fe'</span>+<span class="string">'mn'</span> <span class="comment"># femn</span></div><div class="line"></div><div class="line"><span class="string">'abc'</span>.count(<span class="string">'a'</span>) <span class="comment"># 1</span></div><div class="line">[<span class="number">1</span>,<span class="number">2</span>,<span class="string">'a'</span>].count(<span class="string">'a'</span>) <span class="comment"># 1</span></div></pre></td></tr></table></figure></p>
+<h4 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        print( <span class="string">"A.__init__"</span> )</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span><span class="params">(A)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        super().__init__()</div><div class="line">        print(<span class="string">"B.__init__"</span> )</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(B)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        super().__init__()</div><div class="line">        print(<span class="string">"C.__init__"</span> )</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">D</span><span class="params">(A)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        super().__init__()</div><div class="line">        print(<span class="string">"D.__init__"</span> )</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">E</span><span class="params">(D)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        super().__init__()</div><div class="line">        print(<span class="string">"E.__init__"</span> )</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">F</span><span class="params">(C,E)</span>:</span><span class="comment"># C,E 相当于是子 父关系</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        super().__init__()</div><div class="line">        print(<span class="string">"F.__init__"</span> )</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    f = F()</div><div class="line">    <span class="comment"># A.__init__</span></div><div class="line">    <span class="comment"># D.__init__</span></div><div class="line">    <span class="comment"># E.__init__</span></div><div class="line">    <span class="comment"># B.__init__</span></div><div class="line">    <span class="comment"># C.__init__</span></div><div class="line">    <span class="comment"># F.__init__</span></div></pre></td></tr></table></figure>
+<p>对于你定义的每一个类,Python会计算出一个所谓的方法解析顺序(MRO)列表. 这个MRO列表就是一个简单的所有基类的线性顺序表.例如</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>F.__mro__</div><div class="line">(class'__main__.F'&gt;,&lt;class'__main__.C'&gt;,&lt;class'__main__.B'&gt;,</div><div class="line">&lt;class'__main__.E'&gt;,&lt;class'__main__.D'&gt;,&lt;class'__main__.A'&gt;,</div><div class="line">&lt;<span class="class"><span class="keyword">class</span>'<span class="title">object</span>'&gt;)</span></div></pre></td></tr></table></figure>
+<p>为了实现继承,Python会在MRO列表上从左到右开始查找基类,直到找到第一个匹配这个属性的类为止<br>而这个MRO列表的构造是通过一个C3线性化算法来实现的,它实际上就是合并所有父类的MRO列表并遵循如下三条准则:</p>
+<ol>
+<li>子类会先于父类被检查</li>
+<li>多个父类会根据它们在列表中的顺序被检查</li>
+<li>如果对下一个类存在两个合法的选择,选择第一个父类</li>
+</ol>
+<h4 id="C3算法特点"><a href="#C3算法特点" class="headerlink" title="C3算法特点"></a>C3算法特点</h4><ol>
+<li><p>本地优先级:指声明时父类的顺序,比如F(C,E),如果访问F类对象属性时,应该根据声明顺序,优先查找C类,然后再查找E类.</p>
+</li>
+<li><p>单调性:如果在F的解析顺序中,C排在E的前面,那么在F的所有子类里,也必须满足这个顺序</p>
+</li>
+</ol>
+<p><img src="css/images/c3.png" alt=""></p>
+<h4 id="类-Class"><a href="#类-Class" class="headerlink" title="类(Class):"></a>类(Class):</h4><p>用来描述具有相同的属性和方法的对象的集合.它定义了该集合中每个对象所共有的属性和方法.<br>类创建后,类命名空间中所有的命名都是有效属性名</p>
+<h4 id="对象-类的实例化"><a href="#对象-类的实例化" class="headerlink" title="对象:类的实例化"></a>对象:类的实例化</h4><p>通过类定义的数据结构实例.对象包括两个数据成员(类变量和实例变量)和方法.<br>对象基本上可以看作数据(特征)以及由一系列可以存取,操作这些数据的方法所组成的集合.<br>使用对象替代全局变量和函数的原因可以有很多.多态(鸭子类型),封装,继承<br>封装和继承是被用作现实世界中对象的模型</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(dict)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,name)</span>:</span></div><div class="line">        super(Person,self).__init__()</div><div class="line">        self.name = name</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_name</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.name</div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    p = Person(<span class="string">'femn'</span>)</div><div class="line">    print(p) <span class="comment"># &#123;&#125;  self本身为空 &#123;&#125; ,但其属性不为空</span></div><div class="line">    print(p.get_name()) <span class="comment"># femn</span></div><div class="line"><span class="comment"># 如果知道p是Person类的实例的话,</span></div><div class="line"><span class="comment"># 就可以把p.get_name()看作是Person.get_name(p)的简写.</span></div></pre></td></tr></table></figure>
+<h3 id="属性-域-字段-成员变量-全局变量-数据成员-数据-私有成员-成员对象"><a href="#属性-域-字段-成员变量-全局变量-数据成员-数据-私有成员-成员对象" class="headerlink" title="属性:域,字段,成员变量,全局变量,数据成员(数据),私有成员,成员对象"></a>属性:域,字段,成员变量,全局变量,数据成员(数据),私有成员,成员对象</h3><p>属性:这个词来称呼任何点后面跟的名称 — 比如,在表达式z.real中,real就是对象z的属性.<br>更直接的说,对模块中名称的引用就是属性引用:在表达式 modname.funcname 中,<br>modname是模块对象而funcname是它的一个属性.<br>在这种情况下模块的属性和它里面所定义的全局名称之间就刚好有一个直接的映射关系:他们共享同一个命名空间</p>
+<h4 id="类变量-在整个实例化的对象中是公用的-定义在类中且在函数体之外-通常不作为实例变量使用"><a href="#类变量-在整个实例化的对象中是公用的-定义在类中且在函数体之外-通常不作为实例变量使用" class="headerlink" title="类变量:在整个实例化的对象中是公用的.定义在类中且在函数体之外,通常不作为实例变量使用."></a>类变量:在整个实例化的对象中是公用的.定义在类中且在函数体之外,通常不作为实例变量使用.</h4><h4 id="实例变量-定义在方法中的变量-只作用于当前实例的类"><a href="#实例变量-定义在方法中的变量-只作用于当前实例的类" class="headerlink" title="实例变量:定义在方法中的变量,只作用于当前实例的类"></a>实例变量:定义在方法中的变量,只作用于当前实例的类</h4><p>property()方法实例<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        self.width = <span class="number">0</span></div><div class="line">        self.height = <span class="number">0</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setSize</span><span class="params">(self, size)</span>:</span></div><div class="line">        <span class="string">"""访问器方法,把所有的属性都放到访问器方法中"""</span></div><div class="line">        self.width, self.height = size</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getSize</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.width, self.height</div><div class="line">    size = property(getSize, setSize)</div><div class="line">    <span class="comment"># 类属性,其中的访问器方法被用作参数(先取值,然后是赋值)</span></div><div class="line"></div><div class="line">r = Rectangle()</div><div class="line">r.width = <span class="number">10</span></div><div class="line">r.height = <span class="number">5</span></div><div class="line">r.size <span class="comment">#  (10, 5)</span></div><div class="line">r.size = <span class="number">150</span>, <span class="number">100</span></div><div class="line">r.width <span class="comment"># 150</span></div></pre></td></tr></table></figure></p>
+<p>@property 装饰器实例<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,name,age)</span>:</span></div><div class="line">        <span class="string">"""Constructor"""</span></div><div class="line">        self.name = <span class="string">''</span></div><div class="line">        self.age = <span class="number">0</span></div><div class="line">    <span class="comment"># 修改属性的值 一</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getName</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">'property()'</span>)</div><div class="line">        <span class="keyword">return</span> self._name</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setName</span><span class="params">(self,name)</span>:</span></div><div class="line">        <span class="string">""" 要使用_name 将实例属性name标记成protected变量</span></div><div class="line"><span class="string">        不然就将name类属性,改个名字,</span></div><div class="line"><span class="string">        只要满足类属性和实例属性不同名,否则会进入无限的递归"""</span></div><div class="line">        self._name = name <span class="comment"># protected实例变量:_name</span></div><div class="line">    name = property(getName,setName) <span class="comment"># publie类变量:name</span></div><div class="line">    __aim = <span class="string">'become stronger'</span> <span class="comment"># private 类变量:__aim</span></div><div class="line"></div><div class="line">    <span class="comment"># @property装饰器:</span></div><div class="line"><span class="comment"># 将方法变成了属性,我们可以使用正常的点符号访问它,但无法对属性值直接修改</span></div><div class="line"><span class="meta">    @property</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">info</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">""" Return my info """</span></div><div class="line">        <span class="keyword">return</span> <span class="string">"my name is %s, age is %s"</span> % (self.name, self.age)</div><div class="line"></div><div class="line">    <span class="comment"># 修改属性的值 二</span></div><div class="line"><span class="comment">#一个property其实是 getter、setter 和 deleter 方法的集合,而不是单个方法</span></div><div class="line"><span class="comment"># 访问它的时候会自动触发 getter 、setter 和 deleter 方法</span></div><div class="line"><span class="meta">    @property</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">age</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">'@property装饰器'</span>)</div><div class="line">        <span class="keyword">return</span> self._age</div><div class="line"></div><div class="line"><span class="meta">    @age.setter</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">age</span><span class="params">(self,age)</span>:</span></div><div class="line">        self._age = age</div><div class="line"></div><div class="line"><span class="meta">    @age.deleter</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">age</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">raise</span> AttributeError(<span class="string">"Can't delete attribute"</span>)</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    p = Person(<span class="string">'leipengkai'</span>,<span class="number">25</span>)</div><div class="line">    <span class="comment"># 方法一</span></div><div class="line">    p.set_name = <span class="string">'femn1'</span></div><div class="line">    p.name = <span class="string">'femn1.1'</span></div><div class="line">    print(p.name)</div><div class="line">    <span class="comment"># 方法二</span></div><div class="line">    p.age = <span class="number">18</span></div><div class="line">    print(p.age) </div><div class="line"><span class="comment"># 输出如下</span></div><div class="line"><span class="comment"># property()</span></div><div class="line"><span class="comment"># femn1.1</span></div><div class="line"><span class="comment"># @property生成器</span></div><div class="line"><span class="comment"># 18</span></div></pre></td></tr></table></figure></p>
+<h3 id="方法-绑定方法-动作"><a href="#方法-绑定方法-动作" class="headerlink" title="方法(绑定方法,动作)"></a>方法(绑定方法,动作)</h3><ol>
+<li><p>绑定方法:将它们的第一参数绑定到所属的实例上,因此您无须显示提供该参数.当然也可以将特征绑定到一个普通的函数上,这样就不会有特殊的self参数了</p>
+</li>
+<li><p>函数:self参数是对象自身的引用.它正是方法和函数的区别.<br>在java中,方法和函数是一样的.在python中,方法(self)必须在类中,而函数可以在任意位置定义</p>
+</li>
+<li><p>静态方法:无法访问类属性、实例属性,没有self参数.相当于一个相对独立的方法,<br>跟类其实没什么关系,换个角度来讲,其实就是放在一个类的作用域里的函数而已.<br>被装入staticmethod类型的对象中.</p>
+</li>
+<li><p>类成员方法:可以访问类属性,无法访问实例属性.<br>需要名为cls的类似于self的参数,可以用类的具体对象调用.cls自动被绑定到类中<br>被装入classmethod类型的对象中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span><span class="params">()</span>:</span></div><div class="line">    a =<span class="number">1</span> <span class="comment">#类属性</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,b,c)</span></span></div><div class="line">        self.b=b</div><div class="line">        self.c=c<span class="comment">#实例属性</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_params</span><span class="params">(x, y, z=<span class="number">3</span>, *pospar, **keypar)</span>:</span> <span class="comment">#**代表命名参数</span></div><div class="line">    print(x,y,z)</div><div class="line">    print(pospar)</div><div class="line">    print(keypar)</div><div class="line">print_params(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,foo=<span class="number">1</span>, bar=<span class="number">2</span>)</div><div class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">3</span></div><div class="line">(<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>)</div><div class="line">&#123;<span class="string">'foo'</span>: <span class="number">1</span>, <span class="string">'bar'</span>: <span class="number">2</span>&#125;</div><div class="line">print_params(<span class="number">1</span>,<span class="number">2</span>,foo=<span class="number">1</span>, bar=<span class="number">2</span>)</div><div class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">3</span></div><div class="line">()</div><div class="line">&#123;<span class="string">'foo'</span>: <span class="number">1</span>, <span class="string">'bar'</span>: <span class="number">2</span>&#125;</div></pre></td></tr></table></figure>
+<h3 id="Python-的作用域和命名空间"><a href="#Python-的作用域和命名空间" class="headerlink" title="Python 的作用域和命名空间"></a>Python 的作用域和命名空间</h3><p>命名空间(namespace)是从名称(标识符)到对象的映射,可以将其理解为字典,各个命名空间是独立的,没有任何关系的,所以一个命名空间中不能有重名,但不同的命名空间是可以重名而没有任何影响</p>
+<p>如果狭义点的话,可以将命名空间简单的理解为是变量(包括类和内置类型等)的引用.</p>
+<p>四个namespace:一个函数的所有local,一个类对象的所有属性(数据成员,成员函数),一个模块的global(这个模块定义的函数,类,变量)和built-in(包括内置函数,内置常量,内置类型)</p>
+<p>命名空间都是有创建时间和生存期的:</p>
+<ol>
+<li><p>对于Python built-in names组成的命名空间,它在Python解释器启动的时候被创建,<br>在解释器退出的时候才被删除.内置名称实际上也存在于一个模块中; 这个模块叫 builtins.</p>
+</li>
+<li><p>对于一个Python模块的global namespace,它在这个module被import的时候创建,<br>在解释器退出的时候退出.被最高级别的解释器调用的语句,不论是从脚本还是从交互读取的,<br>都被认为是一个名叫<strong>main</strong>的模块的一部分,所以它们有自己的全局命名空间.</p>
+</li>
+<li><p>对于一个函数的local namespace,它在函数每次被调用的时候创建,<br>函数返回的时候被删除.当然,递归调用会有它们自己的局部命名空间</p>
+</li>
+</ol>
+<p>总结来说:一个模块的引入,类的定义,函数的调用都会引入命名空间</p>
+<p>在执行过程中遇到了某个标识符(名称)时,Python首先尝试在local命名空间中查找它,如果没有找到,<br>再在global命名空间中查找,如果还是没有找到,接着在built-in命名空间中查找.<br>如果都不存在,则被认为是一个错误,会抛出一个”NameError”异常</p>
+<h4 id="变量的作用域-scope"><a href="#变量的作用域-scope" class="headerlink" title="变量的作用域(scope):"></a>变量的作用域(scope):</h4><p>是Python程序的文本区域,在该区域某个命名空间中的名字可以被直接引用.你所申明的变量(包括类和内置变量等)可以在哪些地方使用.</p>
+<p>一个Python程序的几个作用域:</p>
+<ol>
+<li>最里面的局部作用域,基本类型的作用域:(从变量定义处开始,以到结束此方法时截止)</li>
+<li>外层函数的局部作用域:对象的作用域:(对象出了方法外后,只是引用消失了,但是对象本身还在堆中.资源回收站会定期回收垃圾对象)</li>
+<li>模块的全局作用域</li>
+<li>包含Python内置对象的最外层作用域</li>
+</ol>
+<h4 id="赋值-assignment"><a href="#赋值-assignment" class="headerlink" title="赋值(assignment):"></a>赋值(assignment):</h4><p>赋值操作不会拷贝,只是把标识符和对象做一个绑定,也就是说赋值操作就是名字和对象的绑定或重绑定,也可以说赋值是把原来对象的引用传递给另一个引用！</p>
+<h4 id="global声明的变量会引用到当前模块的全局命名空间的变量"><a href="#global声明的变量会引用到当前模块的全局命名空间的变量" class="headerlink" title="global声明的变量会引用到当前模块的全局命名空间的变量"></a>global声明的变量会引用到当前模块的全局命名空间的变量</h4><h4 id="nonlocal-用于声明非全局的外层变量-这个声明会从声明处从里到外的namespace去搜寻这个变量-直到模块的全局域-不包括全局域"><a href="#nonlocal-用于声明非全局的外层变量-这个声明会从声明处从里到外的namespace去搜寻这个变量-直到模块的全局域-不包括全局域" class="headerlink" title="nonlocal:用于声明非全局的外层变量.这个声明会从声明处从里到外的namespace去搜寻这个变量,直到模块的全局域(不包括全局域)"></a>nonlocal:用于声明非全局的外层变量.这个声明会从声明处从里到外的namespace去搜寻这个变量,直到模块的全局域(不包括全局域)</h4><p>找到了则引用这个命名空间的这个名字和对象,若作赋值操作,则直接改变外层域中的这个名字的绑定.如果在外层域中没有找到,则会报错</p>
+<p>这是一个例子用于说明如何引用不同的作用域和命名空间, global 和 nonlocal 如何影响变量绑定:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">scope_test</span><span class="params">()</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">do_local</span><span class="params">()</span>:</span></div><div class="line">        spam = <span class="string">"local spam"</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">do_nonlocal</span><span class="params">()</span>:</span></div><div class="line">        <span class="keyword">nonlocal</span> spam</div><div class="line">        spam = <span class="string">"nonlocal spam"</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">do_global</span><span class="params">()</span>:</span></div><div class="line">        <span class="keyword">global</span> spam</div><div class="line">        spam = <span class="string">"global spam"</span></div><div class="line"></div><div class="line">    spam = <span class="string">"test spam"</span></div><div class="line">    do_local()</div><div class="line">    print(<span class="string">"After local assignment:"</span>, spam)</div><div class="line">    <span class="comment"># test spam</span></div><div class="line">    do_nonlocal()</div><div class="line">    print(<span class="string">"After nonlocal assignment:"</span>, spam)</div><div class="line">    <span class="comment"># nonlocal spam</span></div><div class="line">    do_global()</div><div class="line">    print(<span class="string">"After global assignment:"</span>, spam)</div><div class="line">    <span class="comment"># nonlocal spam</span></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    scope_test()</div><div class="line">    print(<span class="string">"In global scope:"</span>, spam)</div><div class="line">    <span class="comment"># global spam</span></div></pre></td></tr></table></figure></p>
+<p>注意局部的赋值(默认)并没有改变scope_test绑定的spam.<br>而nonlocal则改变了scope_test中的spam,而global则改变了模块级别的绑定.</p>
+<p>你可以看到在global赋值之前并没有绑定spam的值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">do_nonlocal</span><span class="params">()</span>:</span></div><div class="line">        <span class="keyword">nonlocal</span> spam</div><div class="line">        print(<span class="string">"asssignment:"</span>, spam)  </div><div class="line">        <span class="function"><span class="keyword">def</span> <span class="title">do_nonlocal2</span><span class="params">()</span>:</span></div><div class="line">            <span class="keyword">nonlocal</span> spam</div><div class="line">            spam = <span class="string">"nonlocal2 spam"</span>  <span class="comment">#修改了test()中spam的绑定</span></div><div class="line">        do_nonlocal2()</div><div class="line">    spam = <span class="string">"test spam"</span></div><div class="line">    do_nonlocal()</div><div class="line">    print(<span class="string">"after nonlocal2 asssignment:"</span>, spam)  </div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    test()</div><div class="line">    <span class="comment"># asssignment: test spam</span></div><div class="line">    <span class="comment"># after nonlocal2 asssignment: nonlocal2 spam</span></div><div class="line">    <span class="comment"># do_nonlocal2()中的spam引用的是其外面的二层,也就是test()函数域中的spam</span></div></pre></td></tr></table></figure>
+<p>总结:Python会按照从内层到外层的顺序逐个寻找作用域中的变量(局部到全局),在函数内引用全局变量不需要global,函数内修改全局变量要加global,nonlocal也是一样</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/06/python-object/" data-id="cj8dvpf0h003v07tn760v6nxi" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/06/python-object/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/06/python-object/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-python-threads" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/05/python-threads/">python_threads</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/05/python-threads/">
+            <time datetime="2017-08-05T14:46:15.000Z" itemprop="datePublished">2017-08-05</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>线程例子1<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">    <span class="keyword">import</span> threading</div><div class="line">    <span class="keyword">from</span> time <span class="keyword">import</span> ctime,sleep</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">music</span><span class="params">(func)</span>:</span></div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>):</div><div class="line">            print( <span class="string">"I was listening to %s. %s"</span> %(func,ctime()))</div><div class="line">            sleep(<span class="number">1</span>)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">move</span><span class="params">(func)</span>:</span></div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>):</div><div class="line">            print( <span class="string">"I was at the %s! %s"</span> %(func,ctime()))</div><div class="line">            sleep(<span class="number">5</span>)</div><div class="line">    <span class="comment"># 主线程中 加两个子线程</span></div><div class="line">    threads = [] <span class="comment"># 装载多个线程的数组 看着像是同时进行的</span></div><div class="line">    t1 = threading.Thread(target=music,args=(<span class="string">u'爱情买卖'</span>,))</div><div class="line">    threads.append(t1)</div><div class="line">    t2 = threading.Thread(target=move,args=(<span class="string">u'阿凡达'</span>,))</div><div class="line">    threads.append(t2)</div><div class="line"></div><div class="line"></div><div class="line">    <span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> threads:<span class="comment"># 子线程</span></div><div class="line">            t.setDaemon(<span class="keyword">True</span>)</div><div class="line">            <span class="string">""" 线程声明为守护线程,必须在start() 方法调用之前设置</span></div><div class="line"><span class="string">            如果不设置为守护线程程序会被无限挂起.</span></div><div class="line"><span class="string">            子线程启动后,父线程也继续执行下去,当父线程执行完最后一条语句print "all over %s" %ctime()后</span></div><div class="line"><span class="string">没有等待子线程,直接就退出了,同时子线程也一同结束"""</span></div><div class="line">            t.start()<span class="comment">#开始线程活动</span></div><div class="line">        t.join()</div><div class="line"><span class="string">""" 在子线程完成运行之前,这个子线程的父线程将一直被阻塞.join()实际上意味着等到队列为空,再执行别的操作</span></div><div class="line"><span class="string">join()方法的位置是在for循环外的,也就是说必须等待for循环里的两个进程都结束后,才去执行主进程 """</span></div><div class="line">        print( <span class="string">"all over %s"</span> %ctime()) <span class="comment">#主线程</span></div></pre></td></tr></table></figure></p>
+<p>线程例子2<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">import</span> _thread</div><div class="line"><span class="keyword">import</span> threading</div><div class="line"><span class="keyword">import</span> time</div><div class="line"></div><div class="line">exitFlag = <span class="number">0</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">myThread</span> <span class="params">(threading.Thread)</span>:</span>   </div><div class="line">    <span class="comment">#继承父类threading.Thread</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,  name, delay)</span>:</span></div><div class="line">        threading.Thread.__init__(self)</div><div class="line">        self.name = name</div><div class="line">        self.delay = delay</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span>        </div><div class="line">       <span class="comment">#把要执行的代码写到run函数里面 线程在创建后会直接运行run函数</span></div><div class="line">        print( <span class="string">"Starting "</span> + self.name)</div><div class="line">        print_time(threadName=self.name,delay=self.delay,counter=<span class="number">5</span>)</div><div class="line">        print( <span class="string">"Exiting "</span> + self.name)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_time</span><span class="params">(threadName, delay, counter)</span>:</span></div><div class="line">    <span class="keyword">while</span> counter:</div><div class="line">        <span class="keyword">if</span> exitFlag:</div><div class="line">            _thread.exit()</div><div class="line">        time.sleep(delay)</div><div class="line">        print( <span class="string">"%s: %s"</span> % (threadName, time.ctime(time.time())))</div><div class="line">        counter -= <span class="number">1</span></div><div class="line"></div><div class="line">thread1 = myThread(name=<span class="string">"Thread-1"</span>, delay=<span class="number">1</span>)</div><div class="line">thread2 = myThread(name=<span class="string">"Thread-2"</span>, delay=<span class="number">2</span>)</div><div class="line"></div><div class="line"><span class="comment"># 开启线程</span></div><div class="line">thread1.start()</div><div class="line">thread2.start()</div><div class="line">print( <span class="string">"Exiting Main Thread"</span>)</div></pre></td></tr></table></figure></p>
+<p>同步线程<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">    <span class="keyword">import</span> threading</div><div class="line">    <span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</div><div class="line">    <span class="keyword">import</span> time</div><div class="line">    <span class="keyword">import</span> _thread</div><div class="line"></div><div class="line">    exitFlag = <span class="number">0</span></div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">myThread</span> <span class="params">(threading.Thread)</span>:</span></div><div class="line">        <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,  name, delay)</span>:</span></div><div class="line">            threading.Thread.__init__(self)</div><div class="line">            <span class="comment"># self.threadID = threadID</span></div><div class="line">            self.name = name</div><div class="line">            self.delay = delay</div><div class="line">        <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></div><div class="line">            print( <span class="string">"Starting "</span> + self.name)</div><div class="line"><span class="comment"># 如果多个线程共同对某个数据修改,则可能出现不可预料的结果,</span></div><div class="line"><span class="comment"># 为了保证数据的正确性,需要对多个线程进行同步.</span></div><div class="line"></div><div class="line"><span class="comment"># 线程同步(为了确保数据的完整没有被其它的线程修改,必须要得锁和解锁</span></div><div class="line"><span class="comment"># 所以也导致了要一个线程全部结束之后,才能执行下一个的线程)</span></div><div class="line"><span class="comment"># 这会导致同步阻塞,也就是只有一个线程工作完之后,才能进行下一个线程</span></div><div class="line"></div><div class="line">            <span class="comment"># 获得锁,成功获得锁定后返回True</span></div><div class="line">            <span class="comment"># 可选的timeout参数不填时将一直阻塞直到获得锁定</span></div><div class="line">            <span class="comment"># 否则超时后将返回False</span></div><div class="line">            threadLock.acquire()</div><div class="line">            print_time(threadName=self.name, delay=self.delay, counter=<span class="number">5</span>)</div><div class="line">            <span class="comment"># 释放锁</span></div><div class="line">            threadLock.release()</div><div class="line">            print( <span class="string">"Exiting "</span> + self.name)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">print_time</span><span class="params">(threadName, delay, counter)</span>:</span></div><div class="line">        <span class="keyword">while</span> counter:</div><div class="line">            <span class="keyword">if</span> exitFlag:</div><div class="line">                _thread.exit()</div><div class="line">            time.sleep(delay)</div><div class="line">            print( <span class="string">"%s: %s"</span> % (threadName, time.ctime(time.time())))</div><div class="line">            counter -= <span class="number">1</span></div><div class="line"></div><div class="line">    <span class="comment"># 线程同步</span></div><div class="line">    threadLock = threading.Lock() </div><div class="line">    threads = []</div><div class="line">    thread1 = myThread(name=<span class="string">"Thread-1"</span>, delay=<span class="number">1</span>)</div><div class="line">    thread2 = myThread(name=<span class="string">"Thread-2"</span>, delay=<span class="number">2</span>)</div><div class="line"></div><div class="line">    <span class="comment"># 开启线程</span></div><div class="line">    n = datetime.now()</div><div class="line">    thread1.start()</div><div class="line">    thread1.join()<span class="comment">#因为没有queue可继续执行下面的线程</span></div><div class="line">    thread2.start() <span class="comment">#</span></div><div class="line"></div><div class="line">    <span class="comment"># 添加线程到线程列表</span></div><div class="line">    threads.append(thread1)</div><div class="line">    threads.append(thread2)</div><div class="line"></div><div class="line">    <span class="comment"># 等待所有线程完成</span></div><div class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> threads:</div><div class="line">        t.join()</div><div class="line">    print(<span class="string">"Exiting Main Thread"</span>)</div><div class="line"></div><div class="line">    print(datetime.now()-n)</div></pre></td></tr></table></figure></p>
+<p>quere<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">    <span class="keyword">import</span> queue, time, threading, datetime</div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Job</span>:</span></div><div class="line">        <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></div><div class="line">            self.name = name</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">def</span> <span class="title">do</span><span class="params">(self)</span>:</span></div><div class="line">            time.sleep(<span class="number">2</span>)</div><div class="line">            print(<span class="string">"\t[Info] Job(&#123;0&#125;) is done!"</span>.format(self.name))</div><div class="line"></div><div class="line"></div><div class="line">    que = queue.Queue()</div><div class="line"><span class="comment">#FIFO即First in First Out,先进先出 a[len(a):1]=[queue] 加在后面的</span></div><div class="line"><span class="comment"># lifoqueue = queue.LifoQueue()#LIFO即Last in First Out</span></div><div class="line"><span class="comment"># 后进先出 a[0:0]=[queue] 加在最前面的 入栈 出栈</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">20</span>):</div><div class="line">        <span class="comment"># 保存要去工作的信息 在queue中</span></div><div class="line">        que.put(Job(str(i + <span class="number">1</span>)))</div><div class="line"><span class="comment">#调用队列对象的put()方法在队尾插入一个项目</span></div><div class="line"><span class="comment"># put()有两个参数,第一个item为必需的,为插入项目的值;第二个block为可选参数,默认为1</span></div><div class="line"><span class="comment"># 如果队列当前满且block为1,put()方法就使调用线程暂停,直到空出一个数据单元.</span></div><div class="line"><span class="comment"># 如果block为0,put方法将引发Queue.Full异常</span></div><div class="line">    print(<span class="string">"\t[Info] Queue size=&#123;0&#125;..."</span>.format(que.qsize()))<span class="comment">#返回队列的大小</span></div><div class="line"></div><div class="line">    <span class="comment"># # Start activity to digest queue.</span></div><div class="line">    st = datetime.datetime.now()</div><div class="line"></div><div class="line"></div><div class="line">    <span class="comment">#需要40秒</span></div><div class="line">    <span class="keyword">while</span> que.qsize() &gt; <span class="number">0</span>:</div><div class="line">        job = que.get()</div><div class="line">        job.do()</div><div class="line"></div><div class="line">    td = datetime.datetime.now() - st</div><div class="line">    print(<span class="string">"\t[Info] Spending time=&#123;0&#125;!"</span>.format(td))</div><div class="line"></div><div class="line"><span class="comment">#q.qsize() 返回队列的大小</span></div><div class="line"><span class="comment"># q.empty() 如果队列为空,返回True,反之False</span></div><div class="line"><span class="comment"># q.full() 如果队列满了,返回True,反之False</span></div><div class="line"><span class="comment"># q.full 与 maxsize 大小对应</span></div><div class="line"><span class="comment"># q.get([block[, timeout]]) 获取队列,timeout等待时间</span></div><div class="line"><span class="comment"># q.get_nowait() 相当q.get(False)</span></div><div class="line"><span class="comment"># 非阻塞 q.put(item) 写入队列,timeout等待时间</span></div><div class="line"><span class="comment"># q.put_nowait(item) 相当q.put(item, False)</span></div><div class="line"><span class="comment"># q.task_done() 在完成一项工作之后,q.task_done()函数向任务已经完成的队列发送一个信号</span></div><div class="line"><span class="comment"># q.join() 实际上意味着等到队列为空,再执行别的操作</span></div></pre></td></tr></table></figure></p>
+<p>线程quere<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">import</span> queue, time, threading, datetime</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Job</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></div><div class="line">        self.name = name</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">do</span><span class="params">(self)</span>:</span></div><div class="line">        time.sleep(<span class="number">2</span>)</div><div class="line">        print(<span class="string">"\t[Info] Job(&#123;0&#125;) is done!"</span>.format(self.name))</div><div class="line"></div><div class="line"></div><div class="line">que = queue.Queue()</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">20</span>):</div><div class="line">    que.put(Job(str(i + <span class="number">1</span>)))</div><div class="line">print(<span class="string">"\t[Info] Queue size=&#123;0&#125;..."</span>.format(que.qsize()))</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">doJob</span><span class="params">(*args)</span>:</span></div><div class="line">    queue = args[<span class="number">0</span>]</div><div class="line">    <span class="keyword">while</span> queue.qsize() &gt; <span class="number">0</span>:</div><div class="line">        job = queue.get()</div><div class="line"><span class="comment">#调用队列对象的get()方法从队头删除并返回一个项目.可选参数为block,默认为True.</span></div><div class="line"><span class="comment"># 如果队列为空且block为True,get()就使调用线程暂停,直至有项目可用.</span></div><div class="line"><span class="comment"># 如果队列为空且block为False,队列将引发Queue.Empty异常</span></div><div class="line">        job.do()</div><div class="line"></div><div class="line">    <span class="comment"># Open three threads</span></div><div class="line">thd1 = threading.Thread(target=doJob, name=<span class="string">'Thd1'</span>, args=(que,))</div><div class="line">thd2 = threading.Thread(target=doJob, name=<span class="string">'Thd2'</span>, args=(que,))</div><div class="line">thd3 = threading.Thread(target=doJob, name=<span class="string">'Thd3'</span>, args=(que,))</div><div class="line"><span class="comment"># thd4 = threading.Thread(target=doJob, name='Thd3', args=(que,))</span></div><div class="line"><span class="comment"># thd5 = threading.Thread(target=doJob, name='Thd3', args=(que,))</span></div><div class="line"></div><div class="line"><span class="comment"># # Start activity to digest queue.</span></div><div class="line">st = datetime.datetime.now()</div><div class="line">thd1.start()</div><div class="line">thd2.start()</div><div class="line">thd3.start()</div><div class="line"><span class="comment"># thd1.join()</span></div><div class="line"><span class="comment">#在子线程完成运行之前,这个子线程的父线程将一直被阻塞.</span></div><div class="line"><span class="comment"># join() 实际上意味着等到队列为空,再执行别的操作</span></div><div class="line"></div><div class="line"><span class="comment">#這會讓呼叫 join() 方法的線程被 blocked, 一直到被呼叫 join() 的線程結束為止</span></div><div class="line"><span class="comment">#不会再进行下面的线程了</span></div><div class="line"><span class="comment"># thd4.start()</span></div><div class="line"><span class="comment"># thd5.start()</span></div><div class="line"><span class="comment">#首先當 Thread 類別被實例化, 你可以呼叫物件上面的方法 start() 來啟動該線程,</span></div><div class="line"><span class="comment">#  一旦線程啟動, 它的狀態會變成 "alive" ;</span></div><div class="line"></div><div class="line"><span class="comment"># Wait for all threads to terminate.</span></div><div class="line"><span class="keyword">while</span> thd1.is_alive() <span class="keyword">or</span> thd2.is_alive() <span class="keyword">or</span> thd3.is_alive():</div><div class="line">    time.sleep(<span class="number">1</span>)</div><div class="line"></div><div class="line"><span class="comment"># 當執行完畢 run() 後狀態便不在是 "alive".</span></div><div class="line"></div><div class="line">td = datetime.datetime.now() - st</div><div class="line">print(<span class="string">"\t[Info] Spending time=&#123;0&#125;!"</span>.format(td))</div></pre></td></tr></table></figure></p>
+<p>推荐使用<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> queue</div><div class="line"><span class="keyword">import</span> threading</div><div class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</div><div class="line"></div><div class="line">SHARE_Q = queue.Queue()  <span class="comment"># 构造一个不限制大小的的队列</span></div><div class="line">_WORKER_THREAD_NUM = <span class="number">4</span>  <span class="comment"># 设置线程的个数</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">worker</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">global</span> SHARE_Q</div><div class="line">    <span class="keyword">while</span> <span class="keyword">not</span> SHARE_Q.empty():</div><div class="line">        one_dict = SHARE_Q.get()  <span class="comment"># 获得任务</span></div><div class="line">        <span class="comment"># to worker ...</span></div><div class="line">        SHARE_Q.task_done()</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">    a= datetime.now()</div><div class="line">    threads = []</div><div class="line">    <span class="keyword">global</span> SHARE_Q</div><div class="line"></div><div class="line">    library_list =[<span class="string">'9787550215184'</span>,<span class="string">'9787550206267'</span>]</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> library_list:</div><div class="line">        SHARE_Q.put(i)</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(_WORKER_THREAD_NUM):</div><div class="line">        thr = threading.Thread(target=worker)</div><div class="line">        <span class="comment"># 必须要有 target去指定函数</span></div><div class="line">        thr.start()</div><div class="line">        threads.append(thr)</div><div class="line">    <span class="keyword">for</span> thread <span class="keyword">in</span> threads:</div><div class="line">        thread.join()</div><div class="line">    SHARE_Q.join()</div><div class="line">    print(datetime.now() -a)<span class="comment">#0:00:00.376745</span></div><div class="line">    print(<span class="string">'success'</span>)</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    main()</div></pre></td></tr></table></figure></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/05/python-threads/" data-id="cj8dvpezp002u07tntrv9st6t" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/05/python-threads/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/05/python-threads/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-threads" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -319,7 +789,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/05/threads/" data-id="cj82uoida003406p7n1ho4kts" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/05/threads/" data-id="cj8dvpf05003g07tnpyalaven" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -477,7 +947,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/05/iterable-iterator-generator/" data-id="cj82uoicg001o06p7zemxe7w9" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/05/iterable-iterator-generator/" data-id="cj8dvpeyw002407tnzvs36l74" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -625,7 +1095,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/docker-RUN-ENTRYPOINT-CMD/" data-id="cj82uoibr000s06p7d5gduoqs" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/docker-RUN-ENTRYPOINT-CMD/" data-id="cj8dvpey1000x07tn686dimwk" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -694,435 +1164,6 @@
             
     
         <a href="https://www.femn.me/2017/08/04/docker-RUN-ENTRYPOINT-CMD/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/docker-RUN-ENTRYPOINT-CMD/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-supervisor-server" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/04/supervisor-server/">supervisor</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/supervisor-server/">
-            <time datetime="2017-08-04T15:24:48.000Z" itemprop="datePublished">2017-08-04</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/server/">server</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>Linux的后台进程运行有好几种方法,例如nohup,screen等,但是,如果是一个服务程序,要可靠地在后台运行,我们就需要把它做成daemon,最好还能监控进程状态,在意外结束时能自动重启.</p>
-<p>supervisor就是用Python开发的一套通用的进程管理程序,能将一个普通的命令行进程变为后台daemon,并监控进程状态,异常退出时能自动重启.另一个进程管理工具:S6</p>
-<p>Debian / Ubuntu可以直接通过apt安装:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install supervisor</div></pre></td></tr></table></figure>
-<p>如果是通过pip安装的话,就需要echo_supervisord_conf程序生成supervisor的初始化配置文件:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo pip install supervisor</div><div class="line">mkdir /etc/supervisor</div><div class="line">echo_supervisord_conf &gt; /etc/supervisor/supervisord.conf</div></pre></td></tr></table></figure>
-<p>supervisor安装完成后会生成三个执行程序:supervisortd 守护进程服务,用于接收进程管理命令.supervisorctl 客户端,用于和守护进程通信,发送管理进程的指令.<br>echo_supervisord_conf 生成初始配置文件程序<br>然后,给我们自己开发的应用程序编写一个配置文件,让supervisor来管理它.每个进程的配置文件都可以单独分拆,放在/etc/supervisor/conf.d/目录下,以.conf作为扩展名</p>
-<p>vim server.conf<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">[program:python8010]</div><div class="line"><span class="built_in">command</span> = /usr/bin/python3 HttpsRunner.py</div><div class="line">directory = /server/app1.6</div><div class="line">user = root</div><div class="line">redirect_stderr = <span class="literal">true</span></div><div class="line">stdout_logfile_maxbytes = 150MB</div><div class="line">stdout_logfile_backups = 20</div><div class="line">stdout_logfile = /server/app1.6/python8010.log</div><div class="line"></div><div class="line">[program:mongod]</div><div class="line">;<span class="built_in">command</span> = /mongo/mongodb-linux-x86_64-ubuntu1404-3.2.10/bin/mongod --dbpath /mnt/mongodb --auth</div><div class="line"><span class="built_in">command</span> = /mongo/mongodb-linux-x86_64-ubuntu1404-3.2.10/bin/mongod -f /server/app1.6/mongodb.conf</div><div class="line">directory = /server/app1.6</div><div class="line">user = root</div><div class="line">redirect_stderr = <span class="literal">true</span></div><div class="line">stdout_logfile_maxbytes = 150MB</div><div class="line">stdout_logfile_backups = 20</div><div class="line">stdout_logfile = /server/app1.6/mongodb.log</div></pre></td></tr></table></figure></p>
-<p>Supervisor只能管理非daemon的进程,也就是说Supervisor不能管理守护进程.否则提示Exited too quickly (process log may have details)异常.<br>启动Supervisor服务:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">supervisord -c /etc/supervisor/supervisord.conf</div></pre></td></tr></table></figure>
-<p>管理进程:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">supervisorctl status</div><div class="line">supervisorctl stop mongod</div><div class="line">supervisorctl start python8010</div><div class="line">supervisorctl restart python8001</div><div class="line"><span class="comment"># 重启所有属于名为groupworker这个分组的进程(start,restart同理)</span></div><div class="line">supervisorctl stop groupworker</div><div class="line"><span class="comment"># 停止全部进程,注:start、restart、stop都不会载入最新的配置文件</span></div><div class="line">supervisorctl stop all </div><div class="line"><span class="comment"># 载入最新的配置文件,停止原有进程并按新的配置启动、管理所有进程</span></div><div class="line">supervisorctl reread/reload</div><div class="line"><span class="comment"># 根据最新的配置文件,启动新配置或有改动的进程,配置没有改动的进程不会受影响而重启</span></div><div class="line">supervisorctl update</div><div class="line">supervisorctl tail &lt;APP_NAME&gt;</div></pre></td></tr></table></figure>
-<p>进入CLI管理台:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">supervisorctl</div></pre></td></tr></table></figure>
-<p>Web管理界面 </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">vim /etc/supervisor/supervisord.conf</div><div class="line">    [inet_http_server] ; inet (TCP) server disabled by default</div><div class="line">    port=0.0.0.0:9001  ; (ip_address:port specifier, *:port <span class="keyword">for</span> all iface)</div><div class="line">    username=root      ; (default is no username (open server))</div><div class="line">    password=root      ; (default is no password (open server))</div></pre></td></tr></table></figure>
-<p>重启Supervisor服务,如果有Unlinking stale socket /var/run/supervisor.sock 执行unlink /var/run/supervisor.sock:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ps aux |grep supervisord</div><div class="line">supervisord -c /etc/supervisor/supervisord.conf</div></pre></td></tr></table></figure>
-<h5 id="开机启动Supervisor"><a href="#开机启动Supervisor" class="headerlink" title="开机启动Supervisor:"></a>开机启动Supervisor:</h5><p>方法1:<br>    Linux 在启动的时候会执行 /etc/rc.local 里面的脚本,所以只要在这里添加执行命令就可以<br>    以下内容需要添加在 exit 命令前,而且由于在执行 rc.local 脚本时,PATH 环境变量未全部初始化,因此命令需要使用绝对路径.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/bin/supervisord -c /etc/supervisor/supervisord.conf</div></pre></td></tr></table></figure></p>
-<p><a href="https://askubuntu.com/questions/765120/after-upgrade-to-16-04-lts-rc-local-is-not-executing-a-command" target="_blank" rel="external">如果是 Ubuntu 16.04 以上,rc.local 被当成了服务,而且默认是不会启动,需要手动启用一下服务</a></p>
-<p>启动rc.local服务:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo systemctl <span class="built_in">enable</span> rc-local.service</div></pre></td></tr></table></figure></p>
-<p>方法二:<br>Supervisord 默认情况下并没有被安装成服务,它本身也是一个进程.官方已经给出了脚本可以将 Supervisord 安装成服务,<br>可以参考<a href="https://github.com/Supervisor/initscripts" target="_blank" rel="external">这里</a>查看各种操作系统的安装脚本,但是我用官方这里给的 Ubuntu 脚本却无法运行.<br>安装方法可以参考<a href="https://serverfault.com/questions/96499/how-to-automatically-start-supervisord-on-linux-ubuntu" target="_blank" rel="external"> serverfault</a><br>这个脚本下载下来后,还需检查一下与我们的配置是否相符合,比如默认的配置文件路径,pid 文件路径等,如果存在不同则需要进行一些修改</p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/04/supervisor-server/" data-id="cj82uoid9003106p7rzts79hc" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/04/supervisor-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/supervisor-server/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-docker-hub" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/04/docker-hub/">docker-hub</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/docker-hub/">
-            <time datetime="2017-08-04T15:24:48.000Z" itemprop="datePublished">2017-08-04</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/docker/">docker</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h3 id="新建私有镜像仓库-只有registry-2这个镜像运行时-才能push-pull私有镜像库"><a href="#新建私有镜像仓库-只有registry-2这个镜像运行时-才能push-pull私有镜像库" class="headerlink" title="新建私有镜像仓库,只有registry:2这个镜像运行时,才能push,pull私有镜像库"></a>新建私有镜像仓库,只有registry:2这个镜像运行时,才能push,pull私有镜像库</h3><p>私有镜像仓库的好处:</p>
-<p>1.上传下载速度快</p>
-<p>2.企业可自行维护镜像仓库</p>
-<p>3.需要维护镜像仓库服务器</p>
-<p>4.同步docker官方镜像到企业私有镜像仓库</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">docker pull registry:2</div><div class="line"><span class="comment"># 使用官方的 registry 镜像来启动本地的私有仓库 </span></div><div class="line"><span class="comment"># 仓库会被创建在容器下/var/lib/registry下</span></div><div class="line"><span class="comment"># 将镜像文件存放在本机的指定路径/data/registry</span></div><div class="line">docker run -d -p 5000:5000 --restart=always --name registry \</div><div class="line">    -v /data/registry:/var/lib/registry registry:2</div><div class="line"><span class="comment"># 将镜像运行为容器 -d 将这个进程后台运行 -p 映射端口主机端口:容器端口     </span></div><div class="line"><span class="comment"># --restart=always当容器服务死掉之后自动重启 --name容器的名字 </span></div><div class="line"><span class="comment"># -v 映射容器的目录到宿主机下</span></div><div class="line"><span class="comment"># -m 128m 内存限制在128M</span></div><div class="line"></div><div class="line"><span class="comment"># 查看主机端口在容器的映射情况</span></div><div class="line">docker port nostalgic_morse 5000 </div><div class="line"></div><div class="line">docker pull nginx</div><div class="line"><span class="comment">#镜像的重命名 标记镜像</span></div><div class="line">docker tag nginx 47.52.94.126:5000/nginx:last  </div><div class="line">docker tag nginx 192.168.1.116:5000/nginx:last  </div><div class="line"></div><div class="line"><span class="comment"># modify docker daemon启动参数</span></div><div class="line">vim /usr/lib/systemd/system/docker.service</div><div class="line"><span class="comment"># centos   ubuntu:/lib/systemd/system/docker.service</span></div><div class="line">    ExecStart=之前的不要动加上  --insecure-registry=0.0.0.0/0</div><div class="line">systemctl daemon-reload</div><div class="line">systemctl restart docker</div><div class="line"><span class="comment"># 看参数有没有正确的添加.</span></div><div class="line">ps aux |grep docker  </div><div class="line"></div><div class="line"><span class="comment"># 上传标记镜像到私有仓库</span></div><div class="line">docker push 192.168.1.116:5000/nginx:last <span class="comment"># 本机测试的成功</span></div><div class="line">docker pull 192.168.1.116:5000/nginx:last </div><div class="line"><span class="comment"># 只要能连接上私有仓库,就可以从私有仓库中pull</span></div><div class="line"><span class="comment"># 因为本机做为私有仓库,已经有这image了,所以下载得很快</span></div><div class="line"><span class="comment"># docker push 47.52.94.126:5000/nginx:last 上传public IP失败</span></div></pre></td></tr></table></figure>
-<h3 id="镜像上传到Docker-Hub"><a href="#镜像上传到Docker-Hub" class="headerlink" title="镜像上传到Docker Hub"></a>镜像上传到Docker Hub</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">docker login <span class="comment">#输入 hub.docker.com注册时的用户名和密码</span></div><div class="line">docker pull registry</div><div class="line">docker tag   registry femn/registry:last</div><div class="line"><span class="comment"># 镜像名:femn/registry tag:last</span></div><div class="line"></div><div class="line"><span class="comment">#上传到Docker Hub 镜像名必须是 username/imagesname,才能上传</span></div><div class="line"><span class="comment"># 并且不需要提前去Docker Hub创建仓库</span></div><div class="line">docker push femn/registry </div><div class="line"><span class="comment"># 将本地镜像上传到https://hub.docker.com的个人仓库中了.</span></div></pre></td></tr></table></figure>
-<h3 id="Docker-Hub"><a href="#Docker-Hub" class="headerlink" title="Docker Hub"></a>Docker Hub</h3><p>Docker通过docer search、pull、login和push等命令提供了连接Docker Hub服务的功能.</p>
-<p>Docker Hub是一个由Docker公司负责维护的公共注册中心,它包含了超过15,000个可用来下载和构建容器的镜像,并且还提供认证、工作组结构、工作流工具(比如webhooks)<br>构建触发器以及私有工具(比如私有仓库可用于存储你并不想公开分享的镜像)</p>
-<h3 id="自动构建"><a href="#自动构建" class="headerlink" title="自动构建"></a>自动构建</h3><p>自动构建功能会自动从Github或BitBucket直接将镜像构建或更新至Docker Hub,通过为Github或Bitbucket的仓库添加一个提交的hook来实现,<br>当你推送提交的时候就会触发构建和更新,但是,你不能通过docker push推送一个自动化构建,而只能通过在Github或者BitBucket提交你的代码来管理它.<br>你可以在一个Docker的仓库中创建多个自动构建,配置它们只指定的Dockerfile或Git 分支</p>
-<h3 id="Automated-Builds的一个实例"><a href="#Automated-Builds的一个实例" class="headerlink" title="Automated Builds的一个实例"></a><a href="https://hub.docker.com/r/leno730/pause/" target="_blank" rel="external">Automated Builds的一个实例</a></h3><p>建Dockerfile的目的,就是为了使用dockerfile里面的from语法的作用,来借用github服务器新建我需要的镜像</p>
-<p>由于不能从google container上直接pull镜像,所以这里通过docker hub的Automated Builds功能从项目的dockerfile中Build到docker的官方服务器上,然后再从它们上面拉取</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 步骤2中 创建一个带有Dockerfile的Github项目</span></div><div class="line">mkdir docker_lib</div><div class="line"><span class="built_in">cd</span> docker_lib</div><div class="line">git init</div><div class="line">mkdir google-etcd-amd64</div><div class="line"><span class="built_in">cd</span> google-etcd-amd64</div><div class="line">vim Dockerfile</div><div class="line">    FROM gcr.io/google_containers/etcd:2.0.12</div><div class="line">    MAINTAINER femn2014</div><div class="line">git add .</div><div class="line">git commit -m <span class="string">'增加Dockerfile文件,解决镜像被墙的问题'</span></div><div class="line"><span class="comment"># 在github 创建一个名为docker_lib的项目</span></div><div class="line">git remote add origin https://github.com/femn2014/docker_lib.git</div><div class="line">git push -u origin master</div><div class="line"></div><div class="line"><span class="comment"># 当完成此实例的所有步骤之后,再测试下,推送提交的时候就会触发构建和更新</span></div><div class="line">vim Dockerfile</div><div class="line">    FROM nginx</div><div class="line">    MAINTAINER femn2014</div><div class="line">git add .</div><div class="line">git commit -m <span class="string">'当推送提交时触发构建和更新'</span></div><div class="line">git push -u origin master</div><div class="line"></div><div class="line"><span class="comment"># 这时 docker pull femn/etcd 时下载的将会是nginx的镜像</span></div></pre></td></tr></table></figure>
-<h3 id="总结来说-自动构建的步骤"><a href="#总结来说-自动构建的步骤" class="headerlink" title="总结来说 自动构建的步骤"></a>总结来说 自动构建的步骤</h3><p>1.创建一个Docker Hub账户并且登陆<br>2.通过create选择 create automated build创建一个项目,再选择连接一个包含Dockerfile的GitHub或者BitBucket.<br>3.给自动构建创建一个名称:etcd(相当于也就是Docker Hub的项目的镜像名称)<br>4.配置自动化构建 (click here to customize)<br>5.选择你想用于构建的分支(默认是master分支)<br>6.指定Dockerfile的路径,默认是/,也可以在github中建立个目录再创建Dockerfile文件,为了方便我们后面区分镜像包<br>7.指定一个Docker标签来构建</p>
-<p><a href="https://blog.iliul.com/2017-01-02/set-docker-hub-gravatars/" target="_blank" rel="external">设置头像</a><br><a href="https://www.daocloud.io/" target="_blank" rel="external">国内docker_hub</a><br>另一个镜像管理工具<a href="https://quay.io/" target="_blank" rel="external">Quay</a></p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/04/docker-hub/" data-id="cj82uoic1001406p7eiapyd1f" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/04/docker-hub/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/docker-hub/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-Dockerfile_compose" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/04/Dockerfile_compose/">Dockerfile docker-compose</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/Dockerfile_compose/">
-            <time datetime="2017-08-04T15:24:48.000Z" itemprop="datePublished">2017-08-04</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/docker/">docker</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h3 id="Dockerfile定制镜像命令-docker镜像-业务代码和运行环境进行整体的打包"><a href="#Dockerfile定制镜像命令-docker镜像-业务代码和运行环境进行整体的打包" class="headerlink" title="Dockerfile定制镜像命令,docker镜像:业务代码和运行环境进行整体的打包:"></a>Dockerfile定制镜像命令,docker镜像:业务代码和运行环境进行整体的打包:</h3><p><a href="https://github.com/imagine10255/centos6-lnmp-php56/blob/master/Dockerfile" target="_blank" rel="external">一个Dockerfile的文件</a>:系统基本所需要的环境和软件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">vim Dockerfile</div><div class="line">    FROM centos7</div><div class="line">    RUN <span class="comment"># 对原镜像进行命令操作</span></div><div class="line">    ADD . /opt/ <span class="comment"># 将宿主机此目录下的文件原copy到容器的/opt/下</span></div><div class="line">    EXPOSE 80 8000 <span class="comment"># 容器可映射的端口</span></div><div class="line">    VOLUME [<span class="string">"/home/python"</span>,<span class="string">""</span>]</div><div class="line">    WORKDIR <span class="string">'/home/xx'</span> <span class="comment"># 相当于宿主机的cd /home/xx</span></div><div class="line">    CMD [<span class="string">"nginx"</span>, <span class="string">"-g"</span>, <span class="string">"daemon off;"</span>] <span class="comment">#一开始运行这个容器所执行的命令</span></div><div class="line"><span class="comment"># 所有的文件复制均使用 COPY 指令,仅在需要自动解压缩的场合使用 ADD</span></div><div class="line"><span class="comment"># 用Dockerfile 生成镜像app</span></div><div class="line">docker build -t app .</div></pre></td></tr></table></figure>
-<h3 id="Dockerfile-模板文件-可以很方便的定义一个单独的应用容器-记录了-单-一个镜像的制作过程"><a href="#Dockerfile-模板文件-可以很方便的定义一个单独的应用容器-记录了-单-一个镜像的制作过程" class="headerlink" title="Dockerfile 模板文件,可以很方便的定义一个单独的应用容器,记录了(单)一个镜像的制作过程"></a>Dockerfile 模板文件,可以很方便的定义一个单独的应用容器,记录了(单)一个镜像的制作过程</h3><p>如果 dockerhub 的镜像不能满足我的需求就 dockerfile 自己 build 镜像</p>
-<p>为什么还要docker-compose,是因为Dockerfile要去执行CMD [“bash”]之后,再去启动nginx,node等其它的服务,不能直观的看到端口之间的映射,以及服务之间的link的原因吗？</p>
-<h3 id="但是很多时候-需要多个镜像合作才能启动一个服务-比如前端要有nginx-数据库mysql-邮件服务等等-当然你可以把所有这些都弄到一个镜像里去-但这样做就无法复用了"><a href="#但是很多时候-需要多个镜像合作才能启动一个服务-比如前端要有nginx-数据库mysql-邮件服务等等-当然你可以把所有这些都弄到一个镜像里去-但这样做就无法复用了" class="headerlink" title="但是很多时候,需要多个镜像合作才能启动一个服务,比如前端要有nginx,数据库mysql,邮件服务等等,当然你可以把所有这些都弄到一个镜像里去,但这样做就无法复用了."></a>但是很多时候,需要多个镜像合作才能启动一个服务,比如前端要有nginx,数据库mysql,邮件服务等等,当然你可以把所有这些都弄到一个镜像里去,但这样做就无法复用了.</h3><p>更常见的是,nginx,mysql,smtp都分别是个镜像,然后这些镜像合作,共同服务一个项目.<br>docker-compose就是解决这个问题的.你的项目需要哪些镜像,每个镜像怎么配置,要挂载哪些volume,等等信息都包含在docker-compose.yml里.<br>要启动服务,只需要docker-compose up就行,停止也只需要docker-compse stop/down</p>
-<p>dockerfile+docker-compose, 是因为docker-compose.yml本身没有镜像构建的信息,如果镜像是从docker registry拉取下来的,那么Dockerfile就不需要;如果镜像是需要build的,那就需要提供Dockerfile.</p>
-<h3 id="docker-compost-定义和运行多个Docker容器的应用"><a href="#docker-compost-定义和运行多个Docker容器的应用" class="headerlink" title="docker-compost:定义和运行多个Docker容器的应用"></a>docker-compost:定义和运行多个Docker容器的应用</h3><p>编排工具,定义并运行基于Docker的分布式应用,简化部署复杂应用的流程,管理容器化应用的完整开发周期</p>
-<p>1.允许用户通过一个单独的docker-compose.yml模板文件(YAML格式)来定义一组相关联的应用容器为一个项目:project<br>,包括注明需要哪些服务,服务之间的关联,开放的port,对外连结的路径volumes</p>
-<p>2.以启动container为目的的、先build image再以此启动container</p>
-<p>3.定义好了管理起来轻松,你如果喜欢用docker run带一大串parameters也是可以的</p>
-<h3 id="install-compose"><a href="#install-compose" class="headerlink" title="install compose"></a>install compose</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">curl -L https://github.com/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m` \</div><div class="line">     &gt; /usr/<span class="built_in">local</span>/bin/docker-compose</div><div class="line"><span class="comment"># 如果命令行下载超时 </span></div><div class="line">https://github.com/docker/compose/releases/download/1.8.0/docker-compose-Linux-x86_64</div><div class="line"><span class="built_in">cd</span> Download</div><div class="line">cp docker-compose-Linux-x86_64 /usr/<span class="built_in">local</span>/bin/docker-compose</div><div class="line"></div><div class="line">chmod a+x /usr/<span class="built_in">local</span>/bin/docker-compose</div><div class="line">docker-compose -h</div><div class="line">docker-compose up/down/stop</div></pre></td></tr></table></figure>
-<p>管理server(contient)执行的顺序,但其实这只是希望是这样执行(docker run),但其实真正的启动时的, 还需要其它的工具去控制.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">    mkdir 1</div><div class="line">    <span class="built_in">cd</span> 1</div><div class="line">    vim docker-compose.yml</div><div class="line">        nginx:</div><div class="line">            image: nginx</div><div class="line"><span class="comment"># 1. 只定义 image :先找本地、本地没有找 docker hub 、再没有就报错 </span></div><div class="line"><span class="comment"># 2.只定义build:跑Dockerfile做image,有image直接用,image没有name和tag </span></div><div class="line"><span class="comment"># 3.同时定义image和build:没有image就先跑build,name和tag用image定义的那个</span></div><div class="line"><span class="comment"># 有了image就直接跑container</span></div><div class="line">            <span class="comment"># build: ./nginx  ##nginx目录下有Dockerfile文件 </span></div><div class="line">            ports:</div><div class="line">                - <span class="string">"80:80"</span></div><div class="line">            volumes:</div><div class="line">                - <span class="variable">$PWD</span>/nginx/nginx.conf:/etc/nginx/nginx.conf</div><div class="line">                - ./nginx/sites-enabled:/etc/nginx/sites-enabled</div><div class="line">            restart: always</div><div class="line">        node:</div><div class="line">            image: node</div><div class="line">            ports:</div><div class="line">                -<span class="string">"8000:8000"</span></div><div class="line">            volumes:</div><div class="line">                - <span class="variable">$PWD</span>/node:/src/app</div><div class="line">            restart: always</div><div class="line"></div><div class="line">    mkdir node </div><div class="line">    mkdir nginx</div><div class="line">    <span class="built_in">cd</span> nginx</div><div class="line">    mkdir sites-enabled</div><div class="line">    vim nginx.conf</div><div class="line">        daemon off;</div><div class="line"></div><div class="line">    还要去配置node</div><div class="line">    <span class="built_in">cd</span> ../</div><div class="line">    docker-compose up</div><div class="line">    docker-compose down</div><div class="line">    docker ps -l</div></pre></td></tr></table></figure></p>
-<h3 id="用docker-compose-自动一个一个的安装软件-client"><a href="#用docker-compose-自动一个一个的安装软件-client" class="headerlink" title="用docker-compose 自动一个一个的安装软件(client)"></a>用docker-compose 自动一个一个的安装软件(client)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">vim docker-compose.yml</div><div class="line">    version: <span class="string">'2'</span></div><div class="line">    services:</div><div class="line">    mongodb:</div><div class="line">        image: tutum/mongodb</div><div class="line">        ports:</div><div class="line">            - <span class="string">"27017:27017"</span></div><div class="line">            - <span class="string">"28017:28017"</span></div><div class="line">        environment:</div><div class="line">            - AUTH=no</div><div class="line">        container_name: mongodb</div><div class="line">        restart: always</div><div class="line"></div><div class="line">    memcached:</div><div class="line">        image: memcached</div><div class="line">        ports:</div><div class="line">            - <span class="string">"11211:11211"</span></div><div class="line">        container_name: memcached</div><div class="line">        restart: always</div><div class="line"></div><div class="line"><span class="comment"># 效果:只要运行docker-compose up,就会自动安装mongodb和memcached</span></div><div class="line"><span class="comment"># 并且会在机器重启的时候自启动</span></div></pre></td></tr></table></figure>
-<p><a href="https://cola.workxplay.net/devops-docker-development-environment/" target="_blank" rel="external">一个项目的例子</a></p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/04/Dockerfile_compose/" data-id="cj82uoids003t06p7w1dh97g3" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/04/Dockerfile_compose/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/Dockerfile_compose/">Comments</a>
     
 
         </footer>
@@ -1223,7 +1264,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/docker/" data-id="cj82uoibx000z06p79mltoxf2" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/docker/" data-id="cj8dvpez4002f07tn6fin6dw2" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1370,7 +1411,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/docker-machine/" data-id="cj82uoic4001606p7k24gnrq2" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/docker-machine/" data-id="cj8dvpey8001607tnxvluh1e8" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1448,7 +1489,7 @@
 
 
 
-    <article id="post-docker-swarm" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-docker-hub" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -1456,7 +1497,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/04/docker-swarm/">docker-swarm</a>
+            <a class="article-title" href="/2017/08/04/docker-hub/">docker-hub</a>
         </h1>
     
 
@@ -1465,7 +1506,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/docker-swarm/">
+        <a href="/2017/08/04/docker-hub/">
             <time datetime="2017-08-04T15:24:48.000Z" itemprop="datePublished">2017-08-04</time>
         </a>
     </div>
@@ -1486,45 +1527,21 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h3 id="swarm集群"><a href="#swarm集群" class="headerlink" title="swarm集群"></a>swarm集群</h3><h3 id="install-swarm"><a href="#install-swarm" class="headerlink" title="install swarm"></a>install swarm</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">docker pull swarm</div><div class="line"><span class="comment"># 查看swarm版本</span></div><div class="line">docker run --rm swarm -v</div></pre></td></tr></table></figure>
-<p><a href="https://yeasy.gitbooks.io/docker_practice/content/swarm/install.html" target="_blank" rel="external">Host_consul_ip的例子</a></p>
-<h3 id="基于-consel-服务发现后端来配置一个本地-Swarm-集群"><a href="#基于-consel-服务发现后端来配置一个本地-Swarm-集群" class="headerlink" title="基于 consel 服务发现后端来配置一个本地 Swarm 集群"></a>基于 consel 服务发现后端来配置一个本地 Swarm 集群</h3><h4 id="1-1-配置每个节点主机"><a href="#1-1-配置每个节点主机" class="headerlink" title="1.1 配置每个节点主机"></a>1.1 配置每个节点主机</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 我用的是virtualbox,ubuntu16,安装好docker并修改好如下的内容,</span></div><div class="line"><span class="comment"># reboot之后clone,clone过后的虚拟机只需要修改一下ip就行</span></div><div class="line">vim /lib/systemd/system/docker.service</div><div class="line">    ExecStart=xx  再这后面加上如下内容</div><div class="line">    -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock </div><div class="line">sudo systemctl daemon-reload</div><div class="line">sudo systemctl restart docker</div><div class="line">ps -aux |grep docket</div><div class="line">docker pull swarm</div></pre></td></tr></table></figure>
-<p>坑一<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># docker daemon on node is running with</span></div><div class="line"><span class="comment"># -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock</span></div><div class="line"><span class="built_in">alias</span> docker=<span class="string">"docker -H tcp://0.0.0.0:2375 \</span></div><div class="line"><span class="string">    -H unix:///var/run/docker.sock"</span></div><div class="line"><span class="built_in">type</span> docker</div><div class="line"><span class="built_in">unalias</span> docker</div></pre></td></tr></table></figure></p>
-<p>坑二<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">docker -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock \</div><div class="line">    --daemon=<span class="literal">true</span> --pidfile=<span class="string">"/var/run/docker_2375.pid"</span> \</div><div class="line">    --graph=<span class="string">"/var/lib/docker_2375"</span></div><div class="line">docker -H tcp://0.0.0.0:2375 --daemon=<span class="literal">true</span> \</div><div class="line">    --pidfile=<span class="string">"/var/run/docker_2375.pid"</span> \</div><div class="line">    --graph=<span class="string">"/var/lib/docker_2375"</span></div></pre></td></tr></table></figure></p>
-<p>坑三<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">vim /lib/systemd/system/docker.service</div><div class="line">    <span class="comment"># 成功的</span></div><div class="line">    DOCKER_OPTS=-g /usr/bin/docker -H tcp://0.0.0.0:2375 \</div><div class="line">        -H unix:///var/run/docker.sock</div><div class="line">    <span class="comment"># 这个是失败的 </span></div><div class="line">    OPTIONS=-g /usr/bin/docker -H tcp://0.0.0.0:2375 \</div><div class="line">        -H unix:///var/run/docker.sock</div></pre></td></tr></table></figure></p>
-<h4 id="1-2-启动集群"><a href="#1-2-启动集群" class="headerlink" title="1.2 启动集群"></a>1.2 启动集群</h4><p>1.2.1.启动 Consel 服务后端(consul_ip or token,本机ip:109)至少一个群集管理器<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># -h ==--name</span></div><div class="line">docker run -d -p 8500:8500 --name=consul progrium/consul -server \</div><div class="line">    -bootstrap -ui-dir /ui</div><div class="line"><span class="comment"># 输出一个id:4b80d44e61d4e00510</span></div><div class="line"><span class="comment"># sudo docker restart id # 重新启动此容器</span></div><div class="line">docker ps -a</div><div class="line"><span class="comment"># 在浏览器中打开</span></div><div class="line">192.168.1.109:8500</div></pre></td></tr></table></figure></p>
-<p>1.2.2.启动管理节点主机(manager0_ip,ip为100的虚拟主机,一个群组工作者)</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># docker run -d -p 4000:4000 swarm manage -H :4000 --replication \</span></div><div class="line">    <span class="comment"># --advertise &lt;manager0_ip&gt;:4000 consul://&lt;consul_ip&gt;:8500</span></div><div class="line"><span class="comment"># 如果有4000端口占用的情况</span></div><div class="line">docker ps -a</div><div class="line">docker rm  -f -v containter_id</div><div class="line">docker run -d -p 4000:4000 swarm manage -H :4000 --replication \</div><div class="line">    --advertise 192.168.1.100:4000 consul://192.168.1.109:8500</div><div class="line"><span class="comment"># 输出一个id:b7a3c10f294f4718bcd0a516f</span></div><div class="line"><span class="comment"># 用户也可以启动 从管理节点</span></div><div class="line"><span class="comment"># docker run -d swarm manage -H :4000 --replication --advertise \</span></div><div class="line">    <span class="comment"># &lt;manager1_ip&gt;:4000 consul://&lt;consul_ip&gt;:8500</span></div></pre></td></tr></table></figure>
-<p>1.2.3.启动工作节点(node_ip,ip为101,102,103的虚拟主机)</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># docker run -d swarm join --advertise=&lt;node_ip&gt;:2375 \</span></div><div class="line">    <span class="comment"># consul://&lt;consul_ip&gt;:8500</span></div><div class="line">docker run -d swarm join --advertise=192.168.1.101:2375 \</div><div class="line">    consul://192.168.1.109:8500</div><div class="line">docker run -d swarm join --advertise=192.168.1.102:2375 \</div><div class="line">    consul://192.168.1.109:8500</div><div class="line">docker run -d swarm join --advertise=192.168.1.103:2375 \</div><div class="line">    consul://192.168.1.109:8500</div></pre></td></tr></table></figure>
-<p>节点启动后,用户可以指定 Docker 服务地址为 <manager0_ip>:4000&gt; 来测试各种 Docker 命令,可以看到整个 Swarm 集群就像一个虚拟的 Docker 主机一样正常工作.</manager0_ip></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo docker -H 192.168.1.100:4000 ps -a </div><div class="line">sudo docker -H tcp://192.168.1.100:4000 info</div><div class="line">sudo docker ps --no-trunc</div></pre></td></tr></table></figure>
-<p>由于 Swarm 实际上是通过 agent 调用了本地的 Docker daemon 来运行容器,当 Swarm 集群服务出现故障时,无法接受新的请求,但已经运行起来的容器将不会受到影响.</p>
-<p>在集群上运行容器<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo docker -H 192.168.1.100:2375 run -d --name web1 nginx</div></pre></td></tr></table></figure></p>
-<h3 id="2-token的例子"><a href="#2-token的例子" class="headerlink" title="2. token的例子"></a>2. <a href="http://dockone.io/article/227" target="_blank" rel="external">token的例子</a></h3><p>dockerHub 的服务发现后端,需要各个节点能通过公网访问到 DockerHub 的服务接口</p>
-<p>在任意一台安装了 Swarm 的机器上执行 swarm create 命令来在 DockerHub 服务上进行注册</p>
-<h4 id="2-1-创建集群-id"><a href="#2-1-创建集群-id" class="headerlink" title="2.1 创建集群 id"></a>2.1 创建集群 id</h4><p>Swarm   会通过服务发现后端(此处为 DockerHub 提供)来获取一个唯一的由数字和字母组成的 token,用来标识要管理的集群<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ip_109本机执行</span></div><div class="line">sudo docker ps -a</div><div class="line">sudo docker run --rm swarm create </div><div class="line"><span class="comment"># 只需要运行一次就行了,它会一直保存着,虽然在本机docker ps -a也查看不到</span></div><div class="line">token_id=ce2f14fa5ec481170d2bf62f40f832f7</div></pre></td></tr></table></figure></p>
-<h4 id="2-2-配置集群节点"><a href="#2-2-配置集群节点" class="headerlink" title="2.2 配置集群节点"></a>2.2 配置集群节点</h4><p>添加节点A(101)、B(102)到集群,在所有要加入集群的普通节点上面执行 swarm join 命令,表示把这台机器加入指定集群当中<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ip_109本机执行</span></div><div class="line">sudo docker run --rm swarm join --addr=192.168.1.100:2375 \</div><div class="line">    token://<span class="variable">$token_id</span></div><div class="line">sudo docker run --rm swarm join --addr=192.168.1.101:2375 \</div><div class="line">    token://<span class="variable">$token_id</span></div><div class="line">sudo docker run --rm swarm join --addr=192.168.1.102:2375 \</div><div class="line">    token://<span class="variable">$token_id</span></div><div class="line"><span class="comment"># 列出节点 只需要出现一条记录之后就ctrl+c</span></div><div class="line">sudo docker run --rm swarm list token://<span class="variable">$token_id</span></div></pre></td></tr></table></figure></p>
-<h4 id="2-3配置管理节点"><a href="#2-3配置管理节点" class="headerlink" title="2.3配置管理节点"></a>2.3配置管理节点</h4><p>在任何一台主机A(A:192.168.1.100)B或者C上开启管理程序</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ip_100上执行</span></div><div class="line">docker run -d -p 8888:2375 swarm manage token://<span class="variable">$token_id</span></div><div class="line"><span class="comment"># 可以通过 docker ps 命令来查看启动的 swarm manager 服务容器</span></div><div class="line">docker ps</div><div class="line"></div><div class="line"><span class="comment"># ip_109本机上 管理集群</span></div><div class="line">sudo docker -H 192.168.1.100:8888 ps </div><div class="line"></div><div class="line"><span class="comment"># 在集群上运行容器</span></div><div class="line">sudo docker -H 192.168.1.100:8888 run -d --name web1 nginx</div></pre></td></tr></table></figure>
-<p>几个命令就将多个单机版本的 Docker daemon 变成一个 cluster,还支持了 service 概念(多个容器实例副本的抽象)</p>
-<h3 id="3-docker-machine-swarm-d-virtualbox"><a href="#3-docker-machine-swarm-d-virtualbox" class="headerlink" title="3. docker-machine swarm  -d virtualbox"></a>3. docker-machine swarm  -d virtualbox</h3><p>docker daemon是root</p>
-<p>python此用户才能在virtualbox中看到创建的dev等虚拟机,docker-machine是普通用户的命令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line">docker run swarm -v</div><div class="line">sid=$(sudo docker run swarm create)</div><div class="line"><span class="built_in">echo</span> <span class="variable">$sid</span></div><div class="line">docker ps -a <span class="comment">#有上面两个但状态都是Exited</span></div><div class="line">docker-machine create -d virtualbox --swarm --swarm-master \</div><div class="line">    --swarm-discovery token://<span class="variable">$sid</span> swarm-master</div><div class="line"><span class="comment"># The host-only adapter is corrupted. Let's stop the VM, fix the host-only adapter and restart the VM</span></div><div class="line"><span class="comment"># 但我没有去做操作,它自动去改了？</span></div><div class="line">docker-machine ls</div><div class="line"></div><div class="line">docker-machine create -d virtualbox --engine-label itype=frontend \</div><div class="line">    --swarm --swarm-discovery token://<span class="variable">$sid</span> swarm-node-01</div><div class="line">docker-machine create -d virtualbox --engine-label itype=frontend \</div><div class="line">    --swarm --swarm-discovery token://<span class="variable">$sid</span> swarm-node-02</div><div class="line">docker-machine create -d virtualbox --engine-label itype=frontend \</div><div class="line">    --swarm --swarm-discovery token://<span class="variable">$sid</span> swarm-node-03</div><div class="line">docker-machine env swarm-master</div><div class="line">docker-machine env --swarm swarm-master</div><div class="line"></div><div class="line"><span class="built_in">eval</span> <span class="string">"<span class="variable">$(docker-machine env --swarm swarm-master)</span>"</span></div><div class="line">docker info</div><div class="line">docker run swarm list token://<span class="variable">$sid</span></div><div class="line">dokcer ps -a </div><div class="line"></div><div class="line">docker-machine ls</div><div class="line"><span class="built_in">eval</span> <span class="string">"<span class="variable">$(docker-machine env  swarm-master)</span>"</span></div><div class="line">docker ps -a</div><div class="line"></div><div class="line"></div><div class="line"><span class="built_in">eval</span> <span class="string">"<span class="variable">$(docker-machine env --swarm swarm-master)</span>"</span></div><div class="line">docker-machine ls</div><div class="line">docker ps </div><div class="line"><span class="comment"># 进入环境了,docker run</span></div><div class="line">sudo docker run -itd --name engmgr ubuntu</div><div class="line"></div><div class="line">sudo docker ps </div><div class="line"><span class="comment"># 居然不是下在本机的 成功 有没有可能是主机的docker是什么权限,环境中的也是啊</span></div><div class="line"><span class="comment"># swarm-node-02/engmgr 而我的是engmgr</span></div><div class="line"></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `seq 1 6`; <span class="keyword">do</span> sudo docker run -itd -e \</div><div class="line">    constraint:itype!=frontend --name eng<span class="variable">$i</span> ubuntu; <span class="keyword">done</span></div><div class="line">sudo docker ps</div><div class="line"><span class="comment"># swarm-node-02/eng1 等还是没有前缀名</span></div><div class="line"></div><div class="line"><span class="comment"># filter</span></div><div class="line">sudo docker run -itd --name engmgr-c -e \</div><div class="line">    affinity:container==engmgr ubuntu</div><div class="line"></div><div class="line"></div><div class="line">docker-machine <span class="built_in">kill</span> $(docker-machine ls -q)</div><div class="line"><span class="comment"># 好像就回到了本机了</span></div><div class="line">sudo docker images </div><div class="line"><span class="comment"># ubuntu的镜像也在下载过来了</span></div></pre></td></tr></table></figure>
-<p>注意:您会注意到命令不能与前缀sudo .这是因为它假设您正在使用的登录到服务器docker-machine ssh使用Docker窗机设置后命令</p>
-<h3 id="4-docker-machine-swarm-d-digital"><a href="#4-docker-machine-swarm-d-digital" class="headerlink" title="4. docker-machine swarm -d digital"></a>4. docker-machine swarm -d <a href="https://www.howtoing.com/how-to-create-a-cluster-of-docker-containers-with-docker-swarm-and-digitalocean-on-ubuntu-16-04/" target="_blank" rel="external">digital</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">DOTOKEN=DOTOKEN_ID</div><div class="line"></div><div class="line"><span class="comment"># 生成节点</span></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> 1 2 3; <span class="keyword">do</span> docker-machine create --driver digitalocean \</div><div class="line">    --digitalocean-image  ubuntu-16-04-x64 \</div><div class="line">    --digitalocean-access-token <span class="variable">$DOTOKEN</span> node-<span class="variable">$i</span>; <span class="keyword">done</span></div><div class="line"><span class="comment"># 该开的端口,也都开了</span></div><div class="line"><span class="comment"># 命令成功完成后,您可以通过访问您的DigitalOcean仪表板或输入以下命令来验证是否已创建所有计算机:</span></div><div class="line"><span class="comment">#更新docker-machine之后执行,就如此简单的创建了主机,在控制面板就可以看到新创建出来的实例了:</span></div><div class="line"></div><div class="line">docker-machine ls </div><div class="line"><span class="built_in">eval</span> <span class="string">"<span class="variable">$(docker-machine env  node-1)</span>"</span></div><div class="line"></div><div class="line"><span class="comment"># 使节点成为集群成员,选择其中一个节点并将其作为Docker Swarm(Node-1)管理器</span></div><div class="line">docker-machine ssh node-1</div><div class="line">docker swarm init --advertise-addr 45.55.87.176</div><div class="line"><span class="comment"># 会输出如下信息</span></div><div class="line"><span class="comment"># docker swarm join --token SWMTKN-1-xx 45.55.87.176:2377</span></div><div class="line"></div><div class="line"><span class="comment"># 并将其余部分配置为Docker Swarm工作线程. </span></div><div class="line">docker-machine ssh node-2</div><div class="line">docker swarm join --token SWMTKN-1-xx 45.55.87.176:2377</div><div class="line"></div><div class="line">docker-machine ssh node-3</div><div class="line">docker swarm join --token SWMTKN-1-xx 45.55.87.176:2377</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># Docker Swarm管理命令必须在管理器节点上执行</span></div><div class="line">docker-machine ssh node-1</div><div class="line">docker node ls </div><div class="line">docker node --<span class="built_in">help</span></div><div class="line"><span class="comment"># 您可以随时从群集中添加或删除节点. 此外,工作节点可以升级为管理器,并且管理器可以转换为工作器</span></div><div class="line">docker info</div><div class="line"></div><div class="line"><span class="comment"># 在Docker Swarm中运行服务 docker node命令一样, docker service命令只能在管理器节点上执行</span></div><div class="line">docker service create -p 80:80 --name webserver nginx</div><div class="line"></div><div class="line"><span class="comment"># 要查看集群上运行的服务,请键入:</span></div><div class="line">docker service ls <span class="comment"># 可以输入node-1IP到浏览器中,可以看到Nginx的默认页面.</span></div><div class="line"><span class="comment"># 您可以通过使用docker service ps后跟服务名称来确定服务正在运行的节点</span></div><div class="line">docker service ps webserver</div><div class="line"></div><div class="line">docker-machine stop node-1 node-2 node-3</div><div class="line">docker swarm --<span class="built_in">help</span></div></pre></td></tr></table></figure>
-<p>大坑:</p>
-<p>-driver virtualbox </p>
-<p>docker-machine version 0.12.0 是没有问题的</p>
-<p>但 amazonec2 和 digitalocean ,都要是0.12.1版本才行,不然在创建时,会报如下错</p>
-<p>Error creating machine: Error running provisioning: ssh command error:<br>Unable to query docker version: Cannot connect to the docker engine endpoint</p>
-<h3 id="5-docker-machine-在AWS创建Docker主机-会创建一个新的实例-会有收费"><a href="#5-docker-machine-在AWS创建Docker主机-会创建一个新的实例-会有收费" class="headerlink" title="5. docker-machine 在AWS创建Docker主机(会创建一个新的实例,会有收费)"></a>5. docker-machine 在AWS创建Docker主机(会创建一个新的实例,会有收费)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># http://usyiyi.cn/documents/docker/machine/examples/aws.html</span></div><div class="line"><span class="comment"># 开放22,2376,2377,80 Docker machine的安全组</span></div><div class="line">docker-machine create --driver amazonec2 \</div><div class="line">    --amazonec2-access-key you_access_key \</div><div class="line">    --amazonec2-secret-key you_secret_key \</div><div class="line">    --amazonec2-region=us-west-2  aws-01</div><div class="line"><span class="comment"># /home/python/.docker/machine/machines/aws-01</span></div><div class="line">docker-machine ssh aws-01 <span class="comment"># 虽然有下面的各种坑,但还是能进去,一直报错所以一直没有执行此命令 </span></div><div class="line">docker swarm init --advertise-addr 54.244.58.2</div><div class="line"><span class="comment"># 不像digitalocean 一样顺利,还得vim /lib/systemd/system/docker.service 然后重启,再执行就和digitalocean一样了</span></div><div class="line">docker swarm join --token SWMTKN-1-xx 54.244.58.2:2377</div><div class="line"></div><div class="line">docker-machine create --driver amazonec2 \</div><div class="line">    --amazonec2-access-key you_access_key \</div><div class="line">    --amazonec2-secret-key you_secret_key \</div><div class="line">    --amazonec2-region=us-west-2  aws02</div><div class="line">docker-machine ssh aws02 </div><div class="line">sudo docker swarm join --token SWMTKN-1-xx 54.244.58.2:2377</div><div class="line"></div><div class="line">docker-machine ssh aws-01</div><div class="line">docker service create -p 80:80 --name webserver nginx</div><div class="line">docker service ls</div><div class="line">docker service ps  webserver</div><div class="line"><span class="comment"># Docker Swarm的另一个功能是缩放服务的能力,即启动服务的其他实例.假设我们想将我们之前启动的webserver服务扩展为五个实例</span></div><div class="line">docker service scale webserver=5 <span class="comment">#output: webserver scaled to 5</span></div><div class="line">docker service ps  webserver <span class="comment"># 可以看到这5个服务在都分布在哪些节点上</span></div></pre></td></tr></table></figure>
-<p>坑一:</p>
-<p>创建实例时,先要在EC2控制面板创建一对密钥对,在创建实例时,选择此密钥对,并保存好,当你创建好实例之后,要连接实例时需要此.pem文件,才能连接上,不然就悲剧了.</p>
-<p>坑二:</p>
-<p>IAM:不是你的用户名和密码(root) ,失败<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">docker-machine create --driver amazonec2 \</div><div class="line">    --amazonec2-access-key username \</div><div class="line">    --amazonec2-secret-key password \</div><div class="line">    --amazonec2-vpc-id vpc-a24484c4 aws-sandbox</div><div class="line"><span class="comment"># 你也可以创建其它的用户来管理aws,失败</span></div><div class="line">docker-machine create --driver amazonec2 \</div><div class="line">    --amazonec2-access-key AKIAIDGRV7O6MZ2DOYDA \</div><div class="line">    --amazonec2-secret-key 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 \</div><div class="line">    --amazonec2-vpc-id vpc-978f4cf1 aws-sandbox</div><div class="line"></div><div class="line"><span class="comment"># 但只能是root用户才能访问成功</span></div><div class="line">docker-machine create --driver amazonec2 \</div><div class="line">    --amazonec2-access-key you_access_key \</div><div class="line">    --amazonec2-secret-key you_secret_key \ </div><div class="line">    --amazonec2-vpc-id vpc-a24484c4 \</div><div class="line">    --amazonec2-zone=b aws-sandbox</div><div class="line"></div><div class="line"><span class="comment"># unable to find a subnet in the zone: us-east-1b to issue</span></div><div class="line">ssh -i <span class="string">"femn.pem"</span> ubuntu@ec2-34-212-39-188.us-west-2.compute.amazonaws.com</div><div class="line">sudo apt install awscli</div><div class="line">aws configure</div></pre></td></tr></table></figure></p>
-<p>坑三: 配置aws CLI ,IAM上面已得知了,Default region name:必须是这个实例的实际地址</p>
-<p>一定要选自己的地区  us-west-2</p>
+            <h3 id="新建私有镜像仓库-只有registry-2这个镜像运行时-才能push-pull私有镜像库"><a href="#新建私有镜像仓库-只有registry-2这个镜像运行时-才能push-pull私有镜像库" class="headerlink" title="新建私有镜像仓库,只有registry:2这个镜像运行时,才能push,pull私有镜像库"></a>新建私有镜像仓库,只有registry:2这个镜像运行时,才能push,pull私有镜像库</h3><p>私有镜像仓库的好处:</p>
+<p>1.上传下载速度快</p>
+<p>2.企业可自行维护镜像仓库</p>
+<p>3.需要维护镜像仓库服务器</p>
+<p>4.同步docker官方镜像到企业私有镜像仓库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">docker pull registry:2</div><div class="line"><span class="comment"># 使用官方的 registry 镜像来启动本地的私有仓库 </span></div><div class="line"><span class="comment"># 仓库会被创建在容器下/var/lib/registry下</span></div><div class="line"><span class="comment"># 将镜像文件存放在本机的指定路径/data/registry</span></div><div class="line">docker run -d -p 5000:5000 --restart=always --name registry \</div><div class="line">    -v /data/registry:/var/lib/registry registry:2</div><div class="line"><span class="comment"># 将镜像运行为容器 -d 将这个进程后台运行 -p 映射端口主机端口:容器端口     </span></div><div class="line"><span class="comment"># --restart=always当容器服务死掉之后自动重启 --name容器的名字 </span></div><div class="line"><span class="comment"># -v 映射容器的目录到宿主机下</span></div><div class="line"><span class="comment"># -m 128m 内存限制在128M</span></div><div class="line"></div><div class="line"><span class="comment"># 查看主机端口在容器的映射情况</span></div><div class="line">docker port nostalgic_morse 5000 </div><div class="line"></div><div class="line">docker pull nginx</div><div class="line"><span class="comment">#镜像的重命名 标记镜像</span></div><div class="line">docker tag nginx 47.52.94.126:5000/nginx:last  </div><div class="line">docker tag nginx 192.168.1.116:5000/nginx:last  </div><div class="line"></div><div class="line"><span class="comment"># modify docker daemon启动参数</span></div><div class="line">vim /usr/lib/systemd/system/docker.service</div><div class="line"><span class="comment"># centos   ubuntu:/lib/systemd/system/docker.service</span></div><div class="line">    ExecStart=之前的不要动加上  --insecure-registry=0.0.0.0/0</div><div class="line">systemctl daemon-reload</div><div class="line">systemctl restart docker</div><div class="line"><span class="comment"># 看参数有没有正确的添加.</span></div><div class="line">ps aux |grep docker  </div><div class="line"></div><div class="line"><span class="comment"># 上传标记镜像到私有仓库</span></div><div class="line">docker push 192.168.1.116:5000/nginx:last <span class="comment"># 本机测试的成功</span></div><div class="line">docker pull 192.168.1.116:5000/nginx:last </div><div class="line"><span class="comment"># 只要能连接上私有仓库,就可以从私有仓库中pull</span></div><div class="line"><span class="comment"># 因为本机做为私有仓库,已经有这image了,所以下载得很快</span></div><div class="line"><span class="comment"># docker push 47.52.94.126:5000/nginx:last 上传public IP失败</span></div></pre></td></tr></table></figure>
+<h3 id="镜像上传到Docker-Hub"><a href="#镜像上传到Docker-Hub" class="headerlink" title="镜像上传到Docker Hub"></a>镜像上传到Docker Hub</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">docker login <span class="comment">#输入 hub.docker.com注册时的用户名和密码</span></div><div class="line">docker pull registry</div><div class="line">docker tag   registry femn/registry:last</div><div class="line"><span class="comment"># 镜像名:femn/registry tag:last</span></div><div class="line"></div><div class="line"><span class="comment">#上传到Docker Hub 镜像名必须是 username/imagesname,才能上传</span></div><div class="line"><span class="comment"># 并且不需要提前去Docker Hub创建仓库</span></div><div class="line">docker push femn/registry </div><div class="line"><span class="comment"># 将本地镜像上传到https://hub.docker.com的个人仓库中了.</span></div></pre></td></tr></table></figure>
+<h3 id="Docker-Hub"><a href="#Docker-Hub" class="headerlink" title="Docker Hub"></a>Docker Hub</h3><p>Docker通过docer search、pull、login和push等命令提供了连接Docker Hub服务的功能.</p>
+<p>Docker Hub是一个由Docker公司负责维护的公共注册中心,它包含了超过15,000个可用来下载和构建容器的镜像,并且还提供认证、工作组结构、工作流工具(比如webhooks)<br>构建触发器以及私有工具(比如私有仓库可用于存储你并不想公开分享的镜像)</p>
+<h3 id="自动构建"><a href="#自动构建" class="headerlink" title="自动构建"></a>自动构建</h3><p>自动构建功能会自动从Github或BitBucket直接将镜像构建或更新至Docker Hub,通过为Github或Bitbucket的仓库添加一个提交的hook来实现,<br>当你推送提交的时候就会触发构建和更新,但是,你不能通过docker push推送一个自动化构建,而只能通过在Github或者BitBucket提交你的代码来管理它.<br>你可以在一个Docker的仓库中创建多个自动构建,配置它们只指定的Dockerfile或Git 分支</p>
+<h3 id="Automated-Builds的一个实例"><a href="#Automated-Builds的一个实例" class="headerlink" title="Automated Builds的一个实例"></a><a href="https://hub.docker.com/r/leno730/pause/" target="_blank" rel="external">Automated Builds的一个实例</a></h3><p>建Dockerfile的目的,就是为了使用dockerfile里面的from语法的作用,来借用github服务器新建我需要的镜像</p>
+<p>由于不能从google container上直接pull镜像,所以这里通过docker hub的Automated Builds功能从项目的dockerfile中Build到docker的官方服务器上,然后再从它们上面拉取</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 步骤2中 创建一个带有Dockerfile的Github项目</span></div><div class="line">mkdir docker_lib</div><div class="line"><span class="built_in">cd</span> docker_lib</div><div class="line">git init</div><div class="line">mkdir google-etcd-amd64</div><div class="line"><span class="built_in">cd</span> google-etcd-amd64</div><div class="line">vim Dockerfile</div><div class="line">    FROM gcr.io/google_containers/etcd:2.0.12</div><div class="line">    MAINTAINER femn2014</div><div class="line">git add .</div><div class="line">git commit -m <span class="string">'增加Dockerfile文件,解决镜像被墙的问题'</span></div><div class="line"><span class="comment"># 在github 创建一个名为docker_lib的项目</span></div><div class="line">git remote add origin https://github.com/femn2014/docker_lib.git</div><div class="line">git push -u origin master</div><div class="line"></div><div class="line"><span class="comment"># 当完成此实例的所有步骤之后,再测试下,推送提交的时候就会触发构建和更新</span></div><div class="line">vim Dockerfile</div><div class="line">    FROM nginx</div><div class="line">    MAINTAINER femn2014</div><div class="line">git add .</div><div class="line">git commit -m <span class="string">'当推送提交时触发构建和更新'</span></div><div class="line">git push -u origin master</div><div class="line"></div><div class="line"><span class="comment"># 这时 docker pull femn/etcd 时下载的将会是nginx的镜像</span></div></pre></td></tr></table></figure>
+<h3 id="总结来说-自动构建的步骤"><a href="#总结来说-自动构建的步骤" class="headerlink" title="总结来说 自动构建的步骤"></a>总结来说 自动构建的步骤</h3><p>1.创建一个Docker Hub账户并且登陆<br>2.通过create选择 create automated build创建一个项目,再选择连接一个包含Dockerfile的GitHub或者BitBucket.<br>3.给自动构建创建一个名称:etcd(相当于也就是Docker Hub的项目的镜像名称)<br>4.配置自动化构建 (click here to customize)<br>5.选择你想用于构建的分支(默认是master分支)<br>6.指定Dockerfile的路径,默认是/,也可以在github中建立个目录再创建Dockerfile文件,为了方便我们后面区分镜像包<br>7.指定一个Docker标签来构建</p>
+<p><a href="https://blog.iliul.com/2017-01-02/set-docker-hub-gravatars/" target="_blank" rel="external">设置头像</a><br><a href="https://www.daocloud.io/" target="_blank" rel="external">国内docker_hub</a><br>另一个镜像管理工具<a href="https://quay.io/" target="_blank" rel="external">Quay</a></p>
 
         
         </div>
@@ -1535,7 +1552,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/docker-swarm/" data-id="cj82uoibu000x06p76vd4k2pt" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/docker-hub/" data-id="cj8dvpey4000z07tnq4s9r1a7" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1603,7 +1620,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/08/04/docker-swarm/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/docker-swarm/">Comments</a>
+        <a href="https://www.femn.me/2017/08/04/docker-hub/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/docker-hub/">Comments</a>
     
 
         </footer>
@@ -1687,7 +1704,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/docker-set-net/" data-id="cj82uoibs000u06p7f6i57jfw" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/docker-set-net/" data-id="cj8dvpey7001407tndlcuxqpf" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1783,7 +1800,25 @@
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
-                            <p class="item-title"><a href="/2017/09/27/hadoop_cluster/" class="title">hadoop HDFS HA高可用的集群搭建部署</a></p>
+                            <p class="item-title"><a href="/2017/09/28/storm/" class="title">hadoop storm(八)</a></p>
+                            <p class="item-date"><time datetime="2017-09-28T11:41:15.000Z" itemprop="datePublished">2017-09-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/28/hbase/" class="title">hadoop hbase(七)</a></p>
+                            <p class="item-date"><time datetime="2017-09-28T11:31:15.000Z" itemprop="datePublished">2017-09-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_cluster/" class="title">hadoop HDFS HA高可用的集群搭建部署(六)</a></p>
                             <p class="item-date"><time datetime="2017-09-27T11:41:15.000Z" itemprop="datePublished">2017-09-27</time></p>
                         </div>
                     </li>
@@ -1792,7 +1827,7 @@
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
-                            <p class="item-title"><a href="/2017/09/27/hadoop_hive/" class="title">hadoop hive(六)</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_hive/" class="title">hadoop hive(五)</a></p>
                             <p class="item-date"><time datetime="2017-09-27T11:31:15.000Z" itemprop="datePublished">2017-09-27</time></p>
                         </div>
                     </li>
@@ -1806,24 +1841,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
-                            <p class="item-title"><a href="/2017/09/23/hadoop_mapreduce/" class="title">hadoop MapReduce Yarn(四)</a></p>
-                            <p class="item-date"><time datetime="2017-09-23T12:01:15.000Z" itemprop="datePublished">2017-09-23</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
-                            <p class="item-title"><a href="/2017/09/23/hadoop_RPC/" class="title">hadoop RPC(三)</a></p>
-                            <p class="item-date"><time datetime="2017-09-23T11:51:15.000Z" itemprop="datePublished">2017-09-23</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -1833,7 +1850,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -1842,7 +1859,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">41</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">42</span></li></ul>
         </div>
     </div>
 
@@ -1851,7 +1868,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">tags</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
