@@ -155,7 +155,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                55
+                57
                 <span>posts</span>
             </div>
             <div class="article-info-block">
@@ -214,7 +214,7 @@
 
             
             <section id="main">
-    <article id="post-pip管理" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-basic_socket" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -222,7 +222,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/04/pip管理/">pip管理工具</a>
+            <a class="article-title" href="/2017/08/04/basic_socket/">套接字(SOCKET)</a>
         </h1>
     
 
@@ -231,7 +231,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/pip管理/">
+        <a href="/2017/08/04/basic_socket/">
             <time datetime="2017-08-04T08:10:53.000Z" itemprop="datePublished">2017-08-04</time>
         </a>
     </div>
@@ -252,11 +252,12 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h4 id="分别使用不同python版本-进行安装应用"><a href="#分别使用不同python版本-进行安装应用" class="headerlink" title="分别使用不同python版本 进行安装应用"></a>分别使用不同python版本 进行安装应用</h4><p>install pip 以及普通用户安装包的路径<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo apt install -y python-pip</div><div class="line"><span class="built_in">which</span> pip</div><div class="line">python2.7 -m pip install tornado</div><div class="line">~/.<span class="built_in">local</span>/lib/python2.7/site-packages/tornado</div></pre></td></tr></table></figure></p>
-<p>install pip3 以及普通用户安装包的路径<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo apt install -y python3-pip</div><div class="line"><span class="built_in">which</span> pip3</div><div class="line">python3.5 -m pip install bson</div><div class="line">~/.<span class="built_in">local</span>/lib/python3.5/site-packages/bson</div></pre></td></tr></table></figure></p>
-<p>root用户安装包之后的路径<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo python3.5 -m pip install tornado</div><div class="line">/usr/<span class="built_in">local</span>/lib/python3.5/dist-packages/tornado</div></pre></td></tr></table></figure></p>
-<p>更新pip<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo python2.7 -m pip install -U pip</div><div class="line">sudo pip3 install -U pip</div><div class="line"><span class="comment"># sudo pip install -U pip 更新的还是pip3</span></div></pre></td></tr></table></figure></p>
-<p>一键导出/安装所有安装包列表<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo pip3 freeze &gt; requirements.txt</div><div class="line">sudo pip3 install -U -r requirements.txt</div></pre></td></tr></table></figure></p>
+            <p>socket套接字.是一种通信机制,用于描述IP地址和端口,是一个通信链的句柄.操作socket就像操作Unix一样,一切皆是文件,.</p>
+<p>0.0.0.0有多少个网卡,都可以连接到本机.<br>程序之间进行内存数据交换(通信)比较麻烦:每个程序的内存空间都是被保护的,不能被别的程序直接访问,所以要通过某种介质,管道或第三方工具,去通信.<br>nosql(第三方):将内存的数据缓存进来,供其它的程序调用,所有的程序都可以往里存数据,所有的程序都可以取数据.相当于实现了一个共享的内存空间.<br>socket.AF_UNIX;只能够用于单一的Unix系统进程间通信<br>socket.AF_INET:服务器之间网络通信<br>socket.AF_INET6 IPv6</p>
+<p>socket 4层 ICMP 3层<br>socket通信的数据格式<br>socket.SOCK_STREAM :PCP三次握手<br>socket.SOCKDGRAM:UDP<br>socket.SOCK_RAW 原始套接字 可以处理普通套接字不能处理的ICMP,IGMP等网络报文 可以可以伪造IP</p>
+<h4 id="server"><a href="#server" class="headerlink" title="server"></a>server</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> socket <span class="keyword">import</span> *</div><div class="line"><span class="comment">#IP协议(socket type)   TCP协议(数据包格式)</span></div><div class="line">socketobj = socket(AF_INET,SOCK_STREAM)<span class="comment"># 生成对象</span></div><div class="line">socketobj.bind((<span class="string">'localhost'</span>,<span class="number">8080</span>)) <span class="comment">#绑定IP和端口</span></div><div class="line">socketobj.listen(<span class="number">128</span>)<span class="comment"># 监听连接数量</span></div><div class="line"><span class="comment"># 1</span></div><div class="line"><span class="comment">#客户端实例,客户端地址</span></div><div class="line"><span class="comment"># connection,address=socketobj.accept()</span></div><div class="line"><span class="comment"># 每个客户端一连接就会返回的结果</span></div><div class="line"><span class="comment"># 但只能连接一个客户端,只有当前客户端下线,下个客户端才能连上</span></div><div class="line"></div><div class="line"><span class="comment"># A,B客户端都运行 但A先连接 B后连接 B处于阻塞状态,没有生成connection </span></div><div class="line"><span class="comment"># A断开之后,因为只有一个connection,所以执行了 socketobj.close(),</span></div><div class="line"><span class="comment"># 服务也跟着断了 B不会自动连上</span></div><div class="line"></div><div class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">    <span class="comment"># 2</span></div><div class="line">    connection,address=socketobj.accept()</div><div class="line">    <span class="comment"># 多用户连接时 生成了对应的多个connection</span></div><div class="line">    <span class="comment"># 只是当A断开之后,B自动连上,但每个客户端只能访问一次之后</span></div><div class="line">    <span class="comment"># 访问一次后 重新循环 重新一次新的连接</span></div><div class="line">    <span class="comment"># 而上次的connection就被 服务器给挂起了</span></div><div class="line">    print(<span class="string">'connect by '</span>, address)</div><div class="line">    <span class="comment"># 3</span></div><div class="line">    <span class="comment"># while True:</span></div><div class="line">    <span class="comment"># 当多用户连接时 生成了对应的多个connection</span></div><div class="line">    <span class="comment"># 只是当A断开之后,B自动连上,B可以随便聊</span></div><div class="line"></div><div class="line">    data = connection.recv(<span class="number">1024</span>) <span class="comment">#服务器只接收1024个字节</span></div><div class="line">    print(<span class="string">'server端收到client端的信息:'</span>+ str(data,encoding = <span class="string">"utf-8"</span>))</div><div class="line">    connection.sendall(bytes(<span class="string">"hello client"</span>,<span class="string">"utf-8"</span>))</div><div class="line">    <span class="comment">#服务器返回给客户的信息</span></div><div class="line">socketobj.close()</div></pre></td></tr></table></figure>
+<h4 id="client"><a href="#client" class="headerlink" title="client"></a>client</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> socket <span class="keyword">import</span> *</div><div class="line">socketobj = socket(AF_INET,SOCK_STREAM)</div><div class="line"><span class="comment"># socketobj.connect(('localhost',8080)) #绑定 阻塞的</span></div><div class="line">socketobj.connect((<span class="string">'localhost'</span>,<span class="number">20000</span>)) <span class="comment">#asy</span></div><div class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">    user_input =input(<span class="string">"msg to server:"</span>).strip()</div><div class="line">    socketobj.send(bytes(user_input,<span class="string">'utf-8'</span>))</div><div class="line"></div><div class="line"><span class="comment">#socketobj.sendall(bytes("hello server", 'utf-8'))</span></div><div class="line">    data = socketobj.recv(<span class="number">1024</span>)</div><div class="line">    print(<span class="string">"client端收到server端的信息 :"</span>+str(data,encoding = <span class="string">"utf-8"</span>))</div><div class="line">socketobj.close()</div></pre></td></tr></table></figure>
+<h4 id="asy-server"><a href="#asy-server" class="headerlink" title="asy_server"></a>asy_server</h4><p><a href="http://python3-cookbook.readthedocs.io/zh_CN/latest/c11/p02_creating_tcp_server.html" target="_blank" rel="external">参考</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> socketserver <span class="keyword">import</span> BaseRequestHandler, TCPServer, ThreadingTCPServer</div><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="comment"># socketserver 可以让我们很容易的创建简单的TCP服务器,</span></div><div class="line"><span class="comment"># 巨大部分Python的高层网络模块(比如HTTP,XML-RPC等)都是建立在socketserver功能之上</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">EchoHandler</span><span class="params">(BaseRequestHandler)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">handle</span><span class="params">(self)</span>:</span><span class="comment">#每个连接就会 调用此方法</span></div><div class="line">        print(<span class="string">'Got connection from'</span>, self.client_address)</div><div class="line">        <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">        <span class="comment"># 循环去监听用户的连接,否则只能像单进程的阻塞一样,只能连接一个用户</span></div><div class="line">            msg = self.request.recv(<span class="number">8192</span>)</div><div class="line">            <span class="keyword">if</span> <span class="keyword">not</span> msg:<span class="comment">#如果用户退出,没有这句的话 就变成死循环</span></div><div class="line">                print(<span class="string">'connection close by'</span>, self.client_address)</div><div class="line">                <span class="keyword">break</span></div><div class="line">            print(msg)</div><div class="line">            <span class="comment"># self.request.send(str(msg,encoding = "utf-8"))</span></div><div class="line">            self.request.send(msg)</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    <span class="comment"># serv = TCPServer(('', 20000), EchoHandler)#单个线程</span></div><div class="line">    serv = ThreadingTCPServer((<span class="string">'0.0.0.0'</span>, <span class="number">20000</span>), EchoHandler)</div><div class="line">    serv.serve_forever()</div></pre></td></tr></table></figure></p>
 
         
         </div>
@@ -267,7 +268,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/pip管理/" data-id="cj8dvpeza002p07tn0xm4r82e" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/basic_socket/" data-id="cj8r9p6dd000g06qwm2xtawhy" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -335,7 +336,136 @@
 
             
     
-        <a href="https://www.femn.me/2017/08/04/pip管理/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/pip管理/">Comments</a>
+        <a href="https://www.femn.me/2017/08/04/basic_socket/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/basic_socket/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-basic_derivation" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/04/basic_derivation/">推导式(Derivation)</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/04/basic_derivation/">
+            <time datetime="2017-08-04T08:10:53.000Z" itemprop="datePublished">2017-08-04</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>list derivation(列表推导式)<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">l = [x*x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>)]</div><div class="line"><span class="comment"># [0, 1, 4, 9, 16] 直接返回列表而不是生成器</span></div><div class="line"></div><div class="line">[i+<span class="number">1</span> <span class="keyword">if</span> i&gt;<span class="number">0</span> <span class="keyword">else</span> <span class="number">1</span> <span class="keyword">for</span> i <span class="keyword">in</span> l]</div><div class="line"><span class="comment"># [1, 2, 5, 10, 17]</span></div><div class="line"></div><div class="line">[i+<span class="number">1</span> <span class="keyword">if</span> i&gt;<span class="number">0</span> <span class="keyword">else</span> <span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> l]</div><div class="line"><span class="comment"># [2, 2, 5, 10, 17] # 说明 如果是取else的话,就不再去做更新的操作</span></div><div class="line"></div><div class="line">[i <span class="keyword">for</span> i <span class="keyword">in</span> l <span class="keyword">if</span> i &gt;<span class="number">4</span> <span class="keyword">and</span> i &lt;=<span class="number">16</span>] <span class="comment"># [9,16]</span></div><div class="line"></div><div class="line">vec = [[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>], [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]]</div><div class="line">[num <span class="keyword">for</span> elem <span class="keyword">in</span> vec <span class="keyword">for</span> num <span class="keyword">in</span> elem]</div><div class="line"><span class="comment"># [1, 2, 3, 4, 5, 6, 7, 8, 9]</span></div><div class="line"></div><div class="line">[(x, y) <span class="keyword">for</span> x <span class="keyword">in</span> [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>] <span class="keyword">for</span> y <span class="keyword">in</span> [<span class="number">3</span>,<span class="number">1</span>,<span class="number">4</span>] <span class="keyword">if</span> x != y]</div><div class="line"><span class="comment"># [(1, 3), (1, 4), (2, 3), (2, 1), (2, 4), (3, 1), (3, 4)]</span></div><div class="line">```	</div><div class="line"></div><div class="line">改变字典的值</div><div class="line"></div><div class="line">```python </div><div class="line">l_d = [&#123;<span class="string">'name'</span>:<span class="string">'femn'</span>,<span class="string">'age'</span>:<span class="number">25</span>&#125;,&#123;<span class="string">'name'</span>:<span class="string">'femnyy'</span>,<span class="string">'age'</span>:<span class="number">35</span>&#125;]</div><div class="line">[i <span class="keyword">if</span> i.get(<span class="string">'age'</span>)&gt; <span class="number">25</span> <span class="keyword">else</span> i <span class="keyword">for</span> i <span class="keyword">in</span> l_d]</div><div class="line"></div><div class="line"><span class="comment"># 虽然此时不能得到自己想要的改变 不能用i['name']='femnhh'去做改变</span></div><div class="line">[i.update(&#123;<span class="string">'name'</span>:<span class="string">'femnhh'</span>&#125;) <span class="keyword">if</span> i.get(<span class="string">'age'</span>)&gt; <span class="number">25</span> <span class="keyword">else</span> i <span class="keyword">for</span> i <span class="keyword">in</span> l_d]</div><div class="line"><span class="comment"># [&#123;'age': 25, 'name': 'femn'&#125;, None] # 相当于是匹配没有匹配成功则返回None</span></div><div class="line"></div><div class="line"><span class="comment"># 但此时l_d却已经是改变成想要的了</span></div><div class="line">l_d</div><div class="line"><span class="comment"># [&#123;'age': 25, 'name': 'femn'&#125;, &#123;'age': 35, 'name': 'femnhh'&#125;]</span></div></pre></td></tr></table></figure></p>
+<h3 id="generator-derivation-生成器推导式"><a href="#generator-derivation-生成器推导式" class="headerlink" title="generator derivation(生成器推导式)"></a>generator derivation(生成器推导式)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">g = (x*x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>)) <span class="comment"># 'generator' object</span></div><div class="line">next(g) <span class="comment">#</span></div></pre></td></tr></table></figure>
+<h3 id="dict-derivation-字典推导式"><a href="#dict-derivation-字典推导式" class="headerlink" title="dict derivation (字典推导式)"></a>dict derivation (字典推导式)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">prices = &#123;<span class="string">'ACME'</span>: <span class="number">45.23</span>,<span class="string">'AAPL'</span>: <span class="number">612.78</span>,<span class="string">'IBM'</span>: <span class="number">205.55</span>,\</div><div class="line">        <span class="string">'HPQ'</span>: <span class="number">37.20</span>,<span class="string">'FB'</span>: <span class="number">10.75</span>&#125;</div><div class="line">p1 = &#123;key: value <span class="keyword">for</span> key, value <span class="keyword">in</span> prices.items() <span class="keyword">if</span> value &gt; <span class="number">20</span>&#125;</div><div class="line"><span class="comment"># &#123;'ACME': 45.23, 'IBM': 205.55, 'HPQ': 37.2, 'AAPL': 612.78&#125;</span></div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/04/basic_derivation/" data-id="cj8r9p6d2000a06qwuxcg7l70" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/04/basic_derivation/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/basic_derivation/">Comments</a>
     
 
         </footer>
@@ -434,7 +564,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/linux_firewall/" data-id="cj8dvpf00003907tntpraxjut" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/linux_firewall/" data-id="cj8r9p6en002006qw019nn5of" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -512,6 +642,139 @@
 
 
 
+    <article id="post-basic_sort" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/04/basic_sort/">排序</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/04/basic_sort/">
+            <time datetime="2017-08-04T08:10:53.000Z" itemprop="datePublished">2017-08-04</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="items"><a href="#items" class="headerlink" title="items"></a>items</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">d = &#123;<span class="string">'k'</span>:<span class="number">1</span>,<span class="string">'x'</span>:<span class="number">1</span>&#125;</div><div class="line">u.items() <span class="comment"># ==dict_items([('x', 1), ('k', 1)])</span></div></pre></td></tr></table></figure>
+<h3 id="sorted-iterable-key-reverse"><a href="#sorted-iterable-key-reverse" class="headerlink" title="sorted(iterable,key,reverse)"></a>sorted(iterable,key,reverse)</h3><p><em>sorted函数按key本身的值对字典排序</em><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> itemgetter</div><div class="line">d = &#123;<span class="string">'a'</span>:<span class="number">1</span>,<span class="string">'c'</span>:<span class="number">3</span>,<span class="string">'d'</span>:<span class="number">444</span>,<span class="string">'b'</span>:<span class="number">2</span>&#125;</div><div class="line"><span class="comment"># 在签名时挺有用的</span></div><div class="line"><span class="keyword">for</span> k, v <span class="keyword">in</span> sorted(d.items(),key=<span class="keyword">lambda</span> x:x[<span class="number">0</span>]):</div><div class="line">    print(k,v)</div><div class="line"></div><div class="line">sort_d  = sorted(d.items(),key = itemgetter(<span class="number">0</span>),reverse=<span class="keyword">False</span>)</div><div class="line"></div><div class="line">a = &#123;<span class="string">'x'</span>: <span class="number">1</span>,<span class="string">'y'</span>: <span class="number">2</span>,<span class="string">'z'</span>: <span class="number">3</span>&#125;</div><div class="line">b = &#123;<span class="string">'w'</span>: <span class="number">10</span>,<span class="string">'x'</span>: <span class="number">11</span>,<span class="string">'y'</span>: <span class="number">2</span>&#125;</div><div class="line">sorted(zip(a.values(),a.keys()))</div><div class="line"><span class="comment"># [(1, 'x'), (2, 'y'), (3, 'z')]</span></div><div class="line"></div><div class="line">max(zip(a.values(),a.keys()))</div><div class="line"><span class="comment"># (3, 'z')</span></div><div class="line"></div><div class="line">min(zip(a.keys(),a.values()))</div><div class="line"><span class="comment"># ('x',1)</span></div></pre></td></tr></table></figure></p>
+<p><em>对v值的排序</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> itemgetter</div><div class="line">rows = [</div><div class="line">    &#123;<span class="string">'address'</span>: <span class="string">'5412 N CLARK'</span>, <span class="string">'date'</span>: <span class="string">'07/01/2012'</span>&#125;,</div><div class="line">    &#123;<span class="string">'address'</span>: <span class="string">'5412 NIKE SHIRT'</span>, <span class="string">'date'</span>: <span class="string">'07/01/2012'</span>&#125;,</div><div class="line">    &#123;<span class="string">'address'</span>: <span class="string">'5148 N CLARK'</span>, <span class="string">'date'</span>: <span class="string">'07/04/2012'</span>&#125;,</div><div class="line">    &#123;<span class="string">'address'</span>: <span class="string">'5800 E 58TH'</span>, <span class="string">'date'</span>: <span class="string">'07/02/2012'</span>&#125;,</div><div class="line">        ]</div><div class="line">rows.sort(key=itemgetter(<span class="string">'date'</span>))</div><div class="line"></div><div class="line">rows = sorted(rows,key=itemgetter(<span class="string">'date'</span>))</div><div class="line"></div><div class="line">rows = sorted(rows, key=<span class="keyword">lambda</span> x: x.get(<span class="string">'date'</span>) \</div><div class="line">    <span class="keyword">if</span> x.get(<span class="string">'date'</span>) <span class="keyword">else</span> <span class="string">'4000'</span>, reverse=<span class="keyword">False</span>)</div><div class="line"><span class="comment"># 必須提供一個在排序过程中使用的函数,为每个元素创建一个key,然后按这个key来排序</span></div><div class="line">a = [<span class="string">'femn'</span>,<span class="string">'femn2014'</span>,<span class="string">'fe'</span>,<span class="string">'femnyy'</span>]</div><div class="line">a.sort(key=len)</div><div class="line"></div><div class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> groupby</div><div class="line"><span class="comment"># 按相同时间的值,进行分组</span></div><div class="line"><span class="keyword">for</span> date, items <span class="keyword">in</span> groupby(rows, key=itemgetter(<span class="string">'date'</span>)):</div><div class="line">    print(date)</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> items:</div><div class="line">        print(<span class="string">' '</span>, i)</div><div class="line"><span class="comment"># 输出如下 </span></div><div class="line"><span class="comment"># 07/01/2012</span></div><div class="line"><span class="comment"># &#123;'address': '5412 N CLARK', 'date': '07/01/2012'&#125;</span></div><div class="line"><span class="comment"># &#123;'address': '5412 NIKE SHIRT', 'date': '07/01/2012'&#125;</span></div><div class="line"><span class="comment"># 07/04/2012</span></div><div class="line"><span class="comment"># &#123;'address': '5148 N CLARK', 'date': '07/04/2012'&#125;</span></div><div class="line"><span class="comment"># 07/02/2012</span></div><div class="line"><span class="comment"># &#123;'address': '5800 E 58TH', 'date': '07/02/2012'&#125;</span></div></pre></td></tr></table></figure>
+<h3 id="join"><a href="#join" class="headerlink" title="join"></a>join</h3><p>如果你想要合并的字符串是在一个序列或者 iterable 中,那么最快的方式就是使用 join() 方法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">data = [<span class="string">'ACME'</span>, <span class="number">50</span>, <span class="number">91.1</span>]</div><div class="line"><span class="string">','</span>.join(str(d) <span class="keyword">for</span> d <span class="keyword">in</span> data) <span class="comment"># 'ACME,50,91.1'</span></div><div class="line">(str(d) <span class="keyword">for</span> d <span class="keyword">in</span> data)  <span class="comment">#是一个	generator</span></div></pre></td></tr></table></figure>
+<h3 id="random"><a href="#random" class="headerlink" title="random"></a>random</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> random,string</div><div class="line">v = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>] <span class="comment"># 一个序列或者 iterable </span></div><div class="line"><span class="comment"># 随机选择一个,且只能是选一个</span></div><div class="line">random.choice(v)</div><div class="line"></div><div class="line"><span class="comment"># 随机提取N个,保证不重复出现,并且N不能超过v的长度</span></div><div class="line">random.sample(v,<span class="number">3</span>)</div><div class="line"></div><div class="line"><span class="comment"># 只是想打乱序列中的顺序</span></div><div class="line">random.shuffle(v) <span class="comment"># 此时v值的顺序已经被改变</span></div><div class="line"></div><div class="line"><span class="comment"># 生成一个随机的整数</span></div><div class="line">random.randint(<span class="number">0</span>,<span class="number">10</span>)</div><div class="line"></div><div class="line"><span class="string">''</span>.join(random.choice(string.ascii_letters + string.digits) <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">32</span>))</div><div class="line"><span class="string">''</span>.join([random.choice(string.ascii_letters+string.digits) <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">43</span>)])</div><div class="line"><span class="string">''</span>.join(random.sample(string.ascii_letters+string.digits, <span class="number">15</span>))</div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/04/basic_sort/" data-id="cj8r9p6du000n06qw8v5agukv" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/04/basic_sort/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/basic_sort/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-character_and_encode" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -574,7 +837,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/character_and_encode/" data-id="cj8dvpexx000v07tncieczk01" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/character_and_encode/" data-id="cj8r9p6di000i06qwjle7jdcy" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -736,7 +999,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/basic_sequence/" data-id="cj8dvpexn000g07tnydpp24mf" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/basic_sequence/" data-id="cj8r9p6d8000c06qwh65rzwpq" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -866,7 +1129,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/01/hello-world/" data-id="cj8dvpeyu002107tnm35r6m8p" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/01/hello-world/" data-id="cj8r9p6ed001i06qwq2c1q2pk" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1012,7 +1275,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">21</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -1021,7 +1284,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">42</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">44</span></li></ul>
         </div>
     </div>
 
