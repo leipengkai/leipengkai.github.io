@@ -155,7 +155,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                57
+                61
                 <span>posts</span>
             </div>
             <div class="article-info-block">
@@ -265,7 +265,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/16/sshd-server/" data-id="cj8r9p6fc003206qw5174pn5g" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/16/sshd-server/" data-id="cj8soumi5003806umcwpkzps8" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -343,151 +343,6 @@
 
 
 
-    <article id="post-shadowsocks-server" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/16/shadowsocks-server/">shadowsocks</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/16/shadowsocks-server/">
-            <time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/server/">server</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h3 id="用shadowsocks作为翻墙的工具"><a href="#用shadowsocks作为翻墙的工具" class="headerlink" title="用shadowsocks作为翻墙的工具"></a>用shadowsocks作为翻墙的工具</h3><p>一般的翻墙工具还有VPN,pptp是VPN的一种,我们在这里介绍的是shadowsocks翻墙工具 </p>
-<p> <a href="https://shadowsocks.org/en/download/clients.html" target="_blank" rel="external">shadowsocks 官网</a></p>
-<p> <a href="https://www.loyalsoldier.me/fuck-the-gfw-with-my-own-shadowsocks-server/" target="_blank" rel="external">centos7 install shadowsocks</a></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">yum install python-setuptools &amp;&amp; easy_install pip  </div><div class="line">pip install shadowsocks</div><div class="line">vim /root/ss/ssserver.json</div><div class="line">    &#123;</div><div class="line">      <span class="string">"server"</span>: <span class="string">"0.0.0.0"</span>,</div><div class="line">      <span class="string">"server_port"</span>: 8388,</div><div class="line">      <span class="string">"local_address"</span>: <span class="string">"127.0.0.1"</span>,</div><div class="line">      <span class="string">"local_port"</span>: 1080,</div><div class="line">      <span class="string">"password"</span>: <span class="string">"yourpassword"</span>,</div><div class="line">      <span class="string">"timeout"</span>: 300,</div><div class="line">      <span class="string">"method"</span>: <span class="string">"aes-256-cfb"</span>,</div><div class="line">      <span class="string">"fast_open"</span>: <span class="literal">false</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">systemctl start firewalld.service</div><div class="line">systemctl <span class="built_in">enable</span> firewalld.service</div><div class="line">firewall-cmd --permanent --add-port=8388/tcp</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure>
-<p>启动 ssserver服务<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">nohup ssserver -c /root/ss/ssserver.json -d start &amp;</div></pre></td></tr></table></figure></p>
-<p>查看ssserver 有没有启动成功</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ps aux |grep ssserver</div><div class="line"><span class="comment"># 状态要是Ss,必须要切换到root用户执行</span></div></pre></td></tr></table></figure>
-<p>如果没有成功,可能是因为/root/ss/ssserver.json 的server_ip的原因,我买了个<a href="https://intl.aliyun.com/zh" target="_blank" rel="external">国际阿里云</a>的ECS服务器,我写的是公网的IP,结果一直运行不起来<br>因为公网是通过nat IP实现的(所以在安全组中只能是选择内网进行配置),所以改成Privaty IP就可以正常启动了,最好是设置为0.0.0.0就好.</p>
-<p>阿里云的ECS服务器上配置使用任意端口的服务后,端口会自动开启监听,但它还有一个安全组的概念,最好设置一个(内网   入  允许 全部 -1/-1   0.0.0.0/0  优先级110)<br>这样就完全可以由ECS的系统完全的操作防火墙,就像没有安全组概念一样了.</p>
-<p> <a href="https://www.vultr.com/docs/how-to-deploy-google-bbr-on-centos-7" target="_blank" rel="external">centos7 install BBR</a> 要注意下sudo grub2-set-default 0,应该是为0的,使用最新的,文档却写成了1<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># update kernet</span></div><div class="line"><span class="comment"># look current kernet</span></div><div class="line">uname -r</div><div class="line"><span class="comment"># Install the ELRepo repo:</span></div><div class="line">sudo rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org</div><div class="line">sudo rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm</div><div class="line"><span class="comment"># install newer kernet</span></div><div class="line">sudo yum --enablerepo=elrepo-kernel install kernel-ml -y</div><div class="line"><span class="comment"># look install newer kernet</span></div><div class="line">rpm -qa | grep kernel</div><div class="line">sudo egrep ^menuentry /etc/grub2.cfg | cut -f 2 -d \<span class="string">'</span></div><div class="line"><span class="string"># setting newer kernet</span></div><div class="line"><span class="string">sudo grub2-set-default 0</span></div><div class="line"><span class="string">sudo shutdown -r now</span></div><div class="line"><span class="string">uname -r</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string"># enable BBr</span></div><div class="line"><span class="string">echo '</span>net.core.default_qdisc=fq<span class="string">' | sudo tee -a /etc/sysctl.conf</span></div><div class="line"><span class="string">echo '</span>net.ipv4.tcp_congestion_control=bbr<span class="string">' | sudo tee -a /etc/sysctl.conf</span></div><div class="line"><span class="string">sudo sysctl -p</span></div><div class="line"><span class="string">sudo sysctl net.ipv4.tcp_available_congestion_control</span></div><div class="line"><span class="string">net.ipv4.tcp_available_congestion_control = bbr cubic reno</span></div><div class="line"><span class="string">sudo sysctl -n net.ipv4.tcp_congestion_control</span></div><div class="line"><span class="string">bbr</span></div><div class="line"><span class="string">lsmod |grep bbr   # output   tcp_bbr                16384  0</span></div></pre></td></tr></table></figure></p>
-<p><a href="https://github.com/shadowsocks/shadowsocks-qt5/wiki/%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97" target="_blank" rel="external">client install shadowsocks</a></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#ubuntu</span></div><div class="line">sudo add-apt-repository ppa:hzwhuang/ss-qt5</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install shadowsocks-qt5</div><div class="line">ss-qt5</div><div class="line"><span class="comment"># 将ssserver.json的配置,设置到ss中</span></div></pre></td></tr></table></figure>
-<h3 id="注意-一定要再去配置下代理Pxory-0-0-0-0-1080-或者用本地的-pac文件-Local-Port就必须和service-pac文件-此文件是过滤网址用的-如果访问文件中的网址则走代理-启动的端口一致"><a href="#注意-一定要再去配置下代理Pxory-0-0-0-0-1080-或者用本地的-pac文件-Local-Port就必须和service-pac文件-此文件是过滤网址用的-如果访问文件中的网址则走代理-启动的端口一致" class="headerlink" title="注意:一定要再去配置下代理Pxory 0.0.0.0:1080 或者用本地的.pac文件,Local Port就必须和service.pac文件(此文件是过滤网址用的,如果访问文件中的网址则走代理)启动的端口一致."></a>注意:一定要再去配置下代理Pxory 0.0.0.0:1080 或者用本地的.pac文件,Local Port就必须和service.pac文件(此文件是过滤网址用的,如果访问文件中的网址则走代理)启动的端口一致.</h3><p><a href="http://pac.ddcc.me/1.pac" target="_blank" rel="external">http://pac.ddcc.me/1.pac</a> == local.pac</p>
-<h4 id="在国际里云购买的ESC-配置好shadowsocks之后-在手机上能正常使用-也不需要去设置代理-但在Ubuntu桌面下却一直用不了"><a href="#在国际里云购买的ESC-配置好shadowsocks之后-在手机上能正常使用-也不需要去设置代理-但在Ubuntu桌面下却一直用不了" class="headerlink" title="在国际里云购买的ESC,配置好shadowsocks之后,在手机上能正常使用,也不需要去设置代理,但在Ubuntu桌面下却一直用不了"></a>在国际里云购买的ESC,配置好shadowsocks之后,在手机上能正常使用,也不需要去设置代理,但在Ubuntu桌面下却一直用不了</h4><p> 如果自己不想搭建服务器的话,可以按下面的操作进行翻墙:</p>
-<p> <a href="https://doub.io/sszhfx/" target="_blank" rel="external">Shadowsocks免费账号分享</a>,但这个网址要先翻墙才行,哈哈<br> 具体的使用:在免费账号分享的这个网址上 </p>
-<p>1.使用二维码:点击二维码会出现一个二维码的图 这里打开shadowsocks软件–&gt;点鼠标右键–&gt;add–&gt;scan QR code on screen</p>
-<p>2.使用生成二维码的url:在add–&gt;选择url中ss以及后面的部分<br>如果失败的话,可以换其它的二维码试试.</p>
-<p><a href="https://github.com/TestSmirk/ss-ip" target="_blank" rel="external">这个是我大哥自己搭建的一些ss帐号</a></p>
-<h3 id="ubuntu-etc-resolv-conf"><a href="#ubuntu-etc-resolv-conf" class="headerlink" title="ubuntu /etc/resolv.conf"></a>ubuntu /etc/resolv.conf</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">nameserver 127.0.1.1</div><div class="line"><span class="comment"># nameserver 8.8.8.8</span></div><div class="line">search DHCP HOST</div></pre></td></tr></table></figure>
-<h3 id="加速SS的链接速度"><a href="#加速SS的链接速度" class="headerlink" title="加速SS的链接速度"></a><a href="http://vegetablefinn.github.io/2016/05/02/SS%E7%A5%9E%E5%99%A8-FinalSpeed-XSocks-%E7%AC%94%E8%AE%B0/" target="_blank" rel="external">加速SS的链接速度</a></h3>
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/16/shadowsocks-server/" data-id="cj8r9p6fn003i06qw455tj6cs" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/16/shadowsocks-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/shadowsocks-server/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <article id="post-CDN-server" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -541,7 +396,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/16/CDN-server/" data-id="cj8r9p6cu000506qww9q9elrf" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/16/CDN-server/" data-id="cj8soumfk000206umjakjm55r" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -610,6 +465,151 @@
             
     
         <a href="https://www.femn.me/2017/08/16/CDN-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/CDN-server/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-shadowsocks-server" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/16/shadowsocks-server/">shadowsocks</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/16/shadowsocks-server/">
+            <time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/server/">server</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="用shadowsocks作为翻墙的工具"><a href="#用shadowsocks作为翻墙的工具" class="headerlink" title="用shadowsocks作为翻墙的工具"></a>用shadowsocks作为翻墙的工具</h3><p>一般的翻墙工具还有VPN,pptp是VPN的一种,我们在这里介绍的是shadowsocks翻墙工具 </p>
+<p> <a href="https://shadowsocks.org/en/download/clients.html" target="_blank" rel="external">shadowsocks 官网</a></p>
+<p> <a href="https://www.loyalsoldier.me/fuck-the-gfw-with-my-own-shadowsocks-server/" target="_blank" rel="external">centos7 install shadowsocks</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">yum install python-setuptools &amp;&amp; easy_install pip  </div><div class="line">pip install shadowsocks</div><div class="line">vim /root/ss/ssserver.json</div><div class="line">    &#123;</div><div class="line">      <span class="string">"server"</span>: <span class="string">"0.0.0.0"</span>,</div><div class="line">      <span class="string">"server_port"</span>: 8388,</div><div class="line">      <span class="string">"local_address"</span>: <span class="string">"127.0.0.1"</span>,</div><div class="line">      <span class="string">"local_port"</span>: 1080,</div><div class="line">      <span class="string">"password"</span>: <span class="string">"yourpassword"</span>,</div><div class="line">      <span class="string">"timeout"</span>: 300,</div><div class="line">      <span class="string">"method"</span>: <span class="string">"aes-256-cfb"</span>,</div><div class="line">      <span class="string">"fast_open"</span>: <span class="literal">false</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">systemctl start firewalld.service</div><div class="line">systemctl <span class="built_in">enable</span> firewalld.service</div><div class="line">firewall-cmd --permanent --add-port=8388/tcp</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure>
+<p>启动 ssserver服务<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">nohup ssserver -c /root/ss/ssserver.json -d start &amp;</div></pre></td></tr></table></figure></p>
+<p>查看ssserver 有没有启动成功</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ps aux |grep ssserver</div><div class="line"><span class="comment"># 状态要是Ss,必须要切换到root用户执行</span></div></pre></td></tr></table></figure>
+<p>如果没有成功,可能是因为/root/ss/ssserver.json 的server_ip的原因,我买了个<a href="https://intl.aliyun.com/zh" target="_blank" rel="external">国际阿里云</a>的ECS服务器,我写的是公网的IP,结果一直运行不起来<br>因为公网是通过nat IP实现的(所以在安全组中只能是选择内网进行配置),所以改成Privaty IP就可以正常启动了,最好是设置为0.0.0.0就好.</p>
+<p>阿里云的ECS服务器上配置使用任意端口的服务后,端口会自动开启监听,但它还有一个安全组的概念,最好设置一个(内网   入  允许 全部 -1/-1   0.0.0.0/0  优先级110)<br>这样就完全可以由ECS的系统完全的操作防火墙,就像没有安全组概念一样了.</p>
+<p> <a href="https://www.vultr.com/docs/how-to-deploy-google-bbr-on-centos-7" target="_blank" rel="external">centos7 install BBR</a> 要注意下sudo grub2-set-default 0,应该是为0的,使用最新的,文档却写成了1<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># update kernet</span></div><div class="line"><span class="comment"># look current kernet</span></div><div class="line">uname -r</div><div class="line"><span class="comment"># Install the ELRepo repo:</span></div><div class="line">sudo rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org</div><div class="line">sudo rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm</div><div class="line"><span class="comment"># install newer kernet</span></div><div class="line">sudo yum --enablerepo=elrepo-kernel install kernel-ml -y</div><div class="line"><span class="comment"># look install newer kernet</span></div><div class="line">rpm -qa | grep kernel</div><div class="line">sudo egrep ^menuentry /etc/grub2.cfg | cut -f 2 -d \<span class="string">'</span></div><div class="line"><span class="string"># setting newer kernet</span></div><div class="line"><span class="string">sudo grub2-set-default 0</span></div><div class="line"><span class="string">sudo shutdown -r now</span></div><div class="line"><span class="string">uname -r</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string"># enable BBr</span></div><div class="line"><span class="string">echo '</span>net.core.default_qdisc=fq<span class="string">' | sudo tee -a /etc/sysctl.conf</span></div><div class="line"><span class="string">echo '</span>net.ipv4.tcp_congestion_control=bbr<span class="string">' | sudo tee -a /etc/sysctl.conf</span></div><div class="line"><span class="string">sudo sysctl -p</span></div><div class="line"><span class="string">sudo sysctl net.ipv4.tcp_available_congestion_control</span></div><div class="line"><span class="string">net.ipv4.tcp_available_congestion_control = bbr cubic reno</span></div><div class="line"><span class="string">sudo sysctl -n net.ipv4.tcp_congestion_control</span></div><div class="line"><span class="string">bbr</span></div><div class="line"><span class="string">lsmod |grep bbr   # output   tcp_bbr                16384  0</span></div></pre></td></tr></table></figure></p>
+<p><a href="https://github.com/shadowsocks/shadowsocks-qt5/wiki/%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97" target="_blank" rel="external">client install shadowsocks</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#ubuntu</span></div><div class="line">sudo add-apt-repository ppa:hzwhuang/ss-qt5</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install shadowsocks-qt5</div><div class="line">ss-qt5</div><div class="line"><span class="comment"># 将ssserver.json的配置,设置到ss中</span></div></pre></td></tr></table></figure>
+<h3 id="注意-一定要再去配置下代理Pxory-0-0-0-0-1080-或者用本地的-pac文件-Local-Port就必须和service-pac文件-此文件是过滤网址用的-如果访问文件中的网址则走代理-启动的端口一致"><a href="#注意-一定要再去配置下代理Pxory-0-0-0-0-1080-或者用本地的-pac文件-Local-Port就必须和service-pac文件-此文件是过滤网址用的-如果访问文件中的网址则走代理-启动的端口一致" class="headerlink" title="注意:一定要再去配置下代理Pxory 0.0.0.0:1080 或者用本地的.pac文件,Local Port就必须和service.pac文件(此文件是过滤网址用的,如果访问文件中的网址则走代理)启动的端口一致."></a>注意:一定要再去配置下代理Pxory 0.0.0.0:1080 或者用本地的.pac文件,Local Port就必须和service.pac文件(此文件是过滤网址用的,如果访问文件中的网址则走代理)启动的端口一致.</h3><p><a href="http://pac.ddcc.me/1.pac" target="_blank" rel="external">http://pac.ddcc.me/1.pac</a> == local.pac</p>
+<h4 id="在国际里云购买的ESC-配置好shadowsocks之后-在手机上能正常使用-也不需要去设置代理-但在Ubuntu桌面下却一直用不了"><a href="#在国际里云购买的ESC-配置好shadowsocks之后-在手机上能正常使用-也不需要去设置代理-但在Ubuntu桌面下却一直用不了" class="headerlink" title="在国际里云购买的ESC,配置好shadowsocks之后,在手机上能正常使用,也不需要去设置代理,但在Ubuntu桌面下却一直用不了"></a>在国际里云购买的ESC,配置好shadowsocks之后,在手机上能正常使用,也不需要去设置代理,但在Ubuntu桌面下却一直用不了</h4><p> 如果自己不想搭建服务器的话,可以按下面的操作进行翻墙:</p>
+<p> <a href="https://doub.io/sszhfx/" target="_blank" rel="external">Shadowsocks免费账号分享</a>,但这个网址要先翻墙才行,哈哈<br> 具体的使用:在免费账号分享的这个网址上 </p>
+<p>1.使用二维码:点击二维码会出现一个二维码的图 这里打开shadowsocks软件–&gt;点鼠标右键–&gt;add–&gt;scan QR code on screen</p>
+<p>2.使用生成二维码的url:在add–&gt;选择url中ss以及后面的部分<br>如果失败的话,可以换其它的二维码试试.</p>
+<p><a href="https://github.com/TestSmirk/ss-ip" target="_blank" rel="external">这个是我大哥自己搭建的一些ss帐号</a></p>
+<h3 id="ubuntu-etc-resolv-conf"><a href="#ubuntu-etc-resolv-conf" class="headerlink" title="ubuntu /etc/resolv.conf"></a>ubuntu /etc/resolv.conf</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">nameserver 127.0.1.1</div><div class="line"><span class="comment"># nameserver 8.8.8.8</span></div><div class="line">search DHCP HOST</div></pre></td></tr></table></figure>
+<h3 id="加速SS的链接速度"><a href="#加速SS的链接速度" class="headerlink" title="加速SS的链接速度"></a><a href="http://vegetablefinn.github.io/2016/05/02/SS%E7%A5%9E%E5%99%A8-FinalSpeed-XSocks-%E7%AC%94%E8%AE%B0/" target="_blank" rel="external">加速SS的链接速度</a></h3>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/16/shadowsocks-server/" data-id="cj8soumip004706um2t72nbde" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/16/shadowsocks-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/shadowsocks-server/">Comments</a>
     
 
         </footer>
@@ -698,7 +698,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/15/vps-server/" data-id="cj8r9p6fu003t06qwfg8t6jw5" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/15/vps-server/" data-id="cj8soumii003u06umnlf80mtd" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -827,7 +827,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/14/python-fun-program/" data-id="cj8r9p6ez002i06qwb1i5klfr" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/14/python-fun-program/" data-id="cj8soumi1003206umuym4irki" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -960,7 +960,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/14/进程间通信/" data-id="cj8r9p6fp003m06qwqy2big4r" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/14/进程间通信/" data-id="cj8soumin004106umevyzvzy0" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1165,7 +1165,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/tornado/" data-id="cj8r9p6fr003o06qwj4pjwh0u" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/tornado/" data-id="cj8soumie003o06um6wnyx6mh" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1281,7 +1281,7 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p> 在python中,不管是定义变量还是方法,还是类,实际上你定义的时候,分配了内存空间,仅仅是使用一个变量名指向了这一块的内存空间而已.<br><img src="/2017/08/11/closure/rep.png" alt="变量名引用值和函数" title="变量名引用值和函数"><br><img src="/2017/08/11/closure/rep1.png" alt="重名方法名导致浪费内存" title="重名方法名导致浪费内存"></p>
+            <p> 在python中,不管是定义变量还是方法,还是类,实际上你定义的时候,分配了内存空间,仅仅是使用一个变量名指向了这一块的内存空间而已.<br><img src="/2017/08/11/closure/rep.png" alt="变量名引用值和函数" title="变量名引用值和函数"><br><img src="/2017/08/11/closure/rep1.png" alt="重名方法导致代码无效" title="重名方法导致代码无效"></p>
 <h3 id="闭包-Closure-又称函数闭包-function-closures-内部函数对外部函数作⽤域⾥变量的引⽤-⾮全局变量-则称内部函数为闭包"><a href="#闭包-Closure-又称函数闭包-function-closures-内部函数对外部函数作⽤域⾥变量的引⽤-⾮全局变量-则称内部函数为闭包" class="headerlink" title="闭包(Closure)又称函数闭包(function closures):内部函数对外部函数作⽤域⾥变量的引⽤(⾮全局变量),则称内部函数为闭包"></a>闭包(Closure)又称函数闭包(function closures):内部函数对外部函数作⽤域⾥变量的引⽤(⾮全局变量),则称内部函数为闭包</h3><p>引用了自由变量的函数.这个被引用的自由变量将和这个函数一同存在,即使已经离开了创造它的环境也不例外.所以,有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体.闭包在运行时可以有多个实例,不同的引用环境和相同的函数组合可以产生不同的实例</p>
 <p>在一些语言中,在函数中可以(嵌套)定义另一个函数时,如果内部的函数引用了外部的函数的变量,则可能产生闭包.运行时,一旦外部的 函数被执行,一个闭包就形成了,闭包中包含了内部函数的代码,以及所需外部函数中的变量的引用.</p>
 <p>闭包被广泛使用于函数式编程语言</p>
@@ -1290,7 +1290,7 @@
 <p>这里面调用func的时候就产生了一个闭包——inner_func,并且该闭包持有自由变量——name,因此这也意味着,当函数func的生命周期结束之后,name这个变量依然存在,因为它被闭包引用了,所以不会被回收</p>
 <h4 id="nonlocal访问外部函数的局部变量"><a href="#nonlocal访问外部函数的局部变量" class="headerlink" title="nonlocal访问外部函数的局部变量:"></a>nonlocal访问外部函数的局部变量:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">counter</span><span class="params">(start=<span class="number">0</span>)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">incr</span><span class="params">()</span>:</span></div><div class="line">        <span class="keyword">nonlocal</span> start</div><div class="line">        start += <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> start</div><div class="line">    <span class="keyword">return</span> incr</div><div class="line">c1 = counter(<span class="number">5</span>) </div><div class="line">print(c1()) <span class="comment"># 6</span></div><div class="line">print(c1()) <span class="comment"># 7</span></div><div class="line">c2 = counter(<span class="number">50</span>)</div><div class="line">print(c2()) <span class="comment"># 51</span></div><div class="line">print(c2()) <span class="comment"># 52</span></div><div class="line">print(c1()) <span class="comment"># 8</span></div><div class="line">print(c1()) <span class="comment"># 9</span></div></pre></td></tr></table></figure>
 <h4 id="闭包思考"><a href="#闭包思考" class="headerlink" title="闭包思考:"></a>闭包思考:</h4><p>1.闭包似优化了变量,原来需要类对象完成的⼯作,闭包也可以完成 2.由于闭包引⽤了外部函数的局部变量,则外部函数的局部变量没有及时释放,消耗内存</p>
-<img src="/2017/08/11/closure/rep2.png" alt="减少参数传递,同时增加代码的可移植性" title="减少参数传递,同时增加代码的可移植性">
+<img src="/2017/08/11/closure/rep2.png" alt="闭包减少参数传递,同时增加代码的可移植性" title="闭包减少参数传递,同时增加代码的可移植性">
 
         
         </div>
@@ -1301,7 +1301,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/closure/" data-id="cj8rdnait000010qwd742u7cz" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/closure/" data-id="cj8soumg7000q06ump5639lt4" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1379,7 +1379,7 @@
 
 
 
-    <article id="post-python-copy" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-python-dynamic" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -1387,7 +1387,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/11/python-copy/">深浅拷贝</a>
+            <a class="article-title" href="/2017/08/11/python-dynamic/">python的动态性</a>
         </h1>
     
 
@@ -1396,7 +1396,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/11/python-copy/">
+        <a href="/2017/08/11/python-dynamic/">
             <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
         </a>
     </div>
@@ -1417,9 +1417,10 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h4 id="is-是⽐较两个引⽤是否指向了同⼀个对象（引⽤⽐较）"><a href="#is-是⽐较两个引⽤是否指向了同⼀个对象（引⽤⽐较）" class="headerlink" title="is    是⽐较两个引⽤是否指向了同⼀个对象（引⽤⽐较）"></a>is    是⽐较两个引⽤是否指向了同⼀个对象（引⽤⽐较）</h4><h4 id="是⽐较两个对象内容是否相等"><a href="#是⽐较两个对象内容是否相等" class="headerlink" title="==    是⽐较两个对象内容是否相等"></a>==    是⽐较两个对象内容是否相等</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line">b = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line">a == b  <span class="comment"># True</span></div><div class="line">a <span class="keyword">is</span> b <span class="comment"># Flase</span></div><div class="line">c = copy.deepcopy(a)<span class="comment">#　深拷贝</span></div><div class="line">a == c  <span class="comment"># True</span></div><div class="line">a <span class="keyword">is</span> c <span class="comment"># Flase</span></div><div class="line">id(a) <span class="comment"># 指向a的内存地址</span></div><div class="line">d = a <span class="comment">#　id(d)和id(a)值相等 浅拷贝</span></div><div class="line">a <span class="keyword">is</span> d <span class="comment">#　True</span></div></pre></td></tr></table></figure>
-<h4 id="拷贝-一个变量引用另外一个变量"><a href="#拷贝-一个变量引用另外一个变量" class="headerlink" title="拷贝:一个变量引用另外一个变量"></a>拷贝:一个变量引用另外一个变量</h4><p>深拷⻉是对于⼀个对象所有层次的拷⻉(递归)<br><img src="/2017/08/11/python-copy/1.jpg" alt="深拷贝" title="深拷贝"></p>
-<p>浅拷⻉是对于⼀个对象的顶层拷⻉,只是拷⻉了引⽤，并没有拷⻉内容(没重新生成新的内存地址)<br><img src="/2017/08/11/python-copy/2.jpg" alt="浅拷贝列表" title="浅拷贝列表"><br>浅拷⻉对不可变类型和可变类型的copy不同<br><img src="/2017/08/11/python-copy/3.jpg" alt="深拷贝元组" title="深拷贝元组"></p>
+            <p>动态语⾔:可以在运⾏的过程中,修改代码<br>静态语⾔:运行前必须先编,译编译时已经确定好代码,运⾏过程中不能修改</p>
+<p>python是动态语⾔:它是⼀类在运⾏时可以改变其结构的语⾔:例如新的函数、对象、 甚⾄代码可以被引进,已有的函数可以被删除或是其他结构上的变化.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, newName, newAge)</span>:</span></div><div class="line">        self.name = newName</div><div class="line">        self.age = newAge</div><div class="line">        <span class="comment"># 	__slots__	=	("name",	"age")</span></div><div class="line">        <span class="comment"># 为了达到限制的⽬的,Python允许在定义class的时候</span></div><div class="line">        <span class="comment"># 定义⼀个特殊的 __slots__变量,来限制该class实例能添加的属性</span></div><div class="line"></div><div class="line"><span class="meta">@staticmethod</span></div><div class="line">def test();</div><div class="line">    <span class="keyword">pass</span></div><div class="line"><span class="meta">@classmethod</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">testclass</span><span class="params">(cls)</span>:</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line"></div><div class="line">laowang = Person(<span class="string">"老王"</span>, <span class="number">10000</span>)</div><div class="line">print(laowang.name)</div><div class="line">print(laowang.age)</div><div class="line"><span class="comment"># 可以添加其它属性和方法,即使在类只没有定义</span></div><div class="line">laowang.addr = <span class="string">"北京...."</span></div><div class="line">print(laowang.addr)</div><div class="line"></div><div class="line"><span class="comment">#　给对象和类添加属性</span></div><div class="line">laozhao = Person(<span class="string">"老赵"</span>, <span class="number">18</span>)</div><div class="line"><span class="comment">#print(laozhao.addr)</span></div><div class="line"></div><div class="line">Person.num = <span class="number">100</span></div><div class="line">print(laowang.num)</div><div class="line">print(laozhao.num)</div><div class="line"></div><div class="line"><span class="comment">#　添加静态方法</span></div><div class="line">Persion.test = test</div><div class="line">Persion.testclass = testclass</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 添加方法</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, newName, newAge)</span>:</span></div><div class="line">        self.name = newName</div><div class="line">        self.age = newAge</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">"-----%s正在吃----"</span>%self.name)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></div><div class="line">    print(<span class="string">"-----%s正在跑----"</span>%self.name)</div><div class="line"></div><div class="line"></div><div class="line">p1 = Person(<span class="string">"p1"</span>, <span class="number">10</span>)</div><div class="line">p1.eat()</div><div class="line">p1.run = run</div><div class="line"><span class="comment"># p1.run()#虽然p1对象中 run属性已经指向了函数,但是这句代码还不正确</span></div><div class="line">        <span class="comment">#因为run属性指向的函数 是后来添加的,p1.run()的时候,并没有把p1当做第</span></div><div class="line">        <span class="comment">#1个参数,导致了第10行的函数调用的时候, 出现缺少参数的问题</span></div><div class="line"><span class="keyword">import</span> types</div><div class="line">p1.run = types.MethodType(run, p1)</div><div class="line">p1.run()</div></pre></td></tr></table></figure>
 
         
         </div>
@@ -1430,7 +1431,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/python-copy/" data-id="cj8rehdj200003sqwye75pv0x" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/python-dynamic/" data-id="cj8sraauw00001kum5fd4w5sv" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1498,7 +1499,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/08/11/python-copy/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-copy/">Comments</a>
+        <a href="https://www.femn.me/2017/08/11/python-dynamic/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-dynamic/">Comments</a>
     
 
         </footer>
@@ -1508,7 +1509,7 @@
 
 
 
-    <article id="post-python-decorator" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-python-GC" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -1516,7 +1517,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/10/python-decorator/">python 装饰器</a>
+            <a class="article-title" href="/2017/08/11/python-GC/">python垃圾回收机制</a>
         </h1>
     
 
@@ -1525,8 +1526,8 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/10/python-decorator/">
-            <time datetime="2017-08-10T15:31:24.000Z" itemprop="datePublished">2017-08-10</time>
+        <a href="/2017/08/11/python-GC/">
+            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
         </a>
     </div>
 
@@ -1546,39 +1547,29 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>装饰器(decorator):它能对任何可调用的对象进行包装,既能够用于方法也能够用于函数,想要对一个已有的模块做一些”修饰工作”,但又不让这个小装饰(小功能)侵入到原有的模块中的代码里去,</p>
-<p>在python中圆括号意味着调用函数.在没有圆括号的情况下,python会把函数当作普通对象</p>
-<p>函数名是某个函数的引用(reference),所以,我们可以对同一个函数设置不同的函数名.(可以理解为,函数也是对象,可以通过赋值来设置不同的对象名)</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; def succ(x):</div><div class="line">        <span class="built_in">return</span> x+1</div><div class="line"></div><div class="line">&gt;&gt;&gt; successor = succ</div><div class="line">&gt;&gt;&gt; successor(10) <span class="comment"># 11</span></div><div class="line">&gt;&gt;&gt; succ(10) <span class="comment"># 11</span></div><div class="line"><span class="comment"># successor和succ都指向同一个函数(应该是对象),都指向同一个内存区域.</span></div><div class="line">&gt;&gt;&gt; id(successor) <span class="comment"># 139701625513368</span></div><div class="line">&gt;&gt;&gt; id(succ) <span class="comment"># 139701625513368</span></div><div class="line">&gt;&gt;&gt; del succ</div><div class="line">&gt;&gt;&gt; successor(10) <span class="comment"># 11</span></div><div class="line">&gt;&gt;&gt; <span class="built_in">type</span>(successor) <span class="comment"># function</span></div></pre></td></tr></table></figure>
-<h4 id="写代码要遵循开放封闭原则"><a href="#写代码要遵循开放封闭原则" class="headerlink" title="写代码要遵循开放封闭原则"></a>写代码要遵循开放封闭原则</h4><p>虽然在这个原则是⽤的⾯向对象开发，但是也适⽤于函数式编程，简单来说，它规定已经实现的功能代码不允许被修改，但可以被扩展，即：<br>封闭：已实现的功能代码块 开放：对扩展开发</p>
-<h4 id="装饰器什么时候进行装饰"><a href="#装饰器什么时候进行装饰" class="headerlink" title="装饰器什么时候进行装饰"></a>装饰器什么时候进行装饰</h4><p>python解释器对函数默认是不执行的，只是知道这块有这些个函数,在调用的时候才执行<br>@der # 但只要是python解释器执行到这个代码了,那么就会自动的进行装饰,而不是等到调用的时候才装饰的<br><img src="/2017/08/10/python-decorator/1.png" alt="装饰器:装饰时由内往外装,调用时由外向内" title="装饰器:装饰时由内往外装,调用时由外向内"></p>
-<p>结果如下<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">---正在装饰2----</div><div class="line">---正在装饰1----</div><div class="line">---正在验证权限1----</div><div class="line">---正在验证权限2----</div><div class="line">---f1---</div></pre></td></tr></table></figure></p>
-<h4 id="使用装饰器对有返回值的函数进行装饰"><a href="#使用装饰器对有返回值的函数进行装饰" class="headerlink" title="使用装饰器对有返回值的函数进行装饰"></a>使用装饰器对有返回值的函数进行装饰</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(functionName)</span>:</span></div><div class="line">    print(<span class="string">"---func---1---"</span>)</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">func_in</span><span class="params">()</span>:</span></div><div class="line">        print(<span class="string">"---func_in---1---"</span>)</div><div class="line">        ret = functionName()</div><div class="line">        print(<span class="string">"---func_in---2---"</span>)</div><div class="line">        <span class="keyword">return</span> ret</div><div class="line"></div><div class="line">    print(<span class="string">"---func---2---"</span>)</div><div class="line">    <span class="keyword">return</span> func_in</div><div class="line"></div><div class="line"><span class="meta">@func</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></div><div class="line">    print(<span class="string">"----test----"</span>)</div><div class="line">    <span class="keyword">return</span> <span class="string">"haha"</span></div><div class="line"></div><div class="line">ret = test()</div><div class="line">print(<span class="string">"test return value is %s"</span>%ret)</div></pre></td></tr></table></figure>
-<h4 id="装饰器-decorator-功能"><a href="#装饰器-decorator-功能" class="headerlink" title="装饰器(decorator)功能"></a>装饰器(decorator)功能</h4><p>1.引⼊⽇志 2.函数执⾏时间统计 3.执⾏函数前预备处理 4.执⾏函数后清理功能 5.权限校验等场景 6.缓存</p>
-<p>装饰器的两种类型:函数装饰器和类装饰器</p>
-<h3 id="函数装饰器"><a href="#函数装饰器" class="headerlink" title="函数装饰器"></a>函数装饰器</h3><p><em>无参数装饰器-包装无参数函数</em><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">decorator</span><span class="params">(func)</span>:</span></div><div class="line">    <span class="comment"># 装饰函数</span></div><div class="line">    print(<span class="string">'hello'</span>)</div><div class="line">    <span class="keyword">return</span> func</div><div class="line"><span class="meta">@decorator</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></div><div class="line">    <span class="comment"># 被装饰函数 回调函数 闭包函数(当有自由变量)</span></div><div class="line">    print(<span class="string">'foo end'</span>)</div><div class="line">    <span class="comment"># 其解释器将此方法解释为</span></div><div class="line">    <span class="comment"># foo = decorator(foo)</span></div><div class="line">    <span class="comment"># 把一个函数当参数传到另一个函数中,然后再回调</span></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    foo </div><div class="line">    <span class="comment"># hello</span></div><div class="line">    foo()</div><div class="line">    <span class="comment"># hello</span></div><div class="line">    <span class="comment"># foo end</span></div><div class="line">    </div><div class="line">    foo_text = decorator(foo)</div><div class="line">    print(type(foo_text))</div><div class="line">    <span class="comment"># hello</span></div><div class="line">    <span class="comment"># hello</span></div><div class="line">    <span class="comment"># &lt;class 'function'&gt;</span></div><div class="line">    foo_text()</div><div class="line">    <span class="comment"># foo end</span></div></pre></td></tr></table></figure></p>
-<p>装饰器的功能是将被装饰的函数当作参数传递给与装饰器对应的函数(名称相同的函数),并返回包装后的(被装饰)的函数</p>
-<p>下面这个例子向我们展示了decorator的本质:hello(foo)返回了wrapper()函数,所以,foo其实变成了wrapper的一个变量,而后面的foo()执行其实变成了wrapper()<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">(fn)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">()</span>:</span></div><div class="line">        print(<span class="string">"hello, %s"</span> % fn.__name__)</div><div class="line">        fn()</div><div class="line">        print(<span class="string">"goodby, %s"</span> % fn.__name__)</div><div class="line"></div><div class="line">    <span class="keyword">return</span> wrapper</div><div class="line"></div><div class="line"><span class="meta">@hello</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span> </div><div class="line">    print(<span class="string">"i am foo"</span>)</div><div class="line">    <span class="comment"># foo = hello(foo)</span></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    foo()</div><div class="line">    <span class="comment"># hello, foo</span></div><div class="line">    <span class="comment"># i am foo</span></div><div class="line">    <span class="comment"># goodby, foo</span></div></pre></td></tr></table></figure></p>
-<p>类似地<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 多个decorator</span></div><div class="line"><span class="meta">@decorator_one</span></div><div class="line"><span class="meta">@decorator_two</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line">    <span class="comment"># func = decorator_one(decorator_two(func))</span></div><div class="line"></div><div class="line"><span class="comment"># 带参数的decorator</span></div><div class="line"><span class="meta">@decorator(arg1, arg2)</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line">    <span class="comment"># func = decorator(arg1,arg2)(func)</span></div><div class="line">    <span class="comment"># 这意味着decorator(arg1, arg2)这个函数需要返回一个"真正的decorator"</span></div></pre></td></tr></table></figure></p>
-<p><em>无参数装饰器-包装带参数函数</em><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">decorator_func_args</span><span class="params">(func)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">handle_args</span><span class="params">(*args, **kwargs)</span>:</span></div><div class="line">        print(<span class="string">"handle args start"</span>)</div><div class="line">        func(*args, **kwargs)</div><div class="line">        print(<span class="string">"handle args end"</span>)</div><div class="line">    <span class="keyword">return</span> handle_args</div><div class="line"></div><div class="line"><span class="meta">@decorator_func_args</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo2</span><span class="params">(a, b=<span class="number">2</span>)</span>:</span></div><div class="line">    print(a,b)</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    foo2(<span class="number">1</span>)</div><div class="line">    <span class="comment"># handle args start</span></div><div class="line">    <span class="comment"># 1 2</span></div><div class="line">    <span class="comment"># handle args end</span></div><div class="line"></div><div class="line">    <span class="comment"># 先传递函数名,再传递参数</span></div><div class="line">    foo2_text = decorator_func_args(foo2)</div><div class="line">    print(<span class="string">'--'</span>)</div><div class="line">    foo2_text(<span class="number">1</span>)</div><div class="line">    <span class="comment"># --</span></div><div class="line">    <span class="comment"># handle args start</span></div><div class="line">    <span class="comment"># handle args start</span></div><div class="line">    <span class="comment"># 1 2</span></div><div class="line">    <span class="comment"># handle args end</span></div><div class="line">    <span class="comment"># handle args end</span></div></pre></td></tr></table></figure></p>
-<p><em>带参数装饰器 – 包装无参数函数</em><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">decorator_with_params</span><span class="params">(arg_of_decorator)</span>:</span></div><div class="line">    print(arg_of_decorator)</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">newDecorator</span><span class="params">(func)</span>:</span></div><div class="line">        print(func)</div><div class="line">        <span class="keyword">return</span> func</div><div class="line">    <span class="keyword">return</span> newDecorator</div><div class="line"></div><div class="line"><span class="meta">@decorator_with_params("deco_args")</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo3</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    foo3()</div><div class="line">    <span class="comment"># deco_args</span></div><div class="line">    <span class="comment"># &lt;function foo3 at 0x7fba7bfcf7b8&gt;</span></div><div class="line">    </div><div class="line">    <span class="comment"># 先传递参数,再传递函数名</span></div><div class="line">    foo3_text = decorator_with_params(<span class="string">"deco_args"</span>)</div><div class="line">    print(<span class="string">'--'</span>)</div><div class="line">    foo3 = foo3_text(foo3)</div><div class="line">    <span class="comment"># deco_args</span></div><div class="line">    <span class="comment"># &lt;function foo3 at 0x7fba7bfcf7b8&gt;</span></div><div class="line">    <span class="comment"># deco_args</span></div><div class="line">    <span class="comment"># --</span></div><div class="line">    <span class="comment"># &lt;function foo3 at 0x7fba7bfcf7b8&gt;</span></div><div class="line">    </div><div class="line">    func = decorator_with_params(<span class="string">'1'</span>)(foo3)</div><div class="line">    <span class="comment"># deco_args</span></div><div class="line">    <span class="comment"># &lt;function foo3 at 0x7ff913a6f730&gt;</span></div><div class="line">    <span class="comment"># 1</span></div><div class="line">    <span class="comment"># &lt;function foo3 at 0x7ff913a6f730&gt;</span></div></pre></td></tr></table></figure></p>
-<p><em>带参数装饰器– 包装带参数函数</em><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">decorator_with_params_and_func_args</span><span class="params">(arg_of_decorator)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">handle_func</span><span class="params">(func)</span>:</span></div><div class="line">        <span class="function"><span class="keyword">def</span> <span class="title">handle_args</span><span class="params">(*args, **kwargs)</span>:</span></div><div class="line">            print(<span class="string">"begin"</span>)</div><div class="line">            func(*args, **kwargs)</div><div class="line">            print(<span class="string">"end"</span>)</div><div class="line">            print(arg_of_decorator, func, args, kwargs)</div><div class="line">        <span class="keyword">return</span> handle_args</div><div class="line">    <span class="keyword">return</span> handle_func</div><div class="line"></div><div class="line"><span class="meta">@decorator_with_params_and_func_args("123")</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo4</span><span class="params">(a, b=<span class="number">2</span>)</span>:</span></div><div class="line">    print(<span class="string">"content"</span>)</div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    foo4(<span class="number">1</span>, b=<span class="number">3</span>)</div><div class="line">    <span class="comment"># begin</span></div><div class="line">    <span class="comment"># content</span></div><div class="line">    <span class="comment"># end</span></div><div class="line">    <span class="comment"># 123 &lt;function foo4 at 0x7f4f0f056730&gt; (1,) &#123;'b': 3&#125;</span></div><div class="line"></div><div class="line">    foo4_dec = decorator_with_params_and_func_args(<span class="string">"123"</span>)</div><div class="line">    print(<span class="string">'**'</span>)</div><div class="line">    foo4_func = foo4_dec(foo4)</div><div class="line">    print(<span class="string">'@@'</span>)</div><div class="line">    foo4_text = foo4_func(<span class="number">1</span>, b=<span class="number">3</span>)</div><div class="line">    <span class="comment"># **</span></div><div class="line">    <span class="comment"># @@</span></div><div class="line">    <span class="comment"># begin</span></div><div class="line">    <span class="comment"># begin</span></div><div class="line">    <span class="comment"># content</span></div><div class="line">    <span class="comment"># end</span></div><div class="line">    <span class="comment"># 123 &lt;function foo4 at 0x7f663fd82730&gt; (1,) &#123;'b': 3&#125;</span></div><div class="line">    <span class="comment"># end</span></div><div class="line">    <span class="comment"># 123 &lt;function decorator_with_params_and_func_args.&lt;locals&gt;.handle_func.</span></div><div class="line">        <span class="comment"># &lt;locals&gt;.handle_args at 0x7f663fd827b8&gt; (1,) &#123;'b': 3&#125;</span></div></pre></td></tr></table></figure></p>
-<p>给decorator参数赋值,返回handle_func对象<br>handle_func()函数接收foo4对象,返回handle_args对象<br>handle_args()函数接收传递给foo4的参数.<br>一个有点意义的例子</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">makeHtmlTag</span><span class="params">(tag, *args, **kwds)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">real_decorator</span><span class="params">(fn)</span>:</span></div><div class="line">        css_class = <span class="string">" class='&#123;0&#125;'"</span>.format(kwds[<span class="string">"css_class"</span>]) \</div><div class="line">            <span class="keyword">if</span> <span class="string">"css_class"</span> <span class="keyword">in</span> kwds <span class="keyword">else</span> <span class="string">""</span></div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrapped</span><span class="params">(*args, **kwds)</span>:</span></div><div class="line">            <span class="keyword">return</span> <span class="string">"&lt;"</span> + tag + css_class + <span class="string">"&gt;"</span> + fn(*args,**kwds) + <span class="string">"&lt;/"</span> + tag + <span class="string">"&gt;"</span></div><div class="line"></div><div class="line">        <span class="keyword">return</span> wrapped</div><div class="line"></div><div class="line">    <span class="keyword">return</span> real_decorator</div><div class="line"></div><div class="line"></div><div class="line"><span class="meta">@makeHtmlTag(tag="b", css_class="bold_css")</span></div><div class="line"><span class="meta">@makeHtmlTag(tag="i", css_class="italic_css")</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">(name)</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="string">"hello world &#123;0&#125;"</span>.format(name)</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    print(hello(<span class="string">'femn'</span>))</div><div class="line">    <span class="comment"># &lt;b class='bold_css'&gt;&lt;i class='italic_css'&gt;hello world femn&lt;/i&gt;&lt;/b&gt;</span></div></pre></td></tr></table></figure>
-<p>makeHtmlTag有两个参数.所以,为了让 hello = makeHtmlTag(arg1, arg2)(hello) 成功,<br>makeHtmlTag 必需返回一个decorator(这就是为什么我们在makeHtmlTag中加入了real_decorator()的原因),<br>这样一来,我们就可以进入到 decorator 的逻辑中去了——<br>decorator得返回一个wrapper,wrapper里回调hello. “</p>
-<h3 id="函数的元数据"><a href="#函数的元数据" class="headerlink" title="函数的元数据"></a>函数的元数据</h3><p>函数的一些属性:</p>
+            <p>垃圾回收机制:python采⽤的是以引用计数为主,隔代回收机制为辅的策略</p>
+<h4 id="小整数对象池-Python运行之前就已经创建好了-常驻内存"><a href="#小整数对象池-Python运行之前就已经创建好了-常驻内存" class="headerlink" title="小整数对象池(Python运行之前就已经创建好了),常驻内存"></a>小整数对象池(Python运行之前就已经创建好了),常驻内存</h4><p>Python对小整数的定义是[-5,257)这些整数对象是提前建立好的,不会被垃圾回收.在一个Python的程序中,所有位于这个范围内的整数使用的都是同一个对象.<br>同理,单个字母也是这样的<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a ,b= <span class="number">100</span>,<span class="number">100</span></div><div class="line">id(a) == id(b)</div><div class="line"><span class="comment"># True</span></div></pre></td></tr></table></figure></p>
+<h4 id="intern机制尽量地共享一份内存地址-靠引用计数去维护何时释放"><a href="#intern机制尽量地共享一份内存地址-靠引用计数去维护何时释放" class="headerlink" title="intern机制尽量地共享一份内存地址,靠引用计数去维护何时释放"></a>intern机制尽量地共享一份内存地址,靠引用计数去维护何时释放</h4><p>但如果是包含有特殊字符的就不会共享了<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 共享</span></div><div class="line">a = <span class="string">"hello"</span></div><div class="line">b = <span class="string">"hello"</span></div><div class="line"><span class="comment"># 不共享</span></div><div class="line">a = <span class="string">"hello world"</span></div><div class="line">b = <span class="string">"hello world"</span></div></pre></td></tr></table></figure></p>
+<h4 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> gc</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClassA</span><span class="params">()</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">'object born,id:%s'</span>%str(hex(id(self))))</div><div class="line"><span class="comment"># 引用计数 解决不了 变量的循环引用或互相引用</span></div><div class="line"><span class="comment"># 才有分代收集机制才会减一来辅助完成回收</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">f2</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">        c1 = ClassA()</div><div class="line">        c2 = ClassA()</div><div class="line">        c1.t = c2</div><div class="line">        c2.t = c1</div><div class="line">        <span class="keyword">del</span> c1</div><div class="line">        <span class="keyword">del</span> c2</div><div class="line">        <span class="comment"># 如果没有下面一行代码,则内存使用快速上升</span></div><div class="line">        gc.collect() <span class="comment"># 手动启动垃圾回收</span></div><div class="line">gc.disable()</div><div class="line"><span class="comment"># 隔(零)代回收:promote</span></div><div class="line">f2()</div></pre></td></tr></table></figure>
+<p>引用计数的优点是</p>
 <ol>
-<li><strong>name</strong>(函数名),</li>
-<li><strong>doc</strong>(描述)和</li>
-<li><strong>module</strong>(模块位置)<br>在使用装饰器的时候,函数会丢失这些元数据.<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">greeting</span><span class="params">(func)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">function_wrapper</span><span class="params">(x)</span>:</span></div><div class="line">        <span class="string">"""function_wrapper of greeting"""</span></div><div class="line">        print(<span class="string">"Hi, "</span> + func.__name__ + <span class="string">" returns:"</span>)</div><div class="line">        <span class="keyword">return</span> func(x)</div><div class="line">    <span class="keyword">return</span> function_wrapper</div><div class="line"></div><div class="line"><span class="meta">@greeting</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(x)</span>:</span></div><div class="line">    <span class="string">"""just some silly function"""</span></div><div class="line">    <span class="keyword">return</span> x + <span class="number">4</span></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    f(<span class="number">10</span>)</div><div class="line">    print(<span class="string">"function name: "</span> + f.__name__)</div><div class="line">    print(<span class="string">"docstring: "</span> + f.__doc__)</div><div class="line">    print(<span class="string">"module name:"</span> + f.__module__) <span class="string">")</span></div></pre></td></tr></table></figure>
-</li>
+<li>简单性</li>
+<li>实时性:一旦没有引用,内存就直接释放了.不用像其他机制等到特定<br>时机.实时性还带来一个好处:处理回收内存的时间分摊到了平时.</li>
 </ol>
-<p>运行结果如下<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Hi, f returns:</div><div class="line">function name: function_wrapper</div><div class="line">docstring: function_wrapper of greeting</div><div class="line">module name:__main__</div></pre></td></tr></table></figure></p>
-<p>在正常情况下,f.<strong>name</strong>应该为f,而通过装饰器之后,由于没有保存函数的元数据,所以变成了function_wrapper.<br>每当定义一个装饰器时,应该总是记得为底层的包装函数添加functools库中的@wraps装饰器</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">greeting</span><span class="params">(func)</span>:</span></div><div class="line"><span class="meta">    @wraps(func)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">function_wrapper</span><span class="params">(x)</span>:</span></div><div class="line">        <span class="string">"""function_wrapper of greeting"""</span></div><div class="line">        print(<span class="string">"Hi, "</span> + func.__name__ + <span class="string">" returns:"</span>)</div><div class="line">        <span class="keyword">return</span> func(x)</div><div class="line">    <span class="keyword">return</span> function_wrapper</div><div class="line"></div><div class="line"><span class="meta">@greeting</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(x)</span>:</span></div><div class="line">    <span class="string">"""just some silly function"""</span></div><div class="line">    <span class="keyword">return</span> x + <span class="number">4</span></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    f(<span class="number">10</span>)</div><div class="line">    print(<span class="string">"function name: "</span> + f.__name__)</div><div class="line">    print(<span class="string">"docstring: "</span> + f.__doc__)</div><div class="line">    print(<span class="string">"module name:"</span> + f.__module__) <span class="string">")</span></div></pre></td></tr></table></figure>
-<p>运行结果如下<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Hi, f returns:</div><div class="line">function name: f</div><div class="line">docstring: just some silly function</div><div class="line">module name:__main__</div></pre></td></tr></table></figure></p>
-<h3 id="类装饰器"><a href="#类装饰器" class="headerlink" title="类装饰器"></a>类装饰器</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">myDecorator</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, fn)</span>:</span></div><div class="line">        print( <span class="string">"inside myDecorator.__init__()"</span>)</div><div class="line">        <span class="comment"># 在我们给某个函数decorator时被调用,所以</span></div><div class="line">        <span class="comment"># 需要有一个fn的参数,也就是被decorator的函数</span></div><div class="line">        self.fn = fn</div><div class="line"></div><div class="line">    <span class="comment"># 调用被decorator函数时被调用的</span></div><div class="line">    <span class="comment"># 也可以在这个传入fn __call__(self.fn)</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self)</span>:</span></div><div class="line">        self.fn()</div><div class="line">        print( <span class="string">"inside myDecorator.__call__()"</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="meta">@myDecorator</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">aFunction</span><span class="params">()</span>:</span></div><div class="line">    print( <span class="string">"inside aFunction()"</span>)</div><div class="line">print( <span class="string">"Finished decorating aFunction()"</span>)</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    aFunction()</div><div class="line">    <span class="comment"># inside myDecorator.__init__()</span></div><div class="line">    <span class="comment"># Finished decorating aFunction()</span></div><div class="line">    <span class="comment"># inside aFunction()</span></div><div class="line">    <span class="comment"># inside myDecorator.__call__()</span></div></pre></td></tr></table></figure>
-<p>下面这个示例展示了通过URL的路由来调用相关注册的函数示例<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyApp</span><span class="params">()</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        self.func_map = &#123;&#125;</div><div class="line"></div><div class="line">    <span class="comment"># decorator类中没有__call__(),但是wrapper返回了原函数</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">register</span><span class="params">(self, name)</span>:</span></div><div class="line">        <span class="function"><span class="keyword">def</span> <span class="title">func_wrapper</span><span class="params">(func)</span>:</span></div><div class="line">            self.func_map[name] = func</div><div class="line">            <span class="keyword">return</span> func</div><div class="line"></div><div class="line">        <span class="keyword">return</span> func_wrapper</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call_method</span><span class="params">(self, name=None)</span>:</span></div><div class="line">        func = self.func_map.get(name, <span class="keyword">None</span>)</div><div class="line">        <span class="keyword">if</span> func <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">            <span class="keyword">raise</span> Exception(<span class="string">"No function registered against - "</span> + str(name))</div><div class="line">        <span class="keyword">return</span> func()</div><div class="line"></div><div class="line">app = MyApp()</div><div class="line"></div><div class="line"><span class="meta">@app.register('/')</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main_page_func</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="string">"This is the main page."</span></div><div class="line"></div><div class="line"><span class="meta">@app.register('/next_page')</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">next_page_func</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="string">"This is the next page."</span></div><div class="line"></div><div class="line">print(app.call_method(<span class="string">'/'</span>))</div><div class="line">print(app.call_method(<span class="string">'/next_page'</span>))</div><div class="line"><span class="comment"># This is the main page.</span></div><div class="line"><span class="comment"># This is the next page.</span></div></pre></td></tr></table></figure></p>
+<p>缺点是</p>
+<ol>
+<li>维护引用计数消耗资源</li>
+<li>循环引用或相互引用,不能完成回收</li>
+</ol>
+<img src="/2017/08/11/python-GC/1.jpg" alt="GC(Garbage Collection)垃圾回收机制" title="GC(Garbage Collection)垃圾回收机制">
+<p>gc模块唯一处理不了的是循环引用的类都有<strong>del</strong>方法,所以项目中要避免<br>重写<strong>del</strong>方法</p>
+<p>触发垃圾回收的情况:</p>
+<ol>
+<li>调用gc.collect(),</li>
+<li>当gc模块的计数器达到阀值的时候.</li>
+<li>程序退出的时</li>
+<li>引用计数为0时</li>
+</ol>
 
         
         </div>
@@ -1589,7 +1580,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/10/python-decorator/" data-id="cj8r9p6ex002g06qw0mcnyjjb" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/python-GC/" data-id="cj8sp69vp00000gum6zpfbgip" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1657,7 +1648,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/08/10/python-decorator/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/10/python-decorator/">Comments</a>
+        <a href="https://www.femn.me/2017/08/11/python-GC/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-GC/">Comments</a>
     
 
         </footer>
@@ -1668,7 +1659,7 @@
 
 
     <nav id="page-nav">
-        <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+        <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
     </nav>
 </section>
             
@@ -1735,7 +1726,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">21</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">25</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -1744,7 +1735,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">44</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">48</span></li></ul>
         </div>
     </div>
 
