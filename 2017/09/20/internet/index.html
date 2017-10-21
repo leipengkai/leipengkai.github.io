@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>网络基础与协议 | Femn</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="网络就是一种辅助双方或者多方能够连接在一起的工具网络的目的就是为了联通多方然后进行通信用的,即把数据从一方传递给另外一方 而所谓的网络编程就是,让在不同的电脑上的软件能够进行数据传递,即进程之间的通信(网络socket) 不同计算机都遵守的网络通信协议叫做TCP/IP协议族因为互联网协议包含了上百种协议标准,但是最重要的两个协议是TCP和IP协议,所以,大家把互联网的协议简称TCP/IP协议 网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络基础与协议">
+<meta property="og:url" content="https://www.femn.me/2017/09/20/internet/index.html">
+<meta property="og:site_name" content="Femn">
+<meta property="og:description" content="网络就是一种辅助双方或者多方能够连接在一起的工具网络的目的就是为了联通多方然后进行通信用的,即把数据从一方传递给另外一方 而所谓的网络编程就是,让在不同的电脑上的软件能够进行数据传递,即进程之间的通信(网络socket) 不同计算机都遵守的网络通信协议叫做TCP/IP协议族因为互联网协议包含了上百种协议标准,但是最重要的两个协议是TCP和IP协议,所以,大家把互联网的协议简称TCP/IP协议 网络">
+<meta property="og:image" content="https://www.femn.me/2017/09/20/internet/tcp-ip.png">
+<meta property="og:image" content="https://www.femn.me/2017/09/20/internet/ip-class.png">
+<meta property="og:image" content="https://www.femn.me/2017/09/20/internet/tcp.png">
+<meta property="og:image" content="https://www.femn.me/2017/09/20/internet/tcp2.png">
+<meta property="og:image" content="https://www.femn.me/2017/09/20/internet/tcp-udp.png">
+<meta property="og:image" content="https://www.femn.me/2017/09/20/internet/mac-ip.png">
+<meta property="og:image" content="https://www.femn.me/2017/09/20/internet/udp-tcp-http.png">
+<meta property="og:updated_time" content="2017-10-21T14:09:16.166Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="网络基础与协议">
+<meta name="twitter:description" content="网络就是一种辅助双方或者多方能够连接在一起的工具网络的目的就是为了联通多方然后进行通信用的,即把数据从一方传递给另外一方 而所谓的网络编程就是,让在不同的电脑上的软件能够进行数据传递,即进程之间的通信(网络socket) 不同计算机都遵守的网络通信协议叫做TCP/IP协议族因为互联网协议包含了上百种协议标准,但是最重要的两个协议是TCP和IP协议,所以,大家把互联网的协议简称TCP/IP协议 网络">
+<meta name="twitter:image" content="https://www.femn.me/2017/09/20/internet/tcp-ip.png">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="Femn" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/favicon.ico" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Femn</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/tags">Tags</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/4822598_105251_2.jpg" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">Tags</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/4822598_105251_2.jpg" />
+            <h2 id="name">leipengkai</h2>
+            <h3 id="title">Python Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>Shenzhen, China</span>
+            <a id="follow" target="_blank" href="https://github.com/leipengkai/">FOLLOW</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                62
+                <span>posts</span>
+            </div>
+            <div class="article-info-block">
+                5
+                <span>tags</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/leipengkai" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/femnyy" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://www.facebook.com/profile.php?id=100012089717648" target="_blank" title="facebook" class=tooltip>
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://www.instagram.com/leipengkai/" target="_blank" title="instagram" class=tooltip>
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://plus.google.com/108032606311958999451" target="_blank" title="google_plus" class=tooltip>
+                            <i class="fa fa-google_plus"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/atom.xml" target="_blank" title="rss" class=tooltip>
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-internet" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            网络基础与协议
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/09/20/internet/">
+            <time datetime="2017-09-20T09:52:19.000Z" itemprop="datePublished">2017-09-20</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/server/">server</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>网络就是一种辅助双方或者多方能够连接在一起的工具<br>网络的目的就是为了联通多方然后进行通信用的,即把数据从一方传递给另外一方</p>
+<p>而所谓的网络编程就是,让在不同的电脑上的软件能够进行数据传递,即进程之间的通信(网络socket)</p>
+<p>不同计算机都遵守的网络通信协议叫做TCP/IP协议族<br>因为互联网协议包含了上百种协议标准,但是最重要的两个协议是TCP和IP协议,所以,大家把互联网的协议简称TCP/IP协议<br><img src="/2017/09/20/internet/tcp-ip.png" alt="常用的电脑之间的数据传输协议以及七层模型(OSI)" title="常用的电脑之间的数据传输协议以及七层模型(OSI)"></p>
+<h4 id="网络基础术语"><a href="#网络基础术语" class="headerlink" title="网络基础术语"></a>网络基础术语</h4><p>ip(Internet Protocol)地址:⽤来在⽹络中标记⼀台电脑的⼀串数字(ipv4:32位/ipv6:64位)<br><img src="/2017/09/20/internet/ip-class.png" alt="ip地址分类" title="ip地址分类"><br>注意:如下ip网段属于私⽹IP,不在公⽹中使⽤的,它们的范围是:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">10.0.0.0～10.255.255.255</div><div class="line">172.16.0.0～172.31.255.255</div><div class="line">192.168.0.0～192.168.255.255</div><div class="line">127.0.0.1~127.255.255.255 <span class="comment"># ⽤于回路测</span></div></pre></td></tr></table></figure></p>
+<p>⼦⽹掩码(netmask):确定了一个IP地址的32位二进制数字中哪些是网络号,哪些是主机号</p>
+<p>端口(Port):区分不同的服务<br>因为IP地址与网络服务(HTTP(万维网服务),FTP(文件传输),SMTP(电子邮件)等)的关系是一对多的关系.<br>实际上是通过”IP地址+端口号”来区分不同的服务的<br>端口区别不同电脑的进程,进程号是区别同一台电脑中的进程</p>
+<p>arp协议:通过ip得到mac地址</p>
+<p>mac地址(物理地址):产商序列(前3个字节)和网卡序列(后3个字节)组成电脑的唯一标识</p>
+<p>交换机(还有路由功能)与集线器(hub:向所有的电脑进行广播):同一网段的直接通信<br>交换机的作⽤:</p>
+<ol>
+<li>转发过滤:当⼀个数据帧的⽬的地址在MAC地址表中有映射时,它被转发到连接⽬的节点的端⼝⽽不是所有端⼝(如该数据帧为⼴播帧则转发 ⾄所有端⼝)</li>
+<li>学习功能:以太⽹交换机了解每⼀端⼝相连设备的MAC地址,并将地址 同相应的端⼝映射起来存放在交换机缓存中的MAC地址表中,但到了一定时间会自动清空<br>如果PC不知⽬标IP所对应的的MAC,那么可以看出,pc会先发送arp⼴ 播,得到对⽅的MAC,然后在进⾏数据的传送<br>当switch第⼀次收到arp⼴播数据,会把arp⼴播数据包转发给所有端⼝ (除来源端⼝);如果以后还有pc询问此IP的MAC,那么只是向⽬标的 端⼝进⾏转发数据</li>
+</ol>
+<p>rarp协议:根据mac地址找IP</p>
+<p>ping 192.168.1.1–&gt;走ICMP协议</p>
+<p>网关(Gateway):发送的ip不在同一个网段内,那么会把这个数据发送给默认网关<br>因为跨网之间不能直接通信这是TCP/UDP协议规定的</p>
+<p>路由(就是一个网关设备):连接不同网段间的通信,至少两个网卡(同时网卡设置时,必须是不同网段)<br>RIP(路由协议):多个路由器之间的通信</p>
+<h4 id="TCP协议"><a href="#TCP协议" class="headerlink" title="TCP协议"></a>TCP协议</h4><p>tcp(传输控制协议)在通信开始之前,⼀定要先建⽴相关的链接,才能发送数据,注重数据传输稳定(一定能接收到)<br><img src="/2017/09/20/internet/tcp.png" alt="tcp协议" title="tcp协议"></p>
+<p>可以通过packet tracer 来模拟tcp协议的三次握手与四次挥手过程<br><img src="/2017/09/20/internet/tcp2.png" alt="tcp协议的三次握手与四次挥手" title="tcp协议的三次握手与四次挥手"></p>
+<p>tcp在三次握手过程中的数据格式有syn,syn+ack和ack<br><img src="/2017/09/20/internet/tcp-udp.png" alt="tcp协议与udp协议通信的区别" title="tcp协议与udp协议通信的区别"></p>
+<h4 id="TCP长-短连接"><a href="#TCP长-短连接" class="headerlink" title="TCP长/短连接"></a>TCP长/短连接</h4><ol>
+<li>⻓连接可以省去较多的TCP建立和关闭的操作,减少浪费,节约时间.对于频繁请求资源的客户来说,较适用⻓连接</li>
+<li>短连接对于服务器来说管理较为简单,存在的连接都是有用的连接,不需要额外的控制手段,如果客户请求频繁,将在TCP的建立和关闭操作上浪费时间和带宽</li>
+</ol>
+<h4 id="UDP广播"><a href="#UDP广播" class="headerlink" title="UDP广播"></a>UDP广播</h4><p>udp(用户数据包协议)通信模型中,在通信开始之前,不需要建⽴相关的链接,只需要发送数据即可,注重速度流畅<br>单播(点对点)<br>多播(一对多)<br>广播(一对所有,只向交换机发一份数据,然后交换机进行广播发送)</p>
+<h4 id="TCP通信过程-网络是双向的"><a href="#TCP通信过程-网络是双向的" class="headerlink" title="TCP通信过程(网络是双向的)"></a>TCP通信过程(网络是双向的)</h4><img src="/2017/09/20/internet/mac-ip.png" alt="传递数据包中目标IP始终不变,而MAC在两两设备之间都在变" title="传递数据包中目标IP始终不变,而MAC在两两设备之间都在变">
+<img src="/2017/09/20/internet/udp-tcp-http.png" alt="浏览器访问网页的过程" title="浏览器访问网页的过程">
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/09/20/internet/" data-id="cj919ty7j004k06o4bn2525oe" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/09/20/internet/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/20/internet/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2017/09/23/hadoop/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    hadoop简介与安装(一)
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2017/09/20/virtualbox/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">VirtualBox下虚拟机的网络配置</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+        <section id="comments">
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+</section>
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">recent</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/28/storm/" class="title">hadoop storm(八)</a></p>
+                            <p class="item-date"><time datetime="2017-09-28T11:41:15.000Z" itemprop="datePublished">2017-09-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/28/hbase/" class="title">hadoop hbase(七)</a></p>
+                            <p class="item-date"><time datetime="2017-09-28T11:31:15.000Z" itemprop="datePublished">2017-09-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_cluster/" class="title">hadoop HDFS HA高可用的集群搭建部署(六)</a></p>
+                            <p class="item-date"><time datetime="2017-09-27T11:41:15.000Z" itemprop="datePublished">2017-09-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_hive/" class="title">hadoop hive(五)</a></p>
+                            <p class="item-date"><time datetime="2017-09-27T11:31:15.000Z" itemprop="datePublished">2017-09-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/09/25/zookeeper/" class="title">zookeeper(五)</a></p>
+                            <p class="item-date"><time datetime="2017-09-25T12:01:15.000Z" itemprop="datePublished">2017-09-25</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">25</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">48</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/大数据/" style="font-size: 20px;">大数据</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/计算机/" style="font-size: 10px;">计算机</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+                    <li>
+                        <a href="https://hub.docker.com/">Hub_docker</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 leipengkai<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_config = function () {
+        
+            this.page.url = 'https://www.femn.me/2017/09/20/internet/';
+        
+        this.page.identifier = 'internet';
+    };
+    (function() { 
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'femn' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

@@ -155,7 +155,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                61
+                62
                 <span>posts</span>
             </div>
             <div class="article-info-block">
@@ -214,137 +214,6 @@
 
             
             <section id="main">
-    <article id="post-python-builtins" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/11/python-builtins/">python内建属性</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/11/python-builtins/">
-            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/python3/">python3</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>Python在启动的时候会⾃动为我们载⼊很多内建的函数,类,属性,⽐如dict,list,type,print,这些都位于<strong>builtin</strong>    模块中,可以使⽤dir(<strong>builtin</strong>)来查看.<br>这也是为什么我们在没有import任何模块的情况下,就能使⽤这么多丰富的函数和功能了.</p>
-<p>在Python中,有⼀个内建模块,该模块中有⼀些常⽤函数;在Python启动后,且没有执⾏程序员所写的任何代码前,Python会⾸先加载该内建函数到内存.</p>
-<p>另外,该内建模块中的功能可以直接使⽤,不⽤在其前添加内建模块前缀</p>
-<img src="/2017/08/11/python-builtins/1.jpg" alt="常见的内建属性" title="常见的内建属性">
-<p>对象的内建属性<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Itcast</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,subject1)</span>:</span></div><div class="line">        self.subject1 = subject1</div><div class="line">        self.subject2 = <span class="string">'cpp'</span></div><div class="line"></div><div class="line">    <span class="comment">#属性访问时拦截器,只要访问属性就必须先调用此方法(包括方法(方法也是对象))</span></div><div class="line">    <span class="comment"># 所以此方法中,不能包含访问属性的语句:比如self.subject1</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattribute__</span><span class="params">(self,obj)</span>:</span></div><div class="line">        print(<span class="string">"====1&gt;%s"</span>%obj)</div><div class="line">        <span class="keyword">if</span> obj == <span class="string">'subject1'</span>:</div><div class="line">            print(<span class="string">'log subject1'</span>)</div><div class="line">            <span class="keyword">return</span> <span class="string">'redirect python'</span></div><div class="line">        <span class="keyword">else</span>:   </div><div class="line">            temp = object.__getattribute__(self,obj)</div><div class="line">            print(<span class="string">"====2&gt;%s"</span>%str(temp))</div><div class="line">            <span class="keyword">return</span> temp</div><div class="line">    </div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">'this is Itcast'</span>)</div><div class="line"></div><div class="line">s = Itcast(<span class="string">"python"</span>)</div><div class="line">print(s.subject1)</div><div class="line">print(s.subject2)</div><div class="line"></div><div class="line"><span class="comment">#1. 先获取show属性对应的结果,,,,应该是一个方法</span></div><div class="line"><span class="comment">#2. 再调用方法show()</span></div><div class="line">s.show()</div><div class="line"><span class="comment"># import types</span></div><div class="line"><span class="comment"># p1.eat = types.MethodType(eat, p1)</span></div><div class="line"></div><div class="line"><span class="comment"># ====1&gt;subject1</span></div><div class="line"><span class="comment"># log subject1</span></div><div class="line"><span class="comment"># redirect python</span></div><div class="line"><span class="comment"># ====1&gt;subject2</span></div><div class="line"><span class="comment"># ====2&gt;cpp</span></div><div class="line"><span class="comment"># cpp</span></div><div class="line"><span class="comment"># ====1&gt;show</span></div><div class="line"><span class="comment"># ====2&gt;&lt;bound method Itcast.show of &lt;__main__.Itcast object at 0x0&gt;&gt;</span></div><div class="line"><span class="comment"># this is Itcast</span></div></pre></td></tr></table></figure></p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/11/python-builtins/" data-id="cj8sqdke7000010umo5da5csv" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/11/python-builtins/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-builtins/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <article id="post-python-mateclass" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -398,7 +267,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/python-mateclass/" data-id="cj8soumi0002z06umam6zsh6t" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/python-mateclass/" data-id="cj919qmaw003k06o4p3rzjk8k" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -476,7 +345,7 @@
 
 
 
-    <article id="post-python-copy" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-closure" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -484,7 +353,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/11/python-copy/">深浅拷贝</a>
+            <a class="article-title" href="/2017/08/11/closure/">闭包</a>
         </h1>
     
 
@@ -493,7 +362,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/11/python-copy/">
+        <a href="/2017/08/11/closure/">
             <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
         </a>
     </div>
@@ -514,9 +383,16 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h4 id="is-是⽐较两个引⽤是否指向了同⼀个对象-引⽤⽐较"><a href="#is-是⽐较两个引⽤是否指向了同⼀个对象-引⽤⽐较" class="headerlink" title="is    是⽐较两个引⽤是否指向了同⼀个对象(引⽤⽐较)"></a>is    是⽐较两个引⽤是否指向了同⼀个对象(引⽤⽐较)</h4><h4 id="是⽐较两个对象内容是否相等"><a href="#是⽐较两个对象内容是否相等" class="headerlink" title="==    是⽐较两个对象内容是否相等"></a>==    是⽐较两个对象内容是否相等</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line">b = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line">a == b  <span class="comment"># True</span></div><div class="line">a <span class="keyword">is</span> b <span class="comment"># Flase</span></div><div class="line">c = copy.deepcopy(a)<span class="comment">#　深拷贝</span></div><div class="line">a == c  <span class="comment"># True</span></div><div class="line">a <span class="keyword">is</span> c <span class="comment"># Flase</span></div><div class="line">id(a) <span class="comment"># 指向a的内存地址</span></div><div class="line">d = a <span class="comment">#　id(d)和id(a)值相等 浅拷贝</span></div><div class="line">a <span class="keyword">is</span> d <span class="comment">#　True</span></div></pre></td></tr></table></figure>
-<h4 id="拷贝-一个变量引用另外一个变量"><a href="#拷贝-一个变量引用另外一个变量" class="headerlink" title="拷贝:一个变量引用另外一个变量"></a>拷贝:一个变量引用另外一个变量</h4><p>深拷⻉是对于⼀个对象所有层次的拷⻉(递归)<br><img src="/2017/08/11/python-copy/1.jpg" alt="深拷贝" title="深拷贝"></p>
-<p>浅拷⻉是对于⼀个对象的顶层拷⻉,只是拷⻉了引⽤,并没有拷⻉内容(没重新生成新的内存地址)<br><img src="/2017/08/11/python-copy/2.jpg" alt="浅拷贝列表" title="浅拷贝列表"><br>浅拷⻉对不可变类型和可变类型的copy不同<br><img src="/2017/08/11/python-copy/3.jpg" alt="浅拷贝元组" title="浅拷贝元组"></p>
+            <p> 在python中,不管是定义变量还是方法,还是类,实际上你定义的时候,分配了内存空间,仅仅是使用一个变量名指向了这一块的内存空间而已.<br><img src="/2017/08/11/closure/rep.png" alt="变量名引用值和函数" title="变量名引用值和函数"><br><img src="/2017/08/11/closure/rep1.png" alt="重名方法导致代码无效" title="重名方法导致代码无效"></p>
+<h3 id="闭包-Closure-又称函数闭包-function-closures-内部函数对外部函数作⽤域⾥变量的引⽤-⾮全局变量-则称内部函数为闭包"><a href="#闭包-Closure-又称函数闭包-function-closures-内部函数对外部函数作⽤域⾥变量的引⽤-⾮全局变量-则称内部函数为闭包" class="headerlink" title="闭包(Closure)又称函数闭包(function closures):内部函数对外部函数作⽤域⾥变量的引⽤(⾮全局变量),则称内部函数为闭包"></a>闭包(Closure)又称函数闭包(function closures):内部函数对外部函数作⽤域⾥变量的引⽤(⾮全局变量),则称内部函数为闭包</h3><p>引用了自由变量的函数.这个被引用的自由变量将和这个函数一同存在,即使已经离开了创造它的环境也不例外.所以,有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体.闭包在运行时可以有多个实例,不同的引用环境和相同的函数组合可以产生不同的实例</p>
+<p>在一些语言中,在函数中可以(嵌套)定义另一个函数时,如果内部的函数引用了外部的函数的变量,则可能产生闭包.运行时,一旦外部的 函数被执行,一个闭包就形成了,闭包中包含了内部函数的代码,以及所需外部函数中的变量的引用.</p>
+<p>闭包被广泛使用于函数式编程语言</p>
+<p>闭包可以形象的把它理解为一个封闭的包裹(封闭作用域),这个包裹就是一个函数,当然还有函数内部对应的逻辑,包裹里面的东西就是自由变量,自由变量可以在随着包裹到处游荡.当然还得有个前提,这个包裹是被创建出来的.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(name)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner_func</span><span class="params">(age)</span>:</span> <span class="comment"># 闭包</span></div><div class="line">        <span class="comment"># name为自由变量</span></div><div class="line">        print( <span class="string">'name:'</span>, name, <span class="string">'age:'</span>, age)</div><div class="line">    <span class="keyword">return</span> inner_func</div><div class="line">bb = func(<span class="string">'the5fire'</span>)</div><div class="line">bb(<span class="number">26</span>)</div><div class="line"><span class="comment"># name: the5fire age: 26</span></div></pre></td></tr></table></figure>
+<p>这里面调用func的时候就产生了一个闭包——inner_func,并且该闭包持有自由变量——name,因此这也意味着,当函数func的生命周期结束之后,name这个变量依然存在,因为它被闭包引用了,所以不会被回收</p>
+<h4 id="nonlocal访问外部函数的局部变量"><a href="#nonlocal访问外部函数的局部变量" class="headerlink" title="nonlocal访问外部函数的局部变量:"></a>nonlocal访问外部函数的局部变量:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">counter</span><span class="params">(start=<span class="number">0</span>)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">incr</span><span class="params">()</span>:</span></div><div class="line">        <span class="keyword">nonlocal</span> start</div><div class="line">        start += <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> start</div><div class="line">    <span class="keyword">return</span> incr</div><div class="line">c1 = counter(<span class="number">5</span>) </div><div class="line">print(c1()) <span class="comment"># 6</span></div><div class="line">print(c1()) <span class="comment"># 7</span></div><div class="line">c2 = counter(<span class="number">50</span>)</div><div class="line">print(c2()) <span class="comment"># 51</span></div><div class="line">print(c2()) <span class="comment"># 52</span></div><div class="line">print(c1()) <span class="comment"># 8</span></div><div class="line">print(c1()) <span class="comment"># 9</span></div></pre></td></tr></table></figure>
+<h4 id="闭包思考"><a href="#闭包思考" class="headerlink" title="闭包思考:"></a>闭包思考:</h4><p>1.闭包似优化了变量,原来需要类对象完成的⼯作,闭包也可以完成 2.由于闭包引⽤了外部函数的局部变量,则外部函数的局部变量没有及时释放,消耗内存</p>
+<img src="/2017/08/11/closure/rep2.png" alt="闭包减少参数传递,同时增加代码的可移植性" title="闭包减少参数传递,同时增加代码的可移植性">
 
         
         </div>
@@ -527,7 +403,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/python-copy/" data-id="cj8soumhx002t06um6x2y4w4l" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/closure/" data-id="cj919qm7z000h06o4emr4300e" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -595,7 +471,268 @@
 
             
     
-        <a href="https://www.femn.me/2017/08/11/python-copy/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-copy/">Comments</a>
+        <a href="https://www.femn.me/2017/08/11/closure/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/closure/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-python-dynamic" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/11/python-dynamic/">python的动态性</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/11/python-dynamic/">
+            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>动态语⾔:可以在运⾏的过程中,修改代码<br>静态语⾔:运行前必须先编,译编译时已经确定好代码,运⾏过程中不能修改</p>
+<p>python是动态语⾔:它是⼀类在运⾏时可以改变其结构的语⾔:例如新的函数、对象、 甚⾄代码可以被引进,已有的函数可以被删除或是其他结构上的变化.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, newName, newAge)</span>:</span></div><div class="line">        self.name = newName</div><div class="line">        self.age = newAge</div><div class="line">        <span class="comment"># 	__slots__	=	("name",	"age")</span></div><div class="line">        <span class="comment"># 为了达到限制的⽬的,Python允许在定义class的时候</span></div><div class="line">        <span class="comment"># 定义⼀个特殊的 __slots__变量,来限制该class实例能添加的属性</span></div><div class="line"></div><div class="line"><span class="meta">@staticmethod</span></div><div class="line">def test();</div><div class="line">    <span class="keyword">pass</span></div><div class="line"><span class="meta">@classmethod</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">testclass</span><span class="params">(cls)</span>:</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line"></div><div class="line">laowang = Person(<span class="string">"老王"</span>, <span class="number">10000</span>)</div><div class="line">print(laowang.name)</div><div class="line">print(laowang.age)</div><div class="line"><span class="comment"># 可以添加其它属性和方法,即使在类只没有定义</span></div><div class="line">laowang.addr = <span class="string">"北京...."</span></div><div class="line">print(laowang.addr)</div><div class="line"></div><div class="line"><span class="comment">#　给对象和类添加属性</span></div><div class="line">laozhao = Person(<span class="string">"老赵"</span>, <span class="number">18</span>)</div><div class="line"><span class="comment">#print(laozhao.addr)</span></div><div class="line"></div><div class="line">Person.num = <span class="number">100</span></div><div class="line">print(laowang.num)</div><div class="line">print(laozhao.num)</div><div class="line"></div><div class="line"><span class="comment">#　添加静态方法</span></div><div class="line">Persion.test = test</div><div class="line">Persion.testclass = testclass</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 添加方法</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, newName, newAge)</span>:</span></div><div class="line">        self.name = newName</div><div class="line">        self.age = newAge</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">"-----%s正在吃----"</span>%self.name)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></div><div class="line">    print(<span class="string">"-----%s正在跑----"</span>%self.name)</div><div class="line"></div><div class="line"></div><div class="line">p1 = Person(<span class="string">"p1"</span>, <span class="number">10</span>)</div><div class="line">p1.eat()</div><div class="line">p1.run = run</div><div class="line"><span class="comment"># p1.run()#虽然p1对象中 run属性已经指向了函数,但是这句代码还不正确</span></div><div class="line">        <span class="comment">#因为run属性指向的函数 是后来添加的,p1.run()的时候,并没有把p1当做第</span></div><div class="line">        <span class="comment">#1个参数,导致了第10行的函数调用的时候, 出现缺少参数的问题</span></div><div class="line"><span class="keyword">import</span> types</div><div class="line">p1.run = types.MethodType(run, p1)</div><div class="line">p1.run()</div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/11/python-dynamic/" data-id="cj919qmaj002v06o4ecpxals1" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/11/python-dynamic/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-dynamic/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-python-builtins" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/11/python-builtins/">python内建属性</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/11/python-builtins/">
+            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>Python在启动的时候会⾃动为我们载⼊很多内建的函数,类,属性,⽐如dict,list,type,print,这些都位于<strong>builtin</strong>    模块中,可以使⽤dir(<strong>builtin</strong>)来查看.<br>这也是为什么我们在没有import任何模块的情况下,就能使⽤这么多丰富的函数和功能了.</p>
+<p>在Python中,有⼀个内建模块,该模块中有⼀些常⽤函数;在Python启动后,且没有执⾏程序员所写的任何代码前,Python会⾸先加载该内建函数到内存.</p>
+<p>另外,该内建模块中的功能可以直接使⽤,不⽤在其前添加内建模块前缀</p>
+<img src="/2017/08/11/python-builtins/1.jpg" alt="常见的内建属性" title="常见的内建属性">
+<p>对象的内建属性<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Itcast</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,subject1)</span>:</span></div><div class="line">        self.subject1 = subject1</div><div class="line">        self.subject2 = <span class="string">'cpp'</span></div><div class="line"></div><div class="line">    <span class="comment">#属性访问时拦截器,只要访问属性就必须先调用此方法(包括方法(方法也是对象))</span></div><div class="line">    <span class="comment"># 所以此方法中,不能包含访问属性的语句:比如self.subject1</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattribute__</span><span class="params">(self,obj)</span>:</span></div><div class="line">        print(<span class="string">"====1&gt;%s"</span>%obj)</div><div class="line">        <span class="keyword">if</span> obj == <span class="string">'subject1'</span>:</div><div class="line">            print(<span class="string">'log subject1'</span>)</div><div class="line">            <span class="keyword">return</span> <span class="string">'redirect python'</span></div><div class="line">        <span class="keyword">else</span>:   </div><div class="line">            temp = object.__getattribute__(self,obj)</div><div class="line">            print(<span class="string">"====2&gt;%s"</span>%str(temp))</div><div class="line">            <span class="keyword">return</span> temp</div><div class="line">    </div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">'this is Itcast'</span>)</div><div class="line"></div><div class="line">s = Itcast(<span class="string">"python"</span>)</div><div class="line">print(s.subject1)</div><div class="line">print(s.subject2)</div><div class="line"></div><div class="line"><span class="comment">#1. 先获取show属性对应的结果,,,,应该是一个方法</span></div><div class="line"><span class="comment">#2. 再调用方法show()</span></div><div class="line">s.show()</div><div class="line"><span class="comment"># import types</span></div><div class="line"><span class="comment"># p1.eat = types.MethodType(eat, p1)</span></div><div class="line"></div><div class="line"><span class="comment"># ====1&gt;subject1</span></div><div class="line"><span class="comment"># log subject1</span></div><div class="line"><span class="comment"># redirect python</span></div><div class="line"><span class="comment"># ====1&gt;subject2</span></div><div class="line"><span class="comment"># ====2&gt;cpp</span></div><div class="line"><span class="comment"># cpp</span></div><div class="line"><span class="comment"># ====1&gt;show</span></div><div class="line"><span class="comment"># ====2&gt;&lt;bound method Itcast.show of &lt;__main__.Itcast object at 0x0&gt;&gt;</span></div><div class="line"><span class="comment"># this is Itcast</span></div></pre></td></tr></table></figure></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/11/python-builtins/" data-id="cj919qmah002t06o4hypk93y6" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/11/python-builtins/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-builtins/">Comments</a>
     
 
         </footer>
@@ -687,7 +824,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/10/python-decorator/" data-id="cj8soumhy002v06um6qx060pb" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/10/python-decorator/" data-id="cj919qmaf002r06o45lnmhjty" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -829,7 +966,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/08/linux-common-commands/" data-id="cj8soumhj002406umf3sqty5b" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/08/linux-common-commands/" data-id="cj919qm8w001z06o4nrdk00si" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -960,7 +1097,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/08/linux_basic/" data-id="cj8soumhm002b06ummw2wv0eb" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/08/linux_basic/" data-id="cj919qm8y002506o4o2bhckf7" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1156,7 +1293,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/06/python-object/" data-id="cj8soumi6003a06umplvmq6of" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/06/python-object/" data-id="cj919qman003406o4eiu323ou" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1288,7 +1425,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/05/python-threads/" data-id="cj8soumir004906umo4ouit5y" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/05/python-threads/" data-id="cj919qmar003a06o4622d27v2" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1467,7 +1604,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/05/threads/" data-id="cj8soumic003l06umfy07m9g2" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/05/threads/" data-id="cj919qmbn004906o4bfqsrwq8" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1545,156 +1682,6 @@
 
 
 
-    <article id="post-generator" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/05/generator/">生成器与协程</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/05/generator/">
-            <time datetime="2017-08-05T09:47:55.000Z" itemprop="datePublished">2017-08-05</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/python3/">python3</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h3 id="生成器-generator-是一种⼀边循环⼀边计算的机制"><a href="#生成器-generator-是一种⼀边循环⼀边计算的机制" class="headerlink" title="生成器(generator):是一种⼀边循环⼀边计算的机制"></a>生成器(generator):是一种⼀边循环⼀边计算的机制</h3><p>是一种用普通函数语法定义的迭代器.生成器一定是迭代器(反之不成立)</p>
-<h4 id="创建生成器"><a href="#创建生成器" class="headerlink" title="创建生成器"></a>创建生成器</h4><p>第⼀种⽅法很简单,只要把⼀个列表⽣成式的[] 改成()  </p>
-<h5 id="生成器推导式"><a href="#生成器推导式" class="headerlink" title="生成器推导式"></a>生成器推导式</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">d=(x*x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10</span>))</div><div class="line">sum(d)</div><div class="line"><span class="comment"># 285</span></div><div class="line">d.next() <span class="comment"># StopIteration sum(d)已经迭代完了</span></div></pre></td></tr></table></figure>
-<h5 id="yield"><a href="#yield" class="headerlink" title="yield"></a>yield</h5><p>yield 保持简洁性的同时获得了 iterable 的效果.把一个函数改写为一个 generator 就获得了迭代能力</p>
-<p>yield 是一个类似 return 的关键字,只是这个函数返回的是个生成器</p>
-<p>yield 进程挂起 保持连接</p>
-<p>使用生成器,定义斐波那契数列<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fab</span><span class="params">(max)</span>:</span></div><div class="line">    n, a, b = <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span></div><div class="line">    <span class="keyword">while</span> n &lt; max:</div><div class="line">        <span class="keyword">yield</span> b <span class="comment">#</span></div><div class="line">        <span class="comment"># yield 的作用就是把一个函数变成一个 generator</span></div><div class="line">        <span class="comment"># 调用 fab(5)不会执行fab函数,而是返回一个iterable对象</span></div><div class="line">        a, b = b, a + b</div><div class="line">        n = n + <span class="number">1</span></div><div class="line">        <span class="comment"># 如果没有return,则默认执行至函数完毕,如果在执行过程中return</span></div><div class="line">        <span class="comment">#则直接抛出StopIteration终止迭代</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> n <span class="keyword">in</span> fab(<span class="number">5</span>): <span class="keyword">print</span> n</div></pre></td></tr></table></figure>
-<p>在 for 循环执行时,每次循环都会执行 fab 函数内部的代码,执行到 yield b 时<br>fab 函数就返回一个迭代值,下次迭代时,代码从 yield b 的下一条语句继续执行<br>而函数的本地变量看起来和上次中断执行前是完全一样的,于是函数继续执行,直到再次遇到 yield<br>看起来就好像一个函数在正常执行的过程中被 yield 中断了数次,每次中断都会通过 yield 返回当前的迭代值.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">f = fab(<span class="number">5</span>)</div><div class="line">print(f.next())</div></pre></td></tr></table></figure>
-<p>手动调用 fab(5) 的 next() 方法(因为 fab(5) 是一个 generator 对象,该对象具有 next() 方法),<br>这样我们就可以更清楚地看到 fab 的执行流程</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">f1 = fab(<span class="number">5</span>)</div><div class="line">print(f1.next())</div></pre></td></tr></table></figure>
-<p>每次调用 fab 函数都会生成一个新的 generator 实例,各实例互不影响</p>
-<p>另一个版本使用生成器,定义斐波那契数列</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib</span><span class="params">()</span>:</span></div><div class="line">    prev, curr = <span class="number">0</span>, <span class="number">1</span></div><div class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">        <span class="keyword">yield</span> curr</div><div class="line">        prev, curr = curr, curr + prev</div><div class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> islice</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>f = fib()</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>list(islice(f, <span class="number">0</span>, <span class="number">10</span>))</div><div class="line">[<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">13</span>, <span class="number">21</span>, <span class="number">34</span>, <span class="number">55</span>]</div></pre></td></tr></table></figure>
-<h4 id="send"><a href="#send" class="headerlink" title="send()"></a>send()</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen</span><span class="params">()</span>:</span></div><div class="line">    i = <span class="number">0</span></div><div class="line">    <span class="keyword">while</span> i &lt; <span class="number">5</span>:</div><div class="line">        temp = <span class="keyword">yield</span> i</div><div class="line">        <span class="comment"># temp 并不是i的值</span></div><div class="line">        print( temp )</div><div class="line">        i+=<span class="number">1</span></div><div class="line"></div><div class="line">f = gen()</div><div class="line">print(next(f)) <span class="comment"># 0</span></div><div class="line">print(next(f)) <span class="comment"># None 1</span></div><div class="line">print(f.send(<span class="string">'femn'</span>)) <span class="comment"># femn 2</span></div><div class="line"><span class="comment"># c.next()等价c.send(None)</span></div></pre></td></tr></table></figure>
-<p>⽣成器是这样⼀个函数,它记住上⼀次返回时在函数体中的位置.对⽣成器 函数的第⼆次(或第n次)调⽤跳转⾄该函数中间,⽽上次调⽤的所有局部变量都保持不变.</p>
-<p>⽣成器不仅”记住”了它数据状态;⽣成器还”记住”了它在流控制构造(在命令 式编程中,这种构造不只是数据值)中的位置.</p>
-<p>⽣成器的特点:节约内存. 迭代到下⼀次的调⽤时,所使⽤的参数都是第⼀次所保留下的,即是说,在整个所有函数调⽤的参数都是第⼀次所调⽤时保留的,⽽不是新创建的</p>
-<h4 id="yiled多任务-协程-进程-线程"><a href="#yiled多任务-协程-进程-线程" class="headerlink" title="yiled多任务(协程,进程,线程)"></a>yiled多任务(协程,进程,线程)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test1</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">        print(<span class="string">"---1---"</span>)</div><div class="line">        <span class="keyword">yield</span> <span class="keyword">None</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test2</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">        print(<span class="string">"---2---"</span>)</div><div class="line">        <span class="keyword">yield</span> <span class="keyword">None</span></div><div class="line"></div><div class="line">t1 = test1()</div><div class="line">t2 = test2()</div><div class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">    next(t1)</div><div class="line">    next(t2)</div><div class="line"><span class="comment"># 暂停和启动之间的快速切换</span></div></pre></td></tr></table></figure>
-<h3 id="协程-又称微线程-coroutine-相当于单线程的能力-与子程序-函数调用是通过栈实现的-一个线程就是执行一个子程序-子程序就是协程的一种特例"><a href="#协程-又称微线程-coroutine-相当于单线程的能力-与子程序-函数调用是通过栈实现的-一个线程就是执行一个子程序-子程序就是协程的一种特例" class="headerlink" title="协程(又称微线程(coroutine),相当于单线程的能力)与子程序(函数调用是通过栈实现的,一个线程就是执行一个子程序,子程序就是协程的一种特例)"></a>协程(又称微线程(coroutine),相当于单线程的能力)与子程序(函数调用是通过栈实现的,一个线程就是执行一个子程序,子程序就是协程的一种特例)</h3><p>  子程序,或者称为函数,在所有语言中都是层级调用,比如A调用B,B在执行过程中又调用了C,C执行完毕返回,B执行完毕返回,最后是A执行完毕.<br>  协程(协作完成任务),tornado好像就是用协程来实现异步的协程,协程看上去也是子程序,但执行过程中,在子程序内部可中断,然后转而执行别的子程序,在适当的时候再返回来接着执行.</p>
-<h3 id="协程的特点在于是一个线程执行-所有协程有如下优势"><a href="#协程的特点在于是一个线程执行-所有协程有如下优势" class="headerlink" title="协程的特点在于是一个线程执行,所有协程有如下优势"></a>协程的特点在于是一个线程执行,所有协程有如下优势</h3><p>  最大的优势就是协程极高的执行效率.因为子程序切换不是线程切换,而是由程序自身控制,因此,没有线程切换的开销,和多线程比,线程数量越多,协程的性能优势就越明显.</p>
-<p>第二大优势就是不需要多线程的锁机制,因为只有一个线程,也不存在同时写变量冲突,在协程中控制共享资源不加锁,只需要判断状态就好了,所以执行效率比多线程高很多.<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 传统的生产者-消费者模型是一个线程写消息,一个线程取消息,</span></div><div class="line"><span class="comment"># 通过锁机制控制队列和等待,但一不小心就可能死锁.</span></div><div class="line"></div><div class="line"><span class="comment"># 如果改用协程,生产者生产消息后,直接通过yield跳转到消费者开始执行</span></div><div class="line"><span class="comment"># 待消费者执行完毕后,切换回生产者继续生产,效率极高</span></div><div class="line"><span class="keyword">import</span> time</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">consumer</span><span class="params">()</span>:</span></div><div class="line">    r = <span class="string">''</span></div><div class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">        n = <span class="keyword">yield</span> r </div><div class="line">        <span class="comment"># 3.consumer通过yield拿到消息,处理完又通过yield把结果传回</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> n: <span class="keyword">return</span> print(<span class="string">'[CONSUMER] Consuming %s...'</span> % n)</div><div class="line">        print(n)</div><div class="line">        time.sleep(<span class="number">1</span>)</div><div class="line">        r = <span class="string">'200 OK'</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">produce</span><span class="params">(c)</span>:</span></div><div class="line">    next(c) <span class="comment"># 不是值 1. 启用生成器</span></div><div class="line">    n = <span class="number">0</span></div><div class="line">    <span class="keyword">while</span> n &lt; <span class="number">5</span>:</div><div class="line">        n = n + <span class="number">1</span></div><div class="line">        print(<span class="string">'[PRODUCER] Producing %s...'</span> % n)</div><div class="line">        r = c.send(n) </div><div class="line">        <span class="comment"># 这里才是迭代器中的值 2. 一旦生产了东西,通过c.send(n)切换到consumer执行</span></div><div class="line">        print(<span class="string">'[PRODUCER] Consumer return: %s'</span> % r)</div><div class="line">        <span class="comment"># 4. produce拿到consumer处理的结果,继续生产下一条消息</span></div><div class="line">    c.close() </div><div class="line">    <span class="comment"># 5. produce决定不生产了,通过c.close()关闭consumer,整个过程结束</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    c = consumer()</div><div class="line">    produce(c)</div></pre></td></tr></table></figure></p>
-<p>整个流程无锁,由一个线程执行,produce和consumer协作完成任务,所以称为”协程”,而非线程的抢占式多任务. 子程序就是协程的一种特例.<br>线程确实比协程性能更好.因为线程能利用多核达到真正的并行计算,如果任务设计的好,线程能几乎成倍的提高你的计算能力,说线程性能不好的很多 是因为没有设计好导致大量的锁,切换,等待,这些很多都是应用层的问题.<br>而协程因为是非抢占式,所以需要用户自己释放使用权来切换到其它协程,因此 同一时间其实只有一个协程拥有运行权,相当于单线程的能力</p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/05/generator/" data-id="cj8soumhu002o06umijlgs13t" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/05/generator/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/05/generator/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <nav id="page-nav">
         <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
     </nav>
@@ -1763,7 +1750,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">25</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">25</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -1772,7 +1759,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">48</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">48</span></li></ul>
         </div>
     </div>
 
