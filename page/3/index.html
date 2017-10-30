@@ -214,7 +214,7 @@
 
             
             <section id="main">
-    <article id="post-linux_gcc" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-vim_grammar" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -222,7 +222,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/17/linux_gcc/">编译工具</a>
+            <a class="article-title" href="/2017/08/17/vim_grammar/">vim基本语法</a>
         </h1>
     
 
@@ -231,7 +231,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/17/linux_gcc/">
+        <a href="/2017/08/17/vim_grammar/">
             <time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time>
         </a>
     </div>
@@ -252,15 +252,327 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim bar.c</div></pre></td></tr></table></figure>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">foo</span><span class="params">(<span class="keyword">int</span> n)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">bar</span><span class="params">(<span class="keyword">int</span> m)</span></span>;</div><div class="line"></div><div class="line"><span class="keyword">int</span> </div><div class="line">main(<span class="keyword">void</span>)&#123;</div><div class="line">    <span class="keyword">int</span> a;</div><div class="line">    <span class="keyword">char</span> *s = <span class="string">"hello, world"</span>;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%s\n"</span>,&amp;s[<span class="number">7</span>]);</div><div class="line">    a = <span class="number">5</span>;</div><div class="line">    foo(a);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">int</span> </div><div class="line">foo(<span class="keyword">int</span> n)&#123;</div><div class="line">    <span class="keyword">int</span> b;</div><div class="line">    b = n;</div><div class="line">    b *=<span class="number">2</span>;</div><div class="line">    bar(b);</div><div class="line">    <span class="keyword">return</span> b;</div><div class="line">&#125;</div><div class="line"><span class="keyword">void</span> </div><div class="line">bar(<span class="keyword">int</span> m)&#123;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"hi,i am bar!\n"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="gcc程序编译"><a href="#gcc程序编译" class="headerlink" title="gcc程序编译"></a>gcc程序编译</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gcc -g -Wall bar.c -o bar</div></pre></td></tr></table></figure>
-<p>编译可分为四个阶段:<br>1.预处理:宏定义,头文件<br>2.编译:c–&gt;汇编语言<br>3.汇编:汇编成目标文件 .o (二进制文件)<br>4.链接:把所有的目标文件和库文件链接成一个可执行的文件</p>
-<h4 id="gcc-参数"><a href="#gcc-参数" class="headerlink" title="gcc 参数"></a>gcc 参数</h4><p>-I /home/include:指定头文件路径,先找预设路径<br>-L /usr/lib:库文件路径,先找指定目录,再找系统预设路径<br>-lfun:库文件中指定函数库 libfun.a<br>-static:静态链接库文件 .a为后缀,将所需要的函数copy到执行文件中<br>而动态链接库以 .so为后缀 指明当程序执行时,首先必须载入这个库,缺省操作<br>-Wall:生成所有的警告信息<br>-g:产生调试工具所必须的<br>-c:只生成一个.o后缀的目标文件</p>
-<h4 id="gdb程序调试"><a href="#gdb程序调试" class="headerlink" title="gdb程序调试"></a>gdb程序调试</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gdb bar</div></pre></td></tr></table></figure>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">break</span> main <span class="comment">//内存中main函数的入口地址 b 行号 ,b 文件名:行号</span></div><div class="line">run   <span class="comment">//r</span></div><div class="line"><span class="built_in">list</span>  <span class="comment">//l</span></div><div class="line">print a  <span class="comment">//殘值而已,不是我们赋的值  p</span></div><div class="line">print s <span class="comment">//也是殘值  print &amp;a next next next step next print &amp;b</span></div><div class="line">print s+<span class="number">90</span> <span class="comment">//通过gdb 可以在内存中任意跳转</span></div><div class="line">next   <span class="comment">//n</span></div><div class="line">print s</div><div class="line">next</div><div class="line">print s[<span class="number">7</span>]</div><div class="line">print &amp;s[<span class="number">7</span>]</div><div class="line">print a <span class="comment">//残值</span></div><div class="line">next</div><div class="line">print a</div><div class="line">step  <span class="comment">//进入foo子函数  s</span></div><div class="line">next</div><div class="line">next </div><div class="line">print n</div><div class="line">print b</div><div class="line">step <span class="comment">//进入bar函数</span></div><div class="line">print m</div><div class="line"><span class="keyword">continue</span> <span class="comment">//返回0 正常退出  c继续运行程序</span></div><div class="line">b <span class="number">5</span> <span class="keyword">if</span> i=<span class="number">10</span> 当i等于<span class="number">10</span>时第<span class="number">5</span>行断点生效</div><div class="line"><span class="keyword">delete</span> 断点编号 :删除断点</div><div class="line">quit <span class="comment">//q</span></div></pre></td></tr></table></figure>
-<h4 id="Makefile工程管理"><a href="#Makefile工程管理" class="headerlink" title="Makefile工程管理"></a>Makefile工程管理</h4><p>当有很多个文件都需要编译时,不可能一个一个的去gcc吧<br>通过make命令就能够使整个软件工程完成编译和链接<br>make在执行行,需要一个命名为Makefile的文件,它描述了整个工程的编译,链接等规则</p>
+            <h3 id="普通模式下"><a href="#普通模式下" class="headerlink" title="普通模式下"></a>普通模式下</h3><pre><code>操作符
+&gt;G &gt;gg # 缩进 y复制 d删除
+C == c$  #c是修改,删除之后进入插入模式
+s == cl # l一个字符 aw一个单词(iw不涉及到空格,ciw推荐) ap一个段落
+S == ^cc # 删除一整行
+# g命令空间
+g~l # 反转大小写
+guw # 转化成小写
+gUU # 转化成大写
+:!nginx -s reload # 使用外部命令
+</code></pre><h4 id="当前文件中的移动"><a href="#当前文件中的移动" class="headerlink" title="当前文件中的移动"></a>当前文件中的移动</h4><pre><code>u # 撤消
+&lt;ctrl-r&gt; # 重做
+动作命令
+w b e ge # 对单词 动作的移动程度和方向
+W B E gE # 对字串 动作的移动程度和方向
+* 和 #符号  # 匹配光标当前的所有单词
+% # 匹配括号移动 
+f+ # 查找当前行的下一个&apos;+&apos;字符,定位到&apos;+&apos; F上一个
+t+ # 查找当前行的下一个&apos;+&apos;字符,定位到&apos;+&apos;的上一个字符 T上一个
+3fa → 在当前行查找第三个出现的a 
 
+; # 重复
+, # 退回
+yaw yt,  f,dt. d/ge&lt;CR&gt; # 查找动作告诉d操作符删除什么
+#Vim的文本对象由两个字符组成,第一个字符永远是i或a.文本对象自身并不是动作命令,不能用它们在文档中移动
+# 但我们却可以在可视化及操作符待决模式中使用文本对象
+#操作分隔符的文本对象 m{a-zA-Z}要在其内部
+a)==ab  a}==aB  at#一对XML标签 it #XML标签内部
+vi) ci)
+# 操作文本块的文本对象
+daw ciw
+
+# 设置位置标记
+m{a-zA-Z}#小写每个缓冲区局部可见,大写全局可见
+mm `m
+# Vim的自动位置标记
+&apos;&apos; # 当前文件中上次跳转动作之前的位置
+&apos;. # 上次修改过的地方
+&apos;^ #     插入
+&apos;[ # 上次修改或复制的起始位置
+&apos;] #             结束
+&apos;&lt; #     高亮选区
+&apos;&gt; #                 结束
+# 括号间的跳转
+%
+
+# 当不同文件之间的移动和跳转
+任何改变当前窗口中活动文件的命令,都可以称为跳转命令
+Vim会把执行跳转命令之前和之后的光标位置,记录到跳转列表中
+
+
+
+&apos;&lt;ff&gt;&apos;    
+@: # 重复上次的Ex命令
+:s%/old/new/g # 替换
+1&lt;ctrl-a&gt; # 对当前行的一下数字加1  1&lt;ctrl-x&gt;:减一
+
+# 重绘屏幕
+zz #把当前行显示在窗口正中
+&lt;ctrl-d&gt;(D) # 向下滚屏
+&lt;ctrl-u&gt;(U) #   上
+H/M/L # 跳到屏幕最上,中,下方
+
+# 可视化模式
+v
+
+# 命令行模式
+:
+
+# 命令行窗口
+q:
+
+# 替换模式
+R gR
+r{char} gr{char} # 覆盖一个字符之后,马上又回到普通模式
+
+#特别一点
+ga #查看任意字符的编码 分别以10,16,8进制的形式显示其字符编码
+J将下面的一整行,都提到光标行的末尾
+&lt;ctrl-g&gt; # 显示当前文件文件名及状态
+</code></pre><h4 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h4><pre><code># Vim操作的是寄存器,而并非剪贴板
+# &quot;{register}前缀的方式指定要用的寄存器,若不指明则使用无名寄存器
+&quot;ayiw &quot;bdd &quot;&quot;yiw &quot;+yy:delete c # 分别 对应寄存器a,b,&quot;,c中 
+&quot;ap   &quot;bp  &quot;&quot;p   :put c       # 对应的复制
+# x,s,d,c,y,p命令都会覆盖无名寄存器
+
+# 无名寄存器(&quot;&quot;) &quot;&quot;p==p
+yaw daw &quot;0p
+# 有名寄存器(&quot;a-&quot;z)
+# 黑洞寄存器(&quot;_)
+# 复制专用寄存器(&quot;0) y命令不仅会被拷贝到无名寄存器中,还拷贝到复制专用寄存器中
+
+# ubuntu 和mint默认安装的vim是不支持系统剪切、粘贴版的
+sudo apt-get install -y vim-gnome
+# 对于非GUI版本的vim,剪切板是不可用的,解决方案很简单,安装一下就是了:
+sudo apt-get install gvim
+
+# 系统剪贴板(&quot;+)
+# 将系统剪贴板的内容粘贴到Vim内部
+&quot;+p  # 插入模式下&lt;ctrl-r&gt;+,&quot;,a,0
+# 将Vim的文本捕获到系统剪贴板
+&quot;+yy
+&quot;%p # &quot;%当前文件名
+&quot;.p  # &quot;.上次插入的文本
+
+# 只读(read-only)寄存器:
+&quot;:,分别缓存最近命令
+&quot;.,最近插入文本
+&quot;%,当前文件名
+&quot;#,当前交替文件名
+
+# 代换单词
+yiw jww ve p
+yiw jww  ciw&lt;ctrl-r&gt;0&lt;Esc&gt;
+</code></pre><h4 id="宏-在录制一个宏时-要确保每条命令都可被重复执行-同时禁止使用鼠标"><a href="#宏-在录制一个宏时-要确保每条命令都可被重复执行-同时禁止使用鼠标" class="headerlink" title="宏:在录制一个宏时,要确保每条命令都可被重复执行,同时禁止使用鼠标"></a>宏:在录制一个宏时,要确保每条命令都可被重复执行,同时禁止使用鼠标</h4><h4 id="而且当动作命令-j-n-停止时-宏将中止运行"><a href="#而且当动作命令-j-n-停止时-宏将中止运行" class="headerlink" title="而且当动作命令(j,n)停止时,宏将中止运行"></a>而且当动作命令(j,n)停止时,宏将中止运行</h4><pre><code>#打任意数目的按键操作录制到寄存器,用于之后的回放
+# 把命令序列录制成宏
+qa #录制宏的开始 q{register},从而指定一个用于保存宏的寄存器
+A;&lt;Esc&gt;
+Ivar &lt;Esc&gt;
+q # 停止宏录制
+j @a j@@
+:reg a  # 查看寄存器的内容
+@a # @{register} 执行指定寄存器的内容,
+@@ # 重复最近高过的宏
+
+10@a # 加次数回放宏 .命令不能执行次数
+f+  s_+_&lt;Esc&gt;  qq;.q 22@q
+
+# 串行的运行宏 j :next
+
+    10@a # 加次数回放宏 .命令不能执行次数
+# 并行的运行宏
+
+    :&apos;&lt;,&apos;&gt;normal @a # 单个文件的多行并行运行宏
+
+    :args *.py # 建立目标文件列表
+    :edit!
+    :argdo normal @a
+    # 当在多个文件中 进行并行运行宏时,执行宏一旦失败,不方便找到到底哪个失败了
+    :wall
+
+# 给宏追加命令 
+qA # Vim会录制按键操作,但会把它们附加到寄存器a原有的内容之后
+# 编辑宏
+:put a # 将宏复制到缓冲区,当前光标的下方,而 &quot;ap 复制到当前光标之后
+# 在缓冲区进行对宏的编辑
+0 &quot;ay$ dd # 将宏从缓冲区复制回寄存器
+</code></pre><h4 id="插入模式"><a href="#插入模式" class="headerlink" title="插入模式"></a>插入模式</h4><pre><code>&lt;ctrl-h&gt;
+&lt;ctrl-w&gt;
+&lt;ctrl-u&gt; # 都是删除操作
+
+# 插入-普通模式
+&lt;ctrl-o&gt; #切换到插入-普通模式,在此后可执行一条普通模式下的命令后,再回到插入模式
+&lt;ctrl-o&gt;zz #
+
+# 复制专用寄存器(&quot;0) y命令不仅会被拷贝到无名寄存器中,还拷贝到复制专用寄存器中
+&lt;ctrl-r&gt;0 # 0就是寄存器的名字 在命令行中yaw,默认寄存器的名字是0
+&lt;ctrl-r&gt;&lt;ctrl-p&gt;0 # 它会按原义插入寄存器内的文本,并修正任何不必要的缩进
+&lt;ctrl-r&gt;=9*9&lt;CR&gt; # 表达式寄存器  &lt;ctrl-r&gt;=
+&lt;C-p&gt;或是&lt;C-n&gt;,自动补齐功
+
+&lt;ctrl-v&gt;065 # A用字符编码插入字符,vim所接受的字符编码共包含3位数
+&lt;ctrl-v&gt;u00bf # 编码超过3位的,可以用4位16进制编码来输入
+&lt;ctrl-v&gt;&lt;Tab&gt; # 如果后面跟一个非数字键,它会插入这个键本身所代表的字符
+</code></pre><h4 id="可视模式"><a href="#可视模式" class="headerlink" title="可视模式"></a>可视模式</h4><pre><code>v V &lt;ctrl-v&gt;
+o # 切换高亮选区的活动端
+gv # 重选上次的高亮选区
+yyp--&gt;Vr# # ####横编排
+&lt;ctrl-v&gt;3j$ #竖编排 
+= # 自动给缩进 
+</code></pre><h4 id="命令行-EX命令"><a href="#命令行-EX命令" class="headerlink" title="命令行(EX命令)"></a>命令行(EX命令)</h4><pre><code>@: # 在普通模式下执行 重复上次的Ex命令
+/
+&lt;ctrl-r&gt;= # 访问表达式寄存器也会激活命令行模式
+
+# 有些命令可以在插入和命令行模式下通用
+&lt;ctrl-r&gt;0 #复制寄存器的内容
+&lt;ctrl-h&gt;
+&lt;ctrl-w&gt;
+&lt;ctrl-u&gt; # 都是删除操作 
+
+/the/
+?the?
+
+:1,$ == :% # 整个文件
+:. # 光标所有行
+:0 #虚拟行 位于文件第一行上方
+
+# 删除行
+:3d == 3G+dd
+:.d # 删除当前行
+
+# 复制行t,移动行m
+:6t. # :[range]t{address} 把第六行复制到当前行下方
+:t6                        当前        第六行
+:t. == yyp
+:&apos;&lt;,&apos;&gt;t$ # 将高亮选区的内容复制到文本结尾处
+
+A;
+:&apos;&lt;,&apos;&gt;normal . == :&apos;&lt;,&apos;&gt;normal A; # 对高亮选区中的每一行,对其执行普通模式下的 . 命令. 
+
+# 自动补全Ex命令
+&lt;ctrl-d&gt; &lt;Tab&gt; &lt;Shfit-Tab&gt;
+:colors&lt;Tab&gt;
+:colorscheme &lt;Tab&gt;
+
+# 把当前光标的单词插入到命令行
+&lt;ctrl-r&gt;&lt;ctrl-w&gt;
+# 把当前光标的字串插入到命令行
+&lt;ctrl-r&gt;&lt;ctrl-a&gt;
+
+
+#  命令行窗口,就像一个常规的Vim缓冲区,只不过它的内容都对应着命令历史中的一个条目
+q: # 打开Ex 命令历史 k j键进行移动 ,&lt;CR&gt;将会把当前行的内容当成Ex命令执行  
+q/ # 打开查找
+:q #关闭命令行窗口 像操作普通Vim窗口一样 其它的操作也可以
+&lt;ctrl-f&gt; # 从命令行模式切换到命令行窗口
+
+# 运行shell
+:!{cmd} # 执行一次性命令
+:shell  # 启动一个交互的shell会话  exit  # 退出此shell并返回Vim
+# 也可以在普通模式下 &lt;ctrl-z&gt;挂起Vim进程,$jobs  $fg [作业号]
+:read !{cmd} # 将标准输出插入到光标下方
+:[range]write !{cmd} # 将range(默认是整个文件)每行内容,作为此命令的输入
+:%!sort -t &apos;,&apos; -k 2 # 以逗号分隔,按第二个字段进行排序
+
+
+:tabnew # 创建新标签页
+:split 文件路径 #分割窗口,如果不指定文件路径,默认是分割本文件
+:set ignorecase #查找单词时需要忽略大小写
+:set hlsearch # 可以将查找的内容设置成高亮
+:set history=200 #设置保存命令的条数
+</code></pre><h4 id="参数列表-vi的一个功能-是缓冲区列表-Vim增加的功能-的强力补充"><a href="#参数列表-vi的一个功能-是缓冲区列表-Vim增加的功能-的强力补充" class="headerlink" title="参数列表(vi的一个功能)是缓冲区列表(Vim增加的功能)的强力补充"></a>参数列表(vi的一个功能)是缓冲区列表(Vim增加的功能)的强力补充</h4><pre><code>vim vim_grammar.md linux.md    
+:ls #缓冲区列表 %哪个缓冲区在当前容器中可见 #代表轮换文件&lt;ctrl-^&gt;进行快速切换
+# Vim是用缓冲区列表对打开的文件进行管理的
+
+# 选择缓冲区
+:buffer N/bufname # N是Vim自动分配的编号由上面的命令行得知  bufname是文件名
+:bprev
+:bnext 
+:bfirst
+:blast  
+#退出(保存)所有的缓冲区
+:qall!
+:wall
+
+# 删除缓冲区
+:bdelete N1 N2
+
+# 用参数列表将缓冲区分组
+# 查看参数列表
+:args
+:args *.py # 建立目标文件列表
+
+#如果活动缓冲区的内容发生了变化,Vim会在离开缓冲区时自动将其设为隐藏(默认会有错误信息&apos;文件已修改但未保存&apos;)
+#&apos;hidden&apos;设置让我们用一条;argdo {cmd}或 bufdo{cmd}命令就可以修改一组缓冲区.
+</code></pre><h4 id="分割窗口"><a href="#分割窗口" class="headerlink" title="分割窗口"></a>分割窗口</h4><pre><code># 创建分割窗口
+&lt;ctrl-w&gt;s    
+&lt;ctrl-w&gt;v    
+:sp[lit] {file} #载入新文件
+:vsp[lit] {file}
+# 关闭窗口
+&lt;ctrl-w&gt;c    #关闭活动窗口  :clo[se]
+&lt;ctrl-w&gt;o    #保存活动容器,关闭其它所有窗口 :on[ly]
+# 切换窗口
+&lt;ctrl-w&gt;w    # 窗口循环切换
+&lt;ctrl-w&gt;h j k l    
+#改变窗口
+&lt;ctrl-w&gt;=    
+[N]&lt;ctrl-w&gt;_ # 最大化高度
+
+[N]&lt;ctrl-w&gt;| #       宽度
+[N]&lt;ctrl-w&gt;&lt; # &gt;
+</code></pre><h4 id="在Vim中-标签页是可以容纳一系列窗口的容器口"><a href="#在Vim中-标签页是可以容纳一系列窗口的容器口" class="headerlink" title="在Vim中,标签页是可以容纳一系列窗口的容器口"></a>在Vim中,标签页是可以容纳一系列窗口的容器口</h4><pre><code>:tabnew # 创建新标签页
+:tabe[dit] {filename} # 在新标签页打开{filename} 如果没有指定文件,会建立一个新标签页,里面包含一个空缓冲区
+:&lt;ctrl-w&gt;T  #当标签页中包含了不只一个窗口时,用此命令 把当前窗口移到一个新标签页
+:tabc[lose]  # 关闭当前所有标签页的窗口
+:tabo[nly]  # 关闭其它
+[N]gt #       下  :tabn[ext] 
+[N]gT # 切换到上一标签页  :tabp[revious]
+</code></pre><h4 id="打开文件"><a href="#打开文件" class="headerlink" title="打开文件"></a>打开文件</h4><pre><code>#Vim也有工作目录的概念,这各bash及其他shell是一样的
+#相对于活动文件目录下打开一个文件
+:edit %:h&lt;Tab&gt;  # %代表活动缓冲区的完整文件路径 :h修饰符会去除文件名 也就是此命令会被展开为当前文件所有目录的路径
+:set path+=app/** # 匹配app/目录下所有子目录
+:find 文件名
+
+# netrw管理文件系统
+# 打开文件管理器
+$ vim .
+:edit %:h ==:e . ==:Explore ==:E
+# 上面的操作都会代替当前的缓冲区内容
+# 当要保存到不存在的目录中时
+:!mkdir -p %:h #-p创建任何不存在的中间目录
+
+# 我们可以把任务委派给一个以sudo运行的shell进程,来完成工作
+:w !sudo tee % &gt;/dev/null # :w将缓冲区的内容作为sudo tee的标准输入,%是当前文件
+# 此时Vim会检测到该文件被一个外部程序改了,所以Vim会提示我们做出选择,是保留缓冲区的还是载入磁盘上的版本
+</code></pre><p>vim对于ctage的支持,<br>1.我们可以快速地跳到到函数及类的定义之处,实现浏览整个代码库的目的.(基于标签的跳转)<br>2.用于建立自动补全的单词列表</p>
+<h3 id="安装和运行ctage"><a href="#安装和运行ctage" class="headerlink" title="安装和运行ctage"></a>安装和运行ctage</h3><pre><code>sudo apt-get install exuberant-ctags
+
+sudo apt install linuxbrew-wrapper
+# 检测系统是否安装了ctags以及路径正确与否
+brew install ctags
+ctags --help
+</code></pre><h3 id="用ctags创建代码库的索引"><a href="#用ctags创建代码库的索引" class="headerlink" title="用ctags创建代码库的索引"></a>用ctags创建代码库的索引</h3><pre><code># 手动创建索引
+cd ~/app1.6
+ctags -R *
+# 应该可以用!cd /home/python/app1.6 &amp;&amp; ctags -R *
+# Linux下的C/C++的程序员,使用VIM+Ctags的组合来写程序也许是最佳的选择
+# 好像没有递归子目录,所以为子目录创建索引
+cd main &amp;&amp; ctags -R *
+cd ../app1.6 #必须要cd到此目录或者 main目录下,可由 :set tags 查看
+vim runner
+# 这样本地的所有代码,都正确的创建了索引,但源代码还是没有办法创建索引
+
+:tabnew /home/python/app1.6/runner.py
+:set tags?
+&lt;ctrl-]&gt; # 会从当前所在的关键字跳转到它的定义处 ,
+g&lt;ctrl-]&gt;
+
+&lt;ctrl-t&gt; # 充当着后退按钮 
+</code></pre>
         
         </div>
         <footer class="article-footer">
@@ -270,7 +582,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/17/linux_gcc/" data-id="cj92o1863002c08phedeh7czc" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/17/vim_grammar/" data-id="cj9dfksl0004b06pc7i8rswrd" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -338,7 +650,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/08/17/linux_gcc/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/linux_gcc/">Comments</a>
+        <a href="https://www.femn.me/2017/08/17/vim_grammar/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/vim_grammar/">Comments</a>
     
 
         </footer>
@@ -348,7 +660,7 @@
 
 
 
-    <article id="post-sshd-server" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-CDN-server" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -356,7 +668,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/16/sshd-server/">sshd</a>
+            <a class="article-title" href="/2017/08/16/CDN-server/">内容分发网络</a>
         </h1>
     
 
@@ -365,7 +677,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/16/sshd-server/">
+        <a href="/2017/08/16/CDN-server/">
             <time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time>
         </a>
     </div>
@@ -386,10 +698,12 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h4 id="server"><a href="#server" class="headerlink" title="server"></a>server</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install openssh-server</div><div class="line">ps ef|grep ssh</div><div class="line">sudo /etc/init.d/ssh start 或者 service sshd start</div><div class="line"></div><div class="line"><span class="comment"># 创建一个普通用户</span></div><div class="line">useradd username</div><div class="line">passwd username</div><div class="line">vim /etc/ssh/sshd_config</div><div class="line">    Port 22333</div><div class="line">    PermitRootLogin no</div><div class="line">    TCPKeepAlive yes</div><div class="line">    ClientAliveInterval 360</div><div class="line">    ClientAliveCountMax 20</div><div class="line"></div><div class="line"><span class="comment"># 给普通用户附sudo权限</span></div><div class="line">chmod u+w /etc/sudoers</div><div class="line">vim /etc/sudoers</div><div class="line">    root            ALL=(ALL)                ALL</div><div class="line">    username            ALL=(ALL)                ALL</div><div class="line">chmod u-w /etc/sudoers</div><div class="line"></div><div class="line">/etc/init.d/ssh start</div><div class="line">service sshd restart</div><div class="line">firewall-cmd --permanent --add-port=22333/tcp</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure>
-<h4 id="client"><a href="#client" class="headerlink" title="client"></a>client</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -p 22333 username@ip</div></pre></td></tr></table></figure>
-<h3 id="SSH无密码登录"><a href="#SSH无密码登录" class="headerlink" title="SSH无密码登录"></a>SSH无密码登录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># client:生成SSH公钥</span></div><div class="line">ssh-keygen -t rsa -C <span class="string">"邮箱"</span> </div><div class="line"></div><div class="line"><span class="comment"># 将SSH公钥上传到Linux服务器</span></div><div class="line">ssh-copy-id -p 22 username@remote-server</div><div class="line"><span class="comment"># 将client端的gedit ~/.ssh/id_rsa.pub的内容放到server端~/.ssh/authorized_keys</span></div><div class="line"><span class="comment"># 等同于如下</span></div><div class="line">cat ~/.ssh/id_rsa.pub | ssh username@your_host \ </div><div class="line">    <span class="string">"cat - &gt;&gt; /home/username/.ssh/authorized_keys"</span></div></pre></td></tr></table></figure>
-
+            <h3 id="CDN"><a href="#CDN" class="headerlink" title="CDN:"></a>CDN:</h3><p>内容分发网络(Content delivery network或Content distribution network,缩写:CDN)是指一种通过互联网互相连接的电脑网络系统,<br>利用最靠近每位用户的服务器,更快、更可靠地将音乐、图片、视频、应用程序及其他文件发送给用户,来提供高性能、可扩展性及低成本的网络内容传递给用户</p>
+<h3 id="CDN的作用"><a href="#CDN的作用" class="headerlink" title="CDN的作用"></a>CDN的作用</h3><h4 id="1-加速您网站的访问"><a href="#1-加速您网站的访问" class="headerlink" title="1.加速您网站的访问:"></a>1.加速您网站的访问:</h4><p>访问者的每个访问请求,都会被自动发送到物理距离最近、速度最快的节点上.<br>将blog内容的所有的东西(图片,文字,视频)都是保存在自己的服务器中,要从自己的服务器中取得,当如果某个页面需要加载很多内容时,速度就会变慢.<br>而cdn就会把所以网址上的东西,全部分送到它们在全世界各地所架设的云端的伺服务器上,也就是说我的网址会被散播(拆解)到全世界的伺服务器上,取最近的.</p>
+<h4 id="2-防骇客-抵御DoS攻击-访问我们的网址-相当于访问到云端的伺服务器上"><a href="#2-防骇客-抵御DoS攻击-访问我们的网址-相当于访问到云端的伺服务器上" class="headerlink" title="2.防骇客,抵御DoS攻击,访问我们的网址,相当于访问到云端的伺服务器上."></a>2.防骇客,抵御DoS攻击,访问我们的网址,相当于访问到云端的伺服务器上.</h4><h4 id="3-可以承受网站的流量-节省您的流量"><a href="#3-可以承受网站的流量-节省您的流量" class="headerlink" title="3.可以承受网站的流量,节省您的流量:"></a>3.可以承受网站的流量,节省您的流量:</h4><p>您的网站内容将被缓存在 CloudFlare 的节点中,访问者并不直接从您的主机获取内容,从而最大限度地节省主机的流量<br>同时网站的下载速度也会比以往的快些.</p>
+<h3 id="使用cloudflare加速"><a href="#使用cloudflare加速" class="headerlink" title="使用cloudflare加速"></a>使用<a href="https://www.cloudflare.com/" target="_blank" rel="external">cloudflare</a>加速</h3><p>cloudflare是一个国外著名的免费CDN网站加速服务公司<br>甚至可以在网站主服务器宕机的情况下,访问者依然可以通过 CloudFlare 的分发服务器访问到您的网站</p>
+<p><a href="http://www.xujiahua.com/4680.html" target="_blank" rel="external">使用cloudflare的教程</a></p>
+<h3 id="但使用了cloudflare之后-就不再支持泛域名的解析了-所以还得多配置nginx"><a href="#但使用了cloudflare之后-就不再支持泛域名的解析了-所以还得多配置nginx" class="headerlink" title="但使用了cloudflare之后,就不再支持泛域名的解析了,所以还得多配置nginx."></a>但使用了cloudflare之后,就不再支持泛域名的解析了,所以还得多配置nginx.</h3>
         
         </div>
         <footer class="article-footer">
@@ -399,7 +713,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/16/sshd-server/" data-id="cj92o186w003g08ph3lv5af50" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/16/CDN-server/" data-id="cj9dfkshv000506pcbovgmrju" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -467,7 +781,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/08/16/sshd-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/sshd-server/">Comments</a>
+        <a href="https://www.femn.me/2017/08/16/CDN-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/CDN-server/">Comments</a>
     
 
         </footer>
@@ -544,7 +858,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/16/shadowsocks-server/" data-id="cj92o186t003808phq75kav8g" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/16/shadowsocks-server/" data-id="cj9dfksk7003e06pcucia5qvq" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -622,7 +936,7 @@
 
 
 
-    <article id="post-CDN-server" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-sshd-server" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -630,7 +944,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/16/CDN-server/">内容分发网络</a>
+            <a class="article-title" href="/2017/08/16/sshd-server/">sshd</a>
         </h1>
     
 
@@ -639,7 +953,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/16/CDN-server/">
+        <a href="/2017/08/16/sshd-server/">
             <time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time>
         </a>
     </div>
@@ -660,12 +974,10 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h3 id="CDN"><a href="#CDN" class="headerlink" title="CDN:"></a>CDN:</h3><p>内容分发网络(Content delivery network或Content distribution network,缩写:CDN)是指一种通过互联网互相连接的电脑网络系统,<br>利用最靠近每位用户的服务器,更快、更可靠地将音乐、图片、视频、应用程序及其他文件发送给用户,来提供高性能、可扩展性及低成本的网络内容传递给用户</p>
-<h3 id="CDN的作用"><a href="#CDN的作用" class="headerlink" title="CDN的作用"></a>CDN的作用</h3><h4 id="1-加速您网站的访问"><a href="#1-加速您网站的访问" class="headerlink" title="1.加速您网站的访问:"></a>1.加速您网站的访问:</h4><p>访问者的每个访问请求,都会被自动发送到物理距离最近、速度最快的节点上.<br>将blog内容的所有的东西(图片,文字,视频)都是保存在自己的服务器中,要从自己的服务器中取得,当如果某个页面需要加载很多内容时,速度就会变慢.<br>而cdn就会把所以网址上的东西,全部分送到它们在全世界各地所架设的云端的伺服务器上,也就是说我的网址会被散播(拆解)到全世界的伺服务器上,取最近的.</p>
-<h4 id="2-防骇客-抵御DoS攻击-访问我们的网址-相当于访问到云端的伺服务器上"><a href="#2-防骇客-抵御DoS攻击-访问我们的网址-相当于访问到云端的伺服务器上" class="headerlink" title="2.防骇客,抵御DoS攻击,访问我们的网址,相当于访问到云端的伺服务器上."></a>2.防骇客,抵御DoS攻击,访问我们的网址,相当于访问到云端的伺服务器上.</h4><h4 id="3-可以承受网站的流量-节省您的流量"><a href="#3-可以承受网站的流量-节省您的流量" class="headerlink" title="3.可以承受网站的流量,节省您的流量:"></a>3.可以承受网站的流量,节省您的流量:</h4><p>您的网站内容将被缓存在 CloudFlare 的节点中,访问者并不直接从您的主机获取内容,从而最大限度地节省主机的流量<br>同时网站的下载速度也会比以往的快些.</p>
-<h3 id="使用cloudflare加速"><a href="#使用cloudflare加速" class="headerlink" title="使用cloudflare加速"></a>使用<a href="https://www.cloudflare.com/" target="_blank" rel="external">cloudflare</a>加速</h3><p>cloudflare是一个国外著名的免费CDN网站加速服务公司<br>甚至可以在网站主服务器宕机的情况下,访问者依然可以通过 CloudFlare 的分发服务器访问到您的网站</p>
-<p><a href="http://www.xujiahua.com/4680.html" target="_blank" rel="external">使用cloudflare的教程</a></p>
-<h3 id="但使用了cloudflare之后-就不再支持泛域名的解析了-所以还得多配置nginx"><a href="#但使用了cloudflare之后-就不再支持泛域名的解析了-所以还得多配置nginx" class="headerlink" title="但使用了cloudflare之后,就不再支持泛域名的解析了,所以还得多配置nginx."></a>但使用了cloudflare之后,就不再支持泛域名的解析了,所以还得多配置nginx.</h3>
+            <h4 id="server"><a href="#server" class="headerlink" title="server"></a>server</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install openssh-server</div><div class="line">ps ef|grep ssh</div><div class="line">sudo /etc/init.d/ssh start 或者 service sshd start</div><div class="line"></div><div class="line"><span class="comment"># 创建一个普通用户</span></div><div class="line">useradd username</div><div class="line">passwd username</div><div class="line">vim /etc/ssh/sshd_config</div><div class="line">    Port 22333</div><div class="line">    PermitRootLogin no</div><div class="line">    TCPKeepAlive yes</div><div class="line">    ClientAliveInterval 360</div><div class="line">    ClientAliveCountMax 20</div><div class="line"></div><div class="line"><span class="comment"># 给普通用户附sudo权限</span></div><div class="line">chmod u+w /etc/sudoers</div><div class="line">vim /etc/sudoers</div><div class="line">    root            ALL=(ALL)                ALL</div><div class="line">    username            ALL=(ALL)                ALL</div><div class="line">chmod u-w /etc/sudoers</div><div class="line"></div><div class="line">/etc/init.d/ssh start</div><div class="line">service sshd restart</div><div class="line">firewall-cmd --permanent --add-port=22333/tcp</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure>
+<h4 id="client"><a href="#client" class="headerlink" title="client"></a>client</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -p 22333 username@ip</div></pre></td></tr></table></figure>
+<h3 id="SSH无密码登录"><a href="#SSH无密码登录" class="headerlink" title="SSH无密码登录"></a>SSH无密码登录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># client:生成SSH公钥</span></div><div class="line">ssh-keygen -t rsa -C <span class="string">"邮箱"</span> </div><div class="line"></div><div class="line"><span class="comment"># 将SSH公钥上传到Linux服务器</span></div><div class="line">ssh-copy-id -p 22 username@remote-server</div><div class="line"><span class="comment"># 将client端的gedit ~/.ssh/id_rsa.pub的内容放到server端~/.ssh/authorized_keys</span></div><div class="line"><span class="comment"># 等同于如下</span></div><div class="line">cat ~/.ssh/id_rsa.pub | ssh username@your_host \ </div><div class="line">    <span class="string">"cat - &gt;&gt; /home/username/.ssh/authorized_keys"</span></div></pre></td></tr></table></figure>
+
         
         </div>
         <footer class="article-footer">
@@ -675,7 +987,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/16/CDN-server/" data-id="cj92o183s000108phiz3cp0b8" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/16/sshd-server/" data-id="cj9dfksk9003l06pcap4gsxun" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -743,7 +1055,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/08/16/CDN-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/CDN-server/">Comments</a>
+        <a href="https://www.femn.me/2017/08/16/sshd-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/sshd-server/">Comments</a>
     
 
         </footer>
@@ -832,7 +1144,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/15/vps-server/" data-id="cj92o1875003w08phq5xxrn9j" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/15/vps-server/" data-id="cj9dfkskj004206pc7em4ar7p" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -961,7 +1273,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/14/python-fun-program/" data-id="cj92o186h002x08pha2lzprg1" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/14/python-fun-program/" data-id="cj9dfksjw003006pcafulkf0y" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1094,7 +1406,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/14/进程间通信/" data-id="cj92o187c004308phod5yadbp" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/14/进程间通信/" data-id="cj9dfksky004606pcjzxrfz8u" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1211,10 +1523,15 @@
         
             
             <p>Tornado 是一个Python web框架和异步网络库,起初由 FriendFeed(后该公司被facebook收购,目前tornado由facebook开发维护)开发.由于非阻塞的特性,他在处理Http长连接、websocket等保持连接时间较长的请求时,并发能力很强.</p>
-<p><a href="http://tornado.moelove.info/zh/latest/guide.html" target="_blank" rel="external">Tornado</a>大体上可以被分为4个主要的部分:</p>
-<h4 id="web框架-包括创建web应用的-RequestHandler-类-还有很多其他支持的类"><a href="#web框架-包括创建web应用的-RequestHandler-类-还有很多其他支持的类" class="headerlink" title="web框架 (包括创建web应用的 RequestHandler 类,还有很多其他支持的类)."></a>web框架 (包括创建web应用的 RequestHandler 类,还有很多其他支持的类).</h4><p>tornado是非阻塞式服务器,是实时Web服务的一个理想框架.</p>
-<h5 id="tornado-web-Application类的实例化"><a href="#tornado-web-Application类的实例化" class="headerlink" title="tornado.web.Application类的实例化:"></a>tornado.web.Application类的实例化:</h5><p>传递给Application类<strong>init</strong>方法的最重要的参数是handlers(是一个元组组成的列表,其中每个元组的第一个元素是一个用于匹配的正则表达式,第二个元素是一个RequestHanlder类).它告诉Tornado应该用哪个类来响应请求(如果一个正则表达式包含一个捕获分组(即,正则表达式中的部分被括号括起来),匹配的内容将作为相应HTTP请求的参数传到RequestHandler对象中).settings参数则是对这个app的一些设置.</p>
-<p>一旦Application对象被创建,我们可以将其传递给Tornado的HTTPServer对象,然后使用我们在命令行指定的端口进行监听(通过options对象取出.)最后,在程序准备好接收HTTP请求后,我们创建一个Tornado的IOLoop的实例.<br>一般的web应用是阻塞性质的,也就是说当一个请求被处理时,这个进程就会被挂起直至请求完成.这意味着应用程序被有效的锁定直至处理结束,很明显这在可扩展性上出现了问题.<br>不过,Tornado给了我们更好的方法来处理这种情况.应用程序在等待第一个处理完成的过程中,让I/O循环打开以便服务于其他客户端,直到处理完成时启动一个请求并给予反馈,而不再是等待请求完成的过程中挂起进程.</p>
+<p><a href="http://tornado.moelove.info/zh/latest/guide.html" target="_blank" rel="external">Tornado</a>是非阻塞式服务器,是实时Web服务的一个理想框架,大体上可以被分为4个主要的部分:</p>
+<ol>
+<li>web框架(RequestHandler,Application)</li>
+<li>HTTP的客户端和web服务端实现 (AsyncHTTPClient and HTTPServer)</li>
+<li>异步网络库 (IOLoop and IOStream)</li>
+<li>协程库 (tornado.gen) 允许异步代码写的更直接而不用链式回调的方式</li>
+</ol>
+<h4 id="web框架-包括创建web应用的-RequestHandler-类-还有很多其他支持的类"><a href="#web框架-包括创建web应用的-RequestHandler-类-还有很多其他支持的类" class="headerlink" title="web框架 (包括创建web应用的 RequestHandler 类,还有很多其他支持的类)."></a>web框架 (包括创建web应用的 RequestHandler 类,还有很多其他支持的类).</h4><h5 id="tornado-web-Application类的实例化"><a href="#tornado-web-Application类的实例化" class="headerlink" title="tornado.web.Application类的实例化:"></a>tornado.web.Application类的实例化:</h5><p>传递给Application类<strong>init</strong>方法的最重要的参数是handlers(是一个元组组成的列表,其中每个元组的第一个元素是一个用于匹配的正则表达式,第二个元素是一个RequestHanlder类).它告诉Tornado应该用哪个类来响应请求(如果一个正则表达式包含一个捕获分组(即,正则表达式中的部分被括号括起来),匹配的内容将作为相应HTTP请求的参数传到RequestHandler对象中).settings参数则是对这个app的一些设置.</p>
+<p>一旦Application对象被创建,我们可以将其传递给Tornado的HTTPServer对象,然后使用我们在命令行指定的端口进行监听(通过options对象取出.)最后,在程序准备好接收HTTP请求后,我们创建一个Tornado的IOLoop的实例.</p>
 <p>Application对象是负责全局配置的,包括映射请求转发给处理程序的路由表.static,template的内容.Application实例中的所有属性,BaseHandler中使用Application实例中的属性,以便所有的Handler都可以使用其属性.</p>
 <h5 id="Tornado的请求处理函数类-当处理一个请求时-Tornado将这个类实例化-并调用与HTTP请求方法所对应的方法-get-post方法"><a href="#Tornado的请求处理函数类-当处理一个请求时-Tornado将这个类实例化-并调用与HTTP请求方法所对应的方法-get-post方法" class="headerlink" title="Tornado的请求处理函数类.当处理一个请求时,Tornado将这个类实例化,并调用与HTTP请求方法所对应的方法(get,post方法)"></a>Tornado的请求处理函数类.当处理一个请求时,Tornado将这个类实例化,并调用与HTTP请求方法所对应的方法(get,post方法)</h5><p>tornado.web.RequestHandler的生命周期是initialize() -&gt; prepare() -&gt; get()/post() -&gt; on_finish()</p>
 <ol>
@@ -1264,14 +1581,19 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;% set mailLink = <span class="string">"&lt;a href="</span>mailto:contact@burtsbooks.com<span class="string">"&gt;Contact Us&lt;/a&gt;"</span> %&#125;</div><div class="line">&#123;&#123; mailLink &#125;&#125;<span class="string">'</span></div><div class="line"><span class="string"># 它会在页面源代码中渲染成如下代码:</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">&amp;lt;a href=&amp;quot;mailto:contact@burtsbooks.com&amp;quot;&amp;gt;Contact Us&amp;lt;/a&amp;gt;</span></div><div class="line"><span class="string"># 此时自动转义被运行了,很明显,这无法让人们联系上Burt.</span></div></pre></td></tr></table></figure>
 <p>为了处理这种情况,你可以禁用自动转义,一种方法是在Application构造函数中传递autoescape=None,另一种方法是在每页的基础上修改自动转义行为,如下所示:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">&#123;% autoescape <span class="keyword">None</span> %&#125;</div><div class="line">&#123;&#123; mailLink &#125;&#125;</div><div class="line"><span class="comment"># 这些autoescape块不需要结束标签,并且可以设置xhtml_escape来开启自动转义(默认行为)</span></div><div class="line"><span class="comment"># 或None来关闭.</span></div><div class="line"></div><div class="line"><span class="comment"># 然而,在理想的情况下,你希望保持自动转义开启以便继续防护你的网站.</span></div><div class="line"><span class="comment"># 因此,你可以使用&#123;% raw %&#125;指令来输出不转义的内容.</span></div><div class="line"></div><div class="line">&#123;% raw mailLink %&#125;</div><div class="line"><span class="comment"># 需要特别注意的是,当你使用诸如Tornado的linkify()和xsrf_form_html()函数时</span></div><div class="line"><span class="comment"># 自动转义的设置被改变了.所以如果你希望在前面代码的footer中使用linkify()来包含链接</span></div><div class="line"><span class="comment"># 你可以使用一个&#123;% raw %&#125;块:</span></div><div class="line"></div><div class="line">&#123;% block footer %&#125;</div><div class="line">&lt;p&gt;</div><div class="line">    For more information about our selection, hours <span class="keyword">or</span> events, please email us at</div><div class="line">    &lt;a href="mailto:contact@burtsbooks.com"&gt;contact@burtsbooks.com&lt;/a&gt;.</div><div class="line">&lt;/p&gt;</div><div class="line"></div><div class="line">&lt;p class="small"&gt;</div><div class="line">    Follow us on Facebook at</div><div class="line">    &#123;% raw linkify(<span class="string">"https://fb.me/burtsbooks"</span>, extra_params=<span class="string">'ref=website'</span>) %&#125;.</div><div class="line">    &#123;% apply linkify <span class="keyword">or</span> 自定义方法%&#125; Application中get_template_namespace</div><div class="line">&lt;/p&gt;</div><div class="line">&#123;% end %&#125;</div><div class="line"><span class="comment"># 这样,你可以既利用linkify()简记的好处,又可以保持在其他地方自动转义的好处 &#125;&#125;' &#125;&#125;</span></div></pre></td></tr></table></figure>
-<h4 id="异步网络库-IOLoop-and-IOStream-为HTTP组件提供构建模块-也可以用来实现其他协议"><a href="#异步网络库-IOLoop-and-IOStream-为HTTP组件提供构建模块-也可以用来实现其他协议" class="headerlink" title="异步网络库 (IOLoop and IOStream), 为HTTP组件提供构建模块,也可以用来实现其他协议."></a>异步网络库 (IOLoop and IOStream), 为HTTP组件提供构建模块,也可以用来实现其他协议.</h4><p>实时web功能需要为每个用户提供一个多数时间被闲置的长连接, 在传统的同步web服务器中,这意味着要为每个用户提供一个线程, 当然每个线程的开销都是很昂贵的.</p>
-<p>为了尽量减少并发连接造成的开销,Tornado使用了一种单线程事件循环的方式. 这就意味着所有的应用代码都应该是异步非阻塞的, 因为在同一时间只有一个操作是有效的</p>
-<p>大部分Web应用都是阻塞性质的,也就是说当一个请求被处理时,这个进程就会被挂起直至请求完成.在大多数情况下,Tornado处理的Web请求完成得足够快使得这个问题并不需要被关注.然而,对于那些需要一些时间来完成的操作(像大数据库的请求或外部API),这意味着应用程序被有效的锁定直至处理结束,很明显这在可扩展性上出现了问题.</p>
+<h4 id="异步网络库-IOLoop-and-IOStream-为HTTP组件提供构建模块-也可以用来实现其他协议"><a href="#异步网络库-IOLoop-and-IOStream-为HTTP组件提供构建模块-也可以用来实现其他协议" class="headerlink" title="异步网络库 (IOLoop and IOStream), 为HTTP组件提供构建模块,也可以用来实现其他协议."></a>异步网络库 (IOLoop and IOStream), 为HTTP组件提供构建模块,也可以用来实现其他协议.</h4><p>一般的web应用是阻塞性质的,也就是说当一个请求被处理时,这个进程就会被挂起直至请求完成.这意味着应用程序被有效的锁定直至处理结束,很明显这在可扩展性上出现了问题.</p>
+<p>不过,Tornado给了我们更好的方法来处理这种情况.应用程序在等待第一个处理完成的过程中,让I/O循环打开以便服务于其他客户端,直到处理完成时启动一个请求并给予反馈,而不再是等待请求完成的过程中挂起进程.</p>
+<p>同时实时web功能需要为每个用户提供一个多数时间被闲置的长连接, 在传统的同步web服务器中,这意味着要为每个用户提供一个线程, 当然每个线程的开销都是很昂贵的.</p>
+<p>为了尽量减少并发连接造成的开销,Tornado使用了一种单线程事件循环的方式. 这就意味着所有的应用代码都应该是异步非阻塞的, 因为在同一时间只有一个操作是有效的<br><img src="/2017/08/11/tornado/tornado-IOLoop.png" alt="IOLoop模块" title="IOLoop模块"></p>
+<h5 id="一般的异步回调"><a href="#一般的异步回调" class="headerlink" title="一般的异步回调"></a>一般的异步回调</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> time</div><div class="line"><span class="keyword">import</span> threading</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">long_io</span><span class="params">(callback)</span>:</span></div><div class="line">    <span class="string">"""将耗时的操作交给另一线程来处理"""</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fun</span><span class="params">(cb)</span>:</span> <span class="comment"># 回调函数作为参数</span></div><div class="line">        <span class="string">"""耗时操作"""</span></div><div class="line">        print( <span class="string">"开始执行IO操作"</span>)</div><div class="line">        time.sleep(<span class="number">5</span>)</div><div class="line">        print(<span class="string">"完成IO操作,并执行回调函数"</span>)</div><div class="line">        cb(<span class="string">"io result"</span>)  <span class="comment"># 执行回调函数</span></div><div class="line">    threading._start_new_thread(fun, (callback,))  <span class="comment"># 开启线程执行耗时操作</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">on_finish</span><span class="params">(ret)</span>:</span></div><div class="line">    <span class="string">"""回调函数"""</span></div><div class="line">    print( <span class="string">"开始执行回调函数on_finish"</span>)</div><div class="line">    print( <span class="string">"ret: %s"</span> % ret)</div><div class="line">    print( <span class="string">"完成执行回调函数on_finish"</span>)</div><div class="line"><span class="comment"># 可读性差,要结合多个函数</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">req_a</span><span class="params">()</span>:</span></div><div class="line">    <span class="string">"""将req_q逻辑拆分了"""</span></div><div class="line">    print( <span class="string">"开始处理请求req_a"</span> )</div><div class="line">    long_io(on_finish)</div><div class="line">    print( <span class="string">"离开处理请求req_a"</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">req_b</span><span class="params">()</span>:</span></div><div class="line">    print( <span class="string">"开始处理请求req_b"</span>)</div><div class="line">    time.sleep(<span class="number">2</span>) <span class="comment"># 添加此句来突出显示程序执行的过程</span></div><div class="line">    print( <span class="string">"完成处理请求req_b"</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">    req_a()</div><div class="line">    req_b()</div><div class="line">    <span class="keyword">while</span> <span class="number">1</span>: <span class="comment"># 添加此句防止程序退出,保证线程可以执行完</span></div><div class="line">        <span class="keyword">pass</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    main()</div><div class="line"></div><div class="line"><span class="comment"># 开始处理请求req_a</span></div><div class="line"><span class="comment"># 离开处理请求req_a</span></div><div class="line"><span class="comment"># 开始处理请求req_b</span></div><div class="line"><span class="comment"># 开始执行IO操作</span></div><div class="line"><span class="comment"># 完成处理请求req_b</span></div><div class="line"><span class="comment"># 完成IO操作,并执行回调函数</span></div><div class="line"><span class="comment"># 开始执行回调函数on_finish</span></div><div class="line"><span class="comment"># ret: io result</span></div><div class="line"><span class="comment"># 完成执行回调函数on_finish</span></div></pre></td></tr></table></figure>
+<h5 id="yield控制进程的暂停与send又恢复"><a href="#yield控制进程的暂停与send又恢复" class="headerlink" title="yield控制进程的暂停与send又恢复"></a>yield控制进程的暂停与send又恢复</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> time</div><div class="line"><span class="keyword">import</span> threading</div><div class="line"></div><div class="line">gen = <span class="keyword">None</span> <span class="comment"># 全局生成器,供long_io使用</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">long_io</span><span class="params">()</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fun</span><span class="params">()</span>:</span></div><div class="line">        print(<span class="string">"开始执行IO操作"</span>)</div><div class="line">        <span class="keyword">global</span> gen</div><div class="line">        time.sleep(<span class="number">5</span>)</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            print(<span class="string">"完成IO操作,并send结果唤醒挂起程序继续执行"</span>)</div><div class="line">            gen.send(<span class="string">"io result"</span>)  <span class="comment"># 使用send返回结果并唤醒程序继续执行</span></div><div class="line">        <span class="keyword">except</span> StopIteration: <span class="comment"># 捕获生成器完成迭代,防止程序退出</span></div><div class="line">            <span class="keyword">pass</span></div><div class="line">    threading._start_new_thread(fun, ())</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">req_a</span><span class="params">()</span>:</span></div><div class="line">    <span class="string">"""将req_q逻辑组织在一起"""</span></div><div class="line">    print(<span class="string">"开始处理请求req_a"</span>)</div><div class="line">    ret = <span class="keyword">yield</span> long_io()</div><div class="line">    print(<span class="string">"ret: %s"</span> % ret)</div><div class="line">    print(<span class="string">"完成处理请求req_a"</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">req_b</span><span class="params">()</span>:</span></div><div class="line">    print(<span class="string">"开始处理请求req_b"</span>)</div><div class="line">    time.sleep(<span class="number">2</span>)</div><div class="line">    print( <span class="string">"完成处理请求req_b"</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">global</span> gen</div><div class="line">    gen = req_a() <span class="comment"># 得到生成器,不能像同步一样去输写</span></div><div class="line">    next(gen) <span class="comment"># 开启生成器req_a的执行</span></div><div class="line">    req_b()</div><div class="line">    <span class="keyword">while</span> <span class="number">1</span>:</div><div class="line">        <span class="keyword">pass</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    main()</div><div class="line"><span class="comment"># 开始处理请求req_a</span></div><div class="line"><span class="comment"># 开始处理请求req_b</span></div><div class="line"><span class="comment"># 开始执行IO操作</span></div><div class="line"><span class="comment"># 完成处理请求req_b</span></div><div class="line"><span class="comment"># 完成IO操作,并send结果唤醒挂起程序继续执行</span></div><div class="line"><span class="comment"># ret: io result</span></div><div class="line"><span class="comment"># 完成处理请求req_a</span></div></pre></td></tr></table></figure>
+<h5 id="改进yield"><a href="#改进yield" class="headerlink" title="改进yield"></a>改进yield</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> time</div><div class="line"><span class="keyword">import</span> threading</div><div class="line"></div><div class="line">gen = <span class="keyword">None</span> <span class="comment"># 全局生成器,供long_io使用</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen_coroutine</span><span class="params">(f)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></div><div class="line">        <span class="keyword">global</span> gen</div><div class="line">        gen = f()</div><div class="line">        next(gen)</div><div class="line">    <span class="keyword">return</span> wrapper</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">long_io</span><span class="params">()</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fun</span><span class="params">()</span>:</span></div><div class="line">        print(<span class="string">"开始执行IO操作"</span>)</div><div class="line">        <span class="keyword">global</span> gen</div><div class="line">        time.sleep(<span class="number">5</span>)</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            print(<span class="string">"完成IO操作,并send结果唤醒挂起程序继续执行"</span>)</div><div class="line">            gen.send(<span class="string">"io result"</span>)  <span class="comment"># 使用send返回结果并唤醒程序继续执行</span></div><div class="line">        <span class="keyword">except</span> StopIteration: <span class="comment"># 捕获生成器完成迭代,防止程序退出</span></div><div class="line">            <span class="keyword">pass</span></div><div class="line">    threading._start_new_thread(fun, ())</div><div class="line"></div><div class="line"><span class="meta">@gen_coroutine</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">req_a</span><span class="params">()</span>:</span></div><div class="line">    print(<span class="string">"开始处理请求req_a"</span>)</div><div class="line">    ret = <span class="keyword">yield</span> long_io()</div><div class="line">    print(<span class="string">"ret: %s"</span> % ret)</div><div class="line">    print(<span class="string">"完成处理请求req_a"</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">req_b</span><span class="params">()</span>:</span></div><div class="line">    print(<span class="string">"开始处理请求req_b"</span>)</div><div class="line">    time.sleep(<span class="number">2</span>)</div><div class="line">    print( <span class="string">"完成处理请求req_b"</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">    req_a()</div><div class="line">    req_b()</div><div class="line">    <span class="keyword">while</span> <span class="number">1</span>:</div><div class="line">        <span class="keyword">pass</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    main()</div></pre></td></tr></table></figure>
+<h5 id="理解Tornado异步编程原理"><a href="#理解Tornado异步编程原理" class="headerlink" title="理解Tornado异步编程原理"></a>理解Tornado异步编程原理</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> time</div><div class="line"><span class="keyword">import</span> threading</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen_coroutine</span><span class="params">(f)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></div><div class="line">        gen_f = f()  <span class="comment"># gen_f为生成器对象(req_a的代码,以及上下文)</span></div><div class="line">        r = next(gen_f)  <span class="comment"># 相当于调用long_io()</span></div><div class="line">        <span class="comment"># r是long_io的生成器对象(long_io代码,以及上下文)</span></div><div class="line">        <span class="function"><span class="keyword">def</span> <span class="title">fun</span><span class="params">(g)</span>:</span></div><div class="line">            ret = next(g) <span class="comment"># 执行生成器long_io</span></div><div class="line">            <span class="keyword">try</span>:</div><div class="line">                gen_f.send(ret) <span class="comment"># 将结果返回给req_a并使其继续执行</span></div><div class="line">            <span class="keyword">except</span> StopIteration:</div><div class="line">                <span class="keyword">pass</span></div><div class="line">        threading._start_new_thread(fun, (r,))</div><div class="line">        <span class="comment"># tornado中是交给IOLoop进行管理</span></div><div class="line">    <span class="keyword">return</span> wrapper</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">long_io</span><span class="params">()</span>:</span></div><div class="line">    print(<span class="string">"开始执行IO操作"</span>)</div><div class="line">    time.sleep(<span class="number">5</span>)</div><div class="line">    print(<span class="string">"完成IO操作,yield回操作结果"</span>)</div><div class="line">    <span class="keyword">yield</span> <span class="string">"io result"</span></div><div class="line"></div><div class="line"><span class="meta">@gen_coroutine</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">req_a</span><span class="params">()</span>:</span></div><div class="line">    print(<span class="string">"开始处理请求req_a"</span>)</div><div class="line">    ret = <span class="keyword">yield</span> long_io()</div><div class="line">    print(<span class="string">"ret: %s"</span> % ret)</div><div class="line">    print(<span class="string">"完成处理请求req_a"</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">req_b</span><span class="params">()</span>:</span></div><div class="line">    print(<span class="string">"开始处理请求req_b"</span>)</div><div class="line">    time.sleep(<span class="number">2</span>)</div><div class="line">    print( <span class="string">"完成处理请求req_b"</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">    req_a()</div><div class="line">    req_b()</div><div class="line">    <span class="keyword">while</span> <span class="number">1</span>:</div><div class="line">        <span class="keyword">pass</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    main()</div></pre></td></tr></table></figure>
+<p>但tornado是单线程的,实现异步的机制不是线程,而是epoll,即将异步过程交给epoll执行并进行监视回调</p>
 <p>Tornado默认在函数处理返回时关闭客户端的连接.在通常情况下,这正是你想要的.但是当我们处理一个需要回调函数的异步请求时,我们需要连接保持开启状态直到回调函数执行完毕.</p>
 <p>tornado.web.asynchronous 装饰器可以用来代替异步处理. 当使用这个装饰器的时候, 响应不会自动发送; 而请求将一直保持开放直到callback调用 RequestHandler.finish</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainHandler</span><span class="params">(tornado.web.RequestHandler)</span>:</span></div><div class="line"><span class="meta">    @tornado.web.asynchronous</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></div><div class="line">        http = tornado.httpclient.AsyncHTTPClient()</div><div class="line">        http.fetch(<span class="string">"http://friendfeed-api.com/v2/feed/bret"</span>,</div><div class="line">                   callback=self.on_response)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_response</span><span class="params">(self, response)</span>:</span></div><div class="line">        <span class="keyword">if</span> response.error: <span class="keyword">raise</span> tornado.web.HTTPError(<span class="number">500</span>)</div><div class="line">        json = tornado.escape.json_decode(response.body)</div><div class="line">        self.write(<span class="string">"Fetched "</span> + str(len(json[<span class="string">"entries"</span>])) + <span class="string">" entries "</span></div><div class="line">                   <span class="string">"from the FriendFeed API"</span>)</div><div class="line">        self.finish()</div></pre></td></tr></table></figure>
 <p>记住当你使用@tornado.web.asynchonous装饰器时,Tornado永远不会自己关闭连接.<br>你必须在你的RequestHandler对象中调用finish方法来显式地告诉Tornado关闭连接.(否则,请求将可能挂起,浏览器可能不会显示我们已经发送给客户端的数据.)</p>
-<p>不过,Tornado给了我们更好的方法来处理这种情况.应用程序在等待第一个处理完成的过程中,让I/O循环打开以便服务于其他客户端,直到处理完成时启动一个请求并给予反馈,而不再是等待请求完成的过程中挂起进程.</p>
 <p>目前非阻塞IO的框架在近几年的web技术中特别火,比如node.js,而tornado依靠底层基于epoll(Linux)或者kqueue(BSD和MAC OSX)的IOLoop实现非阻塞IO,而且经过FriendFeed的实践,已经证明他是绝对优秀可靠的非阻塞IO框架,再加上他协程特性,让基于他的异步代码可以像阻塞多线程框架的同步代码一样易读易维护.</p>
 <h4 id="协程库-tornado-gen-允许异步代码写的像同步代码一样直观-而不用链式回调的方式"><a href="#协程库-tornado-gen-允许异步代码写的像同步代码一样直观-而不用链式回调的方式" class="headerlink" title="协程库 (tornado.gen) 允许异步代码写的像同步代码一样直观,而不用链式回调的方式."></a>协程库 (tornado.gen) 允许异步代码写的像同步代码一样直观,而不用链式回调的方式.</h4><p>tornado.gen模块,可以提供一个更整洁的方式来执行异步请求.</p>
 <p>tornado.gen.Task对象的一个实例,将我们想要的调用和传给该调用函数的参数传递给那个函数.<br>这里,yield的使用返回程序对Tornado的控制,允许在HTTP请求进行中执行其他任务.<br>当HTTP请求完成时,RequestHandler方法在其停止的地方恢复.这种构建的美在于它在请求处理程序中返回HTTP响应,而不是回调函数中</p>
@@ -1280,6 +1602,7 @@
 <p>协程使用了Python的 yield 关键字代替链式回调来将程序挂起和恢复执行</p>
 <p>调用协程时,几乎所有的情况下, 任何一个调用协程的函数都必须是协程它自身, 并且在 调用的时候使用 yield 关键字</p>
 <h4 id="HTTP的服务端和客户端实现-HTTPServer-and-AsyncHTTPClient"><a href="#HTTP的服务端和客户端实现-HTTPServer-and-AsyncHTTPClient" class="headerlink" title="HTTP的服务端和客户端实现 (HTTPServer and AsyncHTTPClient)."></a>HTTP的服务端和客户端实现 (HTTPServer and AsyncHTTPClient).</h4><p>单线程server<br>tornado不仅仅是一个web framework,他还是一个简易的web server,这让他可以直接作为一个server来接收处理http请求,而不需要依靠wsgi容器.但是这个webserver过于简单,只支持单进程,所以在生产环境中,官方推荐的多进程多主机部署,启动多个tornado server实例分别监听不同端口,在上层通过类似nginx的成熟高效的http server来做负载均衡,将请求转发到合适端口的tornado实例中.<a href="http://www.tornadoweb.org/en/stable/guide/running.html" target="_blank" rel="external">(参考tornado官方文档运行部署篇)</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> json</div><div class="line"><span class="keyword">import</span> sys</div><div class="line"><span class="keyword">import</span> tornado.httpserver</div><div class="line"><span class="keyword">import</span> tornado.ioloop</div><div class="line"><span class="keyword">import</span> tornado.options</div><div class="line"><span class="keyword">import</span> tornado.gen</div><div class="line"><span class="keyword">import</span> tornado.httpclient</div><div class="line"></div><div class="line"><span class="keyword">from</span> tornado.options <span class="keyword">import</span> define, options</div><div class="line"></div><div class="line"><span class="keyword">import</span> tornado.web</div><div class="line"><span class="keyword">import</span> os.path</div><div class="line"></div><div class="line">define(<span class="string">"port"</span>, default=<span class="number">8080</span>, type=int)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainHandler</span><span class="params">(tornado.web.RequestHandler)</span>:</span></div><div class="line"></div><div class="line">    <span class="comment">#并行协程</span></div><div class="line"><span class="meta">    @tornado.gen.coroutine</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></div><div class="line">        ips = [<span class="string">"14.130.112.24"</span>,</div><div class="line">            <span class="string">"15.130.112.24"</span>,</div><div class="line">            <span class="string">"16.130.112.24"</span>,</div><div class="line">            <span class="string">"17.130.112.24"</span>]</div><div class="line">        <span class="comment"># 直到get_ip_info有返回了,才重新唤醒</span></div><div class="line">        rep1, rep2 = <span class="keyword">yield</span> [self.get_ip_info(ips[<span class="number">0</span>]), self.get_ip_info(ips[<span class="number">1</span>])]</div><div class="line">        rep34_dict = <span class="keyword">yield</span> dict(rep3=self.get_ip_info(ips[<span class="number">2</span>]), rep4=self.get_ip_info(ips[<span class="number">3</span>]))</div><div class="line">        self.write_response(ips[<span class="number">0</span>], rep1)</div><div class="line">        self.write_response(ips[<span class="number">1</span>], rep2)</div><div class="line">        self.write_response(ips[<span class="number">2</span>], rep34_dict[<span class="string">'rep3'</span>])</div><div class="line">        self.write_response(ips[<span class="number">3</span>], rep34_dict[<span class="string">'rep4'</span>])</div><div class="line"></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">write_response</span><span class="params">(self, ip, response)</span>:</span></div><div class="line">        self.write(ip)</div><div class="line">        self.write(<span class="string">":&lt;br/&gt;"</span>)</div><div class="line">        <span class="keyword">if</span> <span class="number">1</span> == response[<span class="string">"ret"</span>]:</div><div class="line">            self.write(<span class="string">u"国家:%s 省份: %s 城市: %s&lt;br/&gt;"</span> % (response[<span class="string">"country"</span>], response[<span class="string">"province"</span>], response[<span class="string">"city"</span>]))</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            self.write(<span class="string">"查询IP信息错误&lt;br/&gt;"</span>)</div><div class="line"></div><div class="line"><span class="meta">    @tornado.gen.coroutine</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_ip_info</span><span class="params">(self, ip)</span>:</span></div><div class="line">        http = tornado.httpclient.AsyncHTTPClient()</div><div class="line">        response = <span class="keyword">yield</span> http.fetch(<span class="string">"http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&amp;ip="</span> + ip)</div><div class="line">        <span class="keyword">if</span> response.error:</div><div class="line">            rep = &#123;<span class="string">"ret:0"</span>&#125;</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            rep = json.loads(response.body)</div><div class="line">        <span class="comment"># raise tornado.gen.Return(rep)  # 此处需要注意python2</span></div><div class="line">        <span class="keyword">return</span> rep</div><div class="line"></div><div class="line"><span class="comment"># Web应用App</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Application</span><span class="params">(tornado.web.Application)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        settings = dict(</div><div class="line">            template_path=os.path.join(os.path.dirname(__file__), <span class="string">"templates"</span>),</div><div class="line">            static_path=os.path.join(os.path.dirname(__file__), <span class="string">"media"</span>),</div><div class="line">            xsrf_cookies=<span class="keyword">False</span>,</div><div class="line">            cookie_secret=<span class="string">"bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E="</span>,</div><div class="line">            login_url=<span class="string">"/a/user/login"</span>,</div><div class="line">            debug=<span class="keyword">True</span>,</div><div class="line">        )</div><div class="line">        <span class="comment"># self.db = torndb.Connection(</span></div><div class="line">        <span class="comment">#     host = 'localhost',</span></div><div class="line">        <span class="comment">#     database = 'test',</span></div><div class="line">        <span class="comment">#     user = 'root',</span></div><div class="line">        <span class="comment">#     password = 'root',</span></div><div class="line">        <span class="comment"># )</span></div><div class="line">        super(Application, self).__init__([(<span class="string">r'/'</span>,MainHandler)], **settings)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">    tornado.options.parse_command_line()</div><div class="line">    <span class="comment"># tornado.options.parse_config_file("https8010.conf")</span></div><div class="line">    ssl_options = &#123;</div><div class="line">        <span class="string">"certfile"</span>: os.path.join(os.path.abspath(<span class="string">"."</span>), <span class="string">"213976088220462.pem"</span>),<span class="comment">#crt</span></div><div class="line">        <span class="string">"keyfile"</span>: os.path.join(os.path.abspath(<span class="string">"."</span>), <span class="string">"213976088220462.key"</span>),  <span class="comment"># server.key</span></div><div class="line">    &#125;</div><div class="line">    <span class="comment"># http_server = tornado.httpserver.HTTPServer(Application(),ssl_options=ssl_options,xheaders=True)#ssl_options=ssl_options</span></div><div class="line">    <span class="comment"># 创建http(socket)服务器实例</span></div><div class="line">    print(sys.getrecursionlimit())</div><div class="line">    print(options.port)</div><div class="line">    <span class="comment"># http_server.listen(options.port)</span></div><div class="line">    Application().listen(options.port)</div><div class="line">    io = tornado.ioloop.IOLoop.current()<span class="comment"># 异步网络库IOLoop</span></div><div class="line">    <span class="comment"># 返回当前线程的IOLoop实例</span></div><div class="line">    io.start()</div><div class="line">    <span class="comment"># 启动IOLoop实例的I/O循环,同时服务器监听被打开</span></div><div class="line"></div><div class="line">    <span class="comment"># app = Application()</span></div><div class="line">    <span class="comment"># app.listen(options.port) 对http_server的简写方式</span></div><div class="line">    <span class="comment"># 其listen(端口)方法用来创建一个http服务器实例,并绑定到给定端口(注意:此时服务器并未开启监听)</span></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">    main()</div></pre></td></tr></table></figure>
 <h5 id="使用Tornado进行长轮询-应该有点-即时通讯IM"><a href="#使用Tornado进行长轮询-应该有点-即时通讯IM" class="headerlink" title="使用Tornado进行长轮询(应该有点 即时通讯IM)"></a>使用Tornado进行长轮询(应该有点 即时通讯IM)</h5><p>Tornado异步架构的另一个优势是它能够轻松处理HTTP长轮询.这是一个处理实时更新的方法,它既可以应用到简单的数字标记通知,也可以实现复杂的多用户聊天室.</p>
 <p>在大多数情况下,你至少希望将结果缓存以便两次相同搜索项的请求不会导致再次向远程API执行完整请求.</p>
 <p>在前端使用像JavaScript这样的工具处理异步应用,让客户端承担更多工作,以提高你应用的扩展性.</p>
@@ -1299,7 +1622,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/tornado/" data-id="cj92o1872003q08pho15huc21" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/tornado/" data-id="cj9dfkskg003v06pcy3ej7b2w" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1377,7 +1700,7 @@
 
 
 
-    <article id="post-python-builtins" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-python-dynamic" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -1385,7 +1708,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/11/python-builtins/">python内建属性</a>
+            <a class="article-title" href="/2017/08/11/python-dynamic/">python的动态性</a>
         </h1>
     
 
@@ -1394,7 +1717,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/11/python-builtins/">
+        <a href="/2017/08/11/python-dynamic/">
             <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
         </a>
     </div>
@@ -1415,11 +1738,10 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>Python在启动的时候会⾃动为我们载⼊很多内建的函数,类,属性,⽐如dict,list,type,print,这些都位于<strong>builtin</strong>    模块中,可以使⽤dir(<strong>builtin</strong>)来查看.<br>这也是为什么我们在没有import任何模块的情况下,就能使⽤这么多丰富的函数和功能了.</p>
-<p>在Python中,有⼀个内建模块,该模块中有⼀些常⽤函数;在Python启动后,且没有执⾏程序员所写的任何代码前,Python会⾸先加载该内建函数到内存.</p>
-<p>另外,该内建模块中的功能可以直接使⽤,不⽤在其前添加内建模块前缀</p>
-<img src="/2017/08/11/python-builtins/1.jpg" alt="常见的内建属性" title="常见的内建属性">
-<p>对象的内建属性<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Itcast</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,subject1)</span>:</span></div><div class="line">        self.subject1 = subject1</div><div class="line">        self.subject2 = <span class="string">'cpp'</span></div><div class="line"></div><div class="line">    <span class="comment">#属性访问时拦截器,只要访问属性就必须先调用此方法(包括方法(方法也是对象))</span></div><div class="line">    <span class="comment"># 所以此方法中,不能包含访问属性的语句:比如self.subject1</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattribute__</span><span class="params">(self,obj)</span>:</span></div><div class="line">        print(<span class="string">"====1&gt;%s"</span>%obj)</div><div class="line">        <span class="keyword">if</span> obj == <span class="string">'subject1'</span>:</div><div class="line">            print(<span class="string">'log subject1'</span>)</div><div class="line">            <span class="keyword">return</span> <span class="string">'redirect python'</span></div><div class="line">        <span class="keyword">else</span>:   </div><div class="line">            temp = object.__getattribute__(self,obj)</div><div class="line">            print(<span class="string">"====2&gt;%s"</span>%str(temp))</div><div class="line">            <span class="keyword">return</span> temp</div><div class="line">    </div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">'this is Itcast'</span>)</div><div class="line"></div><div class="line">s = Itcast(<span class="string">"python"</span>)</div><div class="line">print(s.subject1)</div><div class="line">print(s.subject2)</div><div class="line"></div><div class="line"><span class="comment">#1. 先获取show属性对应的结果,,,,应该是一个方法</span></div><div class="line"><span class="comment">#2. 再调用方法show()</span></div><div class="line">s.show()</div><div class="line"><span class="comment"># import types</span></div><div class="line"><span class="comment"># p1.eat = types.MethodType(eat, p1)</span></div><div class="line"></div><div class="line"><span class="comment"># ====1&gt;subject1</span></div><div class="line"><span class="comment"># log subject1</span></div><div class="line"><span class="comment"># redirect python</span></div><div class="line"><span class="comment"># ====1&gt;subject2</span></div><div class="line"><span class="comment"># ====2&gt;cpp</span></div><div class="line"><span class="comment"># cpp</span></div><div class="line"><span class="comment"># ====1&gt;show</span></div><div class="line"><span class="comment"># ====2&gt;&lt;bound method Itcast.show of &lt;__main__.Itcast object at 0x0&gt;&gt;</span></div><div class="line"><span class="comment"># this is Itcast</span></div></pre></td></tr></table></figure></p>
+            <p>动态语⾔:可以在运⾏的过程中,修改代码<br>静态语⾔:运行前必须先编,译编译时已经确定好代码,运⾏过程中不能修改</p>
+<p>python是动态语⾔:它是⼀类在运⾏时可以改变其结构的语⾔:例如新的函数、对象、 甚⾄代码可以被引进,已有的函数可以被删除或是其他结构上的变化.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, newName, newAge)</span>:</span></div><div class="line">        self.name = newName</div><div class="line">        self.age = newAge</div><div class="line">        <span class="comment"># 	__slots__	=	("name",	"age")</span></div><div class="line">        <span class="comment"># 为了达到限制的⽬的,Python允许在定义class的时候</span></div><div class="line">        <span class="comment"># 定义⼀个特殊的 __slots__变量,来限制该class实例能添加的属性</span></div><div class="line"></div><div class="line"><span class="meta">@staticmethod</span></div><div class="line">def test();</div><div class="line">    <span class="keyword">pass</span></div><div class="line"><span class="meta">@classmethod</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">testclass</span><span class="params">(cls)</span>:</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line"></div><div class="line">laowang = Person(<span class="string">"老王"</span>, <span class="number">10000</span>)</div><div class="line">print(laowang.name)</div><div class="line">print(laowang.age)</div><div class="line"><span class="comment"># 可以添加其它属性和方法,即使在类只没有定义</span></div><div class="line">laowang.addr = <span class="string">"北京...."</span></div><div class="line">print(laowang.addr)</div><div class="line"></div><div class="line"><span class="comment">#　给对象和类添加属性</span></div><div class="line">laozhao = Person(<span class="string">"老赵"</span>, <span class="number">18</span>)</div><div class="line"><span class="comment">#print(laozhao.addr)</span></div><div class="line"></div><div class="line">Person.num = <span class="number">100</span></div><div class="line">print(laowang.num)</div><div class="line">print(laozhao.num)</div><div class="line"></div><div class="line"><span class="comment">#　添加静态方法</span></div><div class="line">Persion.test = test</div><div class="line">Persion.testclass = testclass</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 添加方法</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, newName, newAge)</span>:</span></div><div class="line">        self.name = newName</div><div class="line">        self.age = newAge</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">"-----%s正在吃----"</span>%self.name)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></div><div class="line">    print(<span class="string">"-----%s正在跑----"</span>%self.name)</div><div class="line"></div><div class="line"></div><div class="line">p1 = Person(<span class="string">"p1"</span>, <span class="number">10</span>)</div><div class="line">p1.eat()</div><div class="line">p1.run = run</div><div class="line"><span class="comment"># p1.run()#虽然p1对象中 run属性已经指向了函数,但是这句代码还不正确</span></div><div class="line">        <span class="comment">#因为run属性指向的函数 是后来添加的,p1.run()的时候,并没有把p1当做第</span></div><div class="line">        <span class="comment">#1个参数,导致了第10行的函数调用的时候, 出现缺少参数的问题</span></div><div class="line"><span class="keyword">import</span> types</div><div class="line">p1.run = types.MethodType(run, p1)</div><div class="line">p1.run()</div></pre></td></tr></table></figure>
 
         
         </div>
@@ -1430,7 +1752,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/python-builtins/" data-id="cj92o186d002p08phm6f3ratq" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/python-dynamic/" data-id="cj9dfksjv002y06pcy1cabo35" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1498,7 +1820,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/08/11/python-builtins/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-builtins/">Comments</a>
+        <a href="https://www.femn.me/2017/08/11/python-dynamic/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-dynamic/">Comments</a>
     
 
         </footer>
@@ -1561,7 +1883,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/python-mateclass/" data-id="cj92o186j002z08phmekjxivh" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/python-mateclass/" data-id="cj9dfksk0003606pc04tsoo1b" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
