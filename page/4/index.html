@@ -273,7 +273,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/python-process/" data-id="cj9dfksk4003a06pcwxfjdgym" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/python-process/" data-id="cj9kqkx9i003506nfq0me6w64" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -342,271 +342,6 @@
             
     
         <a href="https://www.femn.me/2017/08/11/python-process/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-process/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-closure" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/11/closure/">闭包</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/11/closure/">
-            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/python3/">python3</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p> 在python中,不管是定义变量还是方法,还是类,实际上你定义的时候,分配了内存空间,仅仅是使用一个变量名指向了这一块的内存空间而已.<br><img src="/2017/08/11/closure/rep.png" alt="变量名引用值和函数" title="变量名引用值和函数"><br><img src="/2017/08/11/closure/rep1.png" alt="重名方法导致代码无效" title="重名方法导致代码无效"></p>
-<h3 id="闭包-Closure-又称函数闭包-function-closures-内部函数对外部函数作⽤域⾥变量的引⽤-⾮全局变量-则称内部函数为闭包"><a href="#闭包-Closure-又称函数闭包-function-closures-内部函数对外部函数作⽤域⾥变量的引⽤-⾮全局变量-则称内部函数为闭包" class="headerlink" title="闭包(Closure)又称函数闭包(function closures):内部函数对外部函数作⽤域⾥变量的引⽤(⾮全局变量),则称内部函数为闭包"></a>闭包(Closure)又称函数闭包(function closures):内部函数对外部函数作⽤域⾥变量的引⽤(⾮全局变量),则称内部函数为闭包</h3><p>引用了自由变量的函数.这个被引用的自由变量将和这个函数一同存在,即使已经离开了创造它的环境也不例外.所以,有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体.闭包在运行时可以有多个实例,不同的引用环境和相同的函数组合可以产生不同的实例</p>
-<p>在一些语言中,在函数中可以(嵌套)定义另一个函数时,如果内部的函数引用了外部的函数的变量,则可能产生闭包.运行时,一旦外部的 函数被执行,一个闭包就形成了,闭包中包含了内部函数的代码,以及所需外部函数中的变量的引用.</p>
-<p>闭包被广泛使用于函数式编程语言</p>
-<p>闭包可以形象的把它理解为一个封闭的包裹(封闭作用域),这个包裹就是一个函数,当然还有函数内部对应的逻辑,包裹里面的东西就是自由变量,自由变量可以在随着包裹到处游荡.当然还得有个前提,这个包裹是被创建出来的.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(name)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner_func</span><span class="params">(age)</span>:</span> <span class="comment"># 闭包</span></div><div class="line">        <span class="comment"># name为自由变量</span></div><div class="line">        print( <span class="string">'name:'</span>, name, <span class="string">'age:'</span>, age)</div><div class="line">    <span class="keyword">return</span> inner_func</div><div class="line">bb = func(<span class="string">'the5fire'</span>)</div><div class="line">bb(<span class="number">26</span>)</div><div class="line"><span class="comment"># name: the5fire age: 26</span></div></pre></td></tr></table></figure>
-<p>这里面调用func的时候就产生了一个闭包——inner_func,并且该闭包持有自由变量——name,因此这也意味着,当函数func的生命周期结束之后,name这个变量依然存在,因为它被闭包引用了,所以不会被回收</p>
-<h4 id="nonlocal访问外部函数的局部变量"><a href="#nonlocal访问外部函数的局部变量" class="headerlink" title="nonlocal访问外部函数的局部变量:"></a>nonlocal访问外部函数的局部变量:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">counter</span><span class="params">(start=<span class="number">0</span>)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">incr</span><span class="params">()</span>:</span></div><div class="line">        <span class="keyword">nonlocal</span> start</div><div class="line">        start += <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> start</div><div class="line">    <span class="keyword">return</span> incr</div><div class="line">c1 = counter(<span class="number">5</span>) </div><div class="line">print(c1()) <span class="comment"># 6</span></div><div class="line">print(c1()) <span class="comment"># 7</span></div><div class="line">c2 = counter(<span class="number">50</span>)</div><div class="line">print(c2()) <span class="comment"># 51</span></div><div class="line">print(c2()) <span class="comment"># 52</span></div><div class="line">print(c1()) <span class="comment"># 8</span></div><div class="line">print(c1()) <span class="comment"># 9</span></div></pre></td></tr></table></figure>
-<h4 id="闭包思考"><a href="#闭包思考" class="headerlink" title="闭包思考:"></a>闭包思考:</h4><p>1.闭包似优化了变量,原来需要类对象完成的⼯作,闭包也可以完成 2.由于闭包引⽤了外部函数的局部变量,则外部函数的局部变量没有及时释放,消耗内存</p>
-<img src="/2017/08/11/closure/rep2.png" alt="闭包减少参数传递,同时增加代码的可移植性" title="闭包减少参数传递,同时增加代码的可移植性">
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/11/closure/" data-id="cj9dfksik000t06pcxcqjxkow" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/11/closure/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/closure/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-python-copy" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/11/python-copy/">深浅拷贝</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/11/python-copy/">
-            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/python3/">python3</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h4 id="is-是⽐较两个引⽤是否指向了同⼀个对象-引⽤⽐较"><a href="#is-是⽐较两个引⽤是否指向了同⼀个对象-引⽤⽐较" class="headerlink" title="is    是⽐较两个引⽤是否指向了同⼀个对象(引⽤⽐较)"></a>is    是⽐较两个引⽤是否指向了同⼀个对象(引⽤⽐较)</h4><h4 id="是⽐较两个对象内容是否相等"><a href="#是⽐较两个对象内容是否相等" class="headerlink" title="==    是⽐较两个对象内容是否相等"></a>==    是⽐较两个对象内容是否相等</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line">b = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line">a == b  <span class="comment"># True</span></div><div class="line">a <span class="keyword">is</span> b <span class="comment"># Flase</span></div><div class="line">c = copy.deepcopy(a)<span class="comment">#　深拷贝</span></div><div class="line">a == c  <span class="comment"># True</span></div><div class="line">a <span class="keyword">is</span> c <span class="comment"># Flase</span></div><div class="line">id(a) <span class="comment"># 指向a的内存地址</span></div><div class="line">d = a <span class="comment">#　id(d)和id(a)值相等 浅拷贝</span></div><div class="line">a <span class="keyword">is</span> d <span class="comment">#　True</span></div></pre></td></tr></table></figure>
-<h4 id="拷贝-一个变量引用另外一个变量"><a href="#拷贝-一个变量引用另外一个变量" class="headerlink" title="拷贝:一个变量引用另外一个变量"></a>拷贝:一个变量引用另外一个变量</h4><p>深拷⻉是对于⼀个对象所有层次的拷⻉(递归)<br><img src="/2017/08/11/python-copy/1.jpg" alt="深拷贝" title="深拷贝"></p>
-<p>浅拷⻉是对于⼀个对象的顶层拷⻉,只是拷⻉了引⽤,并没有拷⻉内容(没重新生成新的内存地址)<br><img src="/2017/08/11/python-copy/2.jpg" alt="浅拷贝列表" title="浅拷贝列表"><br>浅拷⻉对不可变类型和可变类型的copy不同<br><img src="/2017/08/11/python-copy/3.jpg" alt="浅拷贝元组" title="浅拷贝元组"></p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/11/python-copy/" data-id="cj9dfksjt002u06pcr31kile1" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/11/python-copy/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-copy/">Comments</a>
     
 
         </footer>
@@ -687,7 +422,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/python-GC/" data-id="cj9dfksjr002q06pcidjuh0va" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/python-GC/" data-id="cj9kqkx95002k06nfxvxujx6q" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -765,6 +500,135 @@
 
 
 
+    <article id="post-python-copy" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/11/python-copy/">深浅拷贝</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/11/python-copy/">
+            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h4 id="is-是⽐较两个引⽤是否指向了同⼀个对象-引⽤⽐较"><a href="#is-是⽐较两个引⽤是否指向了同⼀个对象-引⽤⽐较" class="headerlink" title="is    是⽐较两个引⽤是否指向了同⼀个对象(引⽤⽐较)"></a>is    是⽐较两个引⽤是否指向了同⼀个对象(引⽤⽐较)</h4><h4 id="是⽐较两个对象内容是否相等"><a href="#是⽐较两个对象内容是否相等" class="headerlink" title="==    是⽐较两个对象内容是否相等"></a>==    是⽐较两个对象内容是否相等</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line">b = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line">a == b  <span class="comment"># True</span></div><div class="line">a <span class="keyword">is</span> b <span class="comment"># Flase</span></div><div class="line">c = copy.deepcopy(a)<span class="comment">#　深拷贝</span></div><div class="line">a == c  <span class="comment"># True</span></div><div class="line">a <span class="keyword">is</span> c <span class="comment"># Flase</span></div><div class="line">id(a) <span class="comment"># 指向a的内存地址</span></div><div class="line">d = a <span class="comment">#　id(d)和id(a)值相等 浅拷贝</span></div><div class="line">a <span class="keyword">is</span> d <span class="comment">#　True</span></div></pre></td></tr></table></figure>
+<h4 id="拷贝-一个变量引用另外一个变量"><a href="#拷贝-一个变量引用另外一个变量" class="headerlink" title="拷贝:一个变量引用另外一个变量"></a>拷贝:一个变量引用另外一个变量</h4><p>深拷⻉是对于⼀个对象所有层次的拷⻉(递归)<br><img src="/2017/08/11/python-copy/1.jpg" alt="深拷贝" title="深拷贝"></p>
+<p>浅拷⻉是对于⼀个对象的顶层拷⻉,只是拷⻉了引⽤,并没有拷⻉内容(没重新生成新的内存地址)<br><img src="/2017/08/11/python-copy/2.jpg" alt="浅拷贝列表" title="浅拷贝列表"><br>浅拷⻉对不可变类型和可变类型的copy不同<br><img src="/2017/08/11/python-copy/3.jpg" alt="浅拷贝元组" title="浅拷贝元组"></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/11/python-copy/" data-id="cj9kqkx9d002x06nfpjev757s" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/11/python-copy/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-copy/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-python-builtins" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -818,7 +682,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/python-builtins/" data-id="cj9dfksjs002s06pcxfgzha8w" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/python-builtins/" data-id="cj9kqkx98002o06nfuu32kwqk" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -887,6 +751,136 @@
             
     
         <a href="https://www.femn.me/2017/08/11/python-builtins/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-builtins/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-python-dynamic" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/11/python-dynamic/">python的动态性</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/11/python-dynamic/">
+            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>动态语⾔:可以在运⾏的过程中,修改代码<br>静态语⾔:运行前必须先编,译编译时已经确定好代码,运⾏过程中不能修改</p>
+<p>python是动态语⾔:它是⼀类在运⾏时可以改变其结构的语⾔:例如新的函数、对象、 甚⾄代码可以被引进,已有的函数可以被删除或是其他结构上的变化.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, newName, newAge)</span>:</span></div><div class="line">        self.name = newName</div><div class="line">        self.age = newAge</div><div class="line">        <span class="comment"># 	__slots__	=	("name",	"age")</span></div><div class="line">        <span class="comment"># 为了达到限制的⽬的,Python允许在定义class的时候</span></div><div class="line">        <span class="comment"># 定义⼀个特殊的 __slots__变量,来限制该class实例能添加的属性</span></div><div class="line"></div><div class="line"><span class="meta">@staticmethod</span></div><div class="line">def test();</div><div class="line">    <span class="keyword">pass</span></div><div class="line"><span class="meta">@classmethod</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">testclass</span><span class="params">(cls)</span>:</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line"></div><div class="line">laowang = Person(<span class="string">"老王"</span>, <span class="number">10000</span>)</div><div class="line">print(laowang.name)</div><div class="line">print(laowang.age)</div><div class="line"><span class="comment"># 可以添加其它属性和方法,即使在类只没有定义</span></div><div class="line">laowang.addr = <span class="string">"北京...."</span></div><div class="line">print(laowang.addr)</div><div class="line"></div><div class="line"><span class="comment">#　给对象和类添加属性</span></div><div class="line">laozhao = Person(<span class="string">"老赵"</span>, <span class="number">18</span>)</div><div class="line"><span class="comment">#print(laozhao.addr)</span></div><div class="line"></div><div class="line">Person.num = <span class="number">100</span></div><div class="line">print(laowang.num)</div><div class="line">print(laozhao.num)</div><div class="line"></div><div class="line"><span class="comment">#　添加静态方法</span></div><div class="line">Persion.test = test</div><div class="line">Persion.testclass = testclass</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 添加方法</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, newName, newAge)</span>:</span></div><div class="line">        self.name = newName</div><div class="line">        self.age = newAge</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">"-----%s正在吃----"</span>%self.name)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></div><div class="line">    print(<span class="string">"-----%s正在跑----"</span>%self.name)</div><div class="line"></div><div class="line"></div><div class="line">p1 = Person(<span class="string">"p1"</span>, <span class="number">10</span>)</div><div class="line">p1.eat()</div><div class="line">p1.run = run</div><div class="line"><span class="comment"># p1.run()#虽然p1对象中 run属性已经指向了函数,但是这句代码还不正确</span></div><div class="line">        <span class="comment">#因为run属性指向的函数 是后来添加的,p1.run()的时候,并没有把p1当做第</span></div><div class="line">        <span class="comment">#1个参数,导致了第10行的函数调用的时候, 出现缺少参数的问题</span></div><div class="line"><span class="keyword">import</span> types</div><div class="line">p1.run = types.MethodType(run, p1)</div><div class="line">p1.run()</div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/11/python-dynamic/" data-id="cj9kqkx9c002v06nfezcgvbxa" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/11/python-dynamic/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-dynamic/">Comments</a>
     
 
         </footer>
@@ -978,7 +972,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/10/python-decorator/" data-id="cj9dfksju002w06pcc80ldujs" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/10/python-decorator/" data-id="cj9kqkx9b002s06nfbyfgt57l" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1056,6 +1050,147 @@
 
 
 
+    <article id="post-linux_install" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/08/linux_install/">常用软件安装</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/08/linux_install/">
+            <time datetime="2017-08-08T16:05:43.000Z" itemprop="datePublished">2017-08-08</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/linux/">linux</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h4 id="install-python"><a href="#install-python" class="headerlink" title="install python"></a>install <a href="https://www.python.org/downloads" target="_blank" rel="external">python</a></h4><p>win:选择Windows x86-64 executable installer(带有pip)<br>linux<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install -y python3-pip</div></pre></td></tr></table></figure></p>
+<p>mac<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 先安装homebrew工具,就像Ubuntu的apt-get一样</span></div><div class="line">brew install python3</div></pre></td></tr></table></figure></p>
+<h4 id="install-mongodb"><a href="#install-mongodb" class="headerlink" title="install mongodb"></a>install mongodb</h4><p>win: 选择<a href="https://www.mongodb.com/dr/fastdl.mongodb.org/win32/mongodb-win32-x86_64-2008plus-ssl-3.4.9-signed.msi/download" target="_blank" rel="external">https://www.mongodb.com/dr/fastdl.mongodb.org/win32/mongodb-win32-x86_64-2008plus-ssl-3.4.9-signed.msi/download</a><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 用系统命令运行,再以服务的方式运行</span></div><div class="line">mongod  --bind_ip 0.0.0.0 --logpath D:\data\<span class="built_in">log</span>\mongo.log --logappend --dbpath D:\data --port 27017 --serviceName <span class="string">"MongoDB"</span> --serviceDisplayName <span class="string">"MongoDB"</span> --install</div><div class="line"></div><div class="line">mongo</div></pre></td></tr></table></figure></p>
+<p>linux<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install -y mongodb</div><div class="line">mongo</div></pre></td></tr></table></figure></p>
+<p>mac<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">brew install mongodb</div><div class="line">mongod</div><div class="line">mongo</div></pre></td></tr></table></figure></p>
+<p><a href="https://robomongo.org/download" target="_blank" rel="external">mongodb图形界面</a></p>
+<h4 id="install-redis"><a href="#install-redis" class="headerlink" title="install redis"></a>install redis</h4><p>win:选择 <a href="https://github.com/MicrosoftArchive/redis/releases" target="_blank" rel="external">https://github.com/MicrosoftArchive/redis/releases</a><br>linux<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install -y redis-server</div><div class="line">redis-cli</div><div class="line">vim /etc/redis/redis.conf</div><div class="line"><span class="comment"># bind 127.0.0.1 #远程可以访问redis,不然就只能本地访问</span></div><div class="line">requirepass passwd <span class="comment"># 设置密码</span></div><div class="line">sudo service redis restart</div><div class="line">redis-cli -a passwd</div></pre></td></tr></table></figure></p>
+<p>mac<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">brew install redis</div><div class="line">redis-cli</div><div class="line">vim /usr/<span class="built_in">local</span>/etc/redis.conf</div><div class="line"><span class="comment"># bind 127.0.0.1 </span></div><div class="line">requirepass passwd </div><div class="line">brew services start redis</div><div class="line">brew services restart redis</div></pre></td></tr></table></figure></p>
+<p><a href="https://github.com/uglide/RedisDesktopManager/releases/download/0.8.8/redis-desktop-manager-0.8.8.384.exe" target="_blank" rel="external">win install redis desktop</a></p>
+<h4 id="install-mysql"><a href="#install-mysql" class="headerlink" title="install mysql"></a>install mysql</h4><p>win(32/64一样): <a href="https://dev.mysql.com/downloads/installer/" target="_blank" rel="external">https://dev.mysql.com/downloads/installer/</a><br>mysql-front(mysql可视化客户端)</p>
+<p>linux<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install -y mysql-server mysql-client</div><div class="line">mysql -uroot -p</div><div class="line">vim /etc/mysql/mysql.conf.d/mysql.conf</div><div class="line"><span class="comment"># bind-address      = 127.0.0.1  #注释掉就可以远程访问了</span></div><div class="line">sudo service mysql restart</div></pre></td></tr></table></figure></p>
+<p>mac<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install mysql</div></pre></td></tr></table></figure></p>
+<h4 id="install-anaconda"><a href="#install-anaconda" class="headerlink" title="install anaconda"></a>install <a href="https://www.anaconda.com/download/#linux" target="_blank" rel="external">anaconda</a></h4><p>安装好了Anaconda就相当于安装好了python和pip,并且里面还集成了很多关于python科学计算的第三方库 </p>
+<p>Anaconda 安装包可以到 <a href="https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/" target="_blank" rel="external">https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/</a> 下载<br>安装好Anaconda之后,可以用conda install numpy来管理python包,就像pip一样</p>
+<p>python多版本共存配置<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ln -s /usr/bin/python3.5 /usr/bin/python3</div></pre></td></tr></table></figure></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/08/linux_install/" data-id="cj9kqkx93002g06nfzhfkie4i" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/08/linux_install/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/08/linux_install/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-linux-common-commands" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -1120,7 +1255,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/08/linux-common-commands/" data-id="cj9dfksjd002006pccc1akri4" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/08/linux-common-commands/" data-id="cj9kqkx8t001w06nf1k23lnou" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1251,7 +1386,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/08/linux_basic/" data-id="cj9dfksjm002i06pco3xut71n" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/08/linux_basic/" data-id="cj9kqkx8y002806nfmtz920ck" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1320,147 +1455,6 @@
             
     
         <a href="https://www.femn.me/2017/08/08/linux_basic/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/08/linux_basic/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-linux_install" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/08/linux_install/">常用软件安装</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/08/linux_install/">
-            <time datetime="2017-08-08T16:05:43.000Z" itemprop="datePublished">2017-08-08</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/linux/">linux</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h4 id="install-python"><a href="#install-python" class="headerlink" title="install python"></a>install <a href="https://www.python.org/downloads" target="_blank" rel="external">python</a></h4><p>win:选择Windows x86-64 executable installer(带有pip)<br>linux<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install -y python3-pip</div></pre></td></tr></table></figure></p>
-<p>mac<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 先安装homebrew工具,就像Ubuntu的apt-get一样</span></div><div class="line">brew install python3</div></pre></td></tr></table></figure></p>
-<h4 id="install-mongodb"><a href="#install-mongodb" class="headerlink" title="install mongodb"></a>install mongodb</h4><p>win: 选择<a href="https://www.mongodb.com/dr/fastdl.mongodb.org/win32/mongodb-win32-x86_64-2008plus-ssl-3.4.9-signed.msi/download" target="_blank" rel="external">https://www.mongodb.com/dr/fastdl.mongodb.org/win32/mongodb-win32-x86_64-2008plus-ssl-3.4.9-signed.msi/download</a><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 用系统命令运行,再以服务的方式运行</span></div><div class="line">mongod  --bind_ip 0.0.0.0 --logpath D:\data\<span class="built_in">log</span>\mongo.log --logappend --dbpath D:\data --port 27017 --serviceName <span class="string">"MongoDB"</span> --serviceDisplayName <span class="string">"MongoDB"</span> --install</div><div class="line"></div><div class="line">mongo</div></pre></td></tr></table></figure></p>
-<p>linux<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install -y mongodb</div><div class="line">mongo</div></pre></td></tr></table></figure></p>
-<p>mac<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">brew install mongodb</div><div class="line">mongod</div><div class="line">mongo</div></pre></td></tr></table></figure></p>
-<p><a href="https://robomongo.org/download" target="_blank" rel="external">mongodb图形界面</a></p>
-<h4 id="install-redis"><a href="#install-redis" class="headerlink" title="install redis"></a>install redis</h4><p>win:选择 <a href="https://github.com/MicrosoftArchive/redis/releases" target="_blank" rel="external">https://github.com/MicrosoftArchive/redis/releases</a><br>linux<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install -y redis-server</div><div class="line">redis-cli</div><div class="line">vim /etc/redis/redis.conf</div><div class="line"><span class="comment"># bind 127.0.0.1 #远程可以访问redis,不然就只能本地访问</span></div><div class="line">requirepass passwd <span class="comment"># 设置密码</span></div><div class="line">sudo service redis restart</div><div class="line">redis-cli -a passwd</div></pre></td></tr></table></figure></p>
-<p>mac<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">brew install redis</div><div class="line">redis-cli</div><div class="line">vim /usr/<span class="built_in">local</span>/etc/redis.conf</div><div class="line"><span class="comment"># bind 127.0.0.1 </span></div><div class="line">requirepass passwd </div><div class="line">brew services start redis</div><div class="line">brew services restart redis</div></pre></td></tr></table></figure></p>
-<p><a href="https://github.com/uglide/RedisDesktopManager/releases/download/0.8.8/redis-desktop-manager-0.8.8.384.exe" target="_blank" rel="external">win install redis desktop</a></p>
-<h4 id="install-mysql"><a href="#install-mysql" class="headerlink" title="install mysql"></a>install mysql</h4><p>win(32/64一样): <a href="https://dev.mysql.com/downloads/installer/" target="_blank" rel="external">https://dev.mysql.com/downloads/installer/</a><br>mysql-front(mysql可视化客户端)</p>
-<p>linux<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install -y mysql-server mysql-client</div><div class="line">mysql -uroot -p</div><div class="line">vim /etc/mysql/mysql.conf.d/mysql.conf</div><div class="line"><span class="comment"># bind-address      = 127.0.0.1  #注释掉就可以远程访问了</span></div><div class="line">sudo service mysql restart</div></pre></td></tr></table></figure></p>
-<p>mac<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install mysql</div></pre></td></tr></table></figure></p>
-<p>install <a href="https://www.anaconda.com/download/#linux" target="_blank" rel="external">anaconda</a><br>安装好了Anaconda就相当于安装好了python和pip,并且里面还集成了很多关于python科学计算的第三方库 </p>
-<p>Anaconda 安装包可以到 <a href="https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/" target="_blank" rel="external">https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/</a> 下载<br>安装好Anaconda之后,可以用conda install numpy来管理python包,就像pip一样</p>
-<p>python多版本共存配置<br>win:重命名执行文件<br>linux:ln -s /usr/bin/python3.5 /usr/bin/python3</p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/08/linux_install/" data-id="cj9dfksjj002e06pc3i51gub9" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/08/linux_install/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/08/linux_install/">Comments</a>
     
 
         </footer>
@@ -1588,7 +1582,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/06/python-object/" data-id="cj9dfkskh003x06pcz967df74" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/06/python-object/" data-id="cj9kqkx9k003706nfepcndafp" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding

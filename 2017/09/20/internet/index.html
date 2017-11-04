@@ -17,9 +17,9 @@
 <meta property="og:image" content="https://www.femn.me/2017/09/20/internet/tcp2.png">
 <meta property="og:image" content="https://www.femn.me/2017/09/20/internet/tcp-status.png">
 <meta property="og:image" content="https://www.femn.me/2017/09/20/internet/mac-ip.png">
-<meta property="og:image" content="https://www.femn.me/2017/09/20/internet/udp-tcp-http.png">
 <meta property="og:image" content="https://www.femn.me/2017/09/20/internet/tcp-udp.png">
-<meta property="og:updated_time" content="2017-10-30T03:15:10.748Z">
+<meta property="og:image" content="https://www.femn.me/2017/09/20/internet/udp-tcp-http.png">
+<meta property="og:updated_time" content="2017-11-04T04:16:08.747Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="网络基础与协议">
 <meta name="twitter:description" content="网络就是一种辅助双方或者多方能够连接在一起的工具网络的目的就是为了联通多方然后进行通信用的,即把数据从一方传递给另外一方 而所谓的网络编程就是,让在不同的电脑上的软件能够进行数据传递,即进程之间的通信(网络socket) 不同计算机之间都约定遵守的网络通信协议叫做TCP/IP协议族因为互联网协议包含了上百种协议标准,但是最重要的两个协议是TCP和IP协议,所以,大家把互联网的协议简称TCP/IP协">
@@ -292,7 +292,6 @@
 <p>当是服务先close时,为了避免2MSL的等待状态出现,所导致的端口被占用的问题</p>
 <p>serSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR , 1)</p>
 <h4 id="TCP通信过程-网络是双向的-所以在手机配置路由协议的时候-返回的路由协议也要配置好"><a href="#TCP通信过程-网络是双向的-所以在手机配置路由协议的时候-返回的路由协议也要配置好" class="headerlink" title="TCP通信过程(网络是双向的,所以在手机配置路由协议的时候,返回的路由协议也要配置好)"></a>TCP通信过程(网络是双向的,所以在手机配置路由协议的时候,返回的路由协议也要配置好)</h4><img src="/2017/09/20/internet/mac-ip.png" alt="传递数据包中目标IP始终不变,而MAC在两两设备之间都在变" title="传递数据包中目标IP始终不变,而MAC在两两设备之间都在变">
-<img src="/2017/09/20/internet/udp-tcp-http.png" alt="浏览器访问网页的过程" title="浏览器访问网页的过程">
 <h4 id="UDP广播"><a href="#UDP广播" class="headerlink" title="UDP广播"></a>UDP广播</h4><p>udp(用户数据包协议)通信模型中,在通信开始之前,不需要建⽴相关的链接,只需要发送数据即可,注重速度流畅<br>单播(点对点)<br>多播(一对多)<br>广播(一对所有,只向交换机发一份数据,然后交换机进行广播发送)</p>
 <img src="/2017/09/20/internet/tcp-udp.png" alt="tcp协议与udp协议通信的区别" title="tcp协议与udp协议通信的区别">
 <p>tcp在三次握手过程中的数据格式有syn,syn+ack和ack</p>
@@ -300,6 +299,19 @@
 <li>⻓连接可以省去较多的TCP建立和关闭的操作,减少浪费,节约时间.对于频繁请求资源的客户来说,较适用⻓连接</li>
 <li>短连接对于服务器来说管理较为简单,存在的连接都是有用的连接,不需要额外的控制手段,如果客户请求频繁,将在TCP的建立和关闭操作上浪费时间和带宽</li>
 </ol>
+<h4 id="处理应用层的HTTP协议"><a href="#处理应用层的HTTP协议" class="headerlink" title="处理应用层的HTTP协议"></a>处理应用层的HTTP协议</h4><p>应用层的协议:根据应用场景不一样,从而对数据进行不同格式的封装(将应用层的数据能拿到传输层中去send()或rece()</p>
+<p>服务器与客户端共同遵守才使得Server-client之间看得懂而进行交流),比如ftp(传输文件),ssh(远程登陆),http(网页),smtp(邮件)</p>
+<p>所以应用层要解决的问题是:传递什么数据(封装数据)</p>
+<img src="/2017/09/20/internet/udp-tcp-http.png" alt="浏览器访问网页的过程" title="浏览器访问网页的过程">
+<p>tcp三次握手之后,使用http协议传输数据报文给下面三层(理解为一个整体快递公司,传输数据方式(快递公司)–&gt;IP(地理位置坐标)–&gt;具体的传输工具)</p>
+<p>socket是操作系统提供的tcp/udp传输协议的工具</p>
+<p>HTML超文本文件,HTTP:超文本传输协议</p>
+<p>http协议的数据包,传输的是html格式文件,而不是字符串格式</p>
+<h5 id="http客户端-浏览器-app-爬虫-与服务器如何收发数据"><a href="#http客户端-浏览器-app-爬虫-与服务器如何收发数据" class="headerlink" title="http客户端(浏览器,app,爬虫)与服务器如何收发数据:"></a>http客户端(浏览器,app,爬虫)与服务器如何收发数据:</h5><p>浏览器和服务器都会自动生成socket, 响应头/请求头Content-Length:128响应体/请求体</p>
+<p>浏览器引擎:就是解析HTML格式(也可以说是对字符串的解析)成网页的算法,同时也有JS的解析器<br>JS解析器已经脱离了前端发展成Node.js这各后台的服务器了</p>
+<p>服务器的开发实际上就是在服务端的rece()和send()之间数据处理开发</p>
+<p>http协议是无状态的,一次请求之后就会关闭 http1.0短连接,即使是长连接也是无状态</p>
+<h4 id="URI-全球资源标识"><a href="#URI-全球资源标识" class="headerlink" title="URI:全球资源标识"></a>URI:全球资源标识</h4><p>通过位置来标识:URL:全球资源定位符(Location:表示位于服务器的那个位置)?k=value&amp;(包含在请求头的Query String)<br>通过名字来标识资源:URN(N:Name)</p>
 
         
         </div>
@@ -310,7 +322,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/20/internet/" data-id="cj9dfksjg002706pc46u4g55a" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/20/internet/" data-id="cj9kqkx8s001t06nfsl84097e" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
