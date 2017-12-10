@@ -155,7 +155,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                64
+                67
                 <span>posts</span>
             </div>
             <div class="article-info-block">
@@ -214,6 +214,742 @@
 
             
             <section id="main">
+    <article id="post-git" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/17/git/">git基本使用</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/17/git/">
+            <time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/tool/">tool</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="安装及配置git"><a href="#安装及配置git" class="headerlink" title="安装及配置git"></a>安装及配置git</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install git</div><div class="line"><span class="comment"># 配置git的用户信息</span></div><div class="line">git config --global user.name=<span class="string">"femn2014"</span></div><div class="line">git config --global user.emial=<span class="string">"1643076443@qq.com"</span></div><div class="line"><span class="comment"># --system(/etc/gitconfig 针对所有用户) --global(~/.gitconfig 针对当前用户)</span></div><div class="line"><span class="comment"># --local(.git/config 针对当前项目 默认行为)</span></div><div class="line"></div><div class="line"><span class="comment"># 生成ssh密钥</span></div><div class="line">ssh-keygen -t rsa -C <span class="string">"1643076443@qq.com"</span></div><div class="line"><span class="comment"># 将~/.ssh/id_rsa.pub内容上传到github服务器上,并检测是否可连接</span></div><div class="line">bash ssh-add</div><div class="line">ssh -T git@github.com</div></pre></td></tr></table></figure>
+<h3 id="git-基本概念"><a href="#git-基本概念" class="headerlink" title="git 基本概念"></a>git 基本概念</h3><img src="/2017/08/17/git/git.jpg" alt="git基本概念" title="git基本概念">
+<h3 id="git-目录结构"><a href="#git-目录结构" class="headerlink" title="git 目录结构"></a>git 目录结构</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 创建一个目录</span></div><div class="line">mkdir demoGit &amp;&amp; <span class="built_in">cd</span> demoGit</div><div class="line">git init <span class="comment"># 初始化一个git仓库</span></div><div class="line">tree -a <span class="comment"># 查看目录结构</span></div><div class="line">. <span class="comment"># 项目文件,也就是所谓的工作区(Working Directory)</span></div><div class="line">└── .git <span class="comment"># 本地git仓库实体</span></div><div class="line">    ├── branches</div><div class="line">    ├── config <span class="comment"># git项目级别的配置文件 git config --local 修改的就是这个文件</span></div><div class="line">    ├── description <span class="comment"># 项目描述信息</span></div><div class="line">    ├── HEAD <span class="comment"># 标记当前工作区所有的分支,是一个写有分支指针的文件</span></div><div class="line">    ├── hooks <span class="comment"># git默认的挂钩脚本</span></div><div class="line">    │   ├── applypatch-msg.sample</div><div class="line">    │   ├── commit-msg.sample</div><div class="line">    │   ├── post-update.sample</div><div class="line">    │   ├── pre-applypatch.sample</div><div class="line">    │   ├── pre-commit.sample</div><div class="line">    │   ├── prepare-commit-msg.sample</div><div class="line">    │   ├── pre-push.sample</div><div class="line">    │   ├── pre-rebase.sample</div><div class="line">    │   └── update.sample</div><div class="line">    ├── index <span class="comment"># 索引文件,也就是所谓的暂存区,git add 命令会修改这个文件</span></div><div class="line">    ├── info</div><div class="line">    │   └── exclude <span class="comment"># 配置本地范围内忽略文件,不上传</span></div><div class="line">    ├── logs <span class="comment"># refs的历史记录,如HEAD,master分支和远程origin/master分支</span></div><div class="line">    │   │   ├── HEAD</div><div class="line">    │   │   └── refs</div><div class="line">    │   │       └── heads</div><div class="line">    │   │           └── master</div><div class="line">    ├── objects <span class="comment"># 是本地git仓库实际存放对象和文件快照的地方,也称作为仓库(Repository)</span></div><div class="line">    │   ├── info</div><div class="line">    │   └── pack</div><div class="line">    └── refs <span class="comment"># 存放分支,标签文件和远程仓库</span></div><div class="line">            git branch/tag/push [branch_name]命令操作的就是这个目录下的文件</div><div class="line">        ├── heads</div><div class="line">        └── tags</div></pre></td></tr></table></figure>
+<h3 id="git-基本命令"><a href="#git-基本命令" class="headerlink" title="git 基本命令"></a><a href="http://marklodato.github.io/visual-git-guide/index-zh-cn.html" target="_blank" rel="external">git 基本命令</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 创建两个文件</span></div><div class="line">$ touch README hello</div><div class="line"><span class="comment"># 查看项目的当前状态 -s是简短的结果输出</span></div><div class="line">$ git status -s</div><div class="line">?? README</div><div class="line">?? hello</div><div class="line"><span class="comment"># ??表示没有被索引状态</span></div><div class="line"></div><div class="line">$ git add .</div><div class="line">$ git status -s </div><div class="line">A README</div><div class="line">A hello</div><div class="line"><span class="comment"># A 表示已经创建索引</span></div><div class="line"></div><div class="line">$ <span class="built_in">echo</span> <span class="string">"learn git"</span>&gt;&gt;README</div><div class="line">$ git status -s </div><div class="line">AM README</div><div class="line">A  hello</div><div class="line"><span class="comment"># AM表示被索引,但在工作区已经被修改还没有add M[空格]表示缓存区被修改还没有commit</span></div><div class="line"></div><div class="line">$ git rm -f hello</div><div class="line"><span class="comment"># 删除工作区以及暂存区的文件,如果有--cached参数则只删除暂存区</span></div><div class="line">$ git mv REANDE README.md <span class="comment"># 重命名文件</span></div><div class="line">$ git commit -m <span class="string">'xx'</span> <span class="comment"># 将暂存区的内容写入仓库</span></div><div class="line">$ git commit --amend -m <span class="string">"master 1"</span> <span class="comment"># 产生一个新的提交替换之前的一次提交</span></div></pre></td></tr></table></figure>
+<h4 id="分支与合并"><a href="#分支与合并" class="headerlink" title="分支与合并"></a>分支与合并</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">$ git checkout -b new_branch <span class="comment"># 创建一个新分支并切换到此分支</span></div><div class="line"><span class="comment"># git branch new_branch &amp;&amp; git checkout new_branch</span></div><div class="line">$ git branch <span class="comment"># 查看分支 -d [branch_name]参数删除分支</span></div><div class="line">$ <span class="built_in">echo</span> new_branch &gt;&gt; README.md</div><div class="line">$ git add .</div><div class="line">$ git commit -m <span class="string">'new_branch 1'</span></div><div class="line"></div><div class="line"><span class="comment"># 查看提交历史</span></div><div class="line">$ git <span class="built_in">log</span> --oneline --graph</div><div class="line"><span class="comment"># --oneline简洁版本 --graph开启拓扑图/--reverse逆向显示</span></div><div class="line"></div><div class="line">$ git checkout master </div><div class="line">$ <span class="built_in">echo</span> master_branch &gt;&gt; README.md</div><div class="line">$ git add .</div><div class="line">$ git commit -m <span class="string">"master 2"</span></div><div class="line"></div><div class="line"><span class="comment"># 合并</span></div><div class="line">$ git merge new_branch</div><div class="line"><span class="comment"># 可以通过git mergetool来改冲突</span></div><div class="line"></div><div class="line">$ git add .</div><div class="line">$ git commit -m <span class="string">"merge 1"</span></div><div class="line">$ git <span class="built_in">log</span> --oneline --decorate --graph</div><div class="line">*   ef1e939 (HEAD -&gt; master) merge 1</div><div class="line">|\  </div><div class="line">| * 9229ec9 (new_branch) new_branch 1</div><div class="line">* | 4666c74 master 2</div><div class="line">|/  </div><div class="line">* 6c0975b master 1</div><div class="line"></div><div class="line">$ git checkout new_branch</div><div class="line">$ git <span class="built_in">log</span> --oneline --decorate --graph</div><div class="line">* 9229ec9 (HEAD -&gt; new_branch) new_branch 1</div><div class="line">* 6c0975b master 1</div></pre></td></tr></table></figure>
+<h4 id="创建标签"><a href="#创建标签" class="headerlink" title="创建标签"></a>创建标签</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$ git tag -a v1.0 -m <span class="string">"tag 1"</span></div><div class="line">$ git <span class="built_in">log</span> --oneline --decorate --graph</div><div class="line">* 9229ec9 (HEAD -&gt; new_branch, tag: v1.0) new_branch 1</div><div class="line">* 6c0975b master 1</div><div class="line"></div><div class="line">$ git tag </div><div class="line">$ git show v1.0</div><div class="line"><span class="comment"># 默认情况下,git push 并不会把标签传送到远端服务器上</span></div><div class="line"><span class="comment"># git push origin v1.0 # 分享标签到远程仓库 </span></div><div class="line"><span class="comment"># git push origin --tags # 推送所有本地新增的标签</span></div><div class="line"><span class="comment"># git tag -d tagname # 删除标签</span></div></pre></td></tr></table></figure>
+<h4 id="远程仓库-origin为远程仓库名"><a href="#远程仓库-origin为远程仓库名" class="headerlink" title="远程仓库(origin为远程仓库名)"></a>远程仓库(origin为远程仓库名)</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div></pre></td><td class="code"><pre><div class="line">$ git remote add origin https://github.com/femn2014/test.git</div><div class="line">$ git push -u origin master</div><div class="line"><span class="comment"># git push url/远程仓库名 本地分支名:[远程分支名,默认同本地分支名一样]</span></div><div class="line"><span class="comment"># git pull url/远程仓库名 远程分支名:[本地分支:默认是HEAD所在的分支]</span></div><div class="line"><span class="comment"># git pull = git fetch + git merge</span></div><div class="line"></div><div class="line">$ git remote add branch_origin https://github.com/femn2014/test.git</div><div class="line">$ git push -u branch_origin new_branch:new_branch</div><div class="line"></div><div class="line">$ git remote -v <span class="comment"># 查看当前的远程库</span></div><div class="line"><span class="comment"># 再来一个新分支的提交</span></div><div class="line">$ git checkout -b 3_branch</div><div class="line">$ <span class="built_in">echo</span> <span class="string">"3_branch"</span> &gt;&gt; README.md</div><div class="line">$ git add .</div><div class="line">$ git commit -m <span class="string">'3_branch 1'</span></div><div class="line"></div><div class="line"><span class="comment"># git push url/远程仓库名 本地分支名:[远程分支名,默认同本地分支名一样]</span></div><div class="line">$ git checkout master</div><div class="line">$ git remote add 3_origin https://github.com/femn2014/test.git</div><div class="line">$ git push -u 3_origin 3_branch</div><div class="line"></div><div class="line"><span class="comment"># git pull url/远程仓库名 远程分支名:[本地分支:默认是HEAD所在的分支]</span></div><div class="line"><span class="comment"># git pull = git fetch + git merge</span></div><div class="line"></div><div class="line"><span class="comment"># 再github上修改下3_branch中的内容</span></div><div class="line">$ git pull 3_origin 3_branch</div><div class="line"></div><div class="line">$ git <span class="built_in">log</span> --oneline --decorate --graph</div><div class="line">*   6dd4166 (HEAD -&gt; master) Merge branch <span class="string">'3_branch'</span> of https://github.com/femn2014/<span class="built_in">test</span></div><div class="line">|\  </div><div class="line">| * a6dbfae (3_origin/3_branch) Update README.md</div><div class="line">| * 60e0e27 (3_branch) 3_branch 1</div><div class="line">* |   ef1e939 (origin/master) merge 1</div><div class="line">|\ \  </div><div class="line">| |/  </div><div class="line">| * 9229ec9 (tag: v1.0, branch_origin/new_branch, new_branch) new_branch 1</div><div class="line">* | 4666c74 master 2</div><div class="line">|/  </div><div class="line">* 6c0975b master 1</div><div class="line"></div><div class="line"></div><div class="line">$ git checkout 3_branch</div><div class="line">git <span class="built_in">log</span> --oneline --decorate --graph </div><div class="line">* 60e0e27 (HEAD -&gt; 3_branch) 3_branch 1</div><div class="line">* 9229ec9 (tag: v1.0, branch_origin/new_branch, new_branch) new_branch 1</div><div class="line">* 6c0975b master 1</div><div class="line"></div><div class="line">$ git checkout master </div><div class="line">git pull 3_origin 3_branch:3_branch <span class="comment"># master分支不变</span></div><div class="line"></div><div class="line">$ git checkout 3_branch</div><div class="line">$ git <span class="built_in">log</span> --oneline --decorate --graph</div><div class="line">* a6dbfae (HEAD -&gt; 3_branch, 3_origin/3_branch) Update README.md</div><div class="line">* 60e0e27 3_branch 1</div><div class="line">* 9229ec9 (tag: v1.0, branch_origin/new_branch, new_branch) new_branch 1</div><div class="line">* 6c0975b master 1</div><div class="line"></div><div class="line"><span class="comment"># 删除远程库</span></div><div class="line">$ git remote rm 3_origin</div><div class="line">$ git remote rm branch_origin</div><div class="line">$ git remote -v</div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/17/git/" data-id="cjb0eeawa002806robdlbjf5x" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/17/git/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/git/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-linux-server-process" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/17/linux-server-process/">linux 服务与进程</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/17/linux-server-process/">
+            <time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/linux/">linux</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/server/">server</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="linux启动流程"><a href="#linux启动流程" class="headerlink" title="linux启动流程"></a><a href="http://www.ruanyifeng.com/blog/2013/08/linux_boot_process.html" target="_blank" rel="external">linux启动流程</a></h3><p>通电 –&gt;BIOS(哪个磁盘有MBR) –&gt;MBR(哪个分区为要开启的OS) –&gt;OS –&gt;/boot(kernel) –&gt;init(PID:1) –&gt;/etc/rc*.d/ –&gt;/etc/init.d/ –&gt;用户登陆(/etc/profilc–&gt;~/.profile .bash_login .bash_profile–&gt;~/.bashrc)</p>
+<h3 id="添加启动项"><a href="#添加启动项" class="headerlink" title="添加启动项"></a>添加启动项</h3><p>/etc/rc[0~6].d 这7个目录中,每个目录分别存放着对应运行级别加载时需要关闭或启动的服务,每个脚本文件都对应着/etc/init.d/目录下具体的服务</p>
+<p>K开头的脚本文件代表运行级别加载时需要关闭的,S开头的代表需要执行,数字代表执行顺序<br>因此,当我们需要开机启动自己的脚本时,只需要将可执行脚本丢在/etc/init.d目录下,然后在/etc/rc*.d中建立软链接即可</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">sudo shmod 755 /etc/init.d/ssh</div><div class="line"><span class="built_in">cd</span> /etc/init.d</div><div class="line">sudo update-rc.d ssh defaults 95 5 . <span class="comment"># 执行顺序95,加入运行级别5级中</span></div><div class="line"><span class="comment">#即在rc*.d中各建立了一个软连接,因此也可以自己手动建立软连接,如下</span></div><div class="line">ln -s /etc/init.d/ssh /etc/rc5.d/S95sshd</div><div class="line">sudo /etc/init.d/ssh start</div><div class="line">sudo service S95sshd start</div><div class="line"></div><div class="line"><span class="comment"># 开机启动</span></div><div class="line">sudo apt-get install openssh-server</div><div class="line"><span class="comment"># 二选一</span></div><div class="line">sudo /etc/init.d/ssh start</div><div class="line">sudo service sshd start</div></pre></td></tr></table></figure>
+<h3 id="简单的启动命令"><a href="#简单的启动命令" class="headerlink" title="简单的启动命令"></a>简单的启动命令</h3><p>Linux 在启动的时候会执行 /etc/rc.local 里面的脚本,所以只要在这里添加执行命令就可以</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">vim /etc/rc.local</div><div class="line">/usr/bin/supervisord -c /etc/supervisor/supervisord.conf</div><div class="line"><span class="comment"># 如果是 Ubuntu 16.04 以上,rc.local 被当成了服务,而且默认是不会启动,需要手动启用一下服务</span></div><div class="line"><span class="comment"># 启动rc.local服务:</span></div><div class="line">sudo systemctl <span class="built_in">enable</span> rc-local.service</div><div class="line"></div><div class="line"><span class="comment"># 如果有图形桌面的话</span></div><div class="line">super键--search <span class="string">"startup"</span>--&gt;设置开机启动选项,最重要的就是找到程序的绝对路经写上就可以.可以通过如下命令查看:</div><div class="line">vim ~/.config/autostart/chromium-browser.desktop</div></pre></td></tr></table></figure>
+<p>也可以使用第三方包来<a href="http://apt.ubuntu.com/p/alacarte" target="_blank" rel="external">管理启动程序</a></p>
+<h3 id="定时任务"><a href="#定时任务" class="headerlink" title="定时任务"></a>定时任务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">vim /etc/crontab </div><div class="line"><span class="comment"># 权限要一致,且要可执行</span></div><div class="line"><span class="comment"># 分　时　日　月　周　命令</span></div><div class="line"><span class="comment"># 每天11点执行</span></div><div class="line">0 11 * * *  root  sh /home/python/xx.sh </div><div class="line"></div><div class="line"><span class="comment"># 每两个小时 </span></div><div class="line">0 */2 * * * <span class="built_in">echo</span> <span class="string">"Have a break now."</span> &gt;&gt; /tmp/test.txt</div><div class="line"></div><div class="line"><span class="comment"># 晚上11点到早上8点之间每两个小时和早上八点 </span></div><div class="line">0 23-7/2,8 * * * <span class="built_in">echo</span> <span class="string">"Have a good dream"</span> &gt;&gt; /tmp/test.txt</div><div class="line"></div><div class="line"><span class="comment"># 保存退出即生效(刚添加的任务会到2-3分钟后才开始生效)</span></div></pre></td></tr></table></figure>
+<h3 id="查看服务状态"><a href="#查看服务状态" class="headerlink" title="查看服务状态"></a>查看服务状态</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ubuntu centos</span></div><div class="line">service sshd status/stop/restart <span class="comment"># service 在rc*.d/的名字</span></div><div class="line"></div><div class="line">systemctl start docker <span class="comment">#centos启动服务</span></div><div class="line">systemctl <span class="built_in">enable</span> docker <span class="comment"># 开机启动</span></div><div class="line">systemctl status nginx</div><div class="line">systemctl start firewalld.service</div><div class="line">systemctl <span class="built_in">enable</span> firewalld.service</div><div class="line">systemctl daemon-reload <span class="comment"># 修改启动参数时的 </span></div><div class="line">systemctl restart docker</div><div class="line"><span class="comment"># 只有systmectl 状态 服务名</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># redhat 操作系统下</span></div><div class="line">chkconfig 命令</div><div class="line">chkconfig --list sshd</div></pre></td></tr></table></figure>
+<h3 id="进程有关的"><a href="#进程有关的" class="headerlink" title="进程有关的"></a>进程有关的</h3><p>“衍生出来的进程”正是 Linux 的父子进程的概念.<br>当我们登录系统后,会取得一个 bash shell,然后我们利用这个 bash 提供的接口去执行另一个命令,</p>
+<p>例如 bash 或者 ps 等.那些另外执行的命令也会被触发成为 PID,那个后来执行的命令产生的 PID 就是”子进程”,而原本的 bash 环境下,就称为”父进程”了<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">bash</div><div class="line">ps -o pid,ppid,tty,time,cmd</div><div class="line">    PID  PPID TT           TIME CMD</div><div class="line">    11373  4396 pts/12   00:00:00 bash</div><div class="line">    13043 11373 pts/12   00:00:00 bash</div><div class="line">    13110 13043 pts/12   00:00:00 ps -o pid,ppid,tty,time,cmd</div><div class="line">PID: 运行着的命令(CMD)的进程编号</div><div class="line">PPID:父进程号</div><div class="line">TTY: 命令所运行的位置(终端)</div><div class="line">TIME: 运行着的该命令所占用的CPU处理时间</div><div class="line">CMD: 该进程所运行的命令</div><div class="line"><span class="comment"># ps 仅仅显示本终端的进程</span></div></pre></td></tr></table></figure></p>
+<p>我所做的操作是在原来的 bash shell 中执行了 bash 命令,然后又执行了 ps -o pid,ppid,comm命令.我们可以看到<br>,第二个进程 bash 是第一个进程 bash 的子进程,而第三个进程ps是第二个进程的子进程</p>
+<p>新的进程要通过老的进程复制自身得到,这就是 fork.fork 是一个系统调用.<br>进程存活于内存中.每个进程都在内存中分配有属于自己的一片空间 (内存空间,包含栈、堆、全局静态区、文本常量区、程序代码区).</p>
+<p>当一个程序调用 fork 的时候,实际上就是将上面的内存空间,又复制出来一个,构成一个新的进程,<br>并在内核中为该进程创建新的附加信息 (比如新的 PID,而 PPID 为原进程的 PID).此后,两个进程分别地继续运行下去.<br>新的进程和原有进程有相同的运行状态(相同的变量值,相同的指令…).我们只能通过进程的附加信息来区分两者.</p>
+<h4 id="工作管理-job-control"><a href="#工作管理-job-control" class="headerlink" title="工作管理(job control)"></a>工作管理(job control)</h4><p>是用在 bash 环境下的,也就是说,当我们登录系统取得 bash shell 之后,在单一终端机下可以同时进行多个工作的行为管理.</p>
+<p>假如我们只有一个终端,因此在可以出现提示符让你操作的环境就成为前台(foreground),至于其他工作就可以放在后台(background)去暂停或运行<br>程序调用 exec 的时候,进程清空自身的内存空间,并根据新的程序文件重建程序代码、文本常量、全局静态、堆和栈(此时堆和栈大小都为 0),并开始运行.</p>
+<h4 id="直接将命令放到后台执行-amp"><a href="#直接将命令放到后台执行-amp" class="headerlink" title="直接将命令放到后台执行 ( &amp;)"></a>直接将命令放到后台执行 ( &amp;)</h4><h4 id="将目前工作放到后台并暂停-ctrl-z"><a href="#将目前工作放到后台并暂停-ctrl-z" class="headerlink" title="将目前工作放到后台并暂停(ctrl+z)"></a>将目前工作放到后台并暂停(ctrl+z)</h4><h4 id="将后台工作拿到前台来处理-fg-工作序号"><a href="#将后台工作拿到前台来处理-fg-工作序号" class="headerlink" title="将后台工作拿到前台来处理(fg %工作序号)"></a>将后台工作拿到前台来处理(fg %工作序号)</h4><h3 id="进程管理命令"><a href="#进程管理命令" class="headerlink" title="进程管理命令"></a>进程管理命令</h3><h4 id="ps-PID-CMD-PORT"><a href="#ps-PID-CMD-PORT" class="headerlink" title="ps: PID,CMD,PORT"></a>ps: PID,CMD,PORT</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">ps <span class="comment"># 仅仅显示本终端的进程</span></div><div class="line"></div><div class="line">-a <span class="comment"># 显示终端中进行的所有进程</span></div><div class="line">-x <span class="comment"># 会显示没有控制终端的进程</span></div><div class="line">-e <span class="comment"># 所有的进程</span></div><div class="line">-u <span class="comment"># 查看某个用户的所有进程</span></div><div class="line">-f <span class="comment"># 来查看格式化的信息列表</span></div><div class="line">ps -u femn <span class="comment"># 查看所有femn用户的进程 </span></div><div class="line">ps aux <span class="comment"># 可以对系统进程更加全面的了解</span></div><div class="line">ps -aux | less </div><div class="line"><span class="comment"># less是一个分页显示文件的工具工具,它允许你一页一页(或一个屏幕一个屏幕)地查看信息</span></div><div class="line"></div><div class="line">ps -ef <span class="comment"># 所有进程 PID PPID </span></div><div class="line">ps -efH <span class="comment"># 把输出的进程组成一个层级的格式 树状 </span></div><div class="line">ps axjf  <span class="comment"># 树状视图 等于 pstree</span></div><div class="line">ps -ef | grep python3 | cut -c 10-15 | xargs <span class="built_in">kill</span> -9 </div><div class="line"><span class="comment"># Kill 某个用户或命令的所有进程</span></div><div class="line">ps axjf |grep nginx</div><div class="line">pgrep nginx <span class="comment"># 单单的得到PID,和其子进程号</span></div><div class="line"></div><div class="line">ps -aux --sort -pcpu | head -n 10</div><div class="line"><span class="comment"># 根据 CPU 使用来升序排序 +pcpu倒序</span></div><div class="line">ps -aux --sort -pmem | head -n 10</div><div class="line"><span class="comment"># 根据 内存 使用来升序排序</span></div><div class="line">ps -aux --sort -pcpu,-pmem | head -n 10</div><div class="line"></div><div class="line"><span class="comment"># 仅仅得到本机的程序名相关的进程</span></div><div class="line">ps aux/-ef |grep ssserver <span class="comment"># 程序名(命令名)或者PID</span></div></pre></td></tr></table></figure>
+<h4 id="netstat-PID-CMD-PORT"><a href="#netstat-PID-CMD-PORT" class="headerlink" title="netstat:PID,CMD,PORT"></a>netstat:PID,CMD,PORT</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 会牵扯到此程序 相关联的socket服务,或其它的网络相接进程(网络是双向的)</span></div><div class="line">netstat -anp |grep ssh <span class="comment">#程序名  得到PID 端口号</span></div><div class="line">netstat -lnp |grep 8388  <span class="comment">#端口号 得到PID,进程名</span></div><div class="line">sudo lsof -i :8001   <span class="comment">#查看此端口 PID,User,进程名</span></div><div class="line"></div><div class="line">ll /proc/进程号  </div><div class="line">sudo lsof -p 1609</div><div class="line">killall http* 它支持通过进程名而不是进程号来结束进程,也支持通配符.</div></pre></td></tr></table></figure>
+<h4 id="top"><a href="#top" class="headerlink" title="top"></a>top</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">top <span class="comment"># 动态显示进程 q 退出, M 内存占用降序排序,P 按CPU占用降序排序 </span></div><div class="line">[top使用说明](http://www.linuxidc.com/Linux/2011-03/33582.htm)</div><div class="line">ssserver内存占用随时间升高</div><div class="line">free -m <span class="comment"># 内在的使用情况</span></div><div class="line"><span class="comment"># 查看目前进程正在实际被使用的内存,是used-(buffers+cache)</span></div><div class="line">htop <span class="comment"># 更加友好的显示top</span></div></pre></td></tr></table></figure>
+<h3 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h3><h4 id="sleeping"><a href="#sleeping" class="headerlink" title="sleeping"></a>sleeping</h4><p>D(sleeping),往往是由于 I/O(磁盘IO,网络IO,其他外设IO) 资源得不到满足,而引发等待</p>
+<p>举个例子,当 NFS 服务端关闭之时,若未事先 umount 相关目录,在 NFS 客户端执行 df 就会挂住整个登录会话,按 Ctrl+C 、Ctrl+Z 都无济于事.<br>断开连接再登录,执行 ps axf 则看到刚才的 df 进程状态位已变成了 D ,kill -9 无法杀灭.</p>
+<p>正确的处理方式,是马上恢复 NFS 服务端,再度提供服务,刚才挂起的 df 进程发现了其苦苦等待的资源,便完成任务,自动消亡.若 NFS 服务端无法恢复服务,在 reboot 之前也应将 /etc/mtab 里的相关 NFS mount 项删除,以免 reboot 过程例行调用 netfs stop 时再次发生等待资源,导致系统重启过程挂起.</p>
+<h3 id="zombile"><a href="#zombile" class="headerlink" title="zombile"></a>zombile</h3><p>Z(zombie) 之所以杀不死,是因为它已经死了,否则怎么叫 Zombie(僵尸).在UNIX/Linux中,每个进程都有一个父进程,进程号叫PID(Process ID), 相应地,父进程号就叫PPID(Parent PID).</p>
+<p>当进程死亡时,它会自动关闭已打开的文件,舍弃已占用的内存、交换空间等等系统资源,然后向其父进程返回一个退出状态值,报告死讯.如果程序有 bug,就会在这最后一步出问题.子进程说我死了,父进程却没听见,所以子进程便成了僵尸.在UNIX/Linux中消灭僵尸的手段比较残忍,执行 ps axjf 找出僵尸进程的父进程号(PPID,第一列),先杀其父,然后再由进程天子 init(其PID为1,PPID为0)来一起收拾父子僵尸.注意,子进程变成僵尸只是碍眼而已,并不碍事,如果僵尸的父进程当前有要务在身,则千万不可贸然杀之.</p>
+<p>这些进程已经死亡,但没有释放系统资源,包括内存和一些一些系统表等,如果这样的进程很多,会引发系统问题.用ps -el看出的进程状态如果是Z,就是僵尸进程.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ps -ef|grep defunc <span class="comment"># 可以找出僵尸进程</span></div><div class="line"><span class="comment"># 清除ZOMBIE(僵尸)进程可以使用如下方法:</span></div><div class="line"></div><div class="line"><span class="built_in">kill</span> –18 PPID (PPID是其父进程)</div><div class="line"><span class="comment"># 这个信号是告诉父进程,该子进程已经死亡了,请收回分配给他的资源.</span></div></pre></td></tr></table></figure></p>
+<p>如果不行则看能否终止其父进程(如果其父进程不需要的话).先看其父进程又无其他子进程,如果有,可能需要先kill其他子进程,也就是兄弟进程.方法是:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">kill</span> –15 PID1 PID2 <span class="comment"># (PID1,PID2是僵尸进程的父进程的其它子进程).</span></div><div class="line"><span class="built_in">kill</span> –15 PPID  <span class="comment"># 然后再kill父进程,这样僵尸进程就可能被完全杀掉了</span></div></pre></td></tr></table></figure></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/17/linux-server-process/" data-id="cjb0eeaw8002206ro0fsfg121" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/17/linux-server-process/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/linux-server-process/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-vim_grammar" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/17/vim_grammar/">vim基本语法</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/17/vim_grammar/">
+            <time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/tool/">tool</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="普通模式下"><a href="#普通模式下" class="headerlink" title="普通模式下"></a>普通模式下</h3><pre><code>操作符
+&gt;G &gt;gg # 缩进 y复制 d删除
+C == c$  #c是修改,删除之后进入插入模式
+s == cl # l一个字符 aw一个单词(iw不涉及到空格,ciw推荐) ap一个段落
+S == ^cc # 删除一整行
+# g命令空间
+g~l # 反转大小写
+guw # 转化成小写
+gUU # 转化成大写
+:!nginx -s reload # 使用外部命令
+</code></pre><h4 id="当前文件中的移动"><a href="#当前文件中的移动" class="headerlink" title="当前文件中的移动"></a>当前文件中的移动</h4><pre><code>u # 撤消
+&lt;ctrl-r&gt; # 重做
+动作命令
+w b e ge # 对单词 动作的移动程度和方向
+W B E gE # 对字串 动作的移动程度和方向
+* 和 #符号  # 匹配光标当前的所有单词
+% # 匹配括号移动 
+f+ # 查找当前行的下一个&apos;+&apos;字符,定位到&apos;+&apos; F上一个
+t+ # 查找当前行的下一个&apos;+&apos;字符,定位到&apos;+&apos;的上一个字符 T上一个
+3fa → 在当前行查找第三个出现的a 
+
+; # 重复
+, # 退回
+yaw yt,  f,dt. d/ge&lt;CR&gt; # 查找动作告诉d操作符删除什么
+#Vim的文本对象由两个字符组成,第一个字符永远是i或a.文本对象自身并不是动作命令,不能用它们在文档中移动
+# 但我们却可以在可视化及操作符待决模式中使用文本对象
+#操作分隔符的文本对象 m{a-zA-Z}要在其内部
+a)==ab  a}==aB  at#一对XML标签 it #XML标签内部
+vi) ci)
+# 操作文本块的文本对象
+daw ciw
+
+# 设置位置标记
+m{a-zA-Z}#小写每个缓冲区局部可见,大写全局可见
+mm `m
+# Vim的自动位置标记
+&apos;&apos; # 当前文件中上次跳转动作之前的位置
+&apos;. # 上次修改过的地方
+&apos;^ #     插入
+&apos;[ # 上次修改或复制的起始位置
+&apos;] #             结束
+&apos;&lt; #     高亮选区
+&apos;&gt; #                 结束
+# 括号间的跳转
+%
+
+# 当不同文件之间的移动和跳转
+任何改变当前窗口中活动文件的命令,都可以称为跳转命令
+Vim会把执行跳转命令之前和之后的光标位置,记录到跳转列表中
+
+
+
+&apos;&lt;ff&gt;&apos;    
+@: # 重复上次的Ex命令
+:s%/old/new/g # 替换
+1&lt;ctrl-a&gt; # 对当前行的一下数字加1  1&lt;ctrl-x&gt;:减一
+
+# 重绘屏幕
+zz #把当前行显示在窗口正中
+&lt;ctrl-d&gt;(D) # 向下滚屏
+&lt;ctrl-u&gt;(U) #   上
+H/M/L # 跳到屏幕最上,中,下方
+
+# 可视化模式
+v
+
+# 命令行模式
+:
+
+# 命令行窗口
+q:
+
+# 替换模式
+R gR
+r{char} gr{char} # 覆盖一个字符之后,马上又回到普通模式
+
+#特别一点
+ga #查看任意字符的编码 分别以10,16,8进制的形式显示其字符编码
+J将下面的一整行,都提到光标行的末尾
+&lt;ctrl-g&gt; # 显示当前文件文件名及状态
+</code></pre><h4 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h4><pre><code># Vim操作的是寄存器,而并非剪贴板
+# &quot;{register}前缀的方式指定要用的寄存器,若不指明则使用无名寄存器
+&quot;ayiw &quot;bdd &quot;&quot;yiw &quot;+yy:delete c # 分别 对应寄存器a,b,&quot;,c中 
+&quot;ap   &quot;bp  &quot;&quot;p   :put c       # 对应的复制
+# x,s,d,c,y,p命令都会覆盖无名寄存器
+
+# 无名寄存器(&quot;&quot;) &quot;&quot;p==p
+yaw daw &quot;0p
+# 有名寄存器(&quot;a-&quot;z)
+# 黑洞寄存器(&quot;_)
+# 复制专用寄存器(&quot;0) y命令不仅会被拷贝到无名寄存器中,还拷贝到复制专用寄存器中
+
+# ubuntu 和mint默认安装的vim是不支持系统剪切、粘贴版的
+sudo apt-get install -y vim-gnome
+# 对于非GUI版本的vim,剪切板是不可用的,解决方案很简单,安装一下就是了:
+sudo apt-get install gvim
+
+# 系统剪贴板(&quot;+)
+# 将系统剪贴板的内容粘贴到Vim内部
+&quot;+p  # 插入模式下&lt;ctrl-r&gt;+,&quot;,a,0
+# 将Vim的文本捕获到系统剪贴板
+&quot;+yy
+&quot;%p # &quot;%当前文件名
+&quot;.p  # &quot;.上次插入的文本
+
+# 只读(read-only)寄存器:
+&quot;:,分别缓存最近命令
+&quot;.,最近插入文本
+&quot;%,当前文件名
+&quot;#,当前交替文件名
+
+# 代换单词
+yiw jww ve p
+yiw jww  ciw&lt;ctrl-r&gt;0&lt;Esc&gt;
+</code></pre><h4 id="宏-在录制一个宏时-要确保每条命令都可被重复执行-同时禁止使用鼠标"><a href="#宏-在录制一个宏时-要确保每条命令都可被重复执行-同时禁止使用鼠标" class="headerlink" title="宏:在录制一个宏时,要确保每条命令都可被重复执行,同时禁止使用鼠标"></a>宏:在录制一个宏时,要确保每条命令都可被重复执行,同时禁止使用鼠标</h4><h4 id="而且当动作命令-j-n-停止时-宏将中止运行"><a href="#而且当动作命令-j-n-停止时-宏将中止运行" class="headerlink" title="而且当动作命令(j,n)停止时,宏将中止运行"></a>而且当动作命令(j,n)停止时,宏将中止运行</h4><pre><code>#打任意数目的按键操作录制到寄存器,用于之后的回放
+# 把命令序列录制成宏
+qa #录制宏的开始 q{register},从而指定一个用于保存宏的寄存器
+A;&lt;Esc&gt;
+Ivar &lt;Esc&gt;
+q # 停止宏录制
+j @a j@@
+:reg a  # 查看寄存器的内容
+@a # @{register} 执行指定寄存器的内容,
+@@ # 重复最近高过的宏
+
+10@a # 加次数回放宏 .命令不能执行次数
+f+  s_+_&lt;Esc&gt;  qq;.q 22@q
+
+# 串行的运行宏 j :next
+
+    10@a # 加次数回放宏 .命令不能执行次数
+# 并行的运行宏
+
+    :&apos;&lt;,&apos;&gt;normal @a # 单个文件的多行并行运行宏
+
+    :args *.py # 建立目标文件列表
+    :edit!
+    :argdo normal @a
+    # 当在多个文件中 进行并行运行宏时,执行宏一旦失败,不方便找到到底哪个失败了
+    :wall
+
+# 给宏追加命令 
+qA # Vim会录制按键操作,但会把它们附加到寄存器a原有的内容之后
+# 编辑宏
+:put a # 将宏复制到缓冲区,当前光标的下方,而 &quot;ap 复制到当前光标之后
+# 在缓冲区进行对宏的编辑
+0 &quot;ay$ dd # 将宏从缓冲区复制回寄存器
+</code></pre><h4 id="插入模式"><a href="#插入模式" class="headerlink" title="插入模式"></a>插入模式</h4><pre><code>&lt;ctrl-h&gt;
+&lt;ctrl-w&gt;
+&lt;ctrl-u&gt; # 都是删除操作
+
+# 插入-普通模式
+&lt;ctrl-o&gt; #切换到插入-普通模式,在此后可执行一条普通模式下的命令后,再回到插入模式
+&lt;ctrl-o&gt;zz #
+
+# 复制专用寄存器(&quot;0) y命令不仅会被拷贝到无名寄存器中,还拷贝到复制专用寄存器中
+&lt;ctrl-r&gt;0 # 0就是寄存器的名字 在命令行中yaw,默认寄存器的名字是0
+&lt;ctrl-r&gt;&lt;ctrl-p&gt;0 # 它会按原义插入寄存器内的文本,并修正任何不必要的缩进
+&lt;ctrl-r&gt;=9*9&lt;CR&gt; # 表达式寄存器  &lt;ctrl-r&gt;=
+&lt;C-p&gt;或是&lt;C-n&gt;,自动补齐功
+
+&lt;ctrl-v&gt;065 # A用字符编码插入字符,vim所接受的字符编码共包含3位数
+&lt;ctrl-v&gt;u00bf # 编码超过3位的,可以用4位16进制编码来输入
+&lt;ctrl-v&gt;&lt;Tab&gt; # 如果后面跟一个非数字键,它会插入这个键本身所代表的字符
+</code></pre><h4 id="可视模式"><a href="#可视模式" class="headerlink" title="可视模式"></a>可视模式</h4><pre><code>v V &lt;ctrl-v&gt;
+o # 切换高亮选区的活动端
+gv # 重选上次的高亮选区
+yyp--&gt;Vr# # ####横编排
+&lt;ctrl-v&gt;3j$ #竖编排 
+= # 自动给缩进 
+</code></pre><h4 id="命令行-EX命令"><a href="#命令行-EX命令" class="headerlink" title="命令行(EX命令)"></a>命令行(EX命令)</h4><pre><code>@: # 在普通模式下执行 重复上次的Ex命令
+/
+&lt;ctrl-r&gt;= # 访问表达式寄存器也会激活命令行模式
+
+# 有些命令可以在插入和命令行模式下通用
+&lt;ctrl-r&gt;0 #复制寄存器的内容
+&lt;ctrl-h&gt;
+&lt;ctrl-w&gt;
+&lt;ctrl-u&gt; # 都是删除操作 
+
+/the/
+?the?
+
+:1,$ == :% # 整个文件
+:. # 光标所有行
+:0 #虚拟行 位于文件第一行上方
+
+# 删除行
+:3d == 3G+dd
+:.d # 删除当前行
+
+# 复制行t,移动行m
+:6t. # :[range]t{address} 把第六行复制到当前行下方
+:t6                        当前        第六行
+:t. == yyp
+:&apos;&lt;,&apos;&gt;t$ # 将高亮选区的内容复制到文本结尾处
+
+A;
+:&apos;&lt;,&apos;&gt;normal . == :&apos;&lt;,&apos;&gt;normal A; # 对高亮选区中的每一行,对其执行普通模式下的 . 命令. 
+
+# 自动补全Ex命令
+&lt;ctrl-d&gt; &lt;Tab&gt; &lt;Shfit-Tab&gt;
+:colors&lt;Tab&gt;
+:colorscheme &lt;Tab&gt;
+
+# 把当前光标的单词插入到命令行
+&lt;ctrl-r&gt;&lt;ctrl-w&gt;
+# 把当前光标的字串插入到命令行
+&lt;ctrl-r&gt;&lt;ctrl-a&gt;
+
+
+#  命令行窗口,就像一个常规的Vim缓冲区,只不过它的内容都对应着命令历史中的一个条目
+q: # 打开Ex 命令历史 k j键进行移动 ,&lt;CR&gt;将会把当前行的内容当成Ex命令执行  
+q/ # 打开查找
+:q #关闭命令行窗口 像操作普通Vim窗口一样 其它的操作也可以
+&lt;ctrl-f&gt; # 从命令行模式切换到命令行窗口
+
+# 运行shell
+:!{cmd} # 执行一次性命令
+:shell  # 启动一个交互的shell会话  exit  # 退出此shell并返回Vim
+# 也可以在普通模式下 &lt;ctrl-z&gt;挂起Vim进程,$jobs  $fg [作业号]
+:read !{cmd} # 将标准输出插入到光标下方
+:[range]write !{cmd} # 将range(默认是整个文件)每行内容,作为此命令的输入
+:%!sort -t &apos;,&apos; -k 2 # 以逗号分隔,按第二个字段进行排序
+
+
+:tabnew # 创建新标签页
+:split 文件路径 #分割窗口,如果不指定文件路径,默认是分割本文件
+:set ignorecase #查找单词时需要忽略大小写
+:set hlsearch # 可以将查找的内容设置成高亮
+:set history=200 #设置保存命令的条数
+</code></pre><h4 id="参数列表-vi的一个功能-是缓冲区列表-Vim增加的功能-的强力补充"><a href="#参数列表-vi的一个功能-是缓冲区列表-Vim增加的功能-的强力补充" class="headerlink" title="参数列表(vi的一个功能)是缓冲区列表(Vim增加的功能)的强力补充"></a>参数列表(vi的一个功能)是缓冲区列表(Vim增加的功能)的强力补充</h4><pre><code>vim vim_grammar.md linux.md    
+:ls #缓冲区列表 %哪个缓冲区在当前容器中可见 #代表轮换文件&lt;ctrl-^&gt;进行快速切换
+# Vim是用缓冲区列表对打开的文件进行管理的
+
+# 选择缓冲区
+:buffer N/bufname # N是Vim自动分配的编号由上面的命令行得知  bufname是文件名
+:bprev
+:bnext 
+:bfirst
+:blast  
+#退出(保存)所有的缓冲区
+:qall!
+:wall
+
+# 删除缓冲区
+:bdelete N1 N2
+
+# 用参数列表将缓冲区分组
+# 查看参数列表
+:args
+:args *.py # 建立目标文件列表
+
+#如果活动缓冲区的内容发生了变化,Vim会在离开缓冲区时自动将其设为隐藏(默认会有错误信息&apos;文件已修改但未保存&apos;)
+#&apos;hidden&apos;设置让我们用一条;argdo {cmd}或 bufdo{cmd}命令就可以修改一组缓冲区.
+</code></pre><h4 id="分割窗口"><a href="#分割窗口" class="headerlink" title="分割窗口"></a>分割窗口</h4><pre><code># 创建分割窗口
+&lt;ctrl-w&gt;s    
+&lt;ctrl-w&gt;v    
+:sp[lit] {file} #载入新文件
+:vsp[lit] {file}
+# 关闭窗口
+&lt;ctrl-w&gt;c    #关闭活动窗口  :clo[se]
+&lt;ctrl-w&gt;o    #保存活动容器,关闭其它所有窗口 :on[ly]
+# 切换窗口
+&lt;ctrl-w&gt;w    # 窗口循环切换
+&lt;ctrl-w&gt;h j k l    
+#改变窗口
+&lt;ctrl-w&gt;=    
+[N]&lt;ctrl-w&gt;_ # 最大化高度
+
+[N]&lt;ctrl-w&gt;| #       宽度
+[N]&lt;ctrl-w&gt;&lt; # &gt;
+</code></pre><h4 id="在Vim中-标签页是可以容纳一系列窗口的容器口"><a href="#在Vim中-标签页是可以容纳一系列窗口的容器口" class="headerlink" title="在Vim中,标签页是可以容纳一系列窗口的容器口"></a>在Vim中,标签页是可以容纳一系列窗口的容器口</h4><pre><code>:tabnew # 创建新标签页
+:tabe[dit] {filename} # 在新标签页打开{filename} 如果没有指定文件,会建立一个新标签页,里面包含一个空缓冲区
+:&lt;ctrl-w&gt;T  #当标签页中包含了不只一个窗口时,用此命令 把当前窗口移到一个新标签页
+:tabc[lose]  # 关闭当前所有标签页的窗口
+:tabo[nly]  # 关闭其它
+[N]gt #       下  :tabn[ext] 
+[N]gT # 切换到上一标签页  :tabp[revious]
+</code></pre><h4 id="打开文件"><a href="#打开文件" class="headerlink" title="打开文件"></a>打开文件</h4><pre><code>#Vim也有工作目录的概念,这各bash及其他shell是一样的
+#相对于活动文件目录下打开一个文件
+:edit %:h&lt;Tab&gt;  # %代表活动缓冲区的完整文件路径 :h修饰符会去除文件名 也就是此命令会被展开为当前文件所有目录的路径
+:set path+=app/** # 匹配app/目录下所有子目录
+:find 文件名
+
+# netrw管理文件系统
+# 打开文件管理器
+$ vim .
+:edit %:h ==:e . ==:Explore ==:E
+# 上面的操作都会代替当前的缓冲区内容
+# 当要保存到不存在的目录中时
+:!mkdir -p %:h #-p创建任何不存在的中间目录
+
+# 我们可以把任务委派给一个以sudo运行的shell进程,来完成工作
+:w !sudo tee % &gt;/dev/null # :w将缓冲区的内容作为sudo tee的标准输入,%是当前文件
+# 此时Vim会检测到该文件被一个外部程序改了,所以Vim会提示我们做出选择,是保留缓冲区的还是载入磁盘上的版本
+</code></pre><p>vim对于ctage的支持,<br>1.我们可以快速地跳到到函数及类的定义之处,实现浏览整个代码库的目的.(基于标签的跳转)<br>2.用于建立自动补全的单词列表</p>
+<h3 id="安装和运行ctage"><a href="#安装和运行ctage" class="headerlink" title="安装和运行ctage"></a>安装和运行ctage</h3><pre><code>sudo apt-get install exuberant-ctags
+
+sudo apt install linuxbrew-wrapper
+# 检测系统是否安装了ctags以及路径正确与否
+brew install ctags
+ctags --help
+</code></pre><h3 id="用ctags创建代码库的索引"><a href="#用ctags创建代码库的索引" class="headerlink" title="用ctags创建代码库的索引"></a>用ctags创建代码库的索引</h3><pre><code># 手动创建索引
+cd ~/app1.6
+ctags -R *
+# 应该可以用!cd /home/python/app1.6 &amp;&amp; ctags -R *
+# Linux下的C/C++的程序员,使用VIM+Ctags的组合来写程序也许是最佳的选择
+# 好像没有递归子目录,所以为子目录创建索引
+cd main &amp;&amp; ctags -R *
+cd ../app1.6 #必须要cd到此目录或者 main目录下,可由 :set tags 查看
+vim runner
+# 这样本地的所有代码,都正确的创建了索引,但源代码还是没有办法创建索引
+
+:tabnew /home/python/app1.6/runner.py
+:set tags?
+&lt;ctrl-]&gt; # 会从当前所在的关键字跳转到它的定义处 ,
+g&lt;ctrl-]&gt;
+
+&lt;ctrl-t&gt; # 充当着后退按钮 
+</code></pre>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/17/vim_grammar/" data-id="cjb0eeaxu004f06roq49qjv05" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/17/vim_grammar/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/vim_grammar/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-linux_gcc" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -270,7 +1006,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/17/linux_gcc/" data-id="cj9kqkx90002b06nf7ok2fh9l" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/17/linux_gcc/" data-id="cjb0eeawc002c06ro0l06ck50" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -348,151 +1084,6 @@
 
 
 
-    <article id="post-shadowsocks-server" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/16/shadowsocks-server/">shadowsocks</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/16/shadowsocks-server/">
-            <time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/server/">server</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h3 id="用shadowsocks作为翻墙的工具"><a href="#用shadowsocks作为翻墙的工具" class="headerlink" title="用shadowsocks作为翻墙的工具"></a>用shadowsocks作为翻墙的工具</h3><p>一般的翻墙工具还有VPN,pptp是VPN的一种,我们在这里介绍的是shadowsocks翻墙工具 </p>
-<p> <a href="https://shadowsocks.org/en/download/clients.html" target="_blank" rel="external">shadowsocks 官网</a></p>
-<p> <a href="https://www.loyalsoldier.me/fuck-the-gfw-with-my-own-shadowsocks-server/" target="_blank" rel="external">centos7 install shadowsocks</a></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">yum install python-setuptools &amp;&amp; easy_install pip  </div><div class="line">pip install shadowsocks</div><div class="line">vim /root/ss/ssserver.json</div><div class="line">    &#123;</div><div class="line">      <span class="string">"server"</span>: <span class="string">"0.0.0.0"</span>,</div><div class="line">      <span class="string">"server_port"</span>: 8388,</div><div class="line">      <span class="string">"local_address"</span>: <span class="string">"127.0.0.1"</span>,</div><div class="line">      <span class="string">"local_port"</span>: 1080,</div><div class="line">      <span class="string">"password"</span>: <span class="string">"yourpassword"</span>,</div><div class="line">      <span class="string">"timeout"</span>: 300,</div><div class="line">      <span class="string">"method"</span>: <span class="string">"aes-256-cfb"</span>,</div><div class="line">      <span class="string">"fast_open"</span>: <span class="literal">false</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">systemctl start firewalld.service</div><div class="line">systemctl <span class="built_in">enable</span> firewalld.service</div><div class="line">firewall-cmd --permanent --add-port=8388/tcp</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure>
-<p>启动 ssserver服务<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">nohup ssserver -c /root/ss/ssserver.json -d start &amp;</div></pre></td></tr></table></figure></p>
-<p>查看ssserver 有没有启动成功</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ps aux |grep ssserver</div><div class="line"><span class="comment"># 状态要是Ss,必须要切换到root用户执行</span></div></pre></td></tr></table></figure>
-<p>如果没有成功,可能是因为/root/ss/ssserver.json 的server_ip的原因,我买了个<a href="https://intl.aliyun.com/zh" target="_blank" rel="external">国际阿里云</a>的ECS服务器,我写的是公网的IP,结果一直运行不起来<br>因为公网是通过nat IP实现的(所以在安全组中只能是选择内网进行配置),所以改成Privaty IP就可以正常启动了,最好是设置为0.0.0.0就好.</p>
-<p>阿里云的ECS服务器上配置使用任意端口的服务后,端口会自动开启监听,但它还有一个安全组的概念,最好设置一个(内网   入  允许 全部 -1/-1   0.0.0.0/0  优先级110)<br>这样就完全可以由ECS的系统完全的操作防火墙,就像没有安全组概念一样了.</p>
-<p> <a href="https://www.vultr.com/docs/how-to-deploy-google-bbr-on-centos-7" target="_blank" rel="external">centos7 install BBR</a> 要注意下sudo grub2-set-default 0,应该是为0的,使用最新的,文档却写成了1<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># update kernet</span></div><div class="line"><span class="comment"># look current kernet</span></div><div class="line">uname -r</div><div class="line"><span class="comment"># Install the ELRepo repo:</span></div><div class="line">sudo rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org</div><div class="line">sudo rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm</div><div class="line"><span class="comment"># install newer kernet</span></div><div class="line">sudo yum --enablerepo=elrepo-kernel install kernel-ml -y</div><div class="line"><span class="comment"># look install newer kernet</span></div><div class="line">rpm -qa | grep kernel</div><div class="line">sudo egrep ^menuentry /etc/grub2.cfg | cut -f 2 -d \<span class="string">'</span></div><div class="line"><span class="string"># setting newer kernet</span></div><div class="line"><span class="string">sudo grub2-set-default 0</span></div><div class="line"><span class="string">sudo shutdown -r now</span></div><div class="line"><span class="string">uname -r</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string"># enable BBr</span></div><div class="line"><span class="string">echo '</span>net.core.default_qdisc=fq<span class="string">' | sudo tee -a /etc/sysctl.conf</span></div><div class="line"><span class="string">echo '</span>net.ipv4.tcp_congestion_control=bbr<span class="string">' | sudo tee -a /etc/sysctl.conf</span></div><div class="line"><span class="string">sudo sysctl -p</span></div><div class="line"><span class="string">sudo sysctl net.ipv4.tcp_available_congestion_control</span></div><div class="line"><span class="string">net.ipv4.tcp_available_congestion_control = bbr cubic reno</span></div><div class="line"><span class="string">sudo sysctl -n net.ipv4.tcp_congestion_control</span></div><div class="line"><span class="string">bbr</span></div><div class="line"><span class="string">lsmod |grep bbr   # output   tcp_bbr                16384  0</span></div></pre></td></tr></table></figure></p>
-<p><a href="https://github.com/shadowsocks/shadowsocks-qt5/wiki/%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97" target="_blank" rel="external">client install shadowsocks</a></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#ubuntu</span></div><div class="line">sudo add-apt-repository ppa:hzwhuang/ss-qt5</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install shadowsocks-qt5</div><div class="line">ss-qt5</div><div class="line"><span class="comment"># 将ssserver.json的配置,设置到ss中</span></div></pre></td></tr></table></figure>
-<h3 id="注意-一定要再去配置下代理Pxory-0-0-0-0-1080-或者用本地的-pac文件-Local-Port就必须和service-pac文件-此文件是过滤网址用的-如果访问文件中的网址则走代理-启动的端口一致"><a href="#注意-一定要再去配置下代理Pxory-0-0-0-0-1080-或者用本地的-pac文件-Local-Port就必须和service-pac文件-此文件是过滤网址用的-如果访问文件中的网址则走代理-启动的端口一致" class="headerlink" title="注意:一定要再去配置下代理Pxory 0.0.0.0:1080 或者用本地的.pac文件,Local Port就必须和service.pac文件(此文件是过滤网址用的,如果访问文件中的网址则走代理)启动的端口一致."></a>注意:一定要再去配置下代理Pxory 0.0.0.0:1080 或者用本地的.pac文件,Local Port就必须和service.pac文件(此文件是过滤网址用的,如果访问文件中的网址则走代理)启动的端口一致.</h3><p><a href="http://pac.ddcc.me/1.pac" target="_blank" rel="external">http://pac.ddcc.me/1.pac</a> == local.pac</p>
-<h4 id="在国际里云购买的ESC-配置好shadowsocks之后-在手机上能正常使用-也不需要去设置代理-但在Ubuntu桌面下却一直用不了"><a href="#在国际里云购买的ESC-配置好shadowsocks之后-在手机上能正常使用-也不需要去设置代理-但在Ubuntu桌面下却一直用不了" class="headerlink" title="在国际里云购买的ESC,配置好shadowsocks之后,在手机上能正常使用,也不需要去设置代理,但在Ubuntu桌面下却一直用不了"></a>在国际里云购买的ESC,配置好shadowsocks之后,在手机上能正常使用,也不需要去设置代理,但在Ubuntu桌面下却一直用不了</h4><p> 如果自己不想搭建服务器的话,可以按下面的操作进行翻墙:</p>
-<p> <a href="https://doub.io/sszhfx/" target="_blank" rel="external">Shadowsocks免费账号分享</a>,但这个网址要先翻墙才行,哈哈<br> 具体的使用:在免费账号分享的这个网址上 </p>
-<p>1.使用二维码:点击二维码会出现一个二维码的图 这里打开shadowsocks软件–&gt;点鼠标右键–&gt;add–&gt;scan QR code on screen</p>
-<p>2.使用生成二维码的url:在add–&gt;选择url中ss以及后面的部分<br>如果失败的话,可以换其它的二维码试试.</p>
-<p><a href="https://github.com/TestSmirk/ss-ip" target="_blank" rel="external">这个是我大哥自己搭建的一些ss帐号</a></p>
-<h3 id="ubuntu-etc-resolv-conf"><a href="#ubuntu-etc-resolv-conf" class="headerlink" title="ubuntu /etc/resolv.conf"></a>ubuntu /etc/resolv.conf</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">nameserver 127.0.1.1</div><div class="line"><span class="comment"># nameserver 8.8.8.8</span></div><div class="line">search DHCP HOST</div></pre></td></tr></table></figure>
-<h3 id="加速SS的链接速度"><a href="#加速SS的链接速度" class="headerlink" title="加速SS的链接速度"></a><a href="http://vegetablefinn.github.io/2016/05/02/SS%E7%A5%9E%E5%99%A8-FinalSpeed-XSocks-%E7%AC%94%E8%AE%B0/" target="_blank" rel="external">加速SS的链接速度</a></h3>
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/16/shadowsocks-server/" data-id="cj9kqkx9n003c06nf89h8br6z" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/16/shadowsocks-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/shadowsocks-server/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <article id="post-sshd-server" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -544,7 +1135,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/16/sshd-server/" data-id="cj9kqkxa7004606nflbwuojch" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/16/sshd-server/" data-id="cjb0eeaxh003o06rop61bsg0d" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -622,6 +1213,162 @@
 
 
 
+    <article id="post-shadowsocks-server" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/16/shadowsocks-server/">shadowsocks</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/16/shadowsocks-server/">
+            <time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/server/">server</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="用shadowsocks作为翻墙的工具"><a href="#用shadowsocks作为翻墙的工具" class="headerlink" title="用shadowsocks作为翻墙的工具"></a>用shadowsocks作为翻墙的工具</h3><p>一般的翻墙工具还有VPN,pptp是VPN的一种,我们在这里介绍的是shadowsocks翻墙工具 </p>
+<p> <a href="https://shadowsocks.org/en/download/clients.html" target="_blank" rel="external">shadowsocks 官网</a></p>
+<p> <a href="https://www.loyalsoldier.me/fuck-the-gfw-with-my-own-shadowsocks-server/" target="_blank" rel="external">centos7 install shadowsocks</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">yum install python-setuptools &amp;&amp; easy_install pip  </div><div class="line">pip install shadowsocks</div><div class="line">vim /root/ss/ssserver.json</div><div class="line">    &#123;</div><div class="line">      <span class="string">"server"</span>: <span class="string">"0.0.0.0"</span>,</div><div class="line">      <span class="string">"server_port"</span>: 8388,</div><div class="line">      <span class="string">"local_address"</span>: <span class="string">"127.0.0.1"</span>,</div><div class="line">      <span class="string">"local_port"</span>: 1080,</div><div class="line">      <span class="string">"password"</span>: <span class="string">"yourpassword"</span>,</div><div class="line">      <span class="string">"timeout"</span>: 300,</div><div class="line">      <span class="string">"method"</span>: <span class="string">"aes-256-cfb"</span>,</div><div class="line">      <span class="string">"fast_open"</span>: <span class="literal">false</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">systemctl start firewalld.service</div><div class="line">systemctl <span class="built_in">enable</span> firewalld.service</div><div class="line">firewall-cmd --permanent --add-port=8388/tcp</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure>
+<p>启动 ssserver服务<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">nohup ssserver -c /root/ss/ssserver.json -d start &amp;</div></pre></td></tr></table></figure></p>
+<p>查看ssserver 有没有启动成功</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ps aux |grep ssserver</div><div class="line"><span class="comment"># 状态要是Ss,必须要切换到root用户执行</span></div></pre></td></tr></table></figure>
+<p>如果没有成功,可能是因为/root/ss/ssserver.json 的server_ip的原因,我买了个<a href="https://intl.aliyun.com/zh" target="_blank" rel="external">国际阿里云</a>的ECS服务器,我写的是公网的IP,结果一直运行不起来<br>因为公网是通过nat IP实现的(所以在安全组中只能是选择内网进行配置),所以改成Privaty IP就可以正常启动了,最好是设置为0.0.0.0就好.</p>
+<p>阿里云的ECS服务器上配置使用任意端口的服务后,端口会自动开启监听,但它还有一个安全组的概念,最好设置一个(内网   入  允许 全部 -1/-1   0.0.0.0/0  优先级110)<br>这样就完全可以由ECS的系统完全的操作防火墙,就像没有安全组概念一样了.</p>
+<p> <a href="https://www.vultr.com/docs/how-to-deploy-google-bbr-on-centos-7" target="_blank" rel="external">centos7 install BBR</a> 要注意下sudo grub2-set-default 0,应该是为0的,使用最新的,文档却写成了1<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># update kernet</span></div><div class="line"><span class="comment"># look current kernet</span></div><div class="line">uname -r</div><div class="line"><span class="comment"># Install the ELRepo repo:</span></div><div class="line">sudo rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org</div><div class="line">sudo rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm</div><div class="line"><span class="comment"># install newer kernet</span></div><div class="line">sudo yum --enablerepo=elrepo-kernel install kernel-ml -y</div><div class="line"><span class="comment"># look install newer kernet</span></div><div class="line">rpm -qa | grep kernel</div><div class="line">sudo egrep ^menuentry /etc/grub2.cfg | cut -f 2 -d \<span class="string">'</span></div><div class="line"><span class="string"># setting newer kernet</span></div><div class="line"><span class="string">sudo grub2-set-default 0</span></div><div class="line"><span class="string">sudo shutdown -r now</span></div><div class="line"><span class="string">uname -r</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string"># enable BBr</span></div><div class="line"><span class="string">echo '</span>net.core.default_qdisc=fq<span class="string">' | sudo tee -a /etc/sysctl.conf</span></div><div class="line"><span class="string">echo '</span>net.ipv4.tcp_congestion_control=bbr<span class="string">' | sudo tee -a /etc/sysctl.conf</span></div><div class="line"><span class="string">sudo sysctl -p</span></div><div class="line"><span class="string">sudo sysctl net.ipv4.tcp_available_congestion_control</span></div><div class="line"><span class="string">net.ipv4.tcp_available_congestion_control = bbr cubic reno</span></div><div class="line"><span class="string">sudo sysctl -n net.ipv4.tcp_congestion_control</span></div><div class="line"><span class="string">bbr</span></div><div class="line"><span class="string">lsmod |grep bbr   # output   tcp_bbr                16384  0</span></div></pre></td></tr></table></figure></p>
+<p><a href="https://github.com/shadowsocks/shadowsocks-qt5/wiki/%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97" target="_blank" rel="external">client install shadowsocks</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#ubuntu</span></div><div class="line">sudo add-apt-repository ppa:hzwhuang/ss-qt5</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install shadowsocks-qt5</div><div class="line">ss-qt5</div><div class="line"><span class="comment"># 将ssserver.json的配置,设置到ss中</span></div></pre></td></tr></table></figure>
+<h3 id="注意-一定要再去配置下代理Pxory-0-0-0-0-1080-或者用本地的-pac文件-Local-Port就必须和service-pac文件-此文件是过滤网址用的-如果访问文件中的网址则走代理-启动的端口一致"><a href="#注意-一定要再去配置下代理Pxory-0-0-0-0-1080-或者用本地的-pac文件-Local-Port就必须和service-pac文件-此文件是过滤网址用的-如果访问文件中的网址则走代理-启动的端口一致" class="headerlink" title="注意:一定要再去配置下代理Pxory 0.0.0.0:1080 或者用本地的.pac文件,Local Port就必须和service.pac文件(此文件是过滤网址用的,如果访问文件中的网址则走代理)启动的端口一致."></a>注意:一定要再去配置下代理Pxory 0.0.0.0:1080 或者用本地的.pac文件,Local Port就必须和service.pac文件(此文件是过滤网址用的,如果访问文件中的网址则走代理)启动的端口一致.</h3><p><a href="http://pac.ddcc.me/1.pac" target="_blank" rel="external">http://pac.ddcc.me/1.pac</a> == local.pac</p>
+<h4 id="在国际里云购买的ESC-配置好shadowsocks之后-在手机上能正常使用-也不需要去设置代理-但在Ubuntu桌面下却一直用不了"><a href="#在国际里云购买的ESC-配置好shadowsocks之后-在手机上能正常使用-也不需要去设置代理-但在Ubuntu桌面下却一直用不了" class="headerlink" title="在国际里云购买的ESC,配置好shadowsocks之后,在手机上能正常使用,也不需要去设置代理,但在Ubuntu桌面下却一直用不了"></a>在国际里云购买的ESC,配置好shadowsocks之后,在手机上能正常使用,也不需要去设置代理,但在Ubuntu桌面下却一直用不了</h4><p> 如果自己不想搭建服务器的话,可以按下面的操作进行翻墙:</p>
+<p> <a href="https://doub.io/sszhfx/" target="_blank" rel="external">Shadowsocks免费账号分享</a>,但这个网址要先翻墙才行,哈哈<br> 具体的使用:在免费账号分享的这个网址上 </p>
+<p>1.使用二维码:点击二维码会出现一个二维码的图 这里打开shadowsocks软件–&gt;点鼠标右键–&gt;add–&gt;scan QR code on screen</p>
+<p>2.使用生成二维码的url:在add–&gt;选择url中ss以及后面的部分<br>如果失败的话,可以换其它的二维码试试.</p>
+<p><a href="https://github.com/TestSmirk/ss-ip" target="_blank" rel="external">这个是我大哥自己搭建的一些ss帐号</a></p>
+<h3 id="ubuntu-etc-resolv-conf"><a href="#ubuntu-etc-resolv-conf" class="headerlink" title="ubuntu /etc/resolv.conf"></a>ubuntu /etc/resolv.conf</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">nameserver 127.0.1.1</div><div class="line"><span class="comment"># nameserver 8.8.8.8</span></div><div class="line">search DHCP HOST</div></pre></td></tr></table></figure>
+<h3 id="加速SS的链接速度"><a href="#加速SS的链接速度" class="headerlink" title="加速SS的链接速度"></a><a href="http://vegetablefinn.github.io/2016/05/02/SS%E7%A5%9E%E5%99%A8-FinalSpeed-XSocks-%E7%AC%94%E8%AE%B0/" target="_blank" rel="external">加速SS的链接速度</a></h3><p>通过命令行添加PPA源,安装I2P<br>打开终端窗口并输入:<br>    sudo apt-add-repository ppa:i2p-maintainers/i2p<br>此命令将添加 PPA 至 /etc/apt/source.list.d 中, 并获取软件源签名所使用的 GPG 密钥.GPG 密钥保证软件包自编译后没有被篡改.<br>输入一下命令,通知您的软件包管理器新添加的PPA源:<br>    sudo apt-get update<br>此命令将从系统中已启用的每个软件源中获取最新的软件列表,包括刚刚通过命令添加的 I2P PPA 源.<br>您现在可以安装I2P了！<br>    sudo apt-get install i2p</p>
+<h1 id="home-femn-i2p-netDb"><a href="#home-femn-i2p-netDb" class="headerlink" title="/home/femn/.i2p/netDb"></a>/home/femn/.i2p/netDb</h1><p>路由器开启UPnP<br><a href="https://cdn.jimmyho.top/download/i2p/i2preseed_latest.zip" target="_blank" rel="external">https://cdn.jimmyho.top/download/i2p/i2preseed_latest.zip</a><br>以前的补种文件:<br><a href="https://cdn.jimmyho.top/download/i2p/" target="_blank" rel="external">https://cdn.jimmyho.top/download/i2p/</a></p>
+<p> 启动 i2prouter脚本<br>i2prouter start<br>sudo dpkg-reconfigure i3p 作为服务在您的系统启动时自动运行,甚至早于用户登录<br>首次安装时,请不要忘记如果可能请调整您的 NAT/防火墙. 需要转发的端口可以通过路由控制台的 <a href="http://127.0.0.1:7657/confignet" target="_blank" rel="external">网络配置页面</a>查看. 如果需要端口转发/端口映射方面的帮助,portforward.com可能会对您有用</p>
+<p>请到<a href="http://127.0.0.1:7657/config.jsp" target="_blank" rel="external">配置页面</a>, 检查并调整带宽设置,因为默认设置的 96 KB/s 下行 / 40 KB/s 上行相当保守</p>
+<p>如果您希望通过浏览器访问I2P暗网内的网站, 您需要参看 <a href="https://geti2p.net/zh-cn/about/browser-config" target="_blank" rel="external">浏览器代理设置</a> 页面了解基本设置方法</p>
+<p><a href="http://127.0.0.1:7657/configreseed" target="_blank" rel="external">I2P 的补种界面</a></p>
+<p><a href="https://www.resilio.com/" target="_blank" rel="external">Resilio Sync</a>,原名:BitTorrent Sync)是一款跨平台的文件同步工具,让你在几台不同的设备之间,同步文件,文件不经过任何云端服务器,文件只在客户端之间直接传输,十分安全私密.正是因为这一点,因此很快成为文件共享的热门应用,大家既可以配合 VPS,用它来搭建一个网盘,也可以借助他的共享能力用来和朋友共享文件</p>
+<p>下载此包并解压<br>wget <a href="https://download-cdn.resilio.com/stable/linux-x64/resilio-sync_x64.tar.gz" target="_blank" rel="external">https://download-cdn.resilio.com/stable/linux-x64/resilio-sync_x64.tar.gz</a></p>
+<h1 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h1><p>./rslsync<br>本机浏览器中访问地址127.0.0.1:8888,进入Resilio Sync管理页面.当然,这个端口号是可以修改的,在配置文件/etc/resilio-sync/config.json</p>
+<h1 id="作为网盘"><a href="#作为网盘" class="headerlink" title="作为网盘"></a>作为网盘</h1><p>server {<br>  listen 80;<br>  server_name sync.yourdomain.com;</p>
+<p>  access_log /var/log/nginx/sync.yourdomain.com.log;<br>  location / {<br>    proxy_pass <a href="http://127.0.0.1:8888" target="_blank" rel="external">http://127.0.0.1:8888</a>;<br>  }<br>}</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/16/shadowsocks-server/" data-id="cjb0eeaxb003g06rovf165fo5" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/16/shadowsocks-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/shadowsocks-server/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-CDN-server" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -675,7 +1422,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/16/CDN-server/" data-id="cj9kqkx6v000006nfvlddwij5" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/16/CDN-server/" data-id="cjb0eeaua000206roudjyao9e" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -832,7 +1579,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/15/vps-server/" data-id="cj9kqkxa4004206nfq7uughej" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/15/vps-server/" data-id="cjb0eeaxp004406rova9we8za" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -961,7 +1708,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/14/python-fun-program/" data-id="cj9kqkx9e002z06nf5teb6ign" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/14/python-fun-program/" data-id="cjb0eeawu003506rorcqxgi4g" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1094,7 +1841,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/14/进程间通信/" data-id="cj9kqkxa9004b06nf3mmur526" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/14/进程间通信/" data-id="cjb0eeaz7004n06ros91qnr86" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1172,489 +1919,6 @@
 
 
 
-    <article id="post-tornado" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/11/tornado/">tornado</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/11/tornado/">
-            <time datetime="2017-08-11T11:29:40.000Z" itemprop="datePublished">2017-08-11</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/python3/">python3</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>Tornado 是一个Python web框架和异步网络库,起初由 FriendFeed(后该公司被facebook收购,目前tornado由facebook开发维护)开发.由于非阻塞的特性,他在处理Http长连接、websocket等保持连接时间较长的请求时,并发能力很强.</p>
-<p><a href="http://tornado.moelove.info/zh/latest/guide.html" target="_blank" rel="external">Tornado</a>是非阻塞式服务器,是实时Web服务的一个理想框架,大体上可以被分为4个主要的部分:</p>
-<ol>
-<li>web框架(RequestHandler,Application)</li>
-<li>HTTP的客户端和web服务端实现 (AsyncHTTPClient and HTTPServer)</li>
-<li>异步网络库 (IOLoop and IOStream)</li>
-<li>协程库 (tornado.gen) 允许异步代码写的更直接而不用链式回调的方式</li>
-</ol>
-<h4 id="web框架-包括创建web应用的-RequestHandler-类-还有很多其他支持的类"><a href="#web框架-包括创建web应用的-RequestHandler-类-还有很多其他支持的类" class="headerlink" title="web框架 (包括创建web应用的 RequestHandler 类,还有很多其他支持的类)."></a>web框架 (包括创建web应用的 RequestHandler 类,还有很多其他支持的类).</h4><h5 id="tornado-web-Application类的实例化"><a href="#tornado-web-Application类的实例化" class="headerlink" title="tornado.web.Application类的实例化:"></a>tornado.web.Application类的实例化:</h5><p>传递给Application类<strong>init</strong>方法的最重要的参数是handlers(是一个元组组成的列表,其中每个元组的第一个元素是一个用于匹配的正则表达式,第二个元素是一个RequestHanlder类).它告诉Tornado应该用哪个类来响应请求(如果一个正则表达式包含一个捕获分组(即,正则表达式中的部分被括号括起来),匹配的内容将作为相应HTTP请求的参数传到RequestHandler对象中).settings参数则是对这个app的一些设置.</p>
-<p>一旦Application对象被创建,我们可以将其传递给Tornado的HTTPServer对象,然后使用我们在命令行指定的端口进行监听(通过options对象取出.)最后,在程序准备好接收HTTP请求后,我们创建一个Tornado的IOLoop的实例.</p>
-<p>Application对象是负责全局配置的,包括映射请求转发给处理程序的路由表.static,template的内容.Application实例中的所有属性,BaseHandler中使用Application实例中的属性,以便所有的Handler都可以使用其属性.</p>
-<h5 id="Tornado的请求处理函数类-当处理一个请求时-Tornado将这个类实例化-并调用与HTTP请求方法所对应的方法-get-post方法"><a href="#Tornado的请求处理函数类-当处理一个请求时-Tornado将这个类实例化-并调用与HTTP请求方法所对应的方法-get-post方法" class="headerlink" title="Tornado的请求处理函数类.当处理一个请求时,Tornado将这个类实例化,并调用与HTTP请求方法所对应的方法(get,post方法)"></a>Tornado的请求处理函数类.当处理一个请求时,Tornado将这个类实例化,并调用与HTTP请求方法所对应的方法(get,post方法)</h5><p>tornado.web.RequestHandler的生命周期是initialize() -&gt; prepare() -&gt; get()/post() -&gt; on_finish()</p>
-<ol>
-<li><p>initialize() 在构造函数后调用,一般用于定义参数,不可异步</p>
-</li>
-<li><p>prepare() 在具体的get()/post()/put()/delete()等执行前调用,一般用于加载登录信息,过滤请求等,可异步</p>
-</li>
-<li><p>get()/post() 处理请求</p>
-</li>
-<li><p>on_finish() 请求后的清理,保存缓存,session等,该方法不能传递任何数据到客户端,所以不能操作cookie,可异步</p>
-</li>
-<li><p>getcurrentuser() 第一次使用实例中的currentuser参数且为None时会调用该方法,因为不能异步,所以需要通过异步来获取的,请写在prepare()中,blogxtg便是在prepare()中异步从redis读取.</p>
-</li>
-</ol>
-<p>RequestHandler类有一系列有用的内建方法,包括get_argument</p>
-<p>RequestHandler的另一个有用的方法是write,它以一个字符串作为函数的参数,并将其写入到HTTP响应中</p>
-<p>Tornado默认实现了几个常用的处理器<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ErrorHandler :生成指定状态码的错误响应.</div><div class="line">RedirectHandler :重定向请求.</div><div class="line">StaticFileHandler :处理静态文件请求.</div><div class="line">FallbackHandler :使可以在Tornado中混合使用其他HTTP服务器.</div></pre></td></tr></table></figure></p>
-<h5 id="其它的Web-模块"><a href="#其它的Web-模块" class="headerlink" title="其它的Web 模块"></a>其它的Web 模块</h5><ol>
-<li><p>escape - XHTML, JSON, URL 的编码/解码方法</p>
-</li>
-<li><p>database - 对 MySQLdb 的简单封装,使其更容易使用</p>
-</li>
-<li><p>template - 基于 Python 的 web 模板系统</p>
-</li>
-<li><p>httpclient - 非阻塞式 HTTP 客户端,它被设计用来和 web 及 httpserver 协同工作</p>
-</li>
-<li><p>auth - 第三方认证的实现(包括 Google OpenID/OAuth、Facebook Platform、Yahoo BBAuth、FriendFeed OpenID/OAuth、Twitter OAuth)</p>
-</li>
-<li><p>locale - 针对本地化和翻译的支持</p>
-</li>
-<li><p>options - 命令行和配置文件解析工具,针对服务器环境做了优化</p>
-</li>
-<li><p>Tornado可以解析URLencoded和multipart结构的POST请求</p>
-</li>
-</ol>
-<h5 id="Tornado模板是被Python表达式和控制语句标记的简单文本文件"><a href="#Tornado模板是被Python表达式和控制语句标记的简单文本文件" class="headerlink" title="Tornado模板是被Python表达式和控制语句标记的简单文本文件"></a>Tornado模板是被Python表达式和控制语句标记的简单文本文件</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Tornado模板是被Python表达式和控制语句标记的简单文本文件.</span></div><div class="line"><span class="comment"># 填充表达式:&#123;&#123;&#125;&#125;,控制流语句&#123;% %&#125;&#123;% end %&#125;</span></div><div class="line"><span class="comment"># 你也可以在你的控制语句块中间使用&#123;% set foo = 'bar' %&#125;来设置变量.</span></div><div class="line"></div><div class="line"><span class="comment"># template_path参数告诉Tornado在哪里寻找模板文件</span></div><div class="line"><span class="comment"># 模板是一个允许你嵌入Python代码片段的HTML文件.</span></div><div class="line"></div><div class="line"><span class="comment"># 在模板中使用参数</span></div><div class="line">&#123;&#123;wood&#125;&#125;</div><div class="line">&#123;% <span class="keyword">for</span> book <span class="keyword">in</span> books %&#125;</div><div class="line">    &lt;li&gt;&#123;&#123; book &#125;&#125;&lt;/li&gt;</div><div class="line">&#123;% end %&#125; &#125;&#125;</div><div class="line"><span class="comment"># 在模板中使用函数</span></div><div class="line"></div><div class="line"><span class="comment"># 渲染模板</span></div><div class="line">self.render(<span class="string">'index.html'</span>)</div><div class="line"><span class="comment"># 这段代码告诉Tornado在templates文件夹下找到一个名为index.html的文件,</span></div><div class="line"><span class="comment"># 读取其中的内容,并且发送给浏览器.</span></div><div class="line"></div><div class="line"><span class="comment"># 继承模板与重写标签</span></div><div class="line">&#123;% extend base.html%&#125;</div><div class="line">&#123;% block body %&#125;重写body block</div><div class="line"><span class="comment"># 子模板不能在block标签定义内容.</span></div></pre></td></tr></table></figure>
-<p>如果你想编写一个可扩展的社交应用、实时分析引擎,或RESTful API,那么简单而强大的Python,以及Tornado正是为你准备的！</p>
-<h5 id="提供静态文件"><a href="#提供静态文件" class="headerlink" title="提供静态文件"></a>提供静态文件</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># static_path参数指定了你应用程序放置静态资源(如图像、CSS文件、JavaScript文件等)的目录</span></div><div class="line">&lt;link rel=<span class="string">"stylesheet"</span> href=<span class="string">"&#123;&#123; static_url("</span>style.css<span class="string">") &#125;&#125;"</span>&gt;</div></pre></td></tr></table></figure>
-<h5 id="模板扩展-模块"><a href="#模板扩展-模块" class="headerlink" title="模板扩展(模块)"></a>模板扩展(模块)</h5><p>大多数站点希望复用像header、footer和布局网格这样的内容.在这一章中,我们将看到如何使用扩展Tornado模板或UI模块完成这一工作.一个拥有样式、布局和header/footer细节的主模版,以及一个处理页面的轻量级的子模板.</p>
-<p>tornado通过extends和block语句支持模板继承,这就让你拥有了编写能够在合适的地方复用的流体模板的控制权和灵活性.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment"># 为了扩展一个已经存在的模板,你只需要在新的模板文件的顶部放上一句</span></div><div class="line"><span class="comment"># &#123;% extends "filename.html" %&#125;.</span></div><div class="line"></div><div class="line"><span class="comment"># 比如,为了在新模板中扩展一个父模板(在这里假设为main.html),你可以这样使用:</span></div><div class="line">&#123;% extends <span class="string">"main.html"</span> %&#125;</div><div class="line"><span class="comment"># 这就使得新文件继承main.html的所有标签,并且覆写为期望的内容.</span></div></pre></td></tr></table></figure>
-<h5 id="UI模块是封装模板中包含的标记、样式以及行为的可复用组件-使模板部分模块化"><a href="#UI模块是封装模板中包含的标记、样式以及行为的可复用组件-使模板部分模块化" class="headerlink" title="UI模块是封装模板中包含的标记、样式以及行为的可复用组件(使模板部分模块化)"></a>UI模块是封装模板中包含的标记、样式以及行为的可复用组件(使模板部分模块化)</h5><p>1.它所定义的元素通常用于多个模板交叉复用或在同一个模板中重复使用</p>
-<p>2.模块本身是一个继承自Tornado的UIModule类的简单Python类,并定义了一个render方法.<br>当一个模板使用 module Foo(…) 标签引用一个模块时,Tornado的模板引擎调用模块的render方法,然后返回一个字符串来替换模板中的模块标签.</p>
-<p>UI模块也可以在渲染后的页面中嵌入自己的JavaScript和CSS文件,或指定额外包含的JavaScript或CSS文件.<br>你可以定义可选的embedded_javascript、embedded_css、javascript_files和css_files方法来实现这一方法<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;% module xsrf_form_html() %&#125;跨网站攻击</div></pre></td></tr></table></figure></p>
-<p>3.一个非常有用的做法是让模块指向一个模板文件而不是在模块类中直接渲染字符串</p>
-<h5 id="Tornado默认会自动转义-escape-模板中的内容-把标签转换为相应的HTML实体-而不会被作为一个HTML元素解释-以免被浏览器执行-防止你的访客进行恶意攻击的"><a href="#Tornado默认会自动转义-escape-模板中的内容-把标签转换为相应的HTML实体-而不会被作为一个HTML元素解释-以免被浏览器执行-防止你的访客进行恶意攻击的" class="headerlink" title="Tornado默认会自动转义(escape)模板中的内容,把标签转换为相应的HTML实体,而不会被作为一个HTML元素解释(以免被浏览器执行).防止你的访客进行恶意攻击的."></a>Tornado默认会自动转义(escape)模板中的内容,把标签转换为相应的HTML实体,而不会被作为一个HTML元素解释(以免被浏览器执行).防止你的访客进行恶意攻击的.</h5><p>举个例子,如果Burt想在footer中使用模板变量设置email联系链接,他将不会得到期望的HTML链接.考虑下面的模板片段:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;% set mailLink = <span class="string">"&lt;a href="</span>mailto:contact@burtsbooks.com<span class="string">"&gt;Contact Us&lt;/a&gt;"</span> %&#125;</div><div class="line">&#123;&#123; mailLink &#125;&#125;<span class="string">'</span></div><div class="line"><span class="string"># 它会在页面源代码中渲染成如下代码:</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">&amp;lt;a href=&amp;quot;mailto:contact@burtsbooks.com&amp;quot;&amp;gt;Contact Us&amp;lt;/a&amp;gt;</span></div><div class="line"><span class="string"># 此时自动转义被运行了,很明显,这无法让人们联系上Burt.</span></div></pre></td></tr></table></figure>
-<p>为了处理这种情况,你可以禁用自动转义,一种方法是在Application构造函数中传递autoescape=None,另一种方法是在每页的基础上修改自动转义行为,如下所示:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">&#123;% autoescape <span class="keyword">None</span> %&#125;</div><div class="line">&#123;&#123; mailLink &#125;&#125;</div><div class="line"><span class="comment"># 这些autoescape块不需要结束标签,并且可以设置xhtml_escape来开启自动转义(默认行为)</span></div><div class="line"><span class="comment"># 或None来关闭.</span></div><div class="line"></div><div class="line"><span class="comment"># 然而,在理想的情况下,你希望保持自动转义开启以便继续防护你的网站.</span></div><div class="line"><span class="comment"># 因此,你可以使用&#123;% raw %&#125;指令来输出不转义的内容.</span></div><div class="line"></div><div class="line">&#123;% raw mailLink %&#125;</div><div class="line"><span class="comment"># 需要特别注意的是,当你使用诸如Tornado的linkify()和xsrf_form_html()函数时</span></div><div class="line"><span class="comment"># 自动转义的设置被改变了.所以如果你希望在前面代码的footer中使用linkify()来包含链接</span></div><div class="line"><span class="comment"># 你可以使用一个&#123;% raw %&#125;块:</span></div><div class="line"></div><div class="line">&#123;% block footer %&#125;</div><div class="line">&lt;p&gt;</div><div class="line">    For more information about our selection, hours <span class="keyword">or</span> events, please email us at</div><div class="line">    &lt;a href="mailto:contact@burtsbooks.com"&gt;contact@burtsbooks.com&lt;/a&gt;.</div><div class="line">&lt;/p&gt;</div><div class="line"></div><div class="line">&lt;p class="small"&gt;</div><div class="line">    Follow us on Facebook at</div><div class="line">    &#123;% raw linkify(<span class="string">"https://fb.me/burtsbooks"</span>, extra_params=<span class="string">'ref=website'</span>) %&#125;.</div><div class="line">    &#123;% apply linkify <span class="keyword">or</span> 自定义方法%&#125; Application中get_template_namespace</div><div class="line">&lt;/p&gt;</div><div class="line">&#123;% end %&#125;</div><div class="line"><span class="comment"># 这样,你可以既利用linkify()简记的好处,又可以保持在其他地方自动转义的好处 &#125;&#125;' &#125;&#125;</span></div></pre></td></tr></table></figure>
-<h4 id="异步网络库-IOLoop-and-IOStream-为HTTP组件提供构建模块-也可以用来实现其他协议"><a href="#异步网络库-IOLoop-and-IOStream-为HTTP组件提供构建模块-也可以用来实现其他协议" class="headerlink" title="异步网络库 (IOLoop and IOStream), 为HTTP组件提供构建模块,也可以用来实现其他协议."></a>异步网络库 (IOLoop and IOStream), 为HTTP组件提供构建模块,也可以用来实现其他协议.</h4><p>一般的web应用是阻塞性质的,也就是说当一个请求被处理时,这个进程就会被挂起直至请求完成.这意味着应用程序被有效的锁定直至处理结束,很明显这在可扩展性上出现了问题.</p>
-<p>不过,Tornado给了我们更好的方法来处理这种情况.应用程序在等待第一个处理完成的过程中,让I/O循环打开以便服务于其他客户端,直到处理完成时启动一个请求并给予反馈,而不再是等待请求完成的过程中挂起进程.</p>
-<p>同时实时web功能需要为每个用户提供一个多数时间被闲置的长连接, 在传统的同步web服务器中,这意味着要为每个用户提供一个线程, 当然每个线程的开销都是很昂贵的.</p>
-<p>为了尽量减少并发连接造成的开销,Tornado使用了一种单线程事件循环的方式. 这就意味着所有的应用代码都应该是异步非阻塞的, 因为在同一时间只有一个操作是有效的<br><img src="/2017/08/11/tornado/tornado-IOLoop.png" alt="IOLoop模块" title="IOLoop模块"></p>
-<h5 id="一般的异步回调"><a href="#一般的异步回调" class="headerlink" title="一般的异步回调"></a>一般的异步回调</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> time</div><div class="line"><span class="keyword">import</span> threading</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">long_io</span><span class="params">(callback)</span>:</span></div><div class="line">    <span class="string">"""将耗时的操作交给另一线程来处理"""</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fun</span><span class="params">(cb)</span>:</span> <span class="comment"># 回调函数作为参数</span></div><div class="line">        <span class="string">"""耗时操作"""</span></div><div class="line">        print( <span class="string">"开始执行IO操作"</span>)</div><div class="line">        time.sleep(<span class="number">5</span>)</div><div class="line">        print(<span class="string">"完成IO操作,并执行回调函数"</span>)</div><div class="line">        cb(<span class="string">"io result"</span>)  <span class="comment"># 执行回调函数</span></div><div class="line">    threading._start_new_thread(fun, (callback,))  <span class="comment"># 开启线程执行耗时操作</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">on_finish</span><span class="params">(ret)</span>:</span></div><div class="line">    <span class="string">"""回调函数"""</span></div><div class="line">    print( <span class="string">"开始执行回调函数on_finish"</span>)</div><div class="line">    print( <span class="string">"ret: %s"</span> % ret)</div><div class="line">    print( <span class="string">"完成执行回调函数on_finish"</span>)</div><div class="line"><span class="comment"># 可读性差,要结合多个函数</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">req_a</span><span class="params">()</span>:</span></div><div class="line">    <span class="string">"""将req_q逻辑拆分了"""</span></div><div class="line">    print( <span class="string">"开始处理请求req_a"</span> )</div><div class="line">    long_io(on_finish)</div><div class="line">    print( <span class="string">"离开处理请求req_a"</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">req_b</span><span class="params">()</span>:</span></div><div class="line">    print( <span class="string">"开始处理请求req_b"</span>)</div><div class="line">    time.sleep(<span class="number">2</span>) <span class="comment"># 添加此句来突出显示程序执行的过程</span></div><div class="line">    print( <span class="string">"完成处理请求req_b"</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">    req_a()</div><div class="line">    req_b()</div><div class="line">    <span class="keyword">while</span> <span class="number">1</span>: <span class="comment"># 添加此句防止程序退出,保证线程可以执行完</span></div><div class="line">        <span class="keyword">pass</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    main()</div><div class="line"></div><div class="line"><span class="comment"># 开始处理请求req_a</span></div><div class="line"><span class="comment"># 离开处理请求req_a</span></div><div class="line"><span class="comment"># 开始处理请求req_b</span></div><div class="line"><span class="comment"># 开始执行IO操作</span></div><div class="line"><span class="comment"># 完成处理请求req_b</span></div><div class="line"><span class="comment"># 完成IO操作,并执行回调函数</span></div><div class="line"><span class="comment"># 开始执行回调函数on_finish</span></div><div class="line"><span class="comment"># ret: io result</span></div><div class="line"><span class="comment"># 完成执行回调函数on_finish</span></div></pre></td></tr></table></figure>
-<h5 id="yield控制进程的暂停与send又恢复"><a href="#yield控制进程的暂停与send又恢复" class="headerlink" title="yield控制进程的暂停与send又恢复"></a>yield控制进程的暂停与send又恢复</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> time</div><div class="line"><span class="keyword">import</span> threading</div><div class="line"></div><div class="line">gen = <span class="keyword">None</span> <span class="comment"># 全局生成器,供long_io使用</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">long_io</span><span class="params">()</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fun</span><span class="params">()</span>:</span></div><div class="line">        print(<span class="string">"开始执行IO操作"</span>)</div><div class="line">        <span class="keyword">global</span> gen</div><div class="line">        time.sleep(<span class="number">5</span>)</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            print(<span class="string">"完成IO操作,并send结果唤醒挂起程序继续执行"</span>)</div><div class="line">            gen.send(<span class="string">"io result"</span>)  <span class="comment"># 使用send返回结果并唤醒程序继续执行</span></div><div class="line">        <span class="keyword">except</span> StopIteration: <span class="comment"># 捕获生成器完成迭代,防止程序退出</span></div><div class="line">            <span class="keyword">pass</span></div><div class="line">    threading._start_new_thread(fun, ())</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">req_a</span><span class="params">()</span>:</span></div><div class="line">    <span class="string">"""将req_q逻辑组织在一起"""</span></div><div class="line">    print(<span class="string">"开始处理请求req_a"</span>)</div><div class="line">    ret = <span class="keyword">yield</span> long_io()</div><div class="line">    print(<span class="string">"ret: %s"</span> % ret)</div><div class="line">    print(<span class="string">"完成处理请求req_a"</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">req_b</span><span class="params">()</span>:</span></div><div class="line">    print(<span class="string">"开始处理请求req_b"</span>)</div><div class="line">    time.sleep(<span class="number">2</span>)</div><div class="line">    print( <span class="string">"完成处理请求req_b"</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">global</span> gen</div><div class="line">    gen = req_a() <span class="comment"># 得到生成器,不能像同步一样去输写</span></div><div class="line">    next(gen) <span class="comment"># 开启生成器req_a的执行</span></div><div class="line">    req_b()</div><div class="line">    <span class="keyword">while</span> <span class="number">1</span>:</div><div class="line">        <span class="keyword">pass</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    main()</div><div class="line"><span class="comment"># 开始处理请求req_a</span></div><div class="line"><span class="comment"># 开始处理请求req_b</span></div><div class="line"><span class="comment"># 开始执行IO操作</span></div><div class="line"><span class="comment"># 完成处理请求req_b</span></div><div class="line"><span class="comment"># 完成IO操作,并send结果唤醒挂起程序继续执行</span></div><div class="line"><span class="comment"># ret: io result</span></div><div class="line"><span class="comment"># 完成处理请求req_a</span></div></pre></td></tr></table></figure>
-<h5 id="改进yield"><a href="#改进yield" class="headerlink" title="改进yield"></a>改进yield</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> time</div><div class="line"><span class="keyword">import</span> threading</div><div class="line"></div><div class="line">gen = <span class="keyword">None</span> <span class="comment"># 全局生成器,供long_io使用</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen_coroutine</span><span class="params">(f)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></div><div class="line">        <span class="keyword">global</span> gen</div><div class="line">        gen = f()</div><div class="line">        next(gen)</div><div class="line">    <span class="keyword">return</span> wrapper</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">long_io</span><span class="params">()</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fun</span><span class="params">()</span>:</span></div><div class="line">        print(<span class="string">"开始执行IO操作"</span>)</div><div class="line">        <span class="keyword">global</span> gen</div><div class="line">        time.sleep(<span class="number">5</span>)</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            print(<span class="string">"完成IO操作,并send结果唤醒挂起程序继续执行"</span>)</div><div class="line">            gen.send(<span class="string">"io result"</span>)  <span class="comment"># 使用send返回结果并唤醒程序继续执行</span></div><div class="line">        <span class="keyword">except</span> StopIteration: <span class="comment"># 捕获生成器完成迭代,防止程序退出</span></div><div class="line">            <span class="keyword">pass</span></div><div class="line">    threading._start_new_thread(fun, ())</div><div class="line"></div><div class="line"><span class="meta">@gen_coroutine</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">req_a</span><span class="params">()</span>:</span></div><div class="line">    print(<span class="string">"开始处理请求req_a"</span>)</div><div class="line">    ret = <span class="keyword">yield</span> long_io()</div><div class="line">    print(<span class="string">"ret: %s"</span> % ret)</div><div class="line">    print(<span class="string">"完成处理请求req_a"</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">req_b</span><span class="params">()</span>:</span></div><div class="line">    print(<span class="string">"开始处理请求req_b"</span>)</div><div class="line">    time.sleep(<span class="number">2</span>)</div><div class="line">    print( <span class="string">"完成处理请求req_b"</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">    req_a()</div><div class="line">    req_b()</div><div class="line">    <span class="keyword">while</span> <span class="number">1</span>:</div><div class="line">        <span class="keyword">pass</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    main()</div></pre></td></tr></table></figure>
-<h5 id="理解Tornado异步编程原理"><a href="#理解Tornado异步编程原理" class="headerlink" title="理解Tornado异步编程原理"></a>理解Tornado异步编程原理</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> time</div><div class="line"><span class="keyword">import</span> threading</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen_coroutine</span><span class="params">(f)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></div><div class="line">        gen_f = f()  <span class="comment"># gen_f为生成器对象(req_a的代码,以及上下文)</span></div><div class="line">        r = next(gen_f)  <span class="comment"># 相当于调用long_io()</span></div><div class="line">        <span class="comment"># r是long_io的生成器对象(long_io代码,以及上下文)</span></div><div class="line">        <span class="function"><span class="keyword">def</span> <span class="title">fun</span><span class="params">(g)</span>:</span></div><div class="line">            ret = next(g) <span class="comment"># 执行生成器long_io</span></div><div class="line">            <span class="keyword">try</span>:</div><div class="line">                gen_f.send(ret) <span class="comment"># 将结果返回给req_a并使其继续执行</span></div><div class="line">            <span class="keyword">except</span> StopIteration:</div><div class="line">                <span class="keyword">pass</span></div><div class="line">        threading._start_new_thread(fun, (r,))</div><div class="line">        <span class="comment"># tornado中是交给IOLoop进行管理</span></div><div class="line">    <span class="keyword">return</span> wrapper</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">long_io</span><span class="params">()</span>:</span></div><div class="line">    print(<span class="string">"开始执行IO操作"</span>)</div><div class="line">    time.sleep(<span class="number">5</span>)</div><div class="line">    print(<span class="string">"完成IO操作,yield回操作结果"</span>)</div><div class="line">    <span class="keyword">yield</span> <span class="string">"io result"</span></div><div class="line"></div><div class="line"><span class="meta">@gen_coroutine</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">req_a</span><span class="params">()</span>:</span></div><div class="line">    print(<span class="string">"开始处理请求req_a"</span>)</div><div class="line">    ret = <span class="keyword">yield</span> long_io()</div><div class="line">    print(<span class="string">"ret: %s"</span> % ret)</div><div class="line">    print(<span class="string">"完成处理请求req_a"</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">req_b</span><span class="params">()</span>:</span></div><div class="line">    print(<span class="string">"开始处理请求req_b"</span>)</div><div class="line">    time.sleep(<span class="number">2</span>)</div><div class="line">    print( <span class="string">"完成处理请求req_b"</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">    req_a()</div><div class="line">    req_b()</div><div class="line">    <span class="keyword">while</span> <span class="number">1</span>:</div><div class="line">        <span class="keyword">pass</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    main()</div></pre></td></tr></table></figure>
-<p>但tornado是单线程的,实现异步的机制不是线程,而是epoll,即将异步过程交给epoll执行并进行监视回调</p>
-<p>Tornado默认在函数处理返回时关闭客户端的连接.在通常情况下,这正是你想要的.但是当我们处理一个需要回调函数的异步请求时,我们需要连接保持开启状态直到回调函数执行完毕.</p>
-<p>tornado.web.asynchronous 装饰器可以用来代替异步处理. 当使用这个装饰器的时候, 响应不会自动发送; 而请求将一直保持开放直到callback调用 RequestHandler.finish</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainHandler</span><span class="params">(tornado.web.RequestHandler)</span>:</span></div><div class="line"><span class="meta">    @tornado.web.asynchronous</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></div><div class="line">        http = tornado.httpclient.AsyncHTTPClient()</div><div class="line">        http.fetch(<span class="string">"http://friendfeed-api.com/v2/feed/bret"</span>,</div><div class="line">                   callback=self.on_response)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_response</span><span class="params">(self, response)</span>:</span></div><div class="line">        <span class="keyword">if</span> response.error: <span class="keyword">raise</span> tornado.web.HTTPError(<span class="number">500</span>)</div><div class="line">        json = tornado.escape.json_decode(response.body)</div><div class="line">        self.write(<span class="string">"Fetched "</span> + str(len(json[<span class="string">"entries"</span>])) + <span class="string">" entries "</span></div><div class="line">                   <span class="string">"from the FriendFeed API"</span>)</div><div class="line">        self.finish()</div></pre></td></tr></table></figure>
-<p>记住当你使用@tornado.web.asynchonous装饰器时,Tornado永远不会自己关闭连接.<br>你必须在你的RequestHandler对象中调用finish方法来显式地告诉Tornado关闭连接.(否则,请求将可能挂起,浏览器可能不会显示我们已经发送给客户端的数据.)</p>
-<p>目前非阻塞IO的框架在近几年的web技术中特别火,比如node.js,而tornado依靠底层基于epoll(Linux)或者kqueue(BSD和MAC OSX)的IOLoop实现非阻塞IO,而且经过FriendFeed的实践,已经证明他是绝对优秀可靠的非阻塞IO框架,再加上他协程特性,让基于他的异步代码可以像阻塞多线程框架的同步代码一样易读易维护.</p>
-<h4 id="协程库-tornado-gen-允许异步代码写的像同步代码一样直观-而不用链式回调的方式"><a href="#协程库-tornado-gen-允许异步代码写的像同步代码一样直观-而不用链式回调的方式" class="headerlink" title="协程库 (tornado.gen) 允许异步代码写的像同步代码一样直观,而不用链式回调的方式."></a>协程库 (tornado.gen) 允许异步代码写的像同步代码一样直观,而不用链式回调的方式.</h4><p>tornado.gen模块,可以提供一个更整洁的方式来执行异步请求.</p>
-<p>tornado.gen.Task对象的一个实例,将我们想要的调用和传给该调用函数的参数传递给那个函数.<br>这里,yield的使用返回程序对Tornado的控制,允许在HTTP请求进行中执行其他任务.<br>当HTTP请求完成时,RequestHandler方法在其停止的地方恢复.这种构建的美在于它在请求处理程序中返回HTTP响应,而不是回调函数中</p>
-<p>Tornado的异步功能可以非常方便的创建依赖于缓慢查询或外部服务的Web应用<br>使用 @tornado.gen.coroutine 装饰器是做异步(协程)最简单的方式. 这允许你使用 yield 关键 字执行非阻塞I/O, 并且直到协程返回才发送响应.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainHandler</span><span class="params">(tornado.web.RequestHandler)</span>:</span></div><div class="line"><span class="meta">    @tornado.gen.coroutine</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></div><div class="line">        http = tornado.httpclient.AsyncHTTPClient()</div><div class="line">        response = <span class="keyword">yield</span> http.fetch(<span class="string">"http://friendfeed-api.com/v2/feed/bret"</span>)</div><div class="line">        json = tornado.escape.json_decode(response.body)</div><div class="line">        self.write(<span class="string">"Fetched "</span> + str(len(json[<span class="string">"entries"</span>])) + <span class="string">" entries "</span></div><div class="line">                   <span class="string">"from the FriendFeed API"</span>)</div></pre></td></tr></table></figure>
-<p>协程使用了Python的 yield 关键字代替链式回调来将程序挂起和恢复执行</p>
-<p>调用协程时,几乎所有的情况下, 任何一个调用协程的函数都必须是协程它自身, 并且在 调用的时候使用 yield 关键字</p>
-<h4 id="HTTP的服务端和客户端实现-HTTPServer-and-AsyncHTTPClient"><a href="#HTTP的服务端和客户端实现-HTTPServer-and-AsyncHTTPClient" class="headerlink" title="HTTP的服务端和客户端实现 (HTTPServer and AsyncHTTPClient)."></a>HTTP的服务端和客户端实现 (HTTPServer and AsyncHTTPClient).</h4><p>单线程server<br>tornado不仅仅是一个web framework,他还是一个简易的web server,这让他可以直接作为一个server来接收处理http请求,而不需要依靠wsgi容器.但是这个webserver过于简单,只支持单进程,所以在生产环境中,官方推荐的多进程多主机部署,启动多个tornado server实例分别监听不同端口,在上层通过类似nginx的成熟高效的http server来做负载均衡,将请求转发到合适端口的tornado实例中.<a href="http://www.tornadoweb.org/en/stable/guide/running.html" target="_blank" rel="external">(参考tornado官方文档运行部署篇)</a></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> json</div><div class="line"><span class="keyword">import</span> sys</div><div class="line"><span class="keyword">import</span> tornado.httpserver</div><div class="line"><span class="keyword">import</span> tornado.ioloop</div><div class="line"><span class="keyword">import</span> tornado.options</div><div class="line"><span class="keyword">import</span> tornado.gen</div><div class="line"><span class="keyword">import</span> tornado.httpclient</div><div class="line"></div><div class="line"><span class="keyword">from</span> tornado.options <span class="keyword">import</span> define, options</div><div class="line"></div><div class="line"><span class="keyword">import</span> tornado.web</div><div class="line"><span class="keyword">import</span> os.path</div><div class="line"></div><div class="line">define(<span class="string">"port"</span>, default=<span class="number">8080</span>, type=int)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainHandler</span><span class="params">(tornado.web.RequestHandler)</span>:</span></div><div class="line"></div><div class="line">    <span class="comment">#并行协程</span></div><div class="line"><span class="meta">    @tornado.gen.coroutine</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></div><div class="line">        ips = [<span class="string">"14.130.112.24"</span>,</div><div class="line">            <span class="string">"15.130.112.24"</span>,</div><div class="line">            <span class="string">"16.130.112.24"</span>,</div><div class="line">            <span class="string">"17.130.112.24"</span>]</div><div class="line">        <span class="comment"># 直到get_ip_info有返回了,才重新唤醒</span></div><div class="line">        rep1, rep2 = <span class="keyword">yield</span> [self.get_ip_info(ips[<span class="number">0</span>]), self.get_ip_info(ips[<span class="number">1</span>])]</div><div class="line">        rep34_dict = <span class="keyword">yield</span> dict(rep3=self.get_ip_info(ips[<span class="number">2</span>]), rep4=self.get_ip_info(ips[<span class="number">3</span>]))</div><div class="line">        self.write_response(ips[<span class="number">0</span>], rep1)</div><div class="line">        self.write_response(ips[<span class="number">1</span>], rep2)</div><div class="line">        self.write_response(ips[<span class="number">2</span>], rep34_dict[<span class="string">'rep3'</span>])</div><div class="line">        self.write_response(ips[<span class="number">3</span>], rep34_dict[<span class="string">'rep4'</span>])</div><div class="line"></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">write_response</span><span class="params">(self, ip, response)</span>:</span></div><div class="line">        self.write(ip)</div><div class="line">        self.write(<span class="string">":&lt;br/&gt;"</span>)</div><div class="line">        <span class="keyword">if</span> <span class="number">1</span> == response[<span class="string">"ret"</span>]:</div><div class="line">            self.write(<span class="string">u"国家:%s 省份: %s 城市: %s&lt;br/&gt;"</span> % (response[<span class="string">"country"</span>], response[<span class="string">"province"</span>], response[<span class="string">"city"</span>]))</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            self.write(<span class="string">"查询IP信息错误&lt;br/&gt;"</span>)</div><div class="line"></div><div class="line"><span class="meta">    @tornado.gen.coroutine</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_ip_info</span><span class="params">(self, ip)</span>:</span></div><div class="line">        http = tornado.httpclient.AsyncHTTPClient()</div><div class="line">        response = <span class="keyword">yield</span> http.fetch(<span class="string">"http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&amp;ip="</span> + ip)</div><div class="line">        <span class="keyword">if</span> response.error:</div><div class="line">            rep = &#123;<span class="string">"ret:0"</span>&#125;</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            rep = json.loads(response.body)</div><div class="line">        <span class="comment"># raise tornado.gen.Return(rep)  # 此处需要注意python2</span></div><div class="line">        <span class="keyword">return</span> rep</div><div class="line"></div><div class="line"><span class="comment"># Web应用App</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Application</span><span class="params">(tornado.web.Application)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        settings = dict(</div><div class="line">            template_path=os.path.join(os.path.dirname(__file__), <span class="string">"templates"</span>),</div><div class="line">            static_path=os.path.join(os.path.dirname(__file__), <span class="string">"media"</span>),</div><div class="line">            xsrf_cookies=<span class="keyword">False</span>,</div><div class="line">            cookie_secret=<span class="string">"bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E="</span>,</div><div class="line">            login_url=<span class="string">"/a/user/login"</span>,</div><div class="line">            debug=<span class="keyword">True</span>,</div><div class="line">        )</div><div class="line">        <span class="comment"># self.db = torndb.Connection(</span></div><div class="line">        <span class="comment">#     host = 'localhost',</span></div><div class="line">        <span class="comment">#     database = 'test',</span></div><div class="line">        <span class="comment">#     user = 'root',</span></div><div class="line">        <span class="comment">#     password = 'root',</span></div><div class="line">        <span class="comment"># )</span></div><div class="line">        super(Application, self).__init__([(<span class="string">r'/'</span>,MainHandler)], **settings)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">    tornado.options.parse_command_line()</div><div class="line">    <span class="comment"># tornado.options.parse_config_file("https8010.conf")</span></div><div class="line">    ssl_options = &#123;</div><div class="line">        <span class="string">"certfile"</span>: os.path.join(os.path.abspath(<span class="string">"."</span>), <span class="string">"213976088220462.pem"</span>),<span class="comment">#crt</span></div><div class="line">        <span class="string">"keyfile"</span>: os.path.join(os.path.abspath(<span class="string">"."</span>), <span class="string">"213976088220462.key"</span>),  <span class="comment"># server.key</span></div><div class="line">    &#125;</div><div class="line">    <span class="comment"># http_server = tornado.httpserver.HTTPServer(Application(),ssl_options=ssl_options,xheaders=True)#ssl_options=ssl_options</span></div><div class="line">    <span class="comment"># 创建http(socket)服务器实例</span></div><div class="line">    print(sys.getrecursionlimit())</div><div class="line">    print(options.port)</div><div class="line">    <span class="comment"># http_server.listen(options.port)</span></div><div class="line">    Application().listen(options.port)</div><div class="line">    io = tornado.ioloop.IOLoop.current()<span class="comment"># 异步网络库IOLoop</span></div><div class="line">    <span class="comment"># 返回当前线程的IOLoop实例</span></div><div class="line">    io.start()</div><div class="line">    <span class="comment"># 启动IOLoop实例的I/O循环,同时服务器监听被打开</span></div><div class="line"></div><div class="line">    <span class="comment"># app = Application()</span></div><div class="line">    <span class="comment"># app.listen(options.port) 对http_server的简写方式</span></div><div class="line">    <span class="comment"># 其listen(端口)方法用来创建一个http服务器实例,并绑定到给定端口(注意:此时服务器并未开启监听)</span></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">    main()</div></pre></td></tr></table></figure>
-<h5 id="使用Tornado进行长轮询-应该有点-即时通讯IM"><a href="#使用Tornado进行长轮询-应该有点-即时通讯IM" class="headerlink" title="使用Tornado进行长轮询(应该有点 即时通讯IM)"></a>使用Tornado进行长轮询(应该有点 即时通讯IM)</h5><p>Tornado异步架构的另一个优势是它能够轻松处理HTTP长轮询.这是一个处理实时更新的方法,它既可以应用到简单的数字标记通知,也可以实现复杂的多用户聊天室.</p>
-<p>在大多数情况下,你至少希望将结果缓存以便两次相同搜索项的请求不会导致再次向远程API执行完整请求.</p>
-<p>在前端使用像JavaScript这样的工具处理异步应用,让客户端承担更多工作,以提高你应用的扩展性.</p>
-<p>部署提供实时更新的Web应用对于Web程序员而言是一项长期的挑战.更新用户状态、发送新消息提醒、或者任何一个需要在初始文档完成加载后由服务器向浏览器发送消息方法的全局活动.</p>
-<p>所谓的”服务器推送”技术允许Web应用实时发布更新,同时保持合理的资源使用以及确保可预知的扩展.对于一个可行的服务器推送技术而言,它必须在现有的浏览器上表现良好.最流行的技术是让浏览器发起连接来模拟服务器推送更新.这种方式的HTTP连接被称为长轮询或Comet请求.</p>
-<p>长轮询意味着浏览器只需启动一个HTTP请求,其连接的服务器会有意保持开启.浏览器只需要等待更新可用时服务器”推送”响应.当服务器发送响应并关闭连接后,(或者浏览器端客户请求超时),客户端只需打开一个新的连接并等待下一个更新.</p>
-<h5 id="长轮询的好处"><a href="#长轮询的好处" class="headerlink" title="长轮询的好处"></a>长轮询的好处</h5><p>HTTP长轮询的主要吸引力在于其极大地减少了Web服务器的负载.相对于客户端制造大量的短而频繁的请求(以及每次处理HTTP头部产生的开销),服务器端只有当其接收一个初始请求和再次发送响应时处理连接.大部分时间没有新的数据,连接也不会消耗任何处理器资源.</p>
-<p>浏览器兼容性是另一个巨大的好处.任何支持AJAX请求的浏览器都可以执行推送请求.不需要任何浏览器插件或其他附加组件.对比其他服务器端推送技术,HTTP长轮询最终成为了被广泛使用的少数几个可行方案之一.</p>
-<p>我们已经接触过长轮询的一些使用.实际上,前面提到的状态更新、消息通知以及聊天消息都是目前流行的网站功能.像Google Docs这样的站点使用长轮询同步协作,两个人可以同时编辑文档并看到对方的改变.Twitter使用长轮询指示浏览器在新状态更新可用时展示通知.Facebook使用这项技术在其聊天功能中.长轮询如此流行的一个原因是它改善了应用的用户体验:访客不再需要不断地刷新页面来获取最新的内容</p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/11/tornado/" data-id="cj9kqkxa1003w06nfin0g09b7" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/11/tornado/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/tornado/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-closure" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/11/closure/">闭包</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/11/closure/">
-            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/python3/">python3</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p> 在python中,不管是定义变量还是方法,还是类,实际上你定义的时候,分配了内存空间,仅仅是使用一个变量名指向了这一块的内存空间而已.<br><img src="/2017/08/11/closure/rep.png" alt="变量名引用值和函数" title="变量名引用值和函数"><br><img src="/2017/08/11/closure/rep1.png" alt="重名方法导致代码无效" title="重名方法导致代码无效"></p>
-<h3 id="闭包-Closure-又称函数闭包-function-closures-内部函数对外部函数作⽤域⾥变量的引⽤-⾮全局变量-则称内部函数为闭包"><a href="#闭包-Closure-又称函数闭包-function-closures-内部函数对外部函数作⽤域⾥变量的引⽤-⾮全局变量-则称内部函数为闭包" class="headerlink" title="闭包(Closure)又称函数闭包(function closures):内部函数对外部函数作⽤域⾥变量的引⽤(⾮全局变量),则称内部函数为闭包"></a>闭包(Closure)又称函数闭包(function closures):内部函数对外部函数作⽤域⾥变量的引⽤(⾮全局变量),则称内部函数为闭包</h3><p>引用了自由变量的函数.这个被引用的自由变量将和这个函数一同存在,即使已经离开了创造它的环境也不例外.所以,有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体.闭包在运行时可以有多个实例,不同的引用环境和相同的函数组合可以产生不同的实例</p>
-<p>在一些语言中,在函数中可以(嵌套)定义另一个函数时,如果内部的函数引用了外部的函数的变量,则可能产生闭包.运行时,一旦外部的 函数被执行,一个闭包就形成了,闭包中包含了内部函数的代码,以及所需外部函数中的变量的引用.</p>
-<p>闭包被广泛使用于函数式编程语言</p>
-<p>闭包可以形象的把它理解为一个封闭的包裹(封闭作用域),这个包裹就是一个函数,当然还有函数内部对应的逻辑,包裹里面的东西就是自由变量,自由变量可以在随着包裹到处游荡.当然还得有个前提,这个包裹是被创建出来的.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(name)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner_func</span><span class="params">(age)</span>:</span> <span class="comment"># 闭包</span></div><div class="line">        <span class="comment"># name为自由变量</span></div><div class="line">        print( <span class="string">'name:'</span>, name, <span class="string">'age:'</span>, age)</div><div class="line">    <span class="keyword">return</span> inner_func</div><div class="line">bb = func(<span class="string">'the5fire'</span>)</div><div class="line">bb(<span class="number">26</span>)</div><div class="line"><span class="comment"># name: the5fire age: 26</span></div></pre></td></tr></table></figure>
-<p>这里面调用func的时候就产生了一个闭包——inner_func,并且该闭包持有自由变量——name,因此这也意味着,当函数func的生命周期结束之后,name这个变量依然存在,因为它被闭包引用了,所以不会被回收</p>
-<h4 id="nonlocal访问外部函数的局部变量"><a href="#nonlocal访问外部函数的局部变量" class="headerlink" title="nonlocal访问外部函数的局部变量:"></a>nonlocal访问外部函数的局部变量:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">counter</span><span class="params">(start=<span class="number">0</span>)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">incr</span><span class="params">()</span>:</span></div><div class="line">        <span class="keyword">nonlocal</span> start</div><div class="line">        start += <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> start</div><div class="line">    <span class="keyword">return</span> incr</div><div class="line">c1 = counter(<span class="number">5</span>) </div><div class="line">print(c1()) <span class="comment"># 6</span></div><div class="line">print(c1()) <span class="comment"># 7</span></div><div class="line">c2 = counter(<span class="number">50</span>)</div><div class="line">print(c2()) <span class="comment"># 51</span></div><div class="line">print(c2()) <span class="comment"># 52</span></div><div class="line">print(c1()) <span class="comment"># 8</span></div><div class="line">print(c1()) <span class="comment"># 9</span></div></pre></td></tr></table></figure>
-<h4 id="闭包思考"><a href="#闭包思考" class="headerlink" title="闭包思考:"></a>闭包思考:</h4><p>1.闭包似优化了变量,原来需要类对象完成的⼯作,闭包也可以完成 2.由于闭包引⽤了外部函数的局部变量,则外部函数的局部变量没有及时释放,消耗内存</p>
-<img src="/2017/08/11/closure/rep2.png" alt="闭包减少参数传递,同时增加代码的可移植性" title="闭包减少参数传递,同时增加代码的可移植性">
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/11/closure/" data-id="cj9kqkx9r003k06nfnyoysoft" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/11/closure/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/closure/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-python-mateclass" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/11/python-mateclass/">python元类</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/11/python-mateclass/">
-            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/python3/">python3</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h4 id="元类就是类的类-是用来创建这些类-对象-的"><a href="#元类就是类的类-是用来创建这些类-对象-的" class="headerlink" title="元类就是类的类,是用来创建这些类(对象)的"></a>元类就是类的类,是用来创建这些类(对象)的</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#使⽤元类创建出⼀个对象,这个对象称为"类"</span></div><div class="line">MyClass	= MetaClass()	</div><div class="line"><span class="comment">#使⽤"类"来创建出实例对象</span></div><div class="line">MyObject=MyClass()	</div><div class="line"></div><div class="line">Animal = type(<span class="string">"Animal"</span>,(),&#123;&#125;)</div><div class="line">a = Animal()</div></pre></td></tr></table></figure>
-<p>类就是一组用来描述如何生成一个对象的代码段(数据结构和操作这些数据结构的方法组成)<br>但python中 类也是对象</p>
-<h4 id="类本身以及由类创建出来的实例统统都称之为对象-python中一切皆对象-unix一切皆文件"><a href="#类本身以及由类创建出来的实例统统都称之为对象-python中一切皆对象-unix一切皆文件" class="headerlink" title="类本身以及由类创建出来的实例统统都称之为对象,python中一切皆对象,unix一切皆文件"></a>类本身以及由类创建出来的实例统统都称之为对象,python中一切皆对象,unix一切皆文件</h4><p>Python中所有的东⻄,指所有的东⻄——都是对象.这包括整数、字符串、函数以及类<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">()</span>:</span></div><div class="line">    <span class="comment">#　如下的打印说明:只要你使⽤关键字class</span></div><div class="line">    <span class="comment"># Python解释器在执⾏的时候就会创建⼀个对象</span></div><div class="line">    print(<span class="string">'iiii'</span>)</div><div class="line">    <span class="keyword">pass</span></div><div class="line"></div><div class="line">p = Person</div><div class="line"></div><div class="line"><span class="comment">#　type()查看对象是由哪个类创建出来的</span></div><div class="line"></div><div class="line"><span class="comment"># 打印元类:说明类对象是由元类创建的</span></div><div class="line">print(type(p))</div><div class="line"></div><div class="line"><span class="comment">#　打印对象</span></div><div class="line">print(<span class="number">100</span>) <span class="comment"># 类型在python在其实就是类,100就是由Int类创建的对象</span></div><div class="line">print(<span class="string">"femn"</span>.__class__)</div><div class="line">print(p) <span class="comment"># 类也是对象,才能打印出来</span></div><div class="line"></div><div class="line">print(type(p()))</div><div class="line">print(type(<span class="number">100</span>))</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 实例对象是calss创建的,class类也是对象,那这个对象是由type()创建的,</span></div><div class="line"><span class="comment">#　type(类名,	由⽗类名称组成的元组(针对继承的情况,可以为空),包含属 性的字典(名称和值))</span></div><div class="line">Person2 = type(<span class="string">"Person2"</span>,(),&#123;&#125;)</div><div class="line">print(type(Person2()))</div><div class="line"></div><div class="line"><span class="comment"># iiii</span></div><div class="line"><span class="comment"># &lt;class 'type'&gt;</span></div><div class="line"><span class="comment"># 100</span></div><div class="line"><span class="comment">#　&lt;class 'str'&gt;</span></div><div class="line"><span class="comment"># &lt;class '__main__.Person'&gt;</span></div><div class="line"><span class="comment"># &lt;class '__main__.Person'&gt;</span></div><div class="line"><span class="comment"># &lt;class 'int'&gt;</span></div><div class="line"><span class="comment"># &lt;class '__main__.Person2'&gt;</span></div></pre></td></tr></table></figure></p>
-<img src="/2017/08/11/python-mateclass/1.png" alt="使用type()元类动态创建类,并为此类添加方法" title="使用type()元类动态创建类,并为此类添加方法">
-<p>不推荐用元类创建类,还是用class创建类</p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/11/python-mateclass/" data-id="cj9kqkx9h003306nfdda021ff" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/11/python-mateclass/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-mateclass/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <nav id="page-nav">
         <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
     </nav>
@@ -1723,7 +1987,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span></li></ul>
         </div>
     </div>
 
@@ -1732,7 +1996,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">50</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">53</span></li></ul>
         </div>
     </div>
 

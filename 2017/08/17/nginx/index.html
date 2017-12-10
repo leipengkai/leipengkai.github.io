@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>nignx基本使用 | Femn</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="现代WEB服务架构也可以分为WEB(http)服务器(tornado.httpserver,Nginx,Apache)和应用服务器.因为严格意义上的WEB服务器只通过HTTP协议提供html,css等网页资源,而动态语言一般需要专门的应用服务器(业务服务器)进行计算,因为动态语言是需要进行计算处理后生成html代码的 nginx简介123456789101112131415161718pid是控制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nignx基本使用">
+<meta property="og:url" content="https://www.femn.me/2017/08/17/nginx/index.html">
+<meta property="og:site_name" content="Femn">
+<meta property="og:description" content="现代WEB服务架构也可以分为WEB(http)服务器(tornado.httpserver,Nginx,Apache)和应用服务器.因为严格意义上的WEB服务器只通过HTTP协议提供html,css等网页资源,而动态语言一般需要专门的应用服务器(业务服务器)进行计算,因为动态语言是需要进行计算处理后生成html代码的 nginx简介123456789101112131415161718pid是控制">
+<meta property="og:updated_time" content="2017-12-10T08:08:20.141Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="nignx基本使用">
+<meta name="twitter:description" content="现代WEB服务架构也可以分为WEB(http)服务器(tornado.httpserver,Nginx,Apache)和应用服务器.因为严格意义上的WEB服务器只通过HTTP协议提供html,css等网页资源,而动态语言一般需要专门的应用服务器(业务服务器)进行计算,因为动态语言是需要进行计算处理后生成html代码的 nginx简介123456789101112131415161718pid是控制">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="Femn" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/favicon.ico" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Femn</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/tags">Tags</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/4822598_105251_2.jpg" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">Tags</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/4822598_105251_2.jpg" />
+            <h2 id="name">leipengkai</h2>
+            <h3 id="title">Python Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>Shenzhen, China</span>
+            <a id="follow" target="_blank" href="https://github.com/leipengkai/">FOLLOW</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                67
+                <span>posts</span>
+            </div>
+            <div class="article-info-block">
+                5
+                <span>tags</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/leipengkai" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/femnyy" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://www.facebook.com/profile.php?id=100012089717648" target="_blank" title="facebook" class=tooltip>
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://www.instagram.com/leipengkai/" target="_blank" title="instagram" class=tooltip>
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://plus.google.com/108032606311958999451" target="_blank" title="google_plus" class=tooltip>
+                            <i class="fa fa-google_plus"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/atom.xml" target="_blank" title="rss" class=tooltip>
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-nginx" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            nignx基本使用
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/17/nginx/">
+            <time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/tool/">tool</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>现代WEB服务架构也可以分为WEB(http)服务器(tornado.httpserver,Nginx,Apache)和应用服务器.因为严格意义上的WEB服务器只通过HTTP协议提供html,css等网页资源,<br>而动态语言一般需要专门的应用服务器(业务服务器)进行计算,因为动态语言是需要进行计算处理后生成html代码的</p>
+<p><a href="https://www.zybuluo.com/phper/note/90310" target="_blank" rel="external">nginx简介</a><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">pid是控制系统中重要文件,对Nginx服务进行的控制(nginx的控制文件).</div><div class="line">gzip on;<span class="comment">#传输过程经过压缩,提高速度,减少流量</span></div><div class="line">charset ;<span class="comment"># 设置字符编码</span></div><div class="line"></div><div class="line">server&#123;</div><div class="line">	listen 80; </div><div class="line">	server_name shuju.bzby365.com;</div><div class="line">	root /alidata/www/shuju/;</div><div class="line">	index index.html;</div><div class="line">	<span class="comment">#rewrite ^(app.bzby365.com:8010/c/.*)$  https://$1 redirect;# permanent</span></div><div class="line">	rewrite ^(/c/.*)$  https://<span class="variable">$1</span> permanent;</div><div class="line">	<span class="comment"># redirect这个参数给来测试时,用得多.一个已经是https协议的服务  调用另一个不是https的会报错</span></div><div class="line">	<span class="comment">#https to other https 可以是同一台服务器的https,</span></div><div class="line">	<span class="comment"># 也可以是其它的服务器 http://shuju.bzby365.com/pc/ to https://app.bzby365.com:8010/c/shuju</span></div><div class="line"></div><div class="line">	<span class="built_in">return</span> 301 https://<span class="variable">$server_name</span><span class="variable">$request_uri</span>; </div><div class="line">	<span class="comment">#当对外服务器时用https://$server_name$request_uri,也可以用$host$request_uri</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="SSL证书"><a href="#SSL证书" class="headerlink" title="SSL证书"></a>SSL证书</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">server&#123;</div><div class="line">	listen  443;</div><div class="line">	server_name  shuju.bzby365.com;</div><div class="line">	ssl on; </div><div class="line">	index index.htm index.html;</div><div class="line">	<span class="comment">#csr证书请求文件--交给CA签名后形成服务端自己的证书,认证通过之后,签证机构给你crt文件 crt+key = pem</span></div><div class="line">	ssl_certificate   /root/shuju/214051486510462.pem;</div><div class="line">	ssl_certificate_key  /root/shuju/214051486510462.key;</div><div class="line">	root /alidata/www/shuju/;</div><div class="line">	ssl_session_timeout 5m;</div><div class="line">	ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</div><div class="line">	ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</div><div class="line">	ssl_prefer_server_ciphers on; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="PHP解析"><a href="#PHP解析" class="headerlink" title="PHP解析"></a>PHP解析</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">	listen 80;</div><div class="line">	<span class="comment">#server_name localhost;#123.206.188.203;</span></div><div class="line">	<span class="comment">#server_name 123.206.188.203;</span></div><div class="line">	<span class="comment">#server_name 45.76.0.178;</span></div><div class="line">	<span class="comment">#server_name 0.0.0.0; 上面的公网IP也不行了,</span></div><div class="line">	<span class="comment"># /etc/hosts 相当于是DNS解析的文件</span></div><div class="line">	<span class="comment"># 购买域名之后 通过DNS解析成公网IP,但网址上输入什么,这里的server_name是什么,才会进这个虚拟主机</span></div><div class="line">	server_name www.femnyy.com 45.76.0.178 yy.femnyy.com;</div><div class="line"></div><div class="line">	<span class="comment">#此路径的所有都必须要有读写操作才行,因为如果没有读写权限,即使是找到了也显示不出来.</span></div><div class="line">	<span class="comment"># 表示在这整个server虚拟主机内,全部的root web根目录.注意要和locate &#123;&#125;下面定义的区分开来</span></div><div class="line">	root   /usr/share/nginx/html/wordpress;</div><div class="line">	index index.php index.html;</div><div class="line">	<span class="comment"># 定位URL,解析URL 它也提供了强大的正则匹配功能,也支持条件判断匹配,用户可以通过location指令实现Nginx对动、静态网页进行过滤处理 .</span></div><div class="line">	<span class="comment"># 用~来表示location开启正则匹配</span></div><div class="line">	location ~ .php$ &#123;</div><div class="line">		<span class="comment"># 指令用于指定访问根目录时,虚拟主机的web目录,这个目录可以是相对路径(相对路径是相对于nginx的安装目录).也可以是绝对路径</span></div><div class="line">		<span class="comment"># 表示虚拟主机的根目录</span></div><div class="line">			root /usr/share/nginx/html/wordpress;</div><div class="line">			<span class="comment"># 已经确定PHP服务已经启动成功</span></div><div class="line">			fastcgi_pass 127.0.0.1:9000;</div><div class="line">			fastcgi_index info.php;</div><div class="line">			fastcgi_param SCRIPT_FILENAME <span class="variable">$document_root</span><span class="variable">$fastcgi_script_name</span>;</div><div class="line">			include fastcgi_params;</div><div class="line">				&#125;</div><div class="line"></div><div class="line">	location / &#123;</div><div class="line">	<span class="comment"># 正向代理:正向代理是一个位于客户端和原始服务器(origin server)之间的服务器.</span></div><div class="line">	<span class="comment"># 为了从原始服务器取得内容,客户端向代理发送一个请求并指定目标(原始服务器),然后代理向原始服务器转交请求并将获得的内容返回给客户端.</span></div><div class="line">	<span class="comment"># Nginx使用 反向代理:客户端访问本机,但本机没有此资源,就可以通过反向代理到其它服务器中</span></div><div class="line">		proxy_pass http://192.168.33.10;</div><div class="line">			&#125;</div><div class="line">	</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/17/nginx/" data-id="cjb0hlep900001lro51wn9mu1" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/17/nginx/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/nginx/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2017/08/18/ghost/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    ghost下载与使用
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2017/08/17/git/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">git基本使用</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+        <section id="comments">
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+</section>
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">recent</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/28/storm/" class="title">hadoop storm(八)</a></p>
+                            <p class="item-date"><time datetime="2017-09-28T11:41:15.000Z" itemprop="datePublished">2017-09-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/28/hbase/" class="title">hadoop hbase(七)</a></p>
+                            <p class="item-date"><time datetime="2017-09-28T11:31:15.000Z" itemprop="datePublished">2017-09-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_cluster/" class="title">hadoop HDFS HA高可用的集群搭建部署(六)</a></p>
+                            <p class="item-date"><time datetime="2017-09-27T11:41:15.000Z" itemprop="datePublished">2017-09-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_hive/" class="title">hadoop hive(五)</a></p>
+                            <p class="item-date"><time datetime="2017-09-27T11:31:15.000Z" itemprop="datePublished">2017-09-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/09/25/zookeeper/" class="title">zookeeper(五)</a></p>
+                            <p class="item-date"><time datetime="2017-09-25T12:01:15.000Z" itemprop="datePublished">2017-09-25</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">53</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/大数据/" style="font-size: 20px;">大数据</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/计算机/" style="font-size: 10px;">计算机</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+                    <li>
+                        <a href="https://hub.docker.com/">Hub_docker</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 leipengkai<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_config = function () {
+        
+            this.page.url = 'https://www.femn.me/2017/08/17/nginx/';
+        
+        this.page.identifier = 'nginx';
+    };
+    (function() { 
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'femn' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

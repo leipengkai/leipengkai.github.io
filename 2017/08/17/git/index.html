@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>git基本使用 | Femn</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="安装及配置git123456789101112sudo apt-get install git# 配置git的用户信息git config --global user.name=&quot;femn2014&quot;git config --global user.emial=&quot;1643076443@qq.com&quot;# --system(/etc/gitconfig 针对所有用户) --global(~/.gitco">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git基本使用">
+<meta property="og:url" content="https://www.femn.me/2017/08/17/git/index.html">
+<meta property="og:site_name" content="Femn">
+<meta property="og:description" content="安装及配置git123456789101112sudo apt-get install git# 配置git的用户信息git config --global user.name=&quot;femn2014&quot;git config --global user.emial=&quot;1643076443@qq.com&quot;# --system(/etc/gitconfig 针对所有用户) --global(~/.gitco">
+<meta property="og:image" content="https://www.femn.me/2017/08/17/git/git.jpg">
+<meta property="og:updated_time" content="2017-12-10T08:02:35.341Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="git基本使用">
+<meta name="twitter:description" content="安装及配置git123456789101112sudo apt-get install git# 配置git的用户信息git config --global user.name=&quot;femn2014&quot;git config --global user.emial=&quot;1643076443@qq.com&quot;# --system(/etc/gitconfig 针对所有用户) --global(~/.gitco">
+<meta name="twitter:image" content="https://www.femn.me/2017/08/17/git/git.jpg">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="Femn" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/favicon.ico" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Femn</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/tags">Tags</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/4822598_105251_2.jpg" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">Tags</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/4822598_105251_2.jpg" />
+            <h2 id="name">leipengkai</h2>
+            <h3 id="title">Python Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>Shenzhen, China</span>
+            <a id="follow" target="_blank" href="https://github.com/leipengkai/">FOLLOW</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                67
+                <span>posts</span>
+            </div>
+            <div class="article-info-block">
+                5
+                <span>tags</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/leipengkai" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/femnyy" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://www.facebook.com/profile.php?id=100012089717648" target="_blank" title="facebook" class=tooltip>
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://www.instagram.com/leipengkai/" target="_blank" title="instagram" class=tooltip>
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://plus.google.com/108032606311958999451" target="_blank" title="google_plus" class=tooltip>
+                            <i class="fa fa-google_plus"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/atom.xml" target="_blank" title="rss" class=tooltip>
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-git" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            git基本使用
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/17/git/">
+            <time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/tool/">tool</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="安装及配置git"><a href="#安装及配置git" class="headerlink" title="安装及配置git"></a>安装及配置git</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install git</div><div class="line"><span class="comment"># 配置git的用户信息</span></div><div class="line">git config --global user.name=<span class="string">"femn2014"</span></div><div class="line">git config --global user.emial=<span class="string">"1643076443@qq.com"</span></div><div class="line"><span class="comment"># --system(/etc/gitconfig 针对所有用户) --global(~/.gitconfig 针对当前用户)</span></div><div class="line"><span class="comment"># --local(.git/config 针对当前项目 默认行为)</span></div><div class="line"></div><div class="line"><span class="comment"># 生成ssh密钥</span></div><div class="line">ssh-keygen -t rsa -C <span class="string">"1643076443@qq.com"</span></div><div class="line"><span class="comment"># 将~/.ssh/id_rsa.pub内容上传到github服务器上,并检测是否可连接</span></div><div class="line">bash ssh-add</div><div class="line">ssh -T git@github.com</div></pre></td></tr></table></figure>
+<h3 id="git-基本概念"><a href="#git-基本概念" class="headerlink" title="git 基本概念"></a>git 基本概念</h3><img src="/2017/08/17/git/git.jpg" alt="git基本概念" title="git基本概念">
+<h3 id="git-目录结构"><a href="#git-目录结构" class="headerlink" title="git 目录结构"></a>git 目录结构</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 创建一个目录</span></div><div class="line">mkdir demoGit &amp;&amp; <span class="built_in">cd</span> demoGit</div><div class="line">git init <span class="comment"># 初始化一个git仓库</span></div><div class="line">tree -a <span class="comment"># 查看目录结构</span></div><div class="line">. <span class="comment"># 项目文件,也就是所谓的工作区(Working Directory)</span></div><div class="line">└── .git <span class="comment"># 本地git仓库实体</span></div><div class="line">    ├── branches</div><div class="line">    ├── config <span class="comment"># git项目级别的配置文件 git config --local 修改的就是这个文件</span></div><div class="line">    ├── description <span class="comment"># 项目描述信息</span></div><div class="line">    ├── HEAD <span class="comment"># 标记当前工作区所有的分支,是一个写有分支指针的文件</span></div><div class="line">    ├── hooks <span class="comment"># git默认的挂钩脚本</span></div><div class="line">    │   ├── applypatch-msg.sample</div><div class="line">    │   ├── commit-msg.sample</div><div class="line">    │   ├── post-update.sample</div><div class="line">    │   ├── pre-applypatch.sample</div><div class="line">    │   ├── pre-commit.sample</div><div class="line">    │   ├── prepare-commit-msg.sample</div><div class="line">    │   ├── pre-push.sample</div><div class="line">    │   ├── pre-rebase.sample</div><div class="line">    │   └── update.sample</div><div class="line">    ├── index <span class="comment"># 索引文件,也就是所谓的暂存区,git add 命令会修改这个文件</span></div><div class="line">    ├── info</div><div class="line">    │   └── exclude <span class="comment"># 配置本地范围内忽略文件,不上传</span></div><div class="line">    ├── logs <span class="comment"># refs的历史记录,如HEAD,master分支和远程origin/master分支</span></div><div class="line">    │   │   ├── HEAD</div><div class="line">    │   │   └── refs</div><div class="line">    │   │       └── heads</div><div class="line">    │   │           └── master</div><div class="line">    ├── objects <span class="comment"># 是本地git仓库实际存放对象和文件快照的地方,也称作为仓库(Repository)</span></div><div class="line">    │   ├── info</div><div class="line">    │   └── pack</div><div class="line">    └── refs <span class="comment"># 存放分支,标签文件和远程仓库</span></div><div class="line">            git branch/tag/push [branch_name]命令操作的就是这个目录下的文件</div><div class="line">        ├── heads</div><div class="line">        └── tags</div></pre></td></tr></table></figure>
+<h3 id="git-基本命令"><a href="#git-基本命令" class="headerlink" title="git 基本命令"></a><a href="http://marklodato.github.io/visual-git-guide/index-zh-cn.html" target="_blank" rel="external">git 基本命令</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 创建两个文件</span></div><div class="line">$ touch README hello</div><div class="line"><span class="comment"># 查看项目的当前状态 -s是简短的结果输出</span></div><div class="line">$ git status -s</div><div class="line">?? README</div><div class="line">?? hello</div><div class="line"><span class="comment"># ??表示没有被索引状态</span></div><div class="line"></div><div class="line">$ git add .</div><div class="line">$ git status -s </div><div class="line">A README</div><div class="line">A hello</div><div class="line"><span class="comment"># A 表示已经创建索引</span></div><div class="line"></div><div class="line">$ <span class="built_in">echo</span> <span class="string">"learn git"</span>&gt;&gt;README</div><div class="line">$ git status -s </div><div class="line">AM README</div><div class="line">A  hello</div><div class="line"><span class="comment"># AM表示被索引,但在工作区已经被修改还没有add M[空格]表示缓存区被修改还没有commit</span></div><div class="line"></div><div class="line">$ git rm -f hello</div><div class="line"><span class="comment"># 删除工作区以及暂存区的文件,如果有--cached参数则只删除暂存区</span></div><div class="line">$ git mv REANDE README.md <span class="comment"># 重命名文件</span></div><div class="line">$ git commit -m <span class="string">'xx'</span> <span class="comment"># 将暂存区的内容写入仓库</span></div><div class="line">$ git commit --amend -m <span class="string">"master 1"</span> <span class="comment"># 产生一个新的提交替换之前的一次提交</span></div></pre></td></tr></table></figure>
+<h4 id="分支与合并"><a href="#分支与合并" class="headerlink" title="分支与合并"></a>分支与合并</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">$ git checkout -b new_branch <span class="comment"># 创建一个新分支并切换到此分支</span></div><div class="line"><span class="comment"># git branch new_branch &amp;&amp; git checkout new_branch</span></div><div class="line">$ git branch <span class="comment"># 查看分支 -d [branch_name]参数删除分支</span></div><div class="line">$ <span class="built_in">echo</span> new_branch &gt;&gt; README.md</div><div class="line">$ git add .</div><div class="line">$ git commit -m <span class="string">'new_branch 1'</span></div><div class="line"></div><div class="line"><span class="comment"># 查看提交历史</span></div><div class="line">$ git <span class="built_in">log</span> --oneline --graph</div><div class="line"><span class="comment"># --oneline简洁版本 --graph开启拓扑图/--reverse逆向显示</span></div><div class="line"></div><div class="line">$ git checkout master </div><div class="line">$ <span class="built_in">echo</span> master_branch &gt;&gt; README.md</div><div class="line">$ git add .</div><div class="line">$ git commit -m <span class="string">"master 2"</span></div><div class="line"></div><div class="line"><span class="comment"># 合并</span></div><div class="line">$ git merge new_branch</div><div class="line"><span class="comment"># 可以通过git mergetool来改冲突</span></div><div class="line"></div><div class="line">$ git add .</div><div class="line">$ git commit -m <span class="string">"merge 1"</span></div><div class="line">$ git <span class="built_in">log</span> --oneline --decorate --graph</div><div class="line">*   ef1e939 (HEAD -&gt; master) merge 1</div><div class="line">|\  </div><div class="line">| * 9229ec9 (new_branch) new_branch 1</div><div class="line">* | 4666c74 master 2</div><div class="line">|/  </div><div class="line">* 6c0975b master 1</div><div class="line"></div><div class="line">$ git checkout new_branch</div><div class="line">$ git <span class="built_in">log</span> --oneline --decorate --graph</div><div class="line">* 9229ec9 (HEAD -&gt; new_branch) new_branch 1</div><div class="line">* 6c0975b master 1</div></pre></td></tr></table></figure>
+<h4 id="创建标签"><a href="#创建标签" class="headerlink" title="创建标签"></a>创建标签</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$ git tag -a v1.0 -m <span class="string">"tag 1"</span></div><div class="line">$ git <span class="built_in">log</span> --oneline --decorate --graph</div><div class="line">* 9229ec9 (HEAD -&gt; new_branch, tag: v1.0) new_branch 1</div><div class="line">* 6c0975b master 1</div><div class="line"></div><div class="line">$ git tag </div><div class="line">$ git show v1.0</div><div class="line"><span class="comment"># 默认情况下,git push 并不会把标签传送到远端服务器上</span></div><div class="line"><span class="comment"># git push origin v1.0 # 分享标签到远程仓库 </span></div><div class="line"><span class="comment"># git push origin --tags # 推送所有本地新增的标签</span></div><div class="line"><span class="comment"># git tag -d tagname # 删除标签</span></div></pre></td></tr></table></figure>
+<h4 id="远程仓库-origin为远程仓库名"><a href="#远程仓库-origin为远程仓库名" class="headerlink" title="远程仓库(origin为远程仓库名)"></a>远程仓库(origin为远程仓库名)</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div></pre></td><td class="code"><pre><div class="line">$ git remote add origin https://github.com/femn2014/test.git</div><div class="line">$ git push -u origin master</div><div class="line"><span class="comment"># git push url/远程仓库名 本地分支名:[远程分支名,默认同本地分支名一样]</span></div><div class="line"><span class="comment"># git pull url/远程仓库名 远程分支名:[本地分支:默认是HEAD所在的分支]</span></div><div class="line"><span class="comment"># git pull = git fetch + git merge</span></div><div class="line"></div><div class="line">$ git remote add branch_origin https://github.com/femn2014/test.git</div><div class="line">$ git push -u branch_origin new_branch:new_branch</div><div class="line"></div><div class="line">$ git remote -v <span class="comment"># 查看当前的远程库</span></div><div class="line"><span class="comment"># 再来一个新分支的提交</span></div><div class="line">$ git checkout -b 3_branch</div><div class="line">$ <span class="built_in">echo</span> <span class="string">"3_branch"</span> &gt;&gt; README.md</div><div class="line">$ git add .</div><div class="line">$ git commit -m <span class="string">'3_branch 1'</span></div><div class="line"></div><div class="line"><span class="comment"># git push url/远程仓库名 本地分支名:[远程分支名,默认同本地分支名一样]</span></div><div class="line">$ git checkout master</div><div class="line">$ git remote add 3_origin https://github.com/femn2014/test.git</div><div class="line">$ git push -u 3_origin 3_branch</div><div class="line"></div><div class="line"><span class="comment"># git pull url/远程仓库名 远程分支名:[本地分支:默认是HEAD所在的分支]</span></div><div class="line"><span class="comment"># git pull = git fetch + git merge</span></div><div class="line"></div><div class="line"><span class="comment"># 再github上修改下3_branch中的内容</span></div><div class="line">$ git pull 3_origin 3_branch</div><div class="line"></div><div class="line">$ git <span class="built_in">log</span> --oneline --decorate --graph</div><div class="line">*   6dd4166 (HEAD -&gt; master) Merge branch <span class="string">'3_branch'</span> of https://github.com/femn2014/<span class="built_in">test</span></div><div class="line">|\  </div><div class="line">| * a6dbfae (3_origin/3_branch) Update README.md</div><div class="line">| * 60e0e27 (3_branch) 3_branch 1</div><div class="line">* |   ef1e939 (origin/master) merge 1</div><div class="line">|\ \  </div><div class="line">| |/  </div><div class="line">| * 9229ec9 (tag: v1.0, branch_origin/new_branch, new_branch) new_branch 1</div><div class="line">* | 4666c74 master 2</div><div class="line">|/  </div><div class="line">* 6c0975b master 1</div><div class="line"></div><div class="line"></div><div class="line">$ git checkout 3_branch</div><div class="line">git <span class="built_in">log</span> --oneline --decorate --graph </div><div class="line">* 60e0e27 (HEAD -&gt; 3_branch) 3_branch 1</div><div class="line">* 9229ec9 (tag: v1.0, branch_origin/new_branch, new_branch) new_branch 1</div><div class="line">* 6c0975b master 1</div><div class="line"></div><div class="line">$ git checkout master </div><div class="line">git pull 3_origin 3_branch:3_branch <span class="comment"># master分支不变</span></div><div class="line"></div><div class="line">$ git checkout 3_branch</div><div class="line">$ git <span class="built_in">log</span> --oneline --decorate --graph</div><div class="line">* a6dbfae (HEAD -&gt; 3_branch, 3_origin/3_branch) Update README.md</div><div class="line">* 60e0e27 3_branch 1</div><div class="line">* 9229ec9 (tag: v1.0, branch_origin/new_branch, new_branch) new_branch 1</div><div class="line">* 6c0975b master 1</div><div class="line"></div><div class="line"><span class="comment"># 删除远程库</span></div><div class="line">$ git remote rm 3_origin</div><div class="line">$ git remote rm branch_origin</div><div class="line">$ git remote -v</div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/17/git/" data-id="cjb0eeawa002806robdlbjf5x" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/17/git/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/git/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2017/08/17/nginx/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    nignx基本使用
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2017/08/17/linux-server-process/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">linux 服务与进程</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+        <section id="comments">
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+</section>
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">recent</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/28/storm/" class="title">hadoop storm(八)</a></p>
+                            <p class="item-date"><time datetime="2017-09-28T11:41:15.000Z" itemprop="datePublished">2017-09-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/28/hbase/" class="title">hadoop hbase(七)</a></p>
+                            <p class="item-date"><time datetime="2017-09-28T11:31:15.000Z" itemprop="datePublished">2017-09-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_cluster/" class="title">hadoop HDFS HA高可用的集群搭建部署(六)</a></p>
+                            <p class="item-date"><time datetime="2017-09-27T11:41:15.000Z" itemprop="datePublished">2017-09-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_hive/" class="title">hadoop hive(五)</a></p>
+                            <p class="item-date"><time datetime="2017-09-27T11:31:15.000Z" itemprop="datePublished">2017-09-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/09/25/zookeeper/" class="title">zookeeper(五)</a></p>
+                            <p class="item-date"><time datetime="2017-09-25T12:01:15.000Z" itemprop="datePublished">2017-09-25</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">53</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/大数据/" style="font-size: 20px;">大数据</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/计算机/" style="font-size: 10px;">计算机</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+                    <li>
+                        <a href="https://hub.docker.com/">Hub_docker</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 leipengkai<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_config = function () {
+        
+            this.page.url = 'https://www.femn.me/2017/08/17/git/';
+        
+        this.page.identifier = 'git';
+    };
+    (function() { 
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'femn' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
