@@ -214,137 +214,6 @@
 
             
             <section id="main">
-    <article id="post-linux_basic" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/08/linux_basic/">linux 基本</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/08/linux_basic/">
-            <time datetime="2017-08-08T16:05:43.000Z" itemprop="datePublished">2017-08-08</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/linux/">linux</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>shell:是用户与kernal 通信的桥梁.它分为GUI:GNOME CLI:BASH,一种是图形界面的终端.是多任务,多进程的终端.firefox &amp;<br>hostname<br>uname -r  or -a参数 –all</p>
-<p>/bin:常用的可执行的二进制文件,终端命令,所有用户都有权限去执行<br>/sbin:只有root才能运行.比较危险的命令,fdisk<br>/boot:引导启动目录,操作系统内核(vmlinux-4.4.0)<br>/dev:硬件设备:硬盘sda1分区,终端tty1,网卡,声卡.所有的设备都被抽象成一个文件./dev/sd:SATA,SCSI(服务器硬盘),SAS,USB,a:是第几块硬盘,1:分区情况.有一个磁盘文件/dev/sda 每个分区也有个文件:/dev/sda1<br>/etc:配置文件,基本上是纯文本的 xx.conf<br>/home:除了root的,其它用户的私有目录.此目录与用户名同名.<br>/libabry:Liunx运行需要的库文件,.sh,所有用户都有权限.</p>
-<p>/opt:安装一些大的软件<br>/proc:不存在在硬盘上,系统运行时 的实时信息,保存在内存中,是一个虚拟的一个文件系统.meminfo cpuinfo,interrupts终端信息,iomem,uptime启动时间,vmstat虚存信息.acpi电源信息,每个进程,会对应一个数字的目录.echo 1 &gt; /proc/sys/net/ipv4/ip_forward 为LVS服务器开通路由功能(打开两个网卡之间的路由通道) 网卡充当路由器,也可以充当主机.<br>/sys:底层硬件信息.<br>/usr:应用软件 /usr/local/包.bin or /usr/share/包 .Sbin<br>/var:经常变化的东西 email,log操作系统的所有log信息</p>
-<p>/usr/share/doc:所有程序的文档 都会以TXT,HTML,PDF等方式保存在/usr/share/doc目录下</p>
-<p>/etc/skel/:当创建新用户时,这里面的文件会复制到新用户的家目录中<br>.bash_logout当用户关机时,执行的文件</p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/08/linux_basic/" data-id="cjb0eeaw9002506roesc6h4qa" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/08/linux_basic/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/08/linux_basic/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <article id="post-linux_install" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -408,7 +277,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/08/linux_install/" data-id="cjb0eeaww003b06ro8tt2djmh" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/08/linux_install/" data-id="cje27t65b002m07li6z90gon9" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -477,6 +346,153 @@
             
     
         <a href="https://www.femn.me/2017/08/08/linux_install/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/08/linux_install/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-linux-common-commands" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/08/linux-common-commands/">linux 常用命令</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/08/linux-common-commands/">
+            <time datetime="2017-08-08T16:05:43.000Z" itemprop="datePublished">2017-08-08</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/linux/">linux</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="不需要记住所有的命令-使用man-info查看帮助文档"><a href="#不需要记住所有的命令-使用man-info查看帮助文档" class="headerlink" title="不需要记住所有的命令,使用man info查看帮助文档:"></a>不需要记住所有的命令,使用man info查看帮助文档:</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ls --<span class="built_in">help</span> </div><div class="line">man ls <span class="comment"># 帮助手册</span></div><div class="line">man -k passwd </div><div class="line">man -k nautilus <span class="comment"># 可以用来查询包含该关键字命令的文档</span></div><div class="line">info ls <span class="comment"># 帮助文档(书)</span></div><div class="line"><span class="comment"># 所有程序的文档 都会以TXT,HTML,PDF等方式保存在/usr/share/doc目录下</span></div></pre></td></tr></table></figure>
+<h3 id="用户与权限"><a href="#用户与权限" class="headerlink" title="用户与权限"></a>用户与权限</h3><p>用户:是限制使用者或进程可以使用,不可以使用哪些资源.<br>用户组:用来方便组织管理用户GID<br>UID:每个用户拥有一个,操作系统实际使用的是UID,而不是用户名.每个用户属于一个主组,属于一个或多个附属组(最多有31个),每个可登陆用户拥有一个指定的shell.<br>特别注意:每个进程以一个用户身份运行,并受到该用户可访问的资源限制.所以进程的权限与该用户的权限一样.<br>UID:用32位的二进制,用十进制查看,但系统为了兼容老式系统,用户ID限制在16位(65535个用户上限).root用户:ID为0,系统用户(1~499):没有一个登陆的shell,为某些服务创建的,比如说WEB服务,共享服务,ftp服务打印服务,这些用户仅仅是做为 这些进程去使用的,普通用户(500以上)</p>
+<p>Linux权限基于UGO模型进行控制,权限rwx对目录的影响:<br>r:可列出目录内容,w:可在目录中创建删除文件,<br>x:可访问目录内容(进入目录),目录必须拥有X权限,否则无法进入目录<br>rwx(4+2+1)</p>
+<p>默认权限:umask的值会从对象的全权限值中减掉<br>普通用户的umask:0002,root用户的为0022<br>目录的全权限 777-002<br>文件的全权限 666-002<br>umask: 显示 12位长的权限 UGO占用9bite<br>umask 0022 : 去设置默认权限</p>
+<p>但一个目录,只能属于一个组,当多个组需要共同使用这个目录时,UGO模型的权限就不行了.<br>ACL(Access Control List)是一种高级权限机制,允许我们对一个文件或目录进行灵活的复杂的权限设置.<br>允许针对不同用户,不同组对一个目标文件或目录进行权限设置,不受UGO模型限制.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line">who <span class="comment"># 显示哪些用户已经登陆系统</span></div><div class="line">whoami <span class="comment"># 显示当前用户</span></div><div class="line">id <span class="comment"># 查看当前用户信息</span></div><div class="line">passwd username <span class="comment"># 修改用户密码,默认是修改当前用户</span></div><div class="line"></div><div class="line"><span class="comment"># 用户组 /etc/group</span></div><div class="line">groupadd femnGroup</div><div class="line">groupdel femnGroup</div><div class="line"></div><div class="line"><span class="comment"># 用户 /etc/shadow</span></div><div class="line">useradd -G femnGroup femn1 </div><div class="line"><span class="comment"># 此femn1用户主属组是femn1,附属组是femnGroup</span></div><div class="line"></div><div class="line">useradd -d /home/femn1 -u 1000 femn1  <span class="comment"># femn1是用户名 -u用户ID</span></div><div class="line">sudo usermod -d /home/femn1 -s /bin/bash femn1 <span class="comment"># -s默认bash</span></div><div class="line">userdel femn1</div><div class="line">userdel -r femn1 <span class="comment"># 同时删除用户的家目录</span></div><div class="line"></div><div class="line"><span class="comment"># 改文件的UGO权限</span></div><div class="line">chmod -R 777 文件名  </div><div class="line">chmod u+rw,g+o</div><div class="line">chmod go+rw</div><div class="line">chmod a-x <span class="comment"># a代指ugo</span></div><div class="line"></div><div class="line"><span class="comment">#  chown改所属用户 -R  </span></div><div class="line">chown -R name:name 文件</div><div class="line">chown femn(用户名)learn.txt(文件名,如果是目录,则加上 -R参数)</div><div class="line"></div><div class="line"><span class="comment"># chgrp改所属组 -R递归修改目录下的所有文件的所属组</span></div><div class="line">chgrp -R femnGroup learn.txt</div><div class="line"></div><div class="line"><span class="comment"># umask的最前面的那位,是用来保留特殊权限的.</span></div><div class="line">chmod u+s 文件:</div><div class="line"><span class="comment"># 特殊权限一般是给可执行文件去用的.1770</span></div><div class="line"></div><div class="line">chmod g+s 目录:</div><div class="line"><span class="comment"># 在此目录下生成的文件或目录,都会继承此目录的用户组 2770</span></div><div class="line"></div><div class="line">chmod o+t 目录:</div><div class="line"><span class="comment"># 只能是本人可以删除自己的文件,即使是本组中的人员也不能删除别人的文件.4770</span></div><div class="line"></div><div class="line"><span class="comment"># ACL需要在挂载文件的时候打开ACL功能:</span></div><div class="line">mount -o acl /dev/sda5 /mnt</div><div class="line"></div><div class="line"><span class="comment"># 针对一个用户对文件进行ACL设置:</span></div><div class="line">setfacl -m u:name:rwx linux</div><div class="line">setfacl -m g:name:rw linux</div><div class="line">setfacl -x u:name linux</div><div class="line"></div><div class="line"><span class="comment"># 只要我们的文件系统打开了ACL功能,就可以查看一个文件或目录的ACL设置:</span></div><div class="line">getfacl linux</div></pre></td></tr></table></figure></p>
+<h3 id="磁盘和挂载"><a href="#磁盘和挂载" class="headerlink" title="磁盘和挂载"></a>磁盘和挂载</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">df -h <span class="comment"># 设备文件名称,本系统中的磁盘的使用大小情况</span></div><div class="line">df -at <span class="comment"># 文件系统, 磁盘的状态</span></div><div class="line">du -sh <span class="comment"># 显示此目录总所占空间</span></div><div class="line">du -sh ~/* | sort -nr </div><div class="line"><span class="comment"># 参数让结果按降序输出   管道命令将du命令的输出重定向到sort命令</span></div><div class="line"></div><div class="line"></div><div class="line">fdisk -l  <span class="comment"># 查看本机的所有磁盘,以及磁盘的分区情况</span></div><div class="line">fdisk /dev/sda <span class="comment"># 查看,创建,删除某个磁盘 分区</span></div><div class="line">dumpe2fs -h /dev/sdb3 <span class="comment"># 得到这个磁盘分区的所有信息</span></div><div class="line"></div><div class="line"><span class="comment"># 格式化之前先不要挂载 </span></div><div class="line">mkfs -t ext4 /dev/sda4 </div><div class="line">mkfs.ext4 /dev/sda4</div><div class="line"><span class="comment"># 将这个分区(或硬盘)格式化为ext4文件系统,格式化磁盘</span></div><div class="line">mke2fs -j -L <span class="string">"partition-label-name"</span> -b 4096 -i -c 128 /dev/sda4  </div><div class="line"><span class="comment"># 这样就可以传4.3G的大文件到U盘上了,只是这样格式,在Win不能用</span></div><div class="line"></div><div class="line"><span class="comment"># 挂载</span></div><div class="line">mount /dev/sdc1 /home/name/usb  </div><div class="line">mount -o remount,rw,auto /dev/sdc1 </div><div class="line"><span class="comment"># 将/dev/sdc1重新挂载,并加入参数rw,auto</span></div><div class="line">umount /home/name/usb     or /dev/sdc1 挂载点或设备文件名 </div><div class="line"><span class="comment"># -l参数是强制</span></div><div class="line">lsof |grep /dev/sdc1</div><div class="line"><span class="comment"># 当挂载不掉时,用下面的命令 ,会得到进程号</span></div><div class="line"></div><div class="line"><span class="comment"># 特殊设备loop挂载(镜像文件不刻录就挂载使用)</span></div><div class="line">mount -o loop /home/name/ubuntu-16.04-desktop-amd64.iso \</div><div class="line">    /hame/name/usb  </div><div class="line"><span class="comment">#使用 dd 命令写入下载好的 ISO 镜像到 U 盘中</span></div><div class="line">sudo dd <span class="keyword">if</span>=xxxxx.iso of=/dev/sdc &amp;&amp; sync</div><div class="line"></div><div class="line">nautilus .     <span class="comment"># 默认是打开home目录</span></div></pre></td></tr></table></figure>
+<p>传统的磁盘管理问题:<br>当分区大小不够用时无法扩展其大小,只能通过添加硬盘,创建新分区来扩充空间,但是新添加进来的硬盘是作为独立文件系统存在的,原有的文件系统并未得到扩充,上层应用很多时候只能访问一个文件系统,只能让现有磁盘下线,换上新的磁盘之后,再将原始数据导入.</p>
+<h3 id="LVM逻辑卷管理-Logical-volume-Manager"><a href="#LVM逻辑卷管理-Logical-volume-Manager" class="headerlink" title="LVM逻辑卷管理(Logical volume Manager)"></a><a href="https://www.qingsword.com/qing/924.html" target="_blank" rel="external">LVM</a>逻辑卷管理(Logical volume Manager)</h3><p>PE(physical extend)物理扩展:逻辑卷空间管理的最基本单位,默认是4M<br>PV(physica volume)物理卷:将底层磁盘格式化成物理卷,可以是物理硬盘上的分区,也可以是整块物理硬盘<br>VG(volume group)卷组:空间池是给来装PE的,我们可以将一个或多个PV,加入到VG当中,当创建好了VG会有/dev/vgname的目录<br>LV(logical volume)逻辑卷(操作系统最终使用的是逻辑卷格式化之后的数据)/dev/vgname/lvname的目录,每个的逻辑卷空间有可以来自不同的物理磁盘<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">1. 创建PV</div><div class="line"><span class="comment"># 整块物理硬盘创建PV</span></div><div class="line">sudo pvcreate /dev/sd[b-c]</div><div class="line"></div><div class="line"><span class="comment"># 物理硬盘上的分区创建PV</span></div><div class="line">fdisk /dev/sdb1 使用t将分区类型改成8e(LVM)</div><div class="line">partprobe <span class="comment"># 刷新分区表</span></div><div class="line">sudo pvcreate /dev/sdb1</div><div class="line"></div><div class="line">sudo pvs <span class="comment"># 查看创建好的PV</span></div><div class="line"></div><div class="line">2. PV创建好了就可以创建VG了</div><div class="line">sudo vgcreate vg0 /dev/sdb1</div><div class="line">sudo vgs <span class="comment"># 查看创建好的VG</span></div><div class="line">sudo pvs <span class="comment"># sdb1这个PV就属于vg0这个卷组池了</span></div><div class="line"></div><div class="line">3. 创建好卷组池就能从池中划分容量给逻辑卷(LV)了</div><div class="line">sudo lvcreate -n lv0 -L 10G vg0</div><div class="line"><span class="comment"># 从卷组vg0中拿出10G,分配给lv0,其中-n后面是lv自定义名称,</span></div><div class="line"><span class="comment"># -L后面跟需要从vg0中分配给lv0的大小以及从哪个VG分配</span></div><div class="line"></div><div class="line">4. 创建好lv后就可以格式化它,成为文件系统使用</div><div class="line">sudo mkfs.ext4 /dev/vg0/lv0</div><div class="line"><span class="comment"># 创建好的lv所在目录是"/dev/卷组名称/逻辑卷名称",</span></div><div class="line"><span class="comment"># 所以本例就是/dev/vg0/lv0,将它格式化成ext4文件系统</span></div><div class="line"></div><div class="line">5. 挂载和使用</div><div class="line">sudo mount /dev/vg0/lv0 /mnt</div><div class="line"></div><div class="line">6. 扩充VG</div><div class="line">sudo pvcreate /dev/sdd</div><div class="line"><span class="comment">#新增加一块硬盘sdd(20G),将它创建成PV后划分到vg0下,</span></div><div class="line"><span class="comment"># 此时vg0的容量将增加sdd硬盘的大小</span></div><div class="line">sudo vgextend vg0 /dev/sdd</div><div class="line"></div><div class="line">7. 扩充LV</div><div class="line">sudo vgs <span class="comment"># 先确保VG池中有足够的VFree空间可供使用</span></div><div class="line">sudo lvextend -L +5G /dev/vg0/lv0</div><div class="line">sudo resize2fs /dev/vg0/lv0 <span class="comment"># 更新</span></div></pre></td></tr></table></figure></p>
+<h3 id="安装和下载"><a href="#安装和下载" class="headerlink" title="安装和下载"></a>安装和下载</h3><p>源的选择</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">ubuntu官方有自身的软件源,也可以通过software&amp;update的设置中的other去选择Best server去选择源</div><div class="line"><span class="comment"># 会自动的改变/etc/apt/sources.list的内容</span></div><div class="line"><span class="comment"># 也就是说选择哪种源的服务器,再(proxychains4) apt-get update就可以了</span></div><div class="line"><span class="comment"># 这样通过也可以解决 哪些包是在本地不能使用的(不能使用的一般是自己手动加入的)</span></div><div class="line"></div><div class="line"> 我选择的是Main server 软件包会比较全(国内的选择清华镜像)</div><div class="line"></div><div class="line"> <span class="comment"># 修改DNS</span></div><div class="line"> sudo vim /etc/resolvconf/resolv.conf.d/base</div><div class="line"> sudo vim /etc/resolvconf/resolv.conf.d/head</div><div class="line">	nameserver 8.8.8.8</div><div class="line">	nameserver 8.8.4.4</div><div class="line"> sudo resolvconf -u</div><div class="line"> </div><div class="line"> <span class="comment"># 重启网络</span></div><div class="line"> sudo service networking restart</div><div class="line"> sudo rm -r /var/lib/apt/lists/</div><div class="line"> sudo proxychains4 apt-get update</div></pre></td></tr></table></figure>
+<p>apt-get<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 更新源(更新本地软件包索引), 更新软件仓库:/etc/apt/sources.list </span></div><div class="line">sudo apt-get -y update </div><div class="line"><span class="comment"># sudo apt-key update # 更新密钥</span></div><div class="line"></div><div class="line"><span class="comment"># 升级系统上可以升级的软件包</span></div><div class="line">sudo apt-get -y upgrade </div><div class="line"></div><div class="line"><span class="comment"># 尝试修正系统依赖损坏处  </span></div><div class="line">sudo apt-get -f install  <span class="comment"># --fix-missing</span></div><div class="line"></div><div class="line"><span class="comment"># 安装软件包, apt-get会从软件仓库中下载deb软件安装包 再进行安装</span></div><div class="line">sudo apt-get install chromium-browser</div><div class="line"></div><div class="line"><span class="comment"># 删除系统上的软件包,不包含配置文件</span></div><div class="line">sudo apt-get remove firefox</div><div class="line"></div><div class="line"><span class="comment"># 删除系统上的软件包以及其相关配置</span></div><div class="line">sudo apt-get purge firefox</div><div class="line"></div><div class="line"><span class="comment"># 清除下载的软件包</span></div><div class="line">sudo apt-get clean</div><div class="line"><span class="comment"># 当apt-get安装或升级软件包时，它会将deb安装包下载到文件系统的/var/cache/apt/archives目录下</span></div><div class="line"><span class="comment"># apt-get clean命令可以帮你删除这些deb安装包</span></div><div class="line"></div><div class="line"><span class="comment"># 删除不需要的依赖软件包</span></div><div class="line">apt-get autoremove</div><div class="line"></div><div class="line"><span class="comment"># 搜索软件包, 查看对应版本进行安装</span></div><div class="line">apt-cache search chromium </div><div class="line"></div><div class="line"><span class="comment"># 查看软件包的信息</span></div><div class="line">apt-cache show chromium-browser </div><div class="line"></div><div class="line"><span class="comment"># 检查是否有损坏的依赖</span></div><div class="line">sudo apt-get check </div><div class="line"></div><div class="line"><span class="comment"># 通过 PPA 源来安装软件</span></div><div class="line"></div><div class="line"><span class="comment"># 查看系统版本</span></div><div class="line">cat /etc/*release</div><div class="line">sudo lsb_release -a</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 通过搜索软件包关键字 + PPA 或者在 https://launchpad.net/中搜索软件包(区分大小写)</span></div><div class="line"></div><div class="line"><span class="comment"># 使用命令安装(在标题栏显示内存、CPU、网速)</span></div><div class="line">sudo add-apt-repository ppa:fossfreedom/indicator-sysmonitor</div><div class="line">sudo apt update</div><div class="line">sudo apt install indicator-sysmonitor</div><div class="line"><span class="comment"># indicator-sysmonitor &amp;  启动</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 或者手动安装下载好的Deb软件包(当无法使用命令安装时)</span></div><div class="line"><span class="comment"># https://launchpad.net/ubuntu/artful/amd64/libaio1/0.3.110-4</span></div><div class="line">sudo dpkg -i libaio1_0.3.110-4_amd64.deb</div><div class="line">dpkg -L libaio1</div><div class="line"><span class="comment"># https://launchpad.net/ubuntu/artful/amd64/libmecab2/0.996-3.1 # libmecab2</span></div><div class="line"></div><div class="line">sudo dpkg -i **.deb <span class="comment"># 安装 查看-l</span></div><div class="line">dpkg -l |grep minitube <span class="comment"># 查看安装好的包</span></div><div class="line">dpkg -L minitube <span class="comment"># 查看是否安装</span></div><div class="line">sudo dpkg --purge minitube</div><div class="line"></div><div class="line"><span class="comment"># gdebi可以帮助我们自动安装依赖包</span></div><div class="line"><span class="comment"># https://launchpad.net/ubuntu/artful/amd64/gdebi-core/0.9.5.7+nmu1ubuntu3</span></div><div class="line"><span class="comment"># https://launchpad.net/ubuntu/bionic/amd64/gdebi/0.9.5.7+nmu1ubuntu3</span></div><div class="line">sudo dpkg -i gdebi-core_0.9.5.7+nmu1ubuntu3_all.deb </div><div class="line">sudo dpkg -i gdebi_0.9.5.7+nmu1ubuntu3_all.deb </div><div class="line"></div><div class="line">gdebi --version</div><div class="line">sudo gdebi *.deb</div></pre></td></tr></table></figure></p>
+<p>apt-get的代理问题</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">### 使用 http 代理</span></div><div class="line">apt-get -o Acquire::http::proxy=<span class="string">"http://127.0.0.1:8087"</span> update</div><div class="line"></div><div class="line"><span class="comment">### 使用 socket 代理， 使用 proxychains4</span></div><div class="line">sudo vim /etc/apt/sources.list</div><div class="line">	deb http://linux-packages.resilio.com/resilio-sync/deb resilio-sync non-free</div><div class="line"><span class="comment"># 要关联google,还需要改变此文件并重启网络</span></div><div class="line">sudo vim /etc/resolv.conf </div><div class="line">	nameserver 8.8.8.8</div><div class="line">sudo service networking restart</div><div class="line"><span class="comment"># 加密钥</span></div><div class="line">proxychains4 wget -qO - https://linux-packages.resilio.com/resilio-sync/key.asc | sudo apt-key add -</div><div class="line">sudo proxychains4 apt-get update</div><div class="line">sudo apt-get -f install </div><div class="line">sudo proxychains4 apt-get install resilio-sync</div></pre></td></tr></table></figure>
+<p>其它方式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">vim /proc/meminfo 文件来观察LINux系统上虚拟内存的当前状态.</div><div class="line"></div><div class="line"></div><div class="line">curl https://wordpress.org/latest.tar.gz | tar -zxvf -</div><div class="line">curl url/install.sh | sh</div><div class="line"></div><div class="line">wget -O redis.tar.gz \</div><div class="line">    http://download.redis.io/releases/redis-3.2.0.tar.gz</div><div class="line">tar -zxvf redis.tar.gz -C /usr/src</div><div class="line">make -C /usr/src/redis \</div><div class="line">    &amp;&amp; make -C /usr/src/redis/src install </div><div class="line"><span class="comment"># tar解压重命名</span></div><div class="line">mkdir ./jdk8 &amp;&amp; tar -xzvf jdk8.tar.gz -C ./jdk8 --strip-components 1</div><div class="line"></div><div class="line">wget https://ghost.org/zip/ghost-latest.zip</div><div class="line">unzip -uo ghost-latest.zip -d /var/www/ghost </div><div class="line"></div><div class="line">wget -qO- url/install.sh | sh</div><div class="line">wget --no-check-certificate url/install.sh -O ./install.sh</div><div class="line"></div><div class="line">curl -LOk https://ghost.org/zip/ghost-latest.zip</div><div class="line">unzip ghost-latest.zip -d ghost-temp</div><div class="line"></div><div class="line">curl http://localhost:8000/wrap?name=femn&amp;  get()</div><div class="line">http://localhost:8000/wrap -d name=femn    post()方法请求</div><div class="line"><span class="comment"># Siege对我们的应用在10秒内执行大约10个并发请求</span></div><div class="line">siege http://localhost:8000/?q=pants -c10 -t10s</div></pre></td></tr></table></figure></p>
+<h3 id="文件和目录操作"><a href="#文件和目录操作" class="headerlink" title="文件和目录操作"></a>文件和目录操作</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">    ll linux.md</div><div class="line">    <span class="comment"># ll 查看的信息 第二列是链接数量</span></div><div class="line">    ll |grep -v linux.md <span class="comment"># 取反</span></div><div class="line">    <span class="built_in">history</span> | grep -c rar <span class="comment"># 计算匹配的数量</span></div><div class="line">    touch file1 <span class="comment"># 创建文件</span></div><div class="line">    file file1 <span class="comment"># 查看文件类型</span></div><div class="line">    cp -Rf <span class="built_in">source</span> destination </div><div class="line">    <span class="comment"># -R 允许你通过命令递归地复制整个目录的内容.</span></div><div class="line">    <span class="comment"># -f 强制覆盖已经存在的目标文件,不提示 </span></div><div class="line">    <span class="comment"># -l 硬链接,它们是同一个文件,索引节点是相同的</span></div><div class="line">    \cp -R dir1 dir2 <span class="comment"># 同上</span></div><div class="line">    \cp -R content/themes/casper ../ghost/content/themes</div><div class="line">    rm -rf file1</div><div class="line">    tail -f -n 20 /etc/passwd</div><div class="line"></div><div class="line">    <span class="comment"># 软连接可以不用事先创建目录,硬连接必须先创建目录</span></div><div class="line">    sudo ln -s /home/femn/file /usr/share/nginx/html/file</div><div class="line">    mkdir ~/file</div><div class="line">    </div><div class="line">    <span class="comment"># mv排除文件</span></div><div class="line">    <span class="comment"># 将本路径下所有的文件移动到本路径下vimrc_config目录下,</span></div><div class="line">    <span class="comment"># 但vimrc_config本身不动</span></div><div class="line">    mv !(vimrc_config) vimrc_config</div><div class="line">    <span class="comment"># 但此命令不包括mv 隐藏文件</span></div><div class="line">    rm命令类似</div><div class="line">    </div><div class="line">    sort -t <span class="string">':'</span> -k 3 -n /etc/passwd</div><div class="line">    <span class="comment"># 按字段分隔数据,按分隔后的第几个进行排序 </span></div><div class="line"></div><div class="line">    scp -r -P 22 root@ip:/server/app/main/handlers \</div><div class="line">        ./main/handlers/</div><div class="line">    scp -P 22 ./1.txt python@ip:/usr/share/nginx/html/file/</div><div class="line">    <span class="comment"># 只需要file目录有写权限,普通用户就可以用了</span></div><div class="line">    rsync -av -e <span class="string">"ssh -p 22"</span> /home/python/app1.6/main/ \</div><div class="line">        root@ip:/server/app1.6/main/</div><div class="line">    rsync -av -e <span class="string">"ssh -p 22"</span> /home/python/oldapp_8000/ \</div><div class="line">        root@ip:/server/app/main/</div><div class="line"></div><div class="line"><span class="comment"># 截图</span></div><div class="line">    <span class="comment">#你将可以使用鼠标选取一个矩形框.在你放下鼠标左键的那一刻,</span></div><div class="line">    <span class="comment"># 一个该矩形框的截屏会以import后面跟的文件名保存在当前目录下</span></div><div class="line">    import screenshot.jpg </div><div class="line">    gnome-screenshot -a</div><div class="line"></div><div class="line"><span class="comment"># 改变视频文件大小(分辨率)http://blog.topspeedsnail.com/archives/1699</span></div><div class="line">    ffmpeg -i source.mpg -s 960x540 -c:a copy  destination.mp4</div><div class="line"><span class="comment"># Linux系统将每个对象当作文件来处理,这包括输入和输入的过程.Linux用文件描述符来标识每个文件对象.</span></div></pre></td></tr></table></figure>
+<h3 id="解压缩"><a href="#解压缩" class="headerlink" title="解压缩"></a>解压缩</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tar</span></div><div class="line">tar -zcvf /home/name/conclusion.tar.gz ./conclusion </div><div class="line">tar -zxvf ./conclusion.tar.gz </div><div class="line">tar -cvf /tmp/etc.tar /etc &lt;==仅打包,不压缩</div><div class="line"></div><div class="line"><span class="comment"># rar </span></div><div class="line">rar x file.rar <span class="comment"># 解压</span></div><div class="line"></div><div class="line"><span class="comment"># zip</span></div><div class="line">zip test.zip <span class="built_in">test</span> </div><div class="line">unzip test.zip</div></pre></td></tr></table></figure>
+<h3 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">printenv <span class="comment"># 查看所有全局环境变量</span></div><div class="line"><span class="built_in">set</span> <span class="comment"># 会显示为某个特定进程设置的所有环境变量</span></div><div class="line"><span class="comment"># 设置PATH环境变量</span></div><div class="line">vim ~/.profile</div><div class="line">    <span class="built_in">export</span> JAVA_HOME=/home/name/jdk1.8.0_92</div><div class="line">    <span class="built_in">export</span> ANT_HOME=/home/name/apache-ant-1.9.7</div><div class="line">    PATH=<span class="variable">$&#123;PATH&#125;</span>:/home/name/jdk1.8.0_92/bin:/home/name/apache/bin</div><div class="line"><span class="comment"># 设置局部变量(只能在定义的进程可见)</span></div><div class="line">femn=<span class="string">'hello,my name is femn'</span></div><div class="line"><span class="comment"># 设置全局变量</span></div><div class="line"><span class="built_in">export</span> femn  <span class="comment"># 记住不要再用美元符($) </span></div><div class="line"><span class="comment"># 删除环境变量</span></div><div class="line"><span class="built_in">unset</span> femn</div></pre></td></tr></table></figure>
+<h3 id="ubuntu-ip"><a href="#ubuntu-ip" class="headerlink" title="ubuntu ip"></a>ubuntu ip</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 禁用IPV6</span></div><div class="line">vim /etc/modprobe.d/blacklist.conf </div><div class="line"><span class="comment">#在文档最后添加 blacklist ipv6</span></div><div class="line"><span class="comment"># 设置一ip</span></div><div class="line">sudo ifconfig enp0s3 192.168.1.101 netmask 255.255.255.0</div><div class="line">sudo route add default gw 192.168.1.254</div><div class="line"><span class="comment"># 设置二ip</span></div><div class="line">sudo vim /etc/network/interfaces</div><div class="line">    auto enp0s3 </div><div class="line">    iface enp0s3 inet static <span class="comment"># dhcp</span></div><div class="line">    address 192.168.1.101</div><div class="line">    gateway 192.168.1.254</div><div class="line">    netmask 255.255.255.0</div><div class="line">    <span class="comment">#network 192.168.1.0  </span></div><div class="line">    <span class="comment">#broadcast 192.168.1.255 </span></div><div class="line"><span class="comment"># 配置DNS</span></div><div class="line">sudo vim/etc/resolv.conf</div><div class="line">    nameserver 127.0.1.1</div><div class="line">    <span class="comment"># nameserver 8.8.8.8</span></div><div class="line">    search DHCP HOST</div><div class="line">    </div><div class="line"><span class="comment"># 手动重启网络服务</span></div><div class="line">sudo /etc/init.d/networking restart</div><div class="line"><span class="comment">#实在没有生效 reboot</span></div><div class="line"></div><div class="line"><span class="comment"># /etc/hosts:ip与域名的对应关系,DNS记录信息,</span></div><div class="line"><span class="comment"># /etc/hostname:存放的是主机名.域名与主机名没有任何关系</span></div><div class="line">sudo hostname python-Vostro-3901 <span class="comment"># 修改主机名 ubuntu</span></div><div class="line">sudo hostnamectl <span class="built_in">set</span>-hostname intl.aliyun.centos7 </div><div class="line"><span class="comment"># 修改主机名 centos</span></div><div class="line"></div><div class="line"><span class="comment"># 永久修改主机名</span></div><div class="line">vim /etc/hostname <span class="comment"># ubuntu centos</span></div></pre></td></tr></table></figure>
+<h3 id="centos7-ip"><a href="#centos7-ip" class="headerlink" title="centos7 ip"></a>centos7 ip</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">vim /etc/sysconfig/network-scripts/ifcfg-网卡名字</div><div class="line">    BOOTPROTO=static <span class="comment">#dhcp改为static   </span></div><div class="line">    ONBOOT=yes <span class="comment">#开机启用本配置  </span></div><div class="line">    IPADDR=192.168.1.107 <span class="comment">#静态IP  </span></div><div class="line">    GATEWAY=192.168.1.254 <span class="comment"># 默认网关  </span></div><div class="line">    NETMASK=255.255.255.0 <span class="comment">#子网掩码  </span></div><div class="line">service network restart</div></pre></td></tr></table></figure>
+<pre><code>查看开启端口
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 查看本机的端口开启情况 </span></div><div class="line">sudo nmap -sTU localhost</div><div class="line"><span class="comment"># 查看局域网的端口开启情况</span></div><div class="line">sudo nmap -PS 192.168.1.222</div><div class="line"><span class="comment"># 查看远程服务器的端口开启情况</span></div><div class="line">nc -zv 45.76.0.178 22 22334</div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/08/linux-common-commands/" data-id="cje27t64t002a07li6aj5eddb" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/08/linux-common-commands/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/08/linux-common-commands/">Comments</a>
     
 
         </footer>
@@ -604,7 +620,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/06/python-object/" data-id="cjb0eeawv003906rofnpmzf9w" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/06/python-object/" data-id="cje27t678003j07lipziiazlh" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -746,7 +762,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/05/python-threads/" data-id="cjb0eeaxk003s06ro47pvsaxg" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/05/python-threads/" data-id="cje27t67j003o07lir41u2e8u" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -926,7 +942,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/05/threads/" data-id="cjb0eeaxm003y06ro5an22qaa" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/05/threads/" data-id="cje27t68l004607liii9og6uk" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1080,7 +1096,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/05/python-generator/" data-id="cjb0eeaxa003e06robvkp6ewv" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/05/python-generator/" data-id="cje27t66z003f07lidy1z2aaj" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1221,7 +1237,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/05/iterable-iterator/" data-id="cjb0eeaw2001t06rolz42xtmd" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/05/iterable-iterator/" data-id="cje27t64f002107li3zdsqoa9" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1369,7 +1385,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/docker-RUN-ENTRYPOINT-CMD/" data-id="cjb0eeava000n06roiklr67gz" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/docker-RUN-ENTRYPOINT-CMD/" data-id="cje27t62r001807lijb3c3jel" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1447,6 +1463,154 @@
 
 
 
+    <article id="post-supervisor-server" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/04/supervisor-server/">supervisor</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/04/supervisor-server/">
+            <time datetime="2017-08-04T15:24:48.000Z" itemprop="datePublished">2017-08-04</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/server/">server</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>Linux的后台进程运行有好几种方法,例如nohup,screen等,但是,如果是一个服务程序,要可靠地在后台运行,我们就需要把它做成daemon,最好还能监控进程状态,在意外结束时能自动重启.</p>
+<p>supervisor就是用Python开发的一套通用的进程管理程序,能将一个普通的命令行进程变为后台daemon,并监控进程状态,异常退出时能自动重启.另一个进程管理工具:S6</p>
+<p>Debian / Ubuntu可以直接通过apt安装:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install supervisor</div></pre></td></tr></table></figure>
+<p>如果是通过pip安装的话,就需要echo_supervisord_conf程序生成supervisor的初始化配置文件:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo pip install supervisor</div><div class="line">mkdir /etc/supervisor</div><div class="line">echo_supervisord_conf &gt; /etc/supervisor/supervisord.conf</div></pre></td></tr></table></figure>
+<p>supervisor安装完成后会生成三个执行程序:supervisortd 守护进程服务,用于接收进程管理命令.supervisorctl 客户端,用于和守护进程通信,发送管理进程的指令.<br>echo_supervisord_conf 生成初始配置文件程序<br>然后,给我们自己开发的应用程序编写一个配置文件,让supervisor来管理它.每个进程的配置文件都可以单独分拆,放在/etc/supervisor/conf.d/目录下,以.conf作为扩展名</p>
+<p>vim server.conf<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">[program:python8010]</div><div class="line"><span class="built_in">command</span> = /usr/bin/python3 HttpsRunner.py</div><div class="line">directory = /server/app1.6</div><div class="line">user = root</div><div class="line">redirect_stderr = <span class="literal">true</span></div><div class="line">stdout_logfile_maxbytes = 150MB</div><div class="line">stdout_logfile_backups = 20</div><div class="line">stdout_logfile = /server/app1.6/python8010.log</div><div class="line"></div><div class="line">[program:mongod]</div><div class="line">;<span class="built_in">command</span> = /mongo/mongodb-linux-x86_64-ubuntu1404-3.2.10/bin/mongod --dbpath /mnt/mongodb --auth</div><div class="line"><span class="built_in">command</span> = /mongo/mongodb-linux-x86_64-ubuntu1404-3.2.10/bin/mongod -f /server/app1.6/mongodb.conf</div><div class="line">directory = /server/app1.6</div><div class="line">user = root</div><div class="line">redirect_stderr = <span class="literal">true</span></div><div class="line">stdout_logfile_maxbytes = 150MB</div><div class="line">stdout_logfile_backups = 20</div><div class="line">stdout_logfile = /server/app1.6/mongodb.log</div></pre></td></tr></table></figure></p>
+<p>Supervisor只能管理非daemon的进程,也就是说Supervisor不能管理守护进程.否则提示Exited too quickly (process log may have details)异常.<br>启动Supervisor服务:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">supervisord -c /etc/supervisor/supervisord.conf</div></pre></td></tr></table></figure>
+<p>管理进程:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">supervisorctl status</div><div class="line">supervisorctl stop mongod</div><div class="line">supervisorctl start python8010</div><div class="line">supervisorctl restart python8001</div><div class="line"><span class="comment"># 重启所有属于名为groupworker这个分组的进程(start,restart同理)</span></div><div class="line">supervisorctl stop groupworker</div><div class="line"><span class="comment"># 停止全部进程,注:start、restart、stop都不会载入最新的配置文件</span></div><div class="line">supervisorctl stop all </div><div class="line"><span class="comment"># 载入最新的配置文件,停止原有进程并按新的配置启动、管理所有进程</span></div><div class="line">supervisorctl reread/reload</div><div class="line"><span class="comment"># 根据最新的配置文件,启动新配置或有改动的进程,配置没有改动的进程不会受影响而重启</span></div><div class="line">supervisorctl update</div><div class="line">supervisorctl tail &lt;APP_NAME&gt;</div></pre></td></tr></table></figure>
+<p>进入CLI管理台:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">supervisorctl</div></pre></td></tr></table></figure>
+<p>Web管理界面 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">vim /etc/supervisor/supervisord.conf</div><div class="line">    [inet_http_server] ; inet (TCP) server disabled by default</div><div class="line">    port=0.0.0.0:9001  ; (ip_address:port specifier, *:port <span class="keyword">for</span> all iface)</div><div class="line">    username=root      ; (default is no username (open server))</div><div class="line">    password=root      ; (default is no password (open server))</div></pre></td></tr></table></figure>
+<p>重启Supervisor服务,如果有Unlinking stale socket /var/run/supervisor.sock 执行unlink /var/run/supervisor.sock:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ps aux |grep supervisord</div><div class="line">supervisord -c /etc/supervisor/supervisord.conf</div></pre></td></tr></table></figure>
+<h5 id="开机启动Supervisor"><a href="#开机启动Supervisor" class="headerlink" title="开机启动Supervisor:"></a>开机启动Supervisor:</h5><p>方法1:<br>    Linux 在启动的时候会执行 /etc/rc.local 里面的脚本,所以只要在这里添加执行命令就可以<br>    以下内容需要添加在 exit 命令前,而且由于在执行 rc.local 脚本时,PATH 环境变量未全部初始化,因此命令需要使用绝对路径.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/bin/supervisord -c /etc/supervisor/supervisord.conf</div></pre></td></tr></table></figure></p>
+<p><a href="https://askubuntu.com/questions/765120/after-upgrade-to-16-04-lts-rc-local-is-not-executing-a-command" target="_blank" rel="external">如果是 Ubuntu 16.04 以上,rc.local 被当成了服务,而且默认是不会启动,需要手动启用一下服务</a></p>
+<p>启动rc.local服务:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo systemctl <span class="built_in">enable</span> rc-local.service</div></pre></td></tr></table></figure></p>
+<p>方法二:<br>Supervisord 默认情况下并没有被安装成服务,它本身也是一个进程.官方已经给出了脚本可以将 Supervisord 安装成服务,<br>可以参考<a href="https://github.com/Supervisor/initscripts" target="_blank" rel="external">这里</a>查看各种操作系统的安装脚本,但是我用官方这里给的 Ubuntu 脚本却无法运行.<br>安装方法可以参考<a href="https://serverfault.com/questions/96499/how-to-automatically-start-supervisord-on-linux-ubuntu" target="_blank" rel="external"> serverfault</a><br>这个脚本下载下来后,还需检查一下与我们的配置是否相符合,比如默认的配置文件路径,pid 文件路径等,如果存在不同则需要进行一些修改</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/04/supervisor-server/" data-id="cje27t68g004307li9383lou8" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/04/supervisor-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/supervisor-server/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-Dockerfile_compose" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -1509,7 +1673,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/Dockerfile_compose/" data-id="cjb0eeauh000606rowakiz6am" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/Dockerfile_compose/" data-id="cje27t5wq000007li8gkgey20" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1578,153 +1742,6 @@
             
     
         <a href="https://www.femn.me/2017/08/04/Dockerfile_compose/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/Dockerfile_compose/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-docker-machine" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/04/docker-machine/">docker-machine</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/docker-machine/">
-            <time datetime="2017-08-04T15:24:48.000Z" itemprop="datePublished">2017-08-04</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/docker/">docker</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h3 id="Docker-Engine-主要用来接收和处理docker命令请求的-Docker-Engine-Docker引擎-Docker-Engine的客户端-docker"><a href="#Docker-Engine-主要用来接收和处理docker命令请求的-Docker-Engine-Docker引擎-Docker-Engine的客户端-docker" class="headerlink" title="Docker Engine 主要用来接收和处理docker命令请求的(Docker Engine==Docker引擎==Docker Engine的客户端==docker)"></a>Docker Engine 主要用来接收和处理docker命令请求的(Docker Engine==Docker引擎==Docker Engine的客户端==docker)</h3><p>Docker我们一般理解的,都是C/S模型,用户通过docker client向docker daemon发送REST 请求.</p>
-<p>Docker Engine包括这么几个部分:</p>
-<p>1.Docker Daemon — docker 的守护进程,属于C/S中的server</p>
-<p>2.Docker REST API — docker daemon向外暴露的REST 接口</p>
-<p>3.Docker CLI — docker向外暴露的命令行接口(Command Line API)</p>
-<p>因此,客户端访问服务端的方式有两种,一种是使用命令行工具,比如docker run, docker ps…等等.另一种就是直接通过调用REST API,比如发送一个curl http请求<br><img src="http://os1h5rv4q.bkt.clouddn.com/docker_engine.png" alt=""></p>
-<h3 id="Docker-Machine是一个工具-用来在虚拟主机上安装Docker-Engine-Machine-并使用-docker-machine命令来管理这些虚拟主机-Machine-是一个可以帮助我们在电脑上、在云端、在数据中心内创建-Docker-主机的应用"><a href="#Docker-Machine是一个工具-用来在虚拟主机上安装Docker-Engine-Machine-并使用-docker-machine命令来管理这些虚拟主机-Machine-是一个可以帮助我们在电脑上、在云端、在数据中心内创建-Docker-主机的应用" class="headerlink" title="Docker Machine是一个工具,用来在虚拟主机上安装Docker Engine(Machine),并使用 docker-machine命令来管理这些虚拟主机(Machine).是一个可以帮助我们在电脑上、在云端、在数据中心内创建 Docker 主机的应用"></a>Docker Machine是一个工具,用来在虚拟主机上安装Docker Engine(Machine),并使用 docker-machine命令来管理这些虚拟主机(Machine).是一个可以帮助我们在电脑上、在云端、在数据中心内创建 Docker 主机的应用</h3><h4 id="主要用来管理-docker化的-host-安装了Docker-Engine的主机"><a href="#主要用来管理-docker化的-host-安装了Docker-Engine的主机" class="headerlink" title="主要用来管理 docker化的 host (安装了Docker Engine的主机)"></a>主要用来管理 docker化的 host (安装了Docker Engine的主机)</h4><p>使用 docker-machine命令,你可以启动、查看、停止以及重启一个主机,升级Docker client和daemon,配置Machine 的 Docker client与你的主机进行通信</p>
-<p>无论是Mac,Windows或是Linux,你都可以在其上安装Docker Machine,使用docker-machine命令来创建和管理大量的Docker hosts.<br>它会自动创建主机,在主机上安装Docker Engine,然后配置docker client.每个被管理的主机(“machine”)都是一个Docker 主机和一个配置过的client的组合.</p>
-<h4 id="docker-Machine的具体使用场景"><a href="#docker-Machine的具体使用场景" class="headerlink" title="docker Machine的具体使用场景:"></a>docker Machine的具体使用场景:</h4><p>1.你目前只有一个老版本的MacOSX(比如10.10.2)或者Windows系统,想在上边运行docker.</p>
-<p>2.想在远程系统上创建Docker主机,比如想在网络上,云平台上,以及本地创建Docker host,你就需要Docker Machine.</p>
-<p>3.docker在不同的linux上得安装方法不一样,通过这个工具可以提供统一的安装方法.</p>
-<h4 id="你可以使用Machine在一个或多个虚拟机上安装Docker-Engine-这些虚拟机可以是在本地-当你使用Machine在VirtualBox安装和运行Docker-Engine时"><a href="#你可以使用Machine在一个或多个虚拟机上安装Docker-Engine-这些虚拟机可以是在本地-当你使用Machine在VirtualBox安装和运行Docker-Engine时" class="headerlink" title="你可以使用Machine在一个或多个虚拟机上安装Docker Engine.这些虚拟机可以是在本地(当你使用Machine在VirtualBox安装和运行Docker Engine时)"></a>你可以使用Machine在一个或多个虚拟机上安装Docker Engine.这些虚拟机可以是在本地(当你使用Machine在VirtualBox安装和运行Docker Engine时)</h4><h4 id="也可以是远程的-使用Machine在云平台上创建Docker化的主机时-这些虚拟化的主机可以被认为是”machine”"><a href="#也可以是远程的-使用Machine在云平台上创建Docker化的主机时-这些虚拟化的主机可以被认为是”machine”" class="headerlink" title="也可以是远程的(使用Machine在云平台上创建Docker化的主机时).这些虚拟化的主机可以被认为是”machine”"></a>也可以是远程的(使用Machine在云平台上创建Docker化的主机时).这些虚拟化的主机可以被认为是”machine”</h4><p>Machine<br>解决因操作系统异构导致的安装 Docker 困难的问题,所有系统部署 Docker 都变得非常方便.<br><img src="http://os1h5rv4q.bkt.clouddn.com/docker_machine.png" alt=""></p>
-<p><img src="http://os1h5rv4q.bkt.clouddn.com/docker_machine2.jpg" alt=""></p>
-<p><a href="https://docs.docker.com/machine/install-machine/" target="_blank" rel="external">install machine</a></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">curl -L https://github.com/docker/machine/releases/download/\</div><div class="line">    v0.12.1/docker-machine-`uname -s`-`uname -m` \ </div><div class="line">    &gt;/tmp/docker-machine &amp;&amp;</div><div class="line">chmod a+x /tmp/docker-machine </div><div class="line">sudo cp /tmp/docker-machine /usr/<span class="built_in">local</span>/bin/docker-machine</div><div class="line"><span class="comment">#如果超时,直接从网页中下载</span></div><div class="line">https://github.com/docker/machine/releases/download/v0.12.1/docker-machine-Linux-x86_64</div><div class="line">chmod a+x docker-machine-Linux-x86_64</div><div class="line">sudo mv docker-machine-Linux-x86_64 /usr/<span class="built_in">local</span>/bin/docker-machine</div></pre></td></tr></table></figure>
-<h3 id="use-machine"><a href="#use-machine" class="headerlink" title="use machine"></a>use machine</h3><p>你也可以在VirtualBox等虚拟机上安装Docker engine到Docker中.在本地客户端,就好像所有的Docker 引擎运行在本地一样</p>
-<ol>
-<li>需要先安装virtualbox这个软件</li>
-<li>需要的是boot2docker.iso 只是一个普通的iso文件.<br>Docker Machine使用boot2docker作为virtualbox的镜像 – boot2docker是一个运行Docker容器的轻量级Linux系统,完全在内存中运行<br>不是下载此镜像:sudo docker pull boot2docker/boot2docker<br>而是 将<a href="https://github.com/boot2docker/boot2docker/releases/download/v17.06.0-ce/boot2docker.iso" target="_blank" rel="external">iso</a>放到 /home/python/.docker/machine/cache/ 再运行<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">docker-machine create -d virtualbox dev</div><div class="line"><span class="comment"># -driver virtualbox 表示我们在VirtualBox 的虚拟机里面部署 docker,代表的是驱动类型</span></div><div class="line"><span class="comment"># 最后的参数"dev" 是虚拟机(Machine)的名称</span></div><div class="line"><span class="comment"># http://os1h5rv4q.bkt.clouddn.com/docker_dev.jpg</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">#用这个Machine可以配置本地Docker客户端,用到env命令完成</span></div><div class="line">docker-machine env dev</div><div class="line"><span class="comment"># 目前已經建立出來的 docker VM</span></div><div class="line">docker-machine ls</div><div class="line"></div><div class="line"><span class="comment"># Docker客户端将会使用设置的相同的环境变量通过Docker API与运行在上面的机器互相通信</span></div><div class="line"><span class="comment"># 设置完成后,就可以在本地机器访问远程Docker</span></div><div class="line"><span class="built_in">eval</span> $(docker-machine env dev)</div><div class="line">docker ps</div></pre></td></tr></table></figure>
-</li>
-</ol>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/04/docker-machine/" data-id="cjb0eeavi000z06ror7m1g9hs" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/04/docker-machine/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/docker-machine/">Comments</a>
     
 
         </footer>
@@ -1862,7 +1879,7 @@
         <footer id="footer">
     <div class="outer">
         <div id="footer-info" class="inner">
-            &copy; 2017 leipengkai<br>
+            &copy; 2018 leipengkai<br>
             Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
         </div>
     </div>

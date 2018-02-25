@@ -352,7 +352,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/tornado/" data-id="cjb0eeaxt004b06roujwkbspt" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/tornado/" data-id="cje27t68s004a07liawcl9i3x" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -430,7 +430,7 @@
 
 
 
-    <article id="post-python-GC" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-python-dynamic" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -438,7 +438,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/11/python-GC/">python垃圾回收机制</a>
+            <a class="article-title" href="/2017/08/11/python-dynamic/">python的动态性</a>
         </h1>
     
 
@@ -447,7 +447,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/11/python-GC/">
+        <a href="/2017/08/11/python-dynamic/">
             <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
         </a>
     </div>
@@ -468,29 +468,10 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>垃圾回收机制:python采⽤的是以引用计数为主,隔代回收机制为辅的策略</p>
-<h4 id="小整数对象池-Python运行之前就已经创建好了-常驻内存"><a href="#小整数对象池-Python运行之前就已经创建好了-常驻内存" class="headerlink" title="小整数对象池(Python运行之前就已经创建好了),常驻内存"></a>小整数对象池(Python运行之前就已经创建好了),常驻内存</h4><p>Python对小整数的定义是[-5,257)这些整数对象是提前建立好的,不会被垃圾回收.在一个Python的程序中,所有位于这个范围内的整数使用的都是同一个对象.<br>同理,单个字母也是这样的<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a ,b= <span class="number">100</span>,<span class="number">100</span></div><div class="line">id(a) == id(b)</div><div class="line"><span class="comment"># True</span></div></pre></td></tr></table></figure></p>
-<h4 id="intern机制尽量地共享一份内存地址-靠引用计数去维护何时释放"><a href="#intern机制尽量地共享一份内存地址-靠引用计数去维护何时释放" class="headerlink" title="intern机制尽量地共享一份内存地址,靠引用计数去维护何时释放"></a>intern机制尽量地共享一份内存地址,靠引用计数去维护何时释放</h4><p>但如果是包含有特殊字符的就不会共享了<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 共享</span></div><div class="line">a = <span class="string">"hello"</span></div><div class="line">b = <span class="string">"hello"</span></div><div class="line"><span class="comment"># 不共享</span></div><div class="line">a = <span class="string">"hello world"</span></div><div class="line">b = <span class="string">"hello world"</span></div></pre></td></tr></table></figure></p>
-<h4 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> gc</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClassA</span><span class="params">()</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">'object born,id:%s'</span>%str(hex(id(self))))</div><div class="line"><span class="comment"># 引用计数 解决不了 变量的循环引用或互相引用</span></div><div class="line"><span class="comment"># 才有分代收集机制才会减一来辅助完成回收</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">f2</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">        c1 = ClassA()</div><div class="line">        c2 = ClassA()</div><div class="line">        c1.t = c2</div><div class="line">        c2.t = c1</div><div class="line">        <span class="keyword">del</span> c1</div><div class="line">        <span class="keyword">del</span> c2</div><div class="line">        <span class="comment"># 如果没有下面一行代码,则内存使用快速上升</span></div><div class="line">        gc.collect() <span class="comment"># 手动启动垃圾回收</span></div><div class="line">gc.disable()</div><div class="line"><span class="comment"># 隔(零)代回收:promote</span></div><div class="line">f2()</div></pre></td></tr></table></figure>
-<p>引用计数的优点是</p>
-<ol>
-<li>简单性</li>
-<li>实时性:一旦没有引用,内存就直接释放了.不用像其他机制等到特定<br>时机.实时性还带来一个好处:处理回收内存的时间分摊到了平时.</li>
-</ol>
-<p>缺点是</p>
-<ol>
-<li>维护引用计数消耗资源</li>
-<li>循环引用或相互引用,不能完成回收</li>
-</ol>
-<img src="/2017/08/11/python-GC/1.jpg" alt="GC(Garbage Collection)垃圾回收机制" title="GC(Garbage Collection)垃圾回收机制">
-<p>gc模块唯一处理不了的是循环引用的类都有<strong>del</strong>方法,所以项目中要避免<br>重写<strong>del</strong>方法</p>
-<p>触发垃圾回收的情况:</p>
-<ol>
-<li>调用gc.collect(),</li>
-<li>当gc模块的计数器达到阀值的时候.</li>
-<li>程序退出的时</li>
-<li>引用计数为0时</li>
-</ol>
+            <p>动态语⾔:可以在运⾏的过程中,修改代码<br>静态语⾔:运行前必须先编,译编译时已经确定好代码,运⾏过程中不能修改</p>
+<p>python是动态语⾔:它是⼀类在运⾏时可以改变其结构的语⾔:例如新的函数、对象、 甚⾄代码可以被引进,已有的函数可以被删除或是其他结构上的变化.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, newName, newAge)</span>:</span></div><div class="line">        self.name = newName</div><div class="line">        self.age = newAge</div><div class="line">        <span class="comment"># 	__slots__	=	("name",	"age")</span></div><div class="line">        <span class="comment"># 为了达到限制的⽬的,Python允许在定义class的时候</span></div><div class="line">        <span class="comment"># 定义⼀个特殊的 __slots__变量,来限制该class实例能添加的属性</span></div><div class="line"></div><div class="line"><span class="meta">@staticmethod</span></div><div class="line">def test();</div><div class="line">    <span class="keyword">pass</span></div><div class="line"><span class="meta">@classmethod</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">testclass</span><span class="params">(cls)</span>:</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line"></div><div class="line">laowang = Person(<span class="string">"老王"</span>, <span class="number">10000</span>)</div><div class="line">print(laowang.name)</div><div class="line">print(laowang.age)</div><div class="line"><span class="comment"># 可以添加其它属性和方法,即使在类只没有定义</span></div><div class="line">laowang.addr = <span class="string">"北京...."</span></div><div class="line">print(laowang.addr)</div><div class="line"></div><div class="line"><span class="comment">#　给对象和类添加属性</span></div><div class="line">laozhao = Person(<span class="string">"老赵"</span>, <span class="number">18</span>)</div><div class="line"><span class="comment">#print(laozhao.addr)</span></div><div class="line"></div><div class="line">Person.num = <span class="number">100</span></div><div class="line">print(laowang.num)</div><div class="line">print(laozhao.num)</div><div class="line"></div><div class="line"><span class="comment">#　添加静态方法</span></div><div class="line">Persion.test = test</div><div class="line">Persion.testclass = testclass</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 添加方法</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, newName, newAge)</span>:</span></div><div class="line">        self.name = newName</div><div class="line">        self.age = newAge</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">"-----%s正在吃----"</span>%self.name)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></div><div class="line">    print(<span class="string">"-----%s正在跑----"</span>%self.name)</div><div class="line"></div><div class="line"></div><div class="line">p1 = Person(<span class="string">"p1"</span>, <span class="number">10</span>)</div><div class="line">p1.eat()</div><div class="line">p1.run = run</div><div class="line"><span class="comment"># p1.run()#虽然p1对象中 run属性已经指向了函数,但是这句代码还不正确</span></div><div class="line">        <span class="comment">#因为run属性指向的函数 是后来添加的,p1.run()的时候,并没有把p1当做第</span></div><div class="line">        <span class="comment">#1个参数,导致了第10行的函数调用的时候, 出现缺少参数的问题</span></div><div class="line"><span class="keyword">import</span> types</div><div class="line">p1.run = types.MethodType(run, p1)</div><div class="line">p1.run()</div></pre></td></tr></table></figure>
 
         
         </div>
@@ -501,7 +482,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/python-GC/" data-id="cjb0eeawj002k06ro4o2upq37" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/python-dynamic/" data-id="cje27t66q003b07li02rr5obk" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -569,7 +550,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/08/11/python-GC/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-GC/">Comments</a>
+        <a href="https://www.femn.me/2017/08/11/python-dynamic/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-dynamic/">Comments</a>
     
 
         </footer>
@@ -637,7 +618,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/closure/" data-id="cjb0eeav7000l06rokwpe84bp" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/closure/" data-id="cje27t610000k07lipm58qg0j" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -715,266 +696,6 @@
 
 
 
-    <article id="post-python-builtins" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/11/python-builtins/">python内建属性</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/11/python-builtins/">
-            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/python3/">python3</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>Python在启动的时候会⾃动为我们载⼊很多内建的函数,类,属性,⽐如dict,list,type,print,这些都位于<strong>builtin</strong>    模块中,可以使⽤dir(<strong>builtin</strong>)来查看.<br>这也是为什么我们在没有import任何模块的情况下,就能使⽤这么多丰富的函数和功能了.</p>
-<p>在Python中,有⼀个内建模块,该模块中有⼀些常⽤函数;在Python启动后,且没有执⾏程序员所写的任何代码前,Python会⾸先加载该内建函数到内存.</p>
-<p>另外,该内建模块中的功能可以直接使⽤,不⽤在其前添加内建模块前缀</p>
-<img src="/2017/08/11/python-builtins/1.jpg" alt="常见的内建属性" title="常见的内建属性">
-<p>对象的内建属性<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Itcast</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,subject1)</span>:</span></div><div class="line">        self.subject1 = subject1</div><div class="line">        self.subject2 = <span class="string">'cpp'</span></div><div class="line"></div><div class="line">    <span class="comment">#属性访问时拦截器,只要访问属性就必须先调用此方法(包括方法(方法也是对象))</span></div><div class="line">    <span class="comment"># 所以此方法中,不能包含访问属性的语句:比如self.subject1</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattribute__</span><span class="params">(self,obj)</span>:</span></div><div class="line">        print(<span class="string">"====1&gt;%s"</span>%obj)</div><div class="line">        <span class="keyword">if</span> obj == <span class="string">'subject1'</span>:</div><div class="line">            print(<span class="string">'log subject1'</span>)</div><div class="line">            <span class="keyword">return</span> <span class="string">'redirect python'</span></div><div class="line">        <span class="keyword">else</span>:   </div><div class="line">            temp = object.__getattribute__(self,obj)</div><div class="line">            print(<span class="string">"====2&gt;%s"</span>%str(temp))</div><div class="line">            <span class="keyword">return</span> temp</div><div class="line">    </div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">'this is Itcast'</span>)</div><div class="line"></div><div class="line">s = Itcast(<span class="string">"python"</span>)</div><div class="line">print(s.subject1)</div><div class="line">print(s.subject2)</div><div class="line"></div><div class="line"><span class="comment">#1. 先获取show属性对应的结果,,,,应该是一个方法</span></div><div class="line"><span class="comment">#2. 再调用方法show()</span></div><div class="line">s.show()</div><div class="line"><span class="comment"># import types</span></div><div class="line"><span class="comment"># p1.eat = types.MethodType(eat, p1)</span></div><div class="line"></div><div class="line"><span class="comment"># ====1&gt;subject1</span></div><div class="line"><span class="comment"># log subject1</span></div><div class="line"><span class="comment"># redirect python</span></div><div class="line"><span class="comment"># ====1&gt;subject2</span></div><div class="line"><span class="comment"># ====2&gt;cpp</span></div><div class="line"><span class="comment"># cpp</span></div><div class="line"><span class="comment"># ====1&gt;show</span></div><div class="line"><span class="comment"># ====2&gt;&lt;bound method Itcast.show of &lt;__main__.Itcast object at 0x0&gt;&gt;</span></div><div class="line"><span class="comment"># this is Itcast</span></div></pre></td></tr></table></figure></p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/11/python-builtins/" data-id="cjb0eeawn002s06rocfyjzn44" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/11/python-builtins/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-builtins/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-python-copy" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/11/python-copy/">深浅拷贝</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/11/python-copy/">
-            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/python3/">python3</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h4 id="is-是⽐较两个引⽤是否指向了同⼀个对象-引⽤⽐较"><a href="#is-是⽐较两个引⽤是否指向了同⼀个对象-引⽤⽐较" class="headerlink" title="is    是⽐较两个引⽤是否指向了同⼀个对象(引⽤⽐较)"></a>is    是⽐较两个引⽤是否指向了同⼀个对象(引⽤⽐较)</h4><h4 id="是⽐较两个对象内容是否相等"><a href="#是⽐较两个对象内容是否相等" class="headerlink" title="==    是⽐较两个对象内容是否相等"></a>==    是⽐较两个对象内容是否相等</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line">b = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line">a == b  <span class="comment"># True</span></div><div class="line">a <span class="keyword">is</span> b <span class="comment"># Flase</span></div><div class="line">c = copy.deepcopy(a)<span class="comment">#　深拷贝</span></div><div class="line">a == c  <span class="comment"># True</span></div><div class="line">a <span class="keyword">is</span> c <span class="comment"># Flase</span></div><div class="line">id(a) <span class="comment"># 指向a的内存地址</span></div><div class="line">d = a <span class="comment">#　id(d)和id(a)值相等 浅拷贝</span></div><div class="line">a <span class="keyword">is</span> d <span class="comment">#　True</span></div></pre></td></tr></table></figure>
-<h4 id="拷贝-一个变量引用另外一个变量"><a href="#拷贝-一个变量引用另外一个变量" class="headerlink" title="拷贝:一个变量引用另外一个变量"></a>拷贝:一个变量引用另外一个变量</h4><p>深拷⻉是对于⼀个对象所有层次的拷⻉(递归)<br><img src="/2017/08/11/python-copy/1.jpg" alt="深拷贝" title="深拷贝"></p>
-<p>浅拷⻉是对于⼀个对象的顶层拷⻉,只是拷⻉了引⽤,并没有拷⻉内容(没重新生成新的内存地址)<br><img src="/2017/08/11/python-copy/2.jpg" alt="浅拷贝列表" title="浅拷贝列表"><br>浅拷⻉对不可变类型和可变类型的copy不同<br><img src="/2017/08/11/python-copy/3.jpg" alt="浅拷贝元组" title="浅拷贝元组"></p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/11/python-copy/" data-id="cjb0eeawo002u06roy5g4w52l" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/11/python-copy/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-copy/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <article id="post-python-process" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -1035,7 +756,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/python-process/" data-id="cjb0eeaxn004006roxhfk5s8m" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/python-process/" data-id="cje27t67c003l07liyf9wpjo0" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1166,7 +887,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/python-mateclass/" data-id="cjb0eeawv003706ro6q6patji" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/python-mateclass/" data-id="cje27t674003h07li4hh4lwi4" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1244,7 +965,7 @@
 
 
 
-    <article id="post-python-dynamic" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-python-GC" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -1252,7 +973,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/11/python-dynamic/">python的动态性</a>
+            <a class="article-title" href="/2017/08/11/python-GC/">python垃圾回收机制</a>
         </h1>
     
 
@@ -1261,7 +982,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/11/python-dynamic/">
+        <a href="/2017/08/11/python-GC/">
             <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
         </a>
     </div>
@@ -1282,10 +1003,29 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>动态语⾔:可以在运⾏的过程中,修改代码<br>静态语⾔:运行前必须先编,译编译时已经确定好代码,运⾏过程中不能修改</p>
-<p>python是动态语⾔:它是⼀类在运⾏时可以改变其结构的语⾔:例如新的函数、对象、 甚⾄代码可以被引进,已有的函数可以被删除或是其他结构上的变化.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, newName, newAge)</span>:</span></div><div class="line">        self.name = newName</div><div class="line">        self.age = newAge</div><div class="line">        <span class="comment"># 	__slots__	=	("name",	"age")</span></div><div class="line">        <span class="comment"># 为了达到限制的⽬的,Python允许在定义class的时候</span></div><div class="line">        <span class="comment"># 定义⼀个特殊的 __slots__变量,来限制该class实例能添加的属性</span></div><div class="line"></div><div class="line"><span class="meta">@staticmethod</span></div><div class="line">def test();</div><div class="line">    <span class="keyword">pass</span></div><div class="line"><span class="meta">@classmethod</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">testclass</span><span class="params">(cls)</span>:</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line"></div><div class="line">laowang = Person(<span class="string">"老王"</span>, <span class="number">10000</span>)</div><div class="line">print(laowang.name)</div><div class="line">print(laowang.age)</div><div class="line"><span class="comment"># 可以添加其它属性和方法,即使在类只没有定义</span></div><div class="line">laowang.addr = <span class="string">"北京...."</span></div><div class="line">print(laowang.addr)</div><div class="line"></div><div class="line"><span class="comment">#　给对象和类添加属性</span></div><div class="line">laozhao = Person(<span class="string">"老赵"</span>, <span class="number">18</span>)</div><div class="line"><span class="comment">#print(laozhao.addr)</span></div><div class="line"></div><div class="line">Person.num = <span class="number">100</span></div><div class="line">print(laowang.num)</div><div class="line">print(laozhao.num)</div><div class="line"></div><div class="line"><span class="comment">#　添加静态方法</span></div><div class="line">Persion.test = test</div><div class="line">Persion.testclass = testclass</div></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 添加方法</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, newName, newAge)</span>:</span></div><div class="line">        self.name = newName</div><div class="line">        self.age = newAge</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">"-----%s正在吃----"</span>%self.name)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></div><div class="line">    print(<span class="string">"-----%s正在跑----"</span>%self.name)</div><div class="line"></div><div class="line"></div><div class="line">p1 = Person(<span class="string">"p1"</span>, <span class="number">10</span>)</div><div class="line">p1.eat()</div><div class="line">p1.run = run</div><div class="line"><span class="comment"># p1.run()#虽然p1对象中 run属性已经指向了函数,但是这句代码还不正确</span></div><div class="line">        <span class="comment">#因为run属性指向的函数 是后来添加的,p1.run()的时候,并没有把p1当做第</span></div><div class="line">        <span class="comment">#1个参数,导致了第10行的函数调用的时候, 出现缺少参数的问题</span></div><div class="line"><span class="keyword">import</span> types</div><div class="line">p1.run = types.MethodType(run, p1)</div><div class="line">p1.run()</div></pre></td></tr></table></figure>
+            <p>垃圾回收机制:python采⽤的是以引用计数为主,隔代回收机制为辅的策略</p>
+<h4 id="小整数对象池-Python运行之前就已经创建好了-常驻内存"><a href="#小整数对象池-Python运行之前就已经创建好了-常驻内存" class="headerlink" title="小整数对象池(Python运行之前就已经创建好了),常驻内存"></a>小整数对象池(Python运行之前就已经创建好了),常驻内存</h4><p>Python对小整数的定义是[-5,257)这些整数对象是提前建立好的,不会被垃圾回收.在一个Python的程序中,所有位于这个范围内的整数使用的都是同一个对象.<br>同理,单个字母也是这样的<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a ,b= <span class="number">100</span>,<span class="number">100</span></div><div class="line">id(a) == id(b)</div><div class="line"><span class="comment"># True</span></div></pre></td></tr></table></figure></p>
+<h4 id="intern机制尽量地共享一份内存地址-靠引用计数去维护何时释放"><a href="#intern机制尽量地共享一份内存地址-靠引用计数去维护何时释放" class="headerlink" title="intern机制尽量地共享一份内存地址,靠引用计数去维护何时释放"></a>intern机制尽量地共享一份内存地址,靠引用计数去维护何时释放</h4><p>但如果是包含有特殊字符的就不会共享了<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 共享</span></div><div class="line">a = <span class="string">"hello"</span></div><div class="line">b = <span class="string">"hello"</span></div><div class="line"><span class="comment"># 不共享</span></div><div class="line">a = <span class="string">"hello world"</span></div><div class="line">b = <span class="string">"hello world"</span></div></pre></td></tr></table></figure></p>
+<h4 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> gc</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClassA</span><span class="params">()</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">'object born,id:%s'</span>%str(hex(id(self))))</div><div class="line"><span class="comment"># 引用计数 解决不了 变量的循环引用或互相引用</span></div><div class="line"><span class="comment"># 才有分代收集机制才会减一来辅助完成回收</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">f2</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">        c1 = ClassA()</div><div class="line">        c2 = ClassA()</div><div class="line">        c1.t = c2</div><div class="line">        c2.t = c1</div><div class="line">        <span class="keyword">del</span> c1</div><div class="line">        <span class="keyword">del</span> c2</div><div class="line">        <span class="comment"># 如果没有下面一行代码,则内存使用快速上升</span></div><div class="line">        gc.collect() <span class="comment"># 手动启动垃圾回收</span></div><div class="line">gc.disable()</div><div class="line"><span class="comment"># 隔(零)代回收:promote</span></div><div class="line">f2()</div></pre></td></tr></table></figure>
+<p>引用计数的优点是</p>
+<ol>
+<li>简单性</li>
+<li>实时性:一旦没有引用,内存就直接释放了.不用像其他机制等到特定<br>时机.实时性还带来一个好处:处理回收内存的时间分摊到了平时.</li>
+</ol>
+<p>缺点是</p>
+<ol>
+<li>维护引用计数消耗资源</li>
+<li>循环引用或相互引用,不能完成回收</li>
+</ol>
+<img src="/2017/08/11/python-GC/1.jpg" alt="GC(Garbage Collection)垃圾回收机制" title="GC(Garbage Collection)垃圾回收机制">
+<p>gc模块唯一处理不了的是循环引用的类都有<strong>del</strong>方法,所以项目中要避免<br>重写<strong>del</strong>方法</p>
+<p>触发垃圾回收的情况:</p>
+<ol>
+<li>调用gc.collect(),</li>
+<li>当gc模块的计数器达到阀值的时候.</li>
+<li>程序退出的时</li>
+<li>引用计数为0时</li>
+</ol>
 
         
         </div>
@@ -1296,7 +1036,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/python-dynamic/" data-id="cjb0eeawt003306ro8pbgpuhs" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/python-GC/" data-id="cje27t664003307li6ep2rk7l" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1364,7 +1104,267 @@
 
             
     
-        <a href="https://www.femn.me/2017/08/11/python-dynamic/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-dynamic/">Comments</a>
+        <a href="https://www.femn.me/2017/08/11/python-GC/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-GC/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-python-builtins" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/11/python-builtins/">python内建属性</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/11/python-builtins/">
+            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>Python在启动的时候会⾃动为我们载⼊很多内建的函数,类,属性,⽐如dict,list,type,print,这些都位于<strong>builtin</strong>    模块中,可以使⽤dir(<strong>builtin</strong>)来查看.<br>这也是为什么我们在没有import任何模块的情况下,就能使⽤这么多丰富的函数和功能了.</p>
+<p>在Python中,有⼀个内建模块,该模块中有⼀些常⽤函数;在Python启动后,且没有执⾏程序员所写的任何代码前,Python会⾸先加载该内建函数到内存.</p>
+<p>另外,该内建模块中的功能可以直接使⽤,不⽤在其前添加内建模块前缀</p>
+<img src="/2017/08/11/python-builtins/1.jpg" alt="常见的内建属性" title="常见的内建属性">
+<p>对象的内建属性<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Itcast</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,subject1)</span>:</span></div><div class="line">        self.subject1 = subject1</div><div class="line">        self.subject2 = <span class="string">'cpp'</span></div><div class="line"></div><div class="line">    <span class="comment">#属性访问时拦截器,只要访问属性就必须先调用此方法(包括方法(方法也是对象))</span></div><div class="line">    <span class="comment"># 所以此方法中,不能包含访问属性的语句:比如self.subject1</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattribute__</span><span class="params">(self,obj)</span>:</span></div><div class="line">        print(<span class="string">"====1&gt;%s"</span>%obj)</div><div class="line">        <span class="keyword">if</span> obj == <span class="string">'subject1'</span>:</div><div class="line">            print(<span class="string">'log subject1'</span>)</div><div class="line">            <span class="keyword">return</span> <span class="string">'redirect python'</span></div><div class="line">        <span class="keyword">else</span>:   </div><div class="line">            temp = object.__getattribute__(self,obj)</div><div class="line">            print(<span class="string">"====2&gt;%s"</span>%str(temp))</div><div class="line">            <span class="keyword">return</span> temp</div><div class="line">    </div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">'this is Itcast'</span>)</div><div class="line"></div><div class="line">s = Itcast(<span class="string">"python"</span>)</div><div class="line">print(s.subject1)</div><div class="line">print(s.subject2)</div><div class="line"></div><div class="line"><span class="comment">#1. 先获取show属性对应的结果,,,,应该是一个方法</span></div><div class="line"><span class="comment">#2. 再调用方法show()</span></div><div class="line">s.show()</div><div class="line"><span class="comment"># import types</span></div><div class="line"><span class="comment"># p1.eat = types.MethodType(eat, p1)</span></div><div class="line"></div><div class="line"><span class="comment"># ====1&gt;subject1</span></div><div class="line"><span class="comment"># log subject1</span></div><div class="line"><span class="comment"># redirect python</span></div><div class="line"><span class="comment"># ====1&gt;subject2</span></div><div class="line"><span class="comment"># ====2&gt;cpp</span></div><div class="line"><span class="comment"># cpp</span></div><div class="line"><span class="comment"># ====1&gt;show</span></div><div class="line"><span class="comment"># ====2&gt;&lt;bound method Itcast.show of &lt;__main__.Itcast object at 0x0&gt;&gt;</span></div><div class="line"><span class="comment"># this is Itcast</span></div></pre></td></tr></table></figure></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/11/python-builtins/" data-id="cje27t669003507li9vzmkdut" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/11/python-builtins/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-builtins/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-python-copy" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/11/python-copy/">深浅拷贝</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/11/python-copy/">
+            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h4 id="is-是⽐较两个引⽤是否指向了同⼀个对象-引⽤⽐较"><a href="#is-是⽐较两个引⽤是否指向了同⼀个对象-引⽤⽐较" class="headerlink" title="is    是⽐较两个引⽤是否指向了同⼀个对象(引⽤⽐较)"></a>is    是⽐较两个引⽤是否指向了同⼀个对象(引⽤⽐较)</h4><h4 id="是⽐较两个对象内容是否相等"><a href="#是⽐较两个对象内容是否相等" class="headerlink" title="==    是⽐较两个对象内容是否相等"></a>==    是⽐较两个对象内容是否相等</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line">b = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line">a == b  <span class="comment"># True</span></div><div class="line">a <span class="keyword">is</span> b <span class="comment"># Flase</span></div><div class="line">c = copy.deepcopy(a)<span class="comment">#　深拷贝</span></div><div class="line">a == c  <span class="comment"># True</span></div><div class="line">a <span class="keyword">is</span> c <span class="comment"># Flase</span></div><div class="line">id(a) <span class="comment"># 指向a的内存地址</span></div><div class="line">d = a <span class="comment">#　id(d)和id(a)值相等 浅拷贝</span></div><div class="line">a <span class="keyword">is</span> d <span class="comment">#　True</span></div></pre></td></tr></table></figure>
+<h4 id="拷贝-一个变量引用另外一个变量"><a href="#拷贝-一个变量引用另外一个变量" class="headerlink" title="拷贝:一个变量引用另外一个变量"></a>拷贝:一个变量引用另外一个变量</h4><p>深拷⻉是对于⼀个对象所有层次的拷⻉(递归)<br><img src="/2017/08/11/python-copy/1.jpg" alt="深拷贝" title="深拷贝"></p>
+<p>浅拷⻉是对于⼀个对象的顶层拷⻉,只是拷⻉了引⽤,并没有拷⻉内容(没重新生成新的内存地址)<br><img src="/2017/08/11/python-copy/2.jpg" alt="浅拷贝列表" title="浅拷贝列表"><br>浅拷⻉对不可变类型和可变类型的copy不同<br><img src="/2017/08/11/python-copy/3.jpg" alt="浅拷贝元组" title="浅拷贝元组"></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/11/python-copy/" data-id="cje27t66g003707liocytwg3u" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/11/python-copy/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-copy/">Comments</a>
     
 
         </footer>
@@ -1456,7 +1456,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/10/python-decorator/" data-id="cjb0eeawp002x06rov56z8vm5" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/10/python-decorator/" data-id="cje27t66m003907livaw8z0wa" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1534,7 +1534,7 @@
 
 
 
-    <article id="post-linux-common-commands" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-linux_basic" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -1542,7 +1542,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/08/linux-common-commands/">linux 常用命令</a>
+            <a class="article-title" href="/2017/08/08/linux_basic/">linux 基本</a>
         </h1>
     
 
@@ -1551,7 +1551,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/08/linux-common-commands/">
+        <a href="/2017/08/08/linux_basic/">
             <time datetime="2017-08-08T16:05:43.000Z" itemprop="datePublished">2017-08-08</time>
         </a>
     </div>
@@ -1572,22 +1572,11 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h3 id="不需要记住所有的命令-使用man-info查看帮助文档"><a href="#不需要记住所有的命令-使用man-info查看帮助文档" class="headerlink" title="不需要记住所有的命令,使用man info查看帮助文档:"></a>不需要记住所有的命令,使用man info查看帮助文档:</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ls --<span class="built_in">help</span> </div><div class="line">man ls <span class="comment"># 帮助手册</span></div><div class="line">man -k passwd </div><div class="line">man -k nautilus <span class="comment"># 可以用来查询包含该关键字命令的文档</span></div><div class="line">info ls <span class="comment"># 帮助文档(书)</span></div><div class="line"><span class="comment"># 所有程序的文档 都会以TXT,HTML,PDF等方式保存在/usr/share/doc目录下</span></div></pre></td></tr></table></figure>
-<h3 id="用户与权限"><a href="#用户与权限" class="headerlink" title="用户与权限"></a>用户与权限</h3><p>用户:是限制使用者或进程可以使用,不可以使用哪些资源.<br>用户组:用来方便组织管理用户GID<br>UID:每个用户拥有一个,操作系统实际使用的是UID,而不是用户名.每个用户属于一个主组,属于一个或多个附属组(最多有31个),每个可登陆用户拥有一个指定的shell.<br>特别注意:每个进程以一个用户身份运行,并受到该用户可访问的资源限制.所以进程的权限与该用户的权限一样.<br>UID:用32位的二进制,用十进制查看,但系统为了兼容老式系统,用户ID限制在16位(65535个用户上限).root用户:ID为0,系统用户(1~499):没有一个登陆的shell,为某些服务创建的,比如说WEB服务,共享服务,ftp服务打印服务,这些用户仅仅是做为 这些进程去使用的,普通用户(500以上)</p>
-<p>Linux权限基于UGO模型进行控制,权限rwx对目录的影响:<br>r:可列出目录内容,w:可在目录中创建删除文件,<br>x:可访问目录内容(进入目录),目录必须拥有X权限,否则无法进入目录<br>rwx(4+2+1)</p>
-<p>默认权限:umask的值会从对象的全权限值中减掉<br>普通用户的umask:0002,root用户的为0022<br>目录的全权限 777-002<br>文件的全权限 666-002<br>umask: 显示 12位长的权限 UGO占用9bite<br>umask 0022 : 去设置默认权限</p>
-<p>但一个目录,只能属于一个组,当多个组需要共同使用这个目录时,UGO模型的权限就不行了.<br>ACL(Access Control List)是一种高级权限机制,允许我们对一个文件或目录进行灵活的复杂的权限设置.<br>允许针对不同用户,不同组对一个目标文件或目录进行权限设置,不受UGO模型限制.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line">who <span class="comment"># 显示哪些用户已经登陆系统</span></div><div class="line">whoami <span class="comment"># 显示当前用户</span></div><div class="line">id <span class="comment"># 查看当前用户信息</span></div><div class="line">passwd username <span class="comment"># 修改用户密码,默认是修改当前用户</span></div><div class="line"></div><div class="line"><span class="comment"># 用户组 /etc/group</span></div><div class="line">groupadd femnGroup</div><div class="line">groupdel femnGroup</div><div class="line"></div><div class="line"><span class="comment"># 用户 /etc/shadow</span></div><div class="line">useradd -G femnGroup femn1 </div><div class="line"><span class="comment"># 此femn1用户主属组是femn1,附属组是femnGroup</span></div><div class="line"></div><div class="line">useradd -d /home/femn1 -u 1000 femn1  <span class="comment"># femn1是用户名 -u用户ID</span></div><div class="line">sudo usermod -d /home/femn1 -s /bin/bash femn1 <span class="comment"># -s默认bash</span></div><div class="line">userdel femn1</div><div class="line">userdel -r femn1 <span class="comment"># 同时删除用户的家目录</span></div><div class="line"></div><div class="line"><span class="comment"># 改文件的UGO权限</span></div><div class="line">chmod -R 777 文件名  </div><div class="line">chmod u+rw,g+o</div><div class="line">chmod go+rw</div><div class="line">chmod a-x <span class="comment"># a代指ugo</span></div><div class="line"></div><div class="line"><span class="comment">#  chown改所属用户 -R  </span></div><div class="line">chown -R name:name 文件</div><div class="line">chown femn(用户名)learn.txt(文件名,如果是目录,则加上 -R参数)</div><div class="line"></div><div class="line"><span class="comment"># chgrp改所属组 -R递归修改目录下的所有文件的所属组</span></div><div class="line">chgrp -R femnGroup learn.txt</div><div class="line"></div><div class="line"><span class="comment"># umask的最前面的那位,是用来保留特殊权限的.</span></div><div class="line">chmod u+s 文件:</div><div class="line"><span class="comment"># 特殊权限一般是给可执行文件去用的.1770</span></div><div class="line"></div><div class="line">chmod g+s 目录:</div><div class="line"><span class="comment"># 在此目录下生成的文件或目录,都会继承此目录的用户组 2770</span></div><div class="line"></div><div class="line">chmod o+t 目录:</div><div class="line"><span class="comment"># 只能是本人可以删除自己的文件,即使是本组中的人员也不能删除别人的文件.4770</span></div><div class="line"></div><div class="line"><span class="comment"># ACL需要在挂载文件的时候打开ACL功能:</span></div><div class="line">mount -o acl /dev/sda5 /mnt</div><div class="line"></div><div class="line"><span class="comment"># 针对一个用户对文件进行ACL设置:</span></div><div class="line">setfacl -m u:name:rwx linux</div><div class="line">setfacl -m g:name:rw linux</div><div class="line">setfacl -x u:name linux</div><div class="line"></div><div class="line"><span class="comment"># 只要我们的文件系统打开了ACL功能,就可以查看一个文件或目录的ACL设置:</span></div><div class="line">getfacl linux</div></pre></td></tr></table></figure></p>
-<h3 id="磁盘和挂载"><a href="#磁盘和挂载" class="headerlink" title="磁盘和挂载"></a>磁盘和挂载</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">df -h <span class="comment"># 设备文件名称,本系统中的磁盘的使用大小情况</span></div><div class="line">df -at <span class="comment"># 文件系统, 磁盘的状态</span></div><div class="line">du -sh <span class="comment"># 显示此目录总所占空间</span></div><div class="line">du -sh ~/* | sort -nr </div><div class="line"><span class="comment"># 参数让结果按降序输出   管道命令将du命令的输出重定向到sort命令</span></div><div class="line"></div><div class="line"></div><div class="line">fdisk -l  <span class="comment"># 查看本机的所有磁盘,以及磁盘的分区情况</span></div><div class="line">fdisk /dev/sda <span class="comment"># 查看,创建,删除某个磁盘 分区</span></div><div class="line">dumpe2fs -h /dev/sdb3 <span class="comment"># 得到这个磁盘分区的所有信息</span></div><div class="line"></div><div class="line"><span class="comment"># 格式化之前先不要挂载 </span></div><div class="line">mkfs -t ext4 /dev/sda4 </div><div class="line">mkfs.ext4 /dev/sda4</div><div class="line"><span class="comment"># 将这个分区(或硬盘)格式化为ext4文件系统,格式化磁盘</span></div><div class="line">mke2fs -j -L <span class="string">"partition-label-name"</span> -b 4096 -i -c 128 /dev/sda4  </div><div class="line"><span class="comment"># 这样就可以传4.3G的大文件到U盘上了,只是这样格式,在Win不能用</span></div><div class="line"></div><div class="line"><span class="comment"># 挂载</span></div><div class="line">mount /dev/sdc1 /home/name/usb  </div><div class="line">mount -o remount,rw,auto /dev/sdc1 </div><div class="line"><span class="comment"># 将/dev/sdc1重新挂载,并加入参数rw,auto</span></div><div class="line">umount /home/name/usb     or /dev/sdc1 挂载点或设备文件名 </div><div class="line"><span class="comment"># -l参数是强制</span></div><div class="line">lsof |grep /dev/sdc1</div><div class="line"><span class="comment"># 当挂载不掉时,用下面的命令 ,会得到进程号</span></div><div class="line"></div><div class="line"><span class="comment"># 特殊设备loop挂载(镜像文件不刻录就挂载使用)</span></div><div class="line">mount -o loop /home/name/ubuntu-16.04-desktop-amd64.iso \</div><div class="line">    /hame/name/usb  </div><div class="line"><span class="comment">#使用 dd 命令写入下载好的 ISO 镜像到 U 盘中</span></div><div class="line">sudo dd <span class="keyword">if</span>=xxxxx.iso of=/dev/sdc &amp;&amp; sync</div><div class="line"></div><div class="line">nautilus .     <span class="comment"># 默认是打开home目录</span></div></pre></td></tr></table></figure>
-<p>传统的磁盘管理问题:<br>当分区大小不够用时无法扩展其大小,只能通过添加硬盘,创建新分区来扩充空间,但是新添加进来的硬盘是作为独立文件系统存在的,原有的文件系统并未得到扩充,上层应用很多时候只能访问一个文件系统,只能让现有磁盘下线,换上新的磁盘之后,再将原始数据导入.</p>
-<h3 id="LVM逻辑卷管理-Logical-volume-Manager"><a href="#LVM逻辑卷管理-Logical-volume-Manager" class="headerlink" title="LVM逻辑卷管理(Logical volume Manager)"></a><a href="https://www.qingsword.com/qing/924.html" target="_blank" rel="external">LVM</a>逻辑卷管理(Logical volume Manager)</h3><p>PE(physical extend)物理扩展:逻辑卷空间管理的最基本单位,默认是4M<br>PV(physica volume)物理卷:将底层磁盘格式化成物理卷,可以是物理硬盘上的分区,也可以是整块物理硬盘<br>VG(volume group)卷组:空间池是给来装PE的,我们可以将一个或多个PV,加入到VG当中,当创建好了VG会有/dev/vgname的目录<br>LV(logical volume)逻辑卷(操作系统最终使用的是逻辑卷格式化之后的数据)/dev/vgname/lvname的目录,每个的逻辑卷空间有可以来自不同的物理磁盘<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">1. 创建PV</div><div class="line"><span class="comment"># 整块物理硬盘创建PV</span></div><div class="line">sudo pvcreate /dev/sd[b-c]</div><div class="line"></div><div class="line"><span class="comment"># 物理硬盘上的分区创建PV</span></div><div class="line">fdisk /dev/sdb1 使用t将分区类型改成8e(LVM)</div><div class="line">partprobe <span class="comment"># 刷新分区表</span></div><div class="line">sudo pvcreate /dev/sdb1</div><div class="line"></div><div class="line">sudo pvs <span class="comment"># 查看创建好的PV</span></div><div class="line"></div><div class="line">2. PV创建好了就可以创建VG了</div><div class="line">sudo vgcreate vg0 /dev/sdb1</div><div class="line">sudo vgs <span class="comment"># 查看创建好的VG</span></div><div class="line">sudo pvs <span class="comment"># sdb1这个PV就属于vg0这个卷组池了</span></div><div class="line"></div><div class="line">3. 创建好卷组池就能从池中划分容量给逻辑卷(LV)了</div><div class="line">sudo lvcreate -n lv0 -L 10G vg0</div><div class="line"><span class="comment"># 从卷组vg0中拿出10G,分配给lv0,其中-n后面是lv自定义名称,</span></div><div class="line"><span class="comment"># -L后面跟需要从vg0中分配给lv0的大小以及从哪个VG分配</span></div><div class="line"></div><div class="line">4. 创建好lv后就可以格式化它,成为文件系统使用</div><div class="line">sudo mkfs.ext4 /dev/vg0/lv0</div><div class="line"><span class="comment"># 创建好的lv所在目录是"/dev/卷组名称/逻辑卷名称",</span></div><div class="line"><span class="comment"># 所以本例就是/dev/vg0/lv0,将它格式化成ext4文件系统</span></div><div class="line"></div><div class="line">5. 挂载和使用</div><div class="line">sudo mount /dev/vg0/lv0 /mnt</div><div class="line"></div><div class="line">6. 扩充VG</div><div class="line">sudo pvcreate /dev/sdd</div><div class="line"><span class="comment">#新增加一块硬盘sdd(20G),将它创建成PV后划分到vg0下,</span></div><div class="line"><span class="comment"># 此时vg0的容量将增加sdd硬盘的大小</span></div><div class="line">sudo vgextend vg0 /dev/sdd</div><div class="line"></div><div class="line">7. 扩充LV</div><div class="line">sudo vgs <span class="comment"># 先确保VG池中有足够的VFree空间可供使用</span></div><div class="line">sudo lvextend -L +5G /dev/vg0/lv0</div><div class="line">sudo resize2fs /dev/vg0/lv0 <span class="comment"># 更新</span></div></pre></td></tr></table></figure></p>
-<h3 id="安装和下载"><a href="#安装和下载" class="headerlink" title="安装和下载"></a>安装和下载</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">vim /proc/meminfo 文件来观察LINux系统上虚拟内存的当前状态.</div><div class="line">sudo dpkg -i **.deb <span class="comment"># 安装 查看-l</span></div><div class="line">dpkg -l |grep minitube</div><div class="line">sudo dpkg --purge minitube</div><div class="line"></div><div class="line">sudo apt install **</div><div class="line"></div><div class="line">curl https://wordpress.org/latest.tar.gz | tar -zxvf -</div><div class="line">curl url/install.sh | sh</div><div class="line"></div><div class="line">wget -O redis.tar.gz \</div><div class="line">    http://download.redis.io/releases/redis-3.2.0.tar.gz</div><div class="line">tar -zxvf redis.tar.gz -C /usr/src</div><div class="line">make -C /usr/src/redis \</div><div class="line">    &amp;&amp; make -C /usr/src/redis/src install </div><div class="line"><span class="comment"># tar解压重命名</span></div><div class="line">mkdir ./jdk8 &amp;&amp; tar -xzvf jdk8.tar.gz -C ./jdk8 --strip-components 1</div><div class="line"></div><div class="line">wget https://ghost.org/zip/ghost-latest.zip</div><div class="line">unzip -uo ghost-latest.zip -d /var/www/ghost </div><div class="line"></div><div class="line">wget -qO- url/install.sh | sh</div><div class="line">wget --no-check-certificate url/install.sh -O ./install.sh</div><div class="line"></div><div class="line">curl -LOk https://ghost.org/zip/ghost-latest.zip</div><div class="line">unzip ghost-latest.zip -d ghost-temp</div><div class="line"></div><div class="line">curl http://localhost:8000/wrap?name=femn&amp;  get()</div><div class="line">http://localhost:8000/wrap -d name=femn    post()方法请求</div><div class="line"><span class="comment"># Siege对我们的应用在10秒内执行大约10个并发请求</span></div><div class="line">siege http://localhost:8000/?q=pants -c10 -t10s</div></pre></td></tr></table></figure>
-<h3 id="文件和目录操作"><a href="#文件和目录操作" class="headerlink" title="文件和目录操作"></a>文件和目录操作</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">    ll linux.md</div><div class="line">    <span class="comment"># ll 查看的信息 第二列是链接数量</span></div><div class="line">    ll |grep -v linux.md <span class="comment"># 取反</span></div><div class="line">    <span class="built_in">history</span> | grep -c rar <span class="comment"># 计算匹配的数量</span></div><div class="line">    touch file1 <span class="comment"># 创建文件</span></div><div class="line">    file file1 <span class="comment"># 查看文件类型</span></div><div class="line">    cp -Rf <span class="built_in">source</span> destination </div><div class="line">    <span class="comment"># -R 允许你通过命令递归地复制整个目录的内容.</span></div><div class="line">    <span class="comment"># -f 强制覆盖已经存在的目标文件,不提示 </span></div><div class="line">    <span class="comment"># -l 硬链接,它们是同一个文件,索引节点是相同的</span></div><div class="line">    \cp -R dir1 dir2 <span class="comment"># 同上</span></div><div class="line">    \cp -R content/themes/casper ../ghost/content/themes</div><div class="line">    rm -rf file1</div><div class="line">    tail -f -n 20 /etc/passwd</div><div class="line"></div><div class="line">    <span class="comment"># 软连接可以不用事先创建目录,硬连接必须先创建目录</span></div><div class="line">    sudo ln -s /home/femn/file /usr/share/nginx/html/file</div><div class="line">    mkdir ~/file</div><div class="line">    </div><div class="line">    <span class="comment"># mv排除文件</span></div><div class="line">    <span class="comment"># 将本路径下所有的文件移动到本路径下vimrc_config目录下,</span></div><div class="line">    <span class="comment"># 但vimrc_config本身不动</span></div><div class="line">    mv !(vimrc_config) vimrc_config</div><div class="line">    <span class="comment"># 但此命令不包括mv 隐藏文件</span></div><div class="line">    rm命令类似</div><div class="line">    </div><div class="line">    sort -t <span class="string">':'</span> -k 3 -n /etc/passwd</div><div class="line">    <span class="comment"># 按字段分隔数据,按分隔后的第几个进行排序 </span></div><div class="line"></div><div class="line">    scp -r -P 22 root@ip:/server/app/main/handlers \</div><div class="line">        ./main/handlers/</div><div class="line">    scp -P 22 ./1.txt python@ip:/usr/share/nginx/html/file/</div><div class="line">    <span class="comment"># 只需要file目录有写权限,普通用户就可以用了</span></div><div class="line">    rsync -av -e <span class="string">"ssh -p 22"</span> /home/python/app1.6/main/ \</div><div class="line">        root@ip:/server/app1.6/main/</div><div class="line">    rsync -av -e <span class="string">"ssh -p 22"</span> /home/python/oldapp_8000/ \</div><div class="line">        root@ip:/server/app/main/</div><div class="line"></div><div class="line"><span class="comment"># 截图</span></div><div class="line">    <span class="comment">#你将可以使用鼠标选取一个矩形框.在你放下鼠标左键的那一刻,</span></div><div class="line">    <span class="comment"># 一个该矩形框的截屏会以import后面跟的文件名保存在当前目录下</span></div><div class="line">    import screenshot.jpg </div><div class="line">    gnome-screenshot -a</div><div class="line"></div><div class="line"><span class="comment"># 改变视频文件大小(分辨率)http://blog.topspeedsnail.com/archives/1699</span></div><div class="line">    ffmpeg -i source.mpg -s 960x540 -c:a copy  destination.mp4</div><div class="line"><span class="comment"># Linux系统将每个对象当作文件来处理,这包括输入和输入的过程.Linux用文件描述符来标识每个文件对象.</span></div></pre></td></tr></table></figure>
-<h3 id="解压缩"><a href="#解压缩" class="headerlink" title="解压缩"></a>解压缩</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># tar</span></div><div class="line">tar -zcvf /home/name/conclusion.tar.gz ./conclusion </div><div class="line">tar -zxvf ./conclusion.tar.gz </div><div class="line">tar -cvf /tmp/etc.tar /etc &lt;==仅打包,不压缩</div><div class="line"></div><div class="line"><span class="comment"># rar </span></div><div class="line">rar x file.rar <span class="comment"># 解压</span></div><div class="line"></div><div class="line"><span class="comment"># zip</span></div><div class="line">zip test.zip <span class="built_in">test</span> </div><div class="line">unzip test.zip</div></pre></td></tr></table></figure>
-<h3 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">printenv <span class="comment"># 查看所有全局环境变量</span></div><div class="line"><span class="built_in">set</span> <span class="comment"># 会显示为某个特定进程设置的所有环境变量</span></div><div class="line"><span class="comment"># 设置PATH环境变量</span></div><div class="line">vim ~/.profile</div><div class="line">    <span class="built_in">export</span> JAVA_HOME=/home/name/jdk1.8.0_92</div><div class="line">    <span class="built_in">export</span> ANT_HOME=/home/name/apache-ant-1.9.7</div><div class="line">    PATH=<span class="variable">$&#123;PATH&#125;</span>:/home/name/jdk1.8.0_92/bin:/home/name/apache/bin</div><div class="line"><span class="comment"># 设置局部变量(只能在定义的进程可见)</span></div><div class="line">femn=<span class="string">'hello,my name is femn'</span></div><div class="line"><span class="comment"># 设置全局变量</span></div><div class="line"><span class="built_in">export</span> femn  <span class="comment"># 记住不要再用美元符($) </span></div><div class="line"><span class="comment"># 删除环境变量</span></div><div class="line"><span class="built_in">unset</span> femn</div></pre></td></tr></table></figure>
-<h3 id="ubuntu-ip"><a href="#ubuntu-ip" class="headerlink" title="ubuntu ip"></a>ubuntu ip</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 禁用IPV6</span></div><div class="line">vim /etc/modprobe.d/blacklist.conf </div><div class="line"><span class="comment">#在文档最后添加 blacklist ipv6</span></div><div class="line"><span class="comment"># 设置一ip</span></div><div class="line">sudo ifconfig enp0s3 192.168.1.101 netmask 255.255.255.0</div><div class="line">sudo route add default gw 192.168.1.254</div><div class="line"><span class="comment"># 设置二ip</span></div><div class="line">sudo vim /etc/network/interfaces</div><div class="line">    auto enp0s3 </div><div class="line">    iface enp0s3 inet static <span class="comment"># dhcp</span></div><div class="line">    address 192.168.1.101</div><div class="line">    gateway 192.168.1.254</div><div class="line">    netmask 255.255.255.0</div><div class="line">    <span class="comment">#network 192.168.1.0  </span></div><div class="line">    <span class="comment">#broadcast 192.168.1.255 </span></div><div class="line"><span class="comment"># 配置DNS</span></div><div class="line">sudo vim/etc/resolv.conf</div><div class="line">    nameserver 127.0.1.1</div><div class="line">    <span class="comment"># nameserver 8.8.8.8</span></div><div class="line">    search DHCP HOST</div><div class="line">    </div><div class="line"><span class="comment"># 手动重启网络服务</span></div><div class="line">sudo /etc/init.d/networking restart</div><div class="line"><span class="comment">#实在没有生效 reboot</span></div><div class="line"></div><div class="line"><span class="comment"># /etc/hosts:ip与域名的对应关系,DNS记录信息,</span></div><div class="line"><span class="comment"># /etc/hostname:存放的是主机名.域名与主机名没有任何关系</span></div><div class="line">sudo hostname python-Vostro-3901 <span class="comment"># 修改主机名 ubuntu</span></div><div class="line">sudo hostnamectl <span class="built_in">set</span>-hostname intl.aliyun.centos7 </div><div class="line"><span class="comment"># 修改主机名 centos</span></div><div class="line"></div><div class="line"><span class="comment"># 永久修改主机名</span></div><div class="line">vim /etc/hostname <span class="comment"># ubuntu centos</span></div></pre></td></tr></table></figure>
-<h3 id="centos7-ip"><a href="#centos7-ip" class="headerlink" title="centos7 ip"></a>centos7 ip</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">vim /etc/sysconfig/network-scripts/ifcfg-网卡名字</div><div class="line">    BOOTPROTO=static <span class="comment">#dhcp改为static   </span></div><div class="line">    ONBOOT=yes <span class="comment">#开机启用本配置  </span></div><div class="line">    IPADDR=192.168.1.107 <span class="comment">#静态IP  </span></div><div class="line">    GATEWAY=192.168.1.254 <span class="comment"># 默认网关  </span></div><div class="line">    NETMASK=255.255.255.0 <span class="comment">#子网掩码  </span></div><div class="line">service network restart</div></pre></td></tr></table></figure>
-<pre><code>查看开启端口
-</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 查看本机的端口开启情况 </span></div><div class="line">sudo nmap -sTU localhost</div><div class="line"><span class="comment"># 查看局域网的端口开启情况</span></div><div class="line">sudo nmap -PS 192.168.1.222</div><div class="line"><span class="comment"># 查看远程服务器的端口开启情况</span></div><div class="line">nc -zv 45.76.0.178 22 22334</div></pre></td></tr></table></figure>
+            <p>shell:是用户与kernal 通信的桥梁.它分为GUI:GNOME CLI:BASH,一种是图形界面的终端.是多任务,多进程的终端.firefox &amp;<br>hostname<br>uname -r  or -a参数 –all</p>
+<p>/bin:常用的可执行的二进制文件,终端命令,所有用户都有权限去执行<br>/sbin:只有root才能运行.比较危险的命令,fdisk<br>/boot:引导启动目录,操作系统内核(vmlinux-4.4.0)<br>/dev:硬件设备:硬盘sda1分区,终端tty1,网卡,声卡.所有的设备都被抽象成一个文件./dev/sd:SATA,SCSI(服务器硬盘),SAS,USB,a:是第几块硬盘,1:分区情况.有一个磁盘文件/dev/sda 每个分区也有个文件:/dev/sda1<br>/etc:配置文件,基本上是纯文本的 xx.conf<br>/home:除了root的,其它用户的私有目录.此目录与用户名同名.<br>/libabry:Liunx运行需要的库文件,.sh,所有用户都有权限.</p>
+<p>/opt:安装一些大的软件<br>/proc:不存在在硬盘上,系统运行时 的实时信息,保存在内存中,是一个虚拟的一个文件系统.meminfo cpuinfo,interrupts终端信息,iomem,uptime启动时间,vmstat虚存信息.acpi电源信息,每个进程,会对应一个数字的目录.echo 1 &gt; /proc/sys/net/ipv4/ip_forward 为LVS服务器开通路由功能(打开两个网卡之间的路由通道) 网卡充当路由器,也可以充当主机.<br>/sys:底层硬件信息.<br>/usr:应用软件 /usr/local/包.bin or /usr/share/包 .Sbin<br>/var:经常变化的东西 email,log操作系统的所有log信息</p>
+<p>/usr/share/doc:所有程序的文档 都会以TXT,HTML,PDF等方式保存在/usr/share/doc目录下</p>
+<p>/etc/skel/:当创建新用户时,这里面的文件会复制到新用户的家目录中<br>.bash_logout当用户关机时,执行的文件</p>
 
         
         </div>
@@ -1598,7 +1587,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/08/linux-common-commands/" data-id="cjb0eeaw6001z06ro505tt6c1" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/08/linux_basic/" data-id="cje27t64x002e07liom5qb60l" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1666,7 +1655,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/08/08/linux-common-commands/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/08/linux-common-commands/">Comments</a>
+        <a href="https://www.femn.me/2017/08/08/linux_basic/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/08/linux_basic/">Comments</a>
     
 
         </footer>
@@ -1804,7 +1793,7 @@
         <footer id="footer">
     <div class="outer">
         <div id="footer-info" class="inner">
-            &copy; 2017 leipengkai<br>
+            &copy; 2018 leipengkai<br>
             Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
         </div>
     </div>

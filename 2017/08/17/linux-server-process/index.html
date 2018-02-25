@@ -12,7 +12,7 @@
 <meta property="og:url" content="https://www.femn.me/2017/08/17/linux-server-process/index.html">
 <meta property="og:site_name" content="Femn">
 <meta property="og:description" content="linux启动流程通电 –&amp;gt;BIOS(哪个磁盘有MBR) –&amp;gt;MBR(哪个分区为要开启的OS) –&amp;gt;OS –&amp;gt;/boot(kernel) –&amp;gt;init(PID:1) –&amp;gt;/etc/rc*.d/ –&amp;gt;/etc/init.d/ –&amp;gt;用户登陆(/etc/profilc–&amp;gt;~/.profile .bash_login .bash_profile–&amp;gt">
-<meta property="og:updated_time" content="2017-12-10T08:02:35.377Z">
+<meta property="og:updated_time" content="2018-01-17T03:52:12.112Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux 服务与进程">
 <meta name="twitter:description" content="linux启动流程通电 –&amp;gt;BIOS(哪个磁盘有MBR) –&amp;gt;MBR(哪个分区为要开启的OS) –&amp;gt;OS –&amp;gt;/boot(kernel) –&amp;gt;init(PID:1) –&amp;gt;/etc/rc*.d/ –&amp;gt;/etc/init.d/ –&amp;gt;用户登陆(/etc/profilc–&amp;gt;~/.profile .bash_login .bash_profile–&amp;gt">
@@ -266,7 +266,8 @@
 <p>K开头的脚本文件代表运行级别加载时需要关闭的,S开头的代表需要执行,数字代表执行顺序<br>因此,当我们需要开机启动自己的脚本时,只需要将可执行脚本丢在/etc/init.d目录下,然后在/etc/rc*.d中建立软链接即可</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">sudo shmod 755 /etc/init.d/ssh</div><div class="line"><span class="built_in">cd</span> /etc/init.d</div><div class="line">sudo update-rc.d ssh defaults 95 5 . <span class="comment"># 执行顺序95,加入运行级别5级中</span></div><div class="line"><span class="comment">#即在rc*.d中各建立了一个软连接,因此也可以自己手动建立软连接,如下</span></div><div class="line">ln -s /etc/init.d/ssh /etc/rc5.d/S95sshd</div><div class="line">sudo /etc/init.d/ssh start</div><div class="line">sudo service S95sshd start</div><div class="line"></div><div class="line"><span class="comment"># 开机启动</span></div><div class="line">sudo apt-get install openssh-server</div><div class="line"><span class="comment"># 二选一</span></div><div class="line">sudo /etc/init.d/ssh start</div><div class="line">sudo service sshd start</div></pre></td></tr></table></figure>
 <h3 id="简单的启动命令"><a href="#简单的启动命令" class="headerlink" title="简单的启动命令"></a>简单的启动命令</h3><p>Linux 在启动的时候会执行 /etc/rc.local 里面的脚本,所以只要在这里添加执行命令就可以</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">vim /etc/rc.local</div><div class="line">/usr/bin/supervisord -c /etc/supervisor/supervisord.conf</div><div class="line"><span class="comment"># 如果是 Ubuntu 16.04 以上,rc.local 被当成了服务,而且默认是不会启动,需要手动启用一下服务</span></div><div class="line"><span class="comment"># 启动rc.local服务:</span></div><div class="line">sudo systemctl <span class="built_in">enable</span> rc-local.service</div><div class="line"></div><div class="line"><span class="comment"># 如果有图形桌面的话</span></div><div class="line">super键--search <span class="string">"startup"</span>--&gt;设置开机启动选项,最重要的就是找到程序的绝对路经写上就可以.可以通过如下命令查看:</div><div class="line">vim ~/.config/autostart/chromium-browser.desktop</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">   vim /etc/rc.local</div><div class="line">   /usr/bin/supervisord -c /etc/supervisor/supervisord.conf</div><div class="line">   <span class="comment"># 如果是 Ubuntu 16.04 以上,rc.local 被当成了服务,而且默认是不会启动,需要手动启用一下服务</span></div><div class="line">   <span class="comment"># 启动rc.local服务:</span></div><div class="line">ln -fs /lib/systemd/system/rc-local.service /etc/systemd/system/rc-local.service</div><div class="line">systemctl cat rc.local</div><div class="line">sudo systemctl <span class="built_in">enable</span> rc-local.service</div><div class="line">   </div><div class="line">   <span class="comment"># 如果有图形桌面的话</span></div><div class="line">   super键--search <span class="string">"startup"</span>--&gt;设置开机启动选项,最重要的就是找到程序的绝对路经写上就可以.可以通过如下命令查看:</div><div class="line">   vim ~/.config/autostart/chromium-browser.desktop</div></pre></td></tr></table></figure>
+<h3 id="使用systemd设置开机启动"><a href="#使用systemd设置开机启动" class="headerlink" title="使用systemd设置开机启动"></a>使用systemd设置开机启动</h3><p>systemd默认读取/etc/systemd/system下的配置文件，该目录下的文件会链接/lib/systemd/system/下的文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">sudo vim /lib/systemd/system/rslsync.service</div><div class="line"></div><div class="line">	[Unit]</div><div class="line">	Description=rslsync </div><div class="line">	After=network.target</div><div class="line">	</div><div class="line">	[Service]</div><div class="line">	Type=forking</div><div class="line">	ExecStart=/home/femn/resilio-sync_glibc23_x64/rslsync</div><div class="line">	</div><div class="line">	[Install]</div><div class="line">	WantedBy=multi-user.target</div><div class="line">sudo chmod 754 /lib/systemd/system/rslsync.service</div><div class="line">sudo systemctl start rslsync.service</div><div class="line">sudo systemctl <span class="built_in">enable</span> rslsync.service</div></pre></td></tr></table></figure></p>
 <p>也可以使用第三方包来<a href="http://apt.ubuntu.com/p/alacarte" target="_blank" rel="external">管理启动程序</a></p>
 <h3 id="定时任务"><a href="#定时任务" class="headerlink" title="定时任务"></a>定时任务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">vim /etc/crontab </div><div class="line"><span class="comment"># 权限要一致,且要可执行</span></div><div class="line"><span class="comment"># 分　时　日　月　周　命令</span></div><div class="line"><span class="comment"># 每天11点执行</span></div><div class="line">0 11 * * *  root  sh /home/python/xx.sh </div><div class="line"></div><div class="line"><span class="comment"># 每两个小时 </span></div><div class="line">0 */2 * * * <span class="built_in">echo</span> <span class="string">"Have a break now."</span> &gt;&gt; /tmp/test.txt</div><div class="line"></div><div class="line"><span class="comment"># 晚上11点到早上8点之间每两个小时和早上八点 </span></div><div class="line">0 23-7/2,8 * * * <span class="built_in">echo</span> <span class="string">"Have a good dream"</span> &gt;&gt; /tmp/test.txt</div><div class="line"></div><div class="line"><span class="comment"># 保存退出即生效(刚添加的任务会到2-3分钟后才开始生效)</span></div></pre></td></tr></table></figure>
 <h3 id="查看服务状态"><a href="#查看服务状态" class="headerlink" title="查看服务状态"></a>查看服务状态</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ubuntu centos</span></div><div class="line">service sshd status/stop/restart <span class="comment"># service 在rc*.d/的名字</span></div><div class="line"></div><div class="line">systemctl start docker <span class="comment">#centos启动服务</span></div><div class="line">systemctl <span class="built_in">enable</span> docker <span class="comment"># 开机启动</span></div><div class="line">systemctl status nginx</div><div class="line">systemctl start firewalld.service</div><div class="line">systemctl <span class="built_in">enable</span> firewalld.service</div><div class="line">systemctl daemon-reload <span class="comment"># 修改启动参数时的 </span></div><div class="line">systemctl restart docker</div><div class="line"><span class="comment"># 只有systmectl 状态 服务名</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># redhat 操作系统下</span></div><div class="line">chkconfig 命令</div><div class="line">chkconfig --list sshd</div></pre></td></tr></table></figure>
@@ -297,7 +298,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/17/linux-server-process/" data-id="cjb0eeaw8002206ro0fsfg121" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/17/linux-server-process/" data-id="cje27t64q002707li8bwxj1iz" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -374,19 +375,19 @@
         
 <nav id="article-nav">
     
-        <a href="/2017/08/17/git/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/2017/08/17/vim_grammar/" id="article-nav-newer" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Newer</strong>
             <div class="article-nav-title">
                 
-                    git基本使用
+                    vim基本语法
                 
             </div>
         </a>
     
     
-        <a href="/2017/08/17/vim_grammar/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2017/08/16/CDN-server/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Older</strong>
-            <div class="article-nav-title">vim基本语法</div>
+            <div class="article-nav-title">内容分发网络</div>
         </a>
     
 </nav>
@@ -530,7 +531,7 @@
         <footer id="footer">
     <div class="outer">
         <div id="footer-info" class="inner">
-            &copy; 2017 leipengkai<br>
+            &copy; 2018 leipengkai<br>
             Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
         </div>
     </div>
