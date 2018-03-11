@@ -277,7 +277,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/08/linux_install/" data-id="cje27t65b002m07li6z90gon9" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/08/linux_install/" data-id="cjemp01o3002q07opkj8mj4oc" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -393,7 +393,15 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h3 id="不需要记住所有的命令-使用man-info查看帮助文档"><a href="#不需要记住所有的命令-使用man-info查看帮助文档" class="headerlink" title="不需要记住所有的命令,使用man info查看帮助文档:"></a>不需要记住所有的命令,使用man info查看帮助文档:</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ls --<span class="built_in">help</span> </div><div class="line">man ls <span class="comment"># 帮助手册</span></div><div class="line">man -k passwd </div><div class="line">man -k nautilus <span class="comment"># 可以用来查询包含该关键字命令的文档</span></div><div class="line">info ls <span class="comment"># 帮助文档(书)</span></div><div class="line"><span class="comment"># 所有程序的文档 都会以TXT,HTML,PDF等方式保存在/usr/share/doc目录下</span></div></pre></td></tr></table></figure>
+            <h3 id="安装-Ubuntu-Desktop"><a href="#安装-Ubuntu-Desktop" class="headerlink" title="安装 Ubuntu Desktop"></a>安装 Ubuntu Desktop</h3><pre><code>注意事项一:进入BIOS
+</code></pre><p>最近在lenovo电脑上安装,连进BIOS都是那么的费劲,别人的差不多都是F12,而你看<a href="http://tsonline.lenovo.com.cn/solution/doc.php?id=20141008173210604" target="_blank" rel="external">lenovo</a>的,进入BIOS之后还得,关闭安全启动模式,<a href="http://m.dnxtc.net/zixun/zhuangjijiaocheng/2018-02-26/2390.html" target="_blank" rel="external">设置开机启动的传统模式</a></p>
+<pre><code>注意事项二:分区的设置
+</code></pre><p>如果是为了省心的话,直接弄个4G的swap(交换分区),然后将所有的空间给/(根目录)<br>但这次我给/boot可以单独分成一个区,大小为200M</p>
+<pre><code>注意事项三; /boot空间不足
+</code></pre><p>/boot文件里面存放的是系统引导文件和内核的一些东西，这些东西100M是足够容纳的。而大家都知道linux内核一直在更新，跟新后，旧的内核就不在使用，但旧的内核文件还在boot里面，占据着空间，更新几次过后boot文件就会被占满，显示boot磁盘空间不足。这时为了更新需要将不用的内核文件删除，释放空间<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">df -h</div><div class="line">uname -a <span class="comment"># (查看当前使用的内核版本) </span></div><div class="line">sudo apt-get remove linux-image- （按两次tab键）<span class="comment"># 删除旧版本内核</span></div><div class="line">df -h <span class="comment"># 查看硬盘的使用情况</span></div><div class="line">sudo /usr/sbin/update-grub </div><div class="line"><span class="comment"># 解决you may need to re-run your boot loader[grub]</span></div></pre></td></tr></table></figure></p>
+<pre><code>注意事项四:设置主屏和副屏
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">xrandr     <span class="comment"># (查看和设置显示屏)</span></div><div class="line">xrandr --output HDMI2 --auto --primary</div><div class="line"><span class="comment"># HDMI2 是显示屏的名字</span></div><div class="line"><span class="comment"># auto 是自动分辨率</span></div><div class="line"><span class="comment"># primary 是主屏</span></div><div class="line">xrandr --output eDP1 --right-of HDMI2 --auto</div><div class="line"><span class="comment"># eDP1 是笔记本显示屏的名字</span></div><div class="line"><span class="comment"># --right-of HDMI2  就是放在HDMI2 显示器的右边</span></div></pre></td></tr></table></figure>
+<h3 id="不需要记住所有的命令-使用man-info查看帮助文档"><a href="#不需要记住所有的命令-使用man-info查看帮助文档" class="headerlink" title="不需要记住所有的命令,使用man info查看帮助文档:"></a>不需要记住所有的命令,使用man info查看帮助文档:</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ls --<span class="built_in">help</span> </div><div class="line">man ls <span class="comment"># 帮助手册</span></div><div class="line">man -k passwd </div><div class="line">man -k nautilus <span class="comment"># 可以用来查询包含该关键字命令的文档</span></div><div class="line">info ls <span class="comment"># 帮助文档(书)</span></div><div class="line"><span class="comment"># 所有程序的文档 都会以TXT,HTML,PDF等方式保存在/usr/share/doc目录下</span></div></pre></td></tr></table></figure>
 <h3 id="用户与权限"><a href="#用户与权限" class="headerlink" title="用户与权限"></a>用户与权限</h3><p>用户:是限制使用者或进程可以使用,不可以使用哪些资源.<br>用户组:用来方便组织管理用户GID<br>UID:每个用户拥有一个,操作系统实际使用的是UID,而不是用户名.每个用户属于一个主组,属于一个或多个附属组(最多有31个),每个可登陆用户拥有一个指定的shell.<br>特别注意:每个进程以一个用户身份运行,并受到该用户可访问的资源限制.所以进程的权限与该用户的权限一样.<br>UID:用32位的二进制,用十进制查看,但系统为了兼容老式系统,用户ID限制在16位(65535个用户上限).root用户:ID为0,系统用户(1~499):没有一个登陆的shell,为某些服务创建的,比如说WEB服务,共享服务,ftp服务打印服务,这些用户仅仅是做为 这些进程去使用的,普通用户(500以上)</p>
 <p>Linux权限基于UGO模型进行控制,权限rwx对目录的影响:<br>r:可列出目录内容,w:可在目录中创建删除文件,<br>x:可访问目录内容(进入目录),目录必须拥有X权限,否则无法进入目录<br>rwx(4+2+1)</p>
 <p>默认权限:umask的值会从对象的全权限值中减掉<br>普通用户的umask:0002,root用户的为0022<br>目录的全权限 777-002<br>文件的全权限 666-002<br>umask: 显示 12位长的权限 UGO占用9bite<br>umask 0022 : 去设置默认权限</p>
@@ -424,7 +432,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/08/linux-common-commands/" data-id="cje27t64t002a07li6aj5eddb" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/08/linux-common-commands/" data-id="cjemp01nf002c07opvn17b6r6" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -620,7 +628,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/06/python-object/" data-id="cje27t678003j07lipziiazlh" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/06/python-object/" data-id="cjemp01pk003o07op77xkujay" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -762,7 +770,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/05/python-threads/" data-id="cje27t67j003o07lir41u2e8u" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/05/python-threads/" data-id="cjemp01py003t07ops95dujbx" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -942,7 +950,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/05/threads/" data-id="cje27t68l004607liii9og6uk" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/05/threads/" data-id="cjemp01qp004b07opswq3mvqg" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1096,7 +1104,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/05/python-generator/" data-id="cje27t66z003f07lidy1z2aaj" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/05/python-generator/" data-id="cjemp01pd003k07op5yc4yk3y" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1237,7 +1245,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/05/iterable-iterator/" data-id="cje27t64f002107li3zdsqoa9" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/05/iterable-iterator/" data-id="cjemp01n8002807opadtcxj7w" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1385,7 +1393,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/docker-RUN-ENTRYPOINT-CMD/" data-id="cje27t62r001807lijb3c3jel" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/docker-RUN-ENTRYPOINT-CMD/" data-id="cjemp01ky000z07ops778sw06" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1463,7 +1471,7 @@
 
 
 
-    <article id="post-supervisor-server" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-docker-hub" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -1471,7 +1479,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/04/supervisor-server/">supervisor</a>
+            <a class="article-title" href="/2017/08/04/docker-hub/">docker-hub</a>
         </h1>
     
 
@@ -1480,155 +1488,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/supervisor-server/">
-            <time datetime="2017-08-04T15:24:48.000Z" itemprop="datePublished">2017-08-04</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/server/">server</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>Linux的后台进程运行有好几种方法,例如nohup,screen等,但是,如果是一个服务程序,要可靠地在后台运行,我们就需要把它做成daemon,最好还能监控进程状态,在意外结束时能自动重启.</p>
-<p>supervisor就是用Python开发的一套通用的进程管理程序,能将一个普通的命令行进程变为后台daemon,并监控进程状态,异常退出时能自动重启.另一个进程管理工具:S6</p>
-<p>Debian / Ubuntu可以直接通过apt安装:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install supervisor</div></pre></td></tr></table></figure>
-<p>如果是通过pip安装的话,就需要echo_supervisord_conf程序生成supervisor的初始化配置文件:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo pip install supervisor</div><div class="line">mkdir /etc/supervisor</div><div class="line">echo_supervisord_conf &gt; /etc/supervisor/supervisord.conf</div></pre></td></tr></table></figure>
-<p>supervisor安装完成后会生成三个执行程序:supervisortd 守护进程服务,用于接收进程管理命令.supervisorctl 客户端,用于和守护进程通信,发送管理进程的指令.<br>echo_supervisord_conf 生成初始配置文件程序<br>然后,给我们自己开发的应用程序编写一个配置文件,让supervisor来管理它.每个进程的配置文件都可以单独分拆,放在/etc/supervisor/conf.d/目录下,以.conf作为扩展名</p>
-<p>vim server.conf<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">[program:python8010]</div><div class="line"><span class="built_in">command</span> = /usr/bin/python3 HttpsRunner.py</div><div class="line">directory = /server/app1.6</div><div class="line">user = root</div><div class="line">redirect_stderr = <span class="literal">true</span></div><div class="line">stdout_logfile_maxbytes = 150MB</div><div class="line">stdout_logfile_backups = 20</div><div class="line">stdout_logfile = /server/app1.6/python8010.log</div><div class="line"></div><div class="line">[program:mongod]</div><div class="line">;<span class="built_in">command</span> = /mongo/mongodb-linux-x86_64-ubuntu1404-3.2.10/bin/mongod --dbpath /mnt/mongodb --auth</div><div class="line"><span class="built_in">command</span> = /mongo/mongodb-linux-x86_64-ubuntu1404-3.2.10/bin/mongod -f /server/app1.6/mongodb.conf</div><div class="line">directory = /server/app1.6</div><div class="line">user = root</div><div class="line">redirect_stderr = <span class="literal">true</span></div><div class="line">stdout_logfile_maxbytes = 150MB</div><div class="line">stdout_logfile_backups = 20</div><div class="line">stdout_logfile = /server/app1.6/mongodb.log</div></pre></td></tr></table></figure></p>
-<p>Supervisor只能管理非daemon的进程,也就是说Supervisor不能管理守护进程.否则提示Exited too quickly (process log may have details)异常.<br>启动Supervisor服务:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">supervisord -c /etc/supervisor/supervisord.conf</div></pre></td></tr></table></figure>
-<p>管理进程:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">supervisorctl status</div><div class="line">supervisorctl stop mongod</div><div class="line">supervisorctl start python8010</div><div class="line">supervisorctl restart python8001</div><div class="line"><span class="comment"># 重启所有属于名为groupworker这个分组的进程(start,restart同理)</span></div><div class="line">supervisorctl stop groupworker</div><div class="line"><span class="comment"># 停止全部进程,注:start、restart、stop都不会载入最新的配置文件</span></div><div class="line">supervisorctl stop all </div><div class="line"><span class="comment"># 载入最新的配置文件,停止原有进程并按新的配置启动、管理所有进程</span></div><div class="line">supervisorctl reread/reload</div><div class="line"><span class="comment"># 根据最新的配置文件,启动新配置或有改动的进程,配置没有改动的进程不会受影响而重启</span></div><div class="line">supervisorctl update</div><div class="line">supervisorctl tail &lt;APP_NAME&gt;</div></pre></td></tr></table></figure>
-<p>进入CLI管理台:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">supervisorctl</div></pre></td></tr></table></figure>
-<p>Web管理界面 </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">vim /etc/supervisor/supervisord.conf</div><div class="line">    [inet_http_server] ; inet (TCP) server disabled by default</div><div class="line">    port=0.0.0.0:9001  ; (ip_address:port specifier, *:port <span class="keyword">for</span> all iface)</div><div class="line">    username=root      ; (default is no username (open server))</div><div class="line">    password=root      ; (default is no password (open server))</div></pre></td></tr></table></figure>
-<p>重启Supervisor服务,如果有Unlinking stale socket /var/run/supervisor.sock 执行unlink /var/run/supervisor.sock:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ps aux |grep supervisord</div><div class="line">supervisord -c /etc/supervisor/supervisord.conf</div></pre></td></tr></table></figure>
-<h5 id="开机启动Supervisor"><a href="#开机启动Supervisor" class="headerlink" title="开机启动Supervisor:"></a>开机启动Supervisor:</h5><p>方法1:<br>    Linux 在启动的时候会执行 /etc/rc.local 里面的脚本,所以只要在这里添加执行命令就可以<br>    以下内容需要添加在 exit 命令前,而且由于在执行 rc.local 脚本时,PATH 环境变量未全部初始化,因此命令需要使用绝对路径.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/bin/supervisord -c /etc/supervisor/supervisord.conf</div></pre></td></tr></table></figure></p>
-<p><a href="https://askubuntu.com/questions/765120/after-upgrade-to-16-04-lts-rc-local-is-not-executing-a-command" target="_blank" rel="external">如果是 Ubuntu 16.04 以上,rc.local 被当成了服务,而且默认是不会启动,需要手动启用一下服务</a></p>
-<p>启动rc.local服务:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo systemctl <span class="built_in">enable</span> rc-local.service</div></pre></td></tr></table></figure></p>
-<p>方法二:<br>Supervisord 默认情况下并没有被安装成服务,它本身也是一个进程.官方已经给出了脚本可以将 Supervisord 安装成服务,<br>可以参考<a href="https://github.com/Supervisor/initscripts" target="_blank" rel="external">这里</a>查看各种操作系统的安装脚本,但是我用官方这里给的 Ubuntu 脚本却无法运行.<br>安装方法可以参考<a href="https://serverfault.com/questions/96499/how-to-automatically-start-supervisord-on-linux-ubuntu" target="_blank" rel="external"> serverfault</a><br>这个脚本下载下来后,还需检查一下与我们的配置是否相符合,比如默认的配置文件路径,pid 文件路径等,如果存在不同则需要进行一些修改</p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/04/supervisor-server/" data-id="cje27t68g004307li9383lou8" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/04/supervisor-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/supervisor-server/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-Dockerfile_compose" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/04/Dockerfile_compose/">Dockerfile docker-compose</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/Dockerfile_compose/">
+        <a href="/2017/08/04/docker-hub/">
             <time datetime="2017-08-04T15:24:48.000Z" itemprop="datePublished">2017-08-04</time>
         </a>
     </div>
@@ -1649,20 +1509,21 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h3 id="Dockerfile定制镜像命令-docker镜像-业务代码和运行环境进行整体的打包"><a href="#Dockerfile定制镜像命令-docker镜像-业务代码和运行环境进行整体的打包" class="headerlink" title="Dockerfile定制镜像命令,docker镜像:业务代码和运行环境进行整体的打包:"></a>Dockerfile定制镜像命令,docker镜像:业务代码和运行环境进行整体的打包:</h3><p><a href="https://github.com/imagine10255/centos6-lnmp-php56/blob/master/Dockerfile" target="_blank" rel="external">一个Dockerfile的文件</a>:系统基本所需要的环境和软件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">vim Dockerfile</div><div class="line">    FROM centos7</div><div class="line">    RUN <span class="comment"># 对原镜像进行命令操作</span></div><div class="line">    ADD . /opt/ <span class="comment"># 将宿主机此目录下的文件原copy到容器的/opt/下</span></div><div class="line">    EXPOSE 80 8000 <span class="comment"># 容器可映射的端口</span></div><div class="line">    VOLUME [<span class="string">"/home/python"</span>,<span class="string">""</span>]</div><div class="line">    WORKDIR <span class="string">'/home/xx'</span> <span class="comment"># 相当于宿主机的cd /home/xx</span></div><div class="line">    CMD [<span class="string">"nginx"</span>, <span class="string">"-g"</span>, <span class="string">"daemon off;"</span>] <span class="comment">#一开始运行这个容器所执行的命令</span></div><div class="line"><span class="comment"># 所有的文件复制均使用 COPY 指令,仅在需要自动解压缩的场合使用 ADD</span></div><div class="line"><span class="comment"># 用Dockerfile 生成镜像app</span></div><div class="line">docker build -t app .</div></pre></td></tr></table></figure>
-<h3 id="Dockerfile-模板文件-可以很方便的定义一个单独的应用容器-记录了-单-一个镜像的制作过程"><a href="#Dockerfile-模板文件-可以很方便的定义一个单独的应用容器-记录了-单-一个镜像的制作过程" class="headerlink" title="Dockerfile 模板文件,可以很方便的定义一个单独的应用容器,记录了(单)一个镜像的制作过程"></a>Dockerfile 模板文件,可以很方便的定义一个单独的应用容器,记录了(单)一个镜像的制作过程</h3><p>如果 dockerhub 的镜像不能满足我的需求就 dockerfile 自己 build 镜像</p>
-<p>为什么还要docker-compose,是因为Dockerfile要去执行CMD [“bash”]之后,再去启动nginx,node等其它的服务,不能直观的看到端口之间的映射,以及服务之间的link的原因吗？</p>
-<h3 id="但是很多时候-需要多个镜像合作才能启动一个服务-比如前端要有nginx-数据库mysql-邮件服务等等-当然你可以把所有这些都弄到一个镜像里去-但这样做就无法复用了"><a href="#但是很多时候-需要多个镜像合作才能启动一个服务-比如前端要有nginx-数据库mysql-邮件服务等等-当然你可以把所有这些都弄到一个镜像里去-但这样做就无法复用了" class="headerlink" title="但是很多时候,需要多个镜像合作才能启动一个服务,比如前端要有nginx,数据库mysql,邮件服务等等,当然你可以把所有这些都弄到一个镜像里去,但这样做就无法复用了."></a>但是很多时候,需要多个镜像合作才能启动一个服务,比如前端要有nginx,数据库mysql,邮件服务等等,当然你可以把所有这些都弄到一个镜像里去,但这样做就无法复用了.</h3><p>更常见的是,nginx,mysql,smtp都分别是个镜像,然后这些镜像合作,共同服务一个项目.<br>docker-compose就是解决这个问题的.你的项目需要哪些镜像,每个镜像怎么配置,要挂载哪些volume,等等信息都包含在docker-compose.yml里.<br>要启动服务,只需要docker-compose up就行,停止也只需要docker-compse stop/down</p>
-<p>dockerfile+docker-compose, 是因为docker-compose.yml本身没有镜像构建的信息,如果镜像是从docker registry拉取下来的,那么Dockerfile就不需要;如果镜像是需要build的,那就需要提供Dockerfile.</p>
-<h3 id="docker-compost-定义和运行多个Docker容器的应用"><a href="#docker-compost-定义和运行多个Docker容器的应用" class="headerlink" title="docker-compost:定义和运行多个Docker容器的应用"></a>docker-compost:定义和运行多个Docker容器的应用</h3><p>编排工具,定义并运行基于Docker的分布式应用,简化部署复杂应用的流程,管理容器化应用的完整开发周期</p>
-<p>1.允许用户通过一个单独的docker-compose.yml模板文件(YAML格式)来定义一组相关联的应用容器为一个项目:project<br>,包括注明需要哪些服务,服务之间的关联,开放的port,对外连结的路径volumes</p>
-<p>2.以启动container为目的的、先build image再以此启动container</p>
-<p>3.定义好了管理起来轻松,你如果喜欢用docker run带一大串parameters也是可以的</p>
-<h3 id="install-compose"><a href="#install-compose" class="headerlink" title="install compose"></a>install compose</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">curl -L https://github.com/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m` \</div><div class="line">     &gt; /usr/<span class="built_in">local</span>/bin/docker-compose</div><div class="line"><span class="comment"># 如果命令行下载超时 </span></div><div class="line">https://github.com/docker/compose/releases/download/1.8.0/docker-compose-Linux-x86_64</div><div class="line"><span class="built_in">cd</span> Download</div><div class="line">cp docker-compose-Linux-x86_64 /usr/<span class="built_in">local</span>/bin/docker-compose</div><div class="line"></div><div class="line">chmod a+x /usr/<span class="built_in">local</span>/bin/docker-compose</div><div class="line">docker-compose -h</div><div class="line">docker-compose up/down/stop</div></pre></td></tr></table></figure>
-<p>管理server(contient)执行的顺序,但其实这只是希望是这样执行(docker run),但其实真正的启动时的, 还需要其它的工具去控制.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">    mkdir 1</div><div class="line">    <span class="built_in">cd</span> 1</div><div class="line">    vim docker-compose.yml</div><div class="line">        nginx:</div><div class="line">            image: nginx</div><div class="line"><span class="comment"># 1. 只定义 image :先找本地、本地没有找 docker hub 、再没有就报错 </span></div><div class="line"><span class="comment"># 2.只定义build:跑Dockerfile做image,有image直接用,image没有name和tag </span></div><div class="line"><span class="comment"># 3.同时定义image和build:没有image就先跑build,name和tag用image定义的那个</span></div><div class="line"><span class="comment"># 有了image就直接跑container</span></div><div class="line">            <span class="comment"># build: ./nginx  ##nginx目录下有Dockerfile文件 </span></div><div class="line">            ports:</div><div class="line">                - <span class="string">"80:80"</span></div><div class="line">            volumes:</div><div class="line">                - <span class="variable">$PWD</span>/nginx/nginx.conf:/etc/nginx/nginx.conf</div><div class="line">                - ./nginx/sites-enabled:/etc/nginx/sites-enabled</div><div class="line">            restart: always</div><div class="line">        node:</div><div class="line">            image: node</div><div class="line">            ports:</div><div class="line">                -<span class="string">"8000:8000"</span></div><div class="line">            volumes:</div><div class="line">                - <span class="variable">$PWD</span>/node:/src/app</div><div class="line">            restart: always</div><div class="line"></div><div class="line">    mkdir node </div><div class="line">    mkdir nginx</div><div class="line">    <span class="built_in">cd</span> nginx</div><div class="line">    mkdir sites-enabled</div><div class="line">    vim nginx.conf</div><div class="line">        daemon off;</div><div class="line"></div><div class="line">    还要去配置node</div><div class="line">    <span class="built_in">cd</span> ../</div><div class="line">    docker-compose up</div><div class="line">    docker-compose down</div><div class="line">    docker ps -l</div></pre></td></tr></table></figure></p>
-<h3 id="用docker-compose-自动一个一个的安装软件-client"><a href="#用docker-compose-自动一个一个的安装软件-client" class="headerlink" title="用docker-compose 自动一个一个的安装软件(client)"></a>用docker-compose 自动一个一个的安装软件(client)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">vim docker-compose.yml</div><div class="line">    version: <span class="string">'2'</span></div><div class="line">    services:</div><div class="line">    mongodb:</div><div class="line">        image: tutum/mongodb</div><div class="line">        ports:</div><div class="line">            - <span class="string">"27017:27017"</span></div><div class="line">            - <span class="string">"28017:28017"</span></div><div class="line">        environment:</div><div class="line">            - AUTH=no</div><div class="line">        container_name: mongodb</div><div class="line">        restart: always</div><div class="line"></div><div class="line">    memcached:</div><div class="line">        image: memcached</div><div class="line">        ports:</div><div class="line">            - <span class="string">"11211:11211"</span></div><div class="line">        container_name: memcached</div><div class="line">        restart: always</div><div class="line"></div><div class="line"><span class="comment"># 效果:只要运行docker-compose up,就会自动安装mongodb和memcached</span></div><div class="line"><span class="comment"># 并且会在机器重启的时候自启动</span></div></pre></td></tr></table></figure>
-<p><a href="https://cola.workxplay.net/devops-docker-development-environment/" target="_blank" rel="external">一个项目的例子</a></p>
+            <h3 id="新建私有镜像仓库-只有registry-2这个镜像运行时-才能push-pull私有镜像库"><a href="#新建私有镜像仓库-只有registry-2这个镜像运行时-才能push-pull私有镜像库" class="headerlink" title="新建私有镜像仓库,只有registry:2这个镜像运行时,才能push,pull私有镜像库"></a>新建私有镜像仓库,只有registry:2这个镜像运行时,才能push,pull私有镜像库</h3><p>私有镜像仓库的好处:</p>
+<p>1.上传下载速度快</p>
+<p>2.企业可自行维护镜像仓库</p>
+<p>3.需要维护镜像仓库服务器</p>
+<p>4.同步docker官方镜像到企业私有镜像仓库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">docker pull registry:2</div><div class="line"><span class="comment"># 使用官方的 registry 镜像来启动本地的私有仓库 </span></div><div class="line"><span class="comment"># 仓库会被创建在容器下/var/lib/registry下</span></div><div class="line"><span class="comment"># 将镜像文件存放在本机的指定路径/data/registry</span></div><div class="line">docker run -d -p 5000:5000 --restart=always --name registry \</div><div class="line">    -v /data/registry:/var/lib/registry registry:2</div><div class="line"><span class="comment"># 将镜像运行为容器 -d 将这个进程后台运行 -p 映射端口主机端口:容器端口     </span></div><div class="line"><span class="comment"># --restart=always当容器服务死掉之后自动重启 --name容器的名字 </span></div><div class="line"><span class="comment"># -v 映射容器的目录到宿主机下</span></div><div class="line"><span class="comment"># -m 128m 内存限制在128M</span></div><div class="line"></div><div class="line"><span class="comment"># 查看主机端口在容器的映射情况</span></div><div class="line">docker port nostalgic_morse 5000 </div><div class="line"></div><div class="line">docker pull nginx</div><div class="line"><span class="comment">#镜像的重命名 标记镜像</span></div><div class="line">docker tag nginx 47.52.94.126:5000/nginx:last  </div><div class="line">docker tag nginx 192.168.1.116:5000/nginx:last  </div><div class="line"></div><div class="line"><span class="comment"># modify docker daemon启动参数</span></div><div class="line">vim /usr/lib/systemd/system/docker.service</div><div class="line"><span class="comment"># centos   ubuntu:/lib/systemd/system/docker.service</span></div><div class="line">    ExecStart=之前的不要动加上  --insecure-registry=0.0.0.0/0</div><div class="line">systemctl daemon-reload</div><div class="line">systemctl restart docker</div><div class="line"><span class="comment"># 看参数有没有正确的添加.</span></div><div class="line">ps aux |grep docker  </div><div class="line"></div><div class="line"><span class="comment"># 上传标记镜像到私有仓库</span></div><div class="line">docker push 192.168.1.116:5000/nginx:last <span class="comment"># 本机测试的成功</span></div><div class="line">docker pull 192.168.1.116:5000/nginx:last </div><div class="line"><span class="comment"># 只要能连接上私有仓库,就可以从私有仓库中pull</span></div><div class="line"><span class="comment"># 因为本机做为私有仓库,已经有这image了,所以下载得很快</span></div><div class="line"><span class="comment"># docker push 47.52.94.126:5000/nginx:last 上传public IP失败</span></div></pre></td></tr></table></figure>
+<h3 id="镜像上传到Docker-Hub"><a href="#镜像上传到Docker-Hub" class="headerlink" title="镜像上传到Docker Hub"></a>镜像上传到Docker Hub</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">docker login <span class="comment">#输入 hub.docker.com注册时的用户名和密码</span></div><div class="line">docker pull registry</div><div class="line">docker tag   registry femn/registry:last</div><div class="line"><span class="comment"># 镜像名:femn/registry tag:last</span></div><div class="line"></div><div class="line"><span class="comment">#上传到Docker Hub 镜像名必须是 username/imagesname,才能上传</span></div><div class="line"><span class="comment"># 并且不需要提前去Docker Hub创建仓库</span></div><div class="line">docker push femn/registry </div><div class="line"><span class="comment"># 将本地镜像上传到https://hub.docker.com的个人仓库中了.</span></div></pre></td></tr></table></figure>
+<h3 id="Docker-Hub"><a href="#Docker-Hub" class="headerlink" title="Docker Hub"></a>Docker Hub</h3><p>Docker通过docer search、pull、login和push等命令提供了连接Docker Hub服务的功能.</p>
+<p>Docker Hub是一个由Docker公司负责维护的公共注册中心,它包含了超过15,000个可用来下载和构建容器的镜像,并且还提供认证、工作组结构、工作流工具(比如webhooks)<br>构建触发器以及私有工具(比如私有仓库可用于存储你并不想公开分享的镜像)</p>
+<h3 id="自动构建"><a href="#自动构建" class="headerlink" title="自动构建"></a>自动构建</h3><p>自动构建功能会自动从Github或BitBucket直接将镜像构建或更新至Docker Hub,通过为Github或Bitbucket的仓库添加一个提交的hook来实现,<br>当你推送提交的时候就会触发构建和更新,但是,你不能通过docker push推送一个自动化构建,而只能通过在Github或者BitBucket提交你的代码来管理它.<br>你可以在一个Docker的仓库中创建多个自动构建,配置它们只指定的Dockerfile或Git 分支</p>
+<h3 id="Automated-Builds的一个实例"><a href="#Automated-Builds的一个实例" class="headerlink" title="Automated Builds的一个实例"></a><a href="https://hub.docker.com/r/leno730/pause/" target="_blank" rel="external">Automated Builds的一个实例</a></h3><p>建Dockerfile的目的,就是为了使用dockerfile里面的from语法的作用,来借用github服务器新建我需要的镜像</p>
+<p>由于不能从google container上直接pull镜像,所以这里通过docker hub的Automated Builds功能从项目的dockerfile中Build到docker的官方服务器上,然后再从它们上面拉取</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 步骤2中 创建一个带有Dockerfile的Github项目</span></div><div class="line">mkdir docker_lib</div><div class="line"><span class="built_in">cd</span> docker_lib</div><div class="line">git init</div><div class="line">mkdir google-etcd-amd64</div><div class="line"><span class="built_in">cd</span> google-etcd-amd64</div><div class="line">vim Dockerfile</div><div class="line">    FROM gcr.io/google_containers/etcd:2.0.12</div><div class="line">    MAINTAINER femn2014</div><div class="line">git add .</div><div class="line">git commit -m <span class="string">'增加Dockerfile文件,解决镜像被墙的问题'</span></div><div class="line"><span class="comment"># 在github 创建一个名为docker_lib的项目</span></div><div class="line">git remote add origin https://github.com/femn2014/docker_lib.git</div><div class="line">git push -u origin master</div><div class="line"></div><div class="line"><span class="comment"># 当完成此实例的所有步骤之后,再测试下,推送提交的时候就会触发构建和更新</span></div><div class="line">vim Dockerfile</div><div class="line">    FROM nginx</div><div class="line">    MAINTAINER femn2014</div><div class="line">git add .</div><div class="line">git commit -m <span class="string">'当推送提交时触发构建和更新'</span></div><div class="line">git push -u origin master</div><div class="line"></div><div class="line"><span class="comment"># 这时 docker pull femn/etcd 时下载的将会是nginx的镜像</span></div></pre></td></tr></table></figure>
+<h3 id="总结来说-自动构建的步骤"><a href="#总结来说-自动构建的步骤" class="headerlink" title="总结来说 自动构建的步骤"></a>总结来说 自动构建的步骤</h3><p>1.创建一个Docker Hub账户并且登陆<br>2.通过create选择 create automated build创建一个项目,再选择连接一个包含Dockerfile的GitHub或者BitBucket.<br>3.给自动构建创建一个名称:etcd(相当于也就是Docker Hub的项目的镜像名称)<br>4.配置自动化构建 (click here to customize)<br>5.选择你想用于构建的分支(默认是master分支)<br>6.指定Dockerfile的路径,默认是/,也可以在github中建立个目录再创建Dockerfile文件,为了方便我们后面区分镜像包<br>7.指定一个Docker标签来构建</p>
+<p><a href="https://blog.iliul.com/2017-01-02/set-docker-hub-gravatars/" target="_blank" rel="external">设置头像</a><br><a href="https://www.daocloud.io/" target="_blank" rel="external">国内docker_hub</a><br>另一个镜像管理工具<a href="https://quay.io/" target="_blank" rel="external">Quay</a></p>
 
         
         </div>
@@ -1673,7 +1534,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/Dockerfile_compose/" data-id="cje27t5wq000007li8gkgey20" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/docker-hub/" data-id="cjemp01l2001107opgfgvjote" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1741,7 +1602,154 @@
 
             
     
-        <a href="https://www.femn.me/2017/08/04/Dockerfile_compose/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/Dockerfile_compose/">Comments</a>
+        <a href="https://www.femn.me/2017/08/04/docker-hub/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/docker-hub/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-docker-machine" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/04/docker-machine/">docker-machine</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/04/docker-machine/">
+            <time datetime="2017-08-04T15:24:48.000Z" itemprop="datePublished">2017-08-04</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/docker/">docker</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="Docker-Engine-主要用来接收和处理docker命令请求的-Docker-Engine-Docker引擎-Docker-Engine的客户端-docker"><a href="#Docker-Engine-主要用来接收和处理docker命令请求的-Docker-Engine-Docker引擎-Docker-Engine的客户端-docker" class="headerlink" title="Docker Engine 主要用来接收和处理docker命令请求的(Docker Engine==Docker引擎==Docker Engine的客户端==docker)"></a>Docker Engine 主要用来接收和处理docker命令请求的(Docker Engine==Docker引擎==Docker Engine的客户端==docker)</h3><p>Docker我们一般理解的,都是C/S模型,用户通过docker client向docker daemon发送REST 请求.</p>
+<p>Docker Engine包括这么几个部分:</p>
+<p>1.Docker Daemon — docker 的守护进程,属于C/S中的server</p>
+<p>2.Docker REST API — docker daemon向外暴露的REST 接口</p>
+<p>3.Docker CLI — docker向外暴露的命令行接口(Command Line API)</p>
+<p>因此,客户端访问服务端的方式有两种,一种是使用命令行工具,比如docker run, docker ps…等等.另一种就是直接通过调用REST API,比如发送一个curl http请求<br><img src="http://os1h5rv4q.bkt.clouddn.com/docker_engine.png" alt=""></p>
+<h3 id="Docker-Machine是一个工具-用来在虚拟主机上安装Docker-Engine-Machine-并使用-docker-machine命令来管理这些虚拟主机-Machine-是一个可以帮助我们在电脑上、在云端、在数据中心内创建-Docker-主机的应用"><a href="#Docker-Machine是一个工具-用来在虚拟主机上安装Docker-Engine-Machine-并使用-docker-machine命令来管理这些虚拟主机-Machine-是一个可以帮助我们在电脑上、在云端、在数据中心内创建-Docker-主机的应用" class="headerlink" title="Docker Machine是一个工具,用来在虚拟主机上安装Docker Engine(Machine),并使用 docker-machine命令来管理这些虚拟主机(Machine).是一个可以帮助我们在电脑上、在云端、在数据中心内创建 Docker 主机的应用"></a>Docker Machine是一个工具,用来在虚拟主机上安装Docker Engine(Machine),并使用 docker-machine命令来管理这些虚拟主机(Machine).是一个可以帮助我们在电脑上、在云端、在数据中心内创建 Docker 主机的应用</h3><h4 id="主要用来管理-docker化的-host-安装了Docker-Engine的主机"><a href="#主要用来管理-docker化的-host-安装了Docker-Engine的主机" class="headerlink" title="主要用来管理 docker化的 host (安装了Docker Engine的主机)"></a>主要用来管理 docker化的 host (安装了Docker Engine的主机)</h4><p>使用 docker-machine命令,你可以启动、查看、停止以及重启一个主机,升级Docker client和daemon,配置Machine 的 Docker client与你的主机进行通信</p>
+<p>无论是Mac,Windows或是Linux,你都可以在其上安装Docker Machine,使用docker-machine命令来创建和管理大量的Docker hosts.<br>它会自动创建主机,在主机上安装Docker Engine,然后配置docker client.每个被管理的主机(“machine”)都是一个Docker 主机和一个配置过的client的组合.</p>
+<h4 id="docker-Machine的具体使用场景"><a href="#docker-Machine的具体使用场景" class="headerlink" title="docker Machine的具体使用场景:"></a>docker Machine的具体使用场景:</h4><p>1.你目前只有一个老版本的MacOSX(比如10.10.2)或者Windows系统,想在上边运行docker.</p>
+<p>2.想在远程系统上创建Docker主机,比如想在网络上,云平台上,以及本地创建Docker host,你就需要Docker Machine.</p>
+<p>3.docker在不同的linux上得安装方法不一样,通过这个工具可以提供统一的安装方法.</p>
+<h4 id="你可以使用Machine在一个或多个虚拟机上安装Docker-Engine-这些虚拟机可以是在本地-当你使用Machine在VirtualBox安装和运行Docker-Engine时"><a href="#你可以使用Machine在一个或多个虚拟机上安装Docker-Engine-这些虚拟机可以是在本地-当你使用Machine在VirtualBox安装和运行Docker-Engine时" class="headerlink" title="你可以使用Machine在一个或多个虚拟机上安装Docker Engine.这些虚拟机可以是在本地(当你使用Machine在VirtualBox安装和运行Docker Engine时)"></a>你可以使用Machine在一个或多个虚拟机上安装Docker Engine.这些虚拟机可以是在本地(当你使用Machine在VirtualBox安装和运行Docker Engine时)</h4><h4 id="也可以是远程的-使用Machine在云平台上创建Docker化的主机时-这些虚拟化的主机可以被认为是”machine”"><a href="#也可以是远程的-使用Machine在云平台上创建Docker化的主机时-这些虚拟化的主机可以被认为是”machine”" class="headerlink" title="也可以是远程的(使用Machine在云平台上创建Docker化的主机时).这些虚拟化的主机可以被认为是”machine”"></a>也可以是远程的(使用Machine在云平台上创建Docker化的主机时).这些虚拟化的主机可以被认为是”machine”</h4><p>Machine<br>解决因操作系统异构导致的安装 Docker 困难的问题,所有系统部署 Docker 都变得非常方便.<br><img src="http://os1h5rv4q.bkt.clouddn.com/docker_machine.png" alt=""></p>
+<p><img src="http://os1h5rv4q.bkt.clouddn.com/docker_machine2.jpg" alt=""></p>
+<p><a href="https://docs.docker.com/machine/install-machine/" target="_blank" rel="external">install machine</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">curl -L https://github.com/docker/machine/releases/download/\</div><div class="line">    v0.12.1/docker-machine-`uname -s`-`uname -m` \ </div><div class="line">    &gt;/tmp/docker-machine &amp;&amp;</div><div class="line">chmod a+x /tmp/docker-machine </div><div class="line">sudo cp /tmp/docker-machine /usr/<span class="built_in">local</span>/bin/docker-machine</div><div class="line"><span class="comment">#如果超时,直接从网页中下载</span></div><div class="line">https://github.com/docker/machine/releases/download/v0.12.1/docker-machine-Linux-x86_64</div><div class="line">chmod a+x docker-machine-Linux-x86_64</div><div class="line">sudo mv docker-machine-Linux-x86_64 /usr/<span class="built_in">local</span>/bin/docker-machine</div></pre></td></tr></table></figure>
+<h3 id="use-machine"><a href="#use-machine" class="headerlink" title="use machine"></a>use machine</h3><p>你也可以在VirtualBox等虚拟机上安装Docker engine到Docker中.在本地客户端,就好像所有的Docker 引擎运行在本地一样</p>
+<ol>
+<li>需要先安装virtualbox这个软件</li>
+<li>需要的是boot2docker.iso 只是一个普通的iso文件.<br>Docker Machine使用boot2docker作为virtualbox的镜像 – boot2docker是一个运行Docker容器的轻量级Linux系统,完全在内存中运行<br>不是下载此镜像:sudo docker pull boot2docker/boot2docker<br>而是 将<a href="https://github.com/boot2docker/boot2docker/releases/download/v17.06.0-ce/boot2docker.iso" target="_blank" rel="external">iso</a>放到 /home/python/.docker/machine/cache/ 再运行<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">docker-machine create -d virtualbox dev</div><div class="line"><span class="comment"># -driver virtualbox 表示我们在VirtualBox 的虚拟机里面部署 docker,代表的是驱动类型</span></div><div class="line"><span class="comment"># 最后的参数"dev" 是虚拟机(Machine)的名称</span></div><div class="line"><span class="comment"># http://os1h5rv4q.bkt.clouddn.com/docker_dev.jpg</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">#用这个Machine可以配置本地Docker客户端,用到env命令完成</span></div><div class="line">docker-machine env dev</div><div class="line"><span class="comment"># 目前已經建立出來的 docker VM</span></div><div class="line">docker-machine ls</div><div class="line"></div><div class="line"><span class="comment"># Docker客户端将会使用设置的相同的环境变量通过Docker API与运行在上面的机器互相通信</span></div><div class="line"><span class="comment"># 设置完成后,就可以在本地机器访问远程Docker</span></div><div class="line"><span class="built_in">eval</span> $(docker-machine env dev)</div><div class="line">docker ps</div></pre></td></tr></table></figure>
+</li>
+</ol>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/04/docker-machine/" data-id="cjemp01l4001307opoghqogm0" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/04/docker-machine/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/docker-machine/">Comments</a>
     
 
         </footer>
