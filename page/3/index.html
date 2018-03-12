@@ -214,6 +214,164 @@
 
             
             <section id="main">
+    <article id="post-linux-server-process" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/17/linux-server-process/">linux 服务与进程</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/17/linux-server-process/">
+            <time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/linux/">linux</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/server/">server</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="linux启动流程"><a href="#linux启动流程" class="headerlink" title="linux启动流程"></a><a href="http://www.ruanyifeng.com/blog/2013/08/linux_boot_process.html" target="_blank" rel="external">linux启动流程</a></h3><p>通电 –&gt;BIOS(哪个磁盘有MBR) –&gt;MBR(哪个分区为要开启的OS) –&gt;OS –&gt;/boot(kernel) –&gt;init(PID:1) –&gt;/etc/rc*.d/ –&gt;/etc/init.d/ –&gt;用户登陆(/etc/profilc–&gt;~/.profile .bash_login .bash_profile–&gt;~/.bashrc)</p>
+<h3 id="添加启动项"><a href="#添加启动项" class="headerlink" title="添加启动项"></a>添加启动项</h3><p>/etc/rc[0~6].d 这7个目录中,每个目录分别存放着对应运行级别加载时需要关闭或启动的服务,每个脚本文件都对应着/etc/init.d/目录下具体的服务</p>
+<p>K开头的脚本文件代表运行级别加载时需要关闭的,S开头的代表需要执行,数字代表执行顺序<br>因此,当我们需要开机启动自己的脚本时,只需要将可执行脚本丢在/etc/init.d目录下,然后在/etc/rc*.d中建立软链接即可</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">sudo shmod 755 /etc/init.d/ssh</div><div class="line"><span class="built_in">cd</span> /etc/init.d</div><div class="line">sudo update-rc.d ssh defaults 95 5 . <span class="comment"># 执行顺序95,加入运行级别5级中</span></div><div class="line"><span class="comment">#即在rc*.d中各建立了一个软连接,因此也可以自己手动建立软连接,如下</span></div><div class="line">ln -s /etc/init.d/ssh /etc/rc5.d/S95sshd</div><div class="line">sudo /etc/init.d/ssh start</div><div class="line">sudo service S95sshd start</div><div class="line"></div><div class="line"><span class="comment"># 开机启动</span></div><div class="line">sudo apt-get install openssh-server</div><div class="line"><span class="comment"># 二选一</span></div><div class="line">sudo /etc/init.d/ssh start</div><div class="line">sudo service sshd start</div></pre></td></tr></table></figure>
+<h3 id="简单的启动命令"><a href="#简单的启动命令" class="headerlink" title="简单的启动命令"></a>简单的启动命令</h3><p>Linux 在启动的时候会执行 /etc/rc.local 里面的脚本,所以只要在这里添加执行命令就可以</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">   vim /etc/rc.local</div><div class="line">   /usr/bin/supervisord -c /etc/supervisor/supervisord.conf</div><div class="line">   <span class="comment"># 如果是 Ubuntu 16.04 以上,rc.local 被当成了服务,而且默认是不会启动,需要手动启用一下服务</span></div><div class="line">   <span class="comment"># 启动rc.local服务:</span></div><div class="line">ln -fs /lib/systemd/system/rc-local.service /etc/systemd/system/rc-local.service</div><div class="line">systemctl cat rc.local</div><div class="line">sudo systemctl <span class="built_in">enable</span> rc-local.service</div><div class="line">   </div><div class="line">   <span class="comment"># 如果有图形桌面的话</span></div><div class="line">   super键--search <span class="string">"startup"</span>--&gt;设置开机启动选项,最重要的就是找到程序的绝对路经写上就可以.可以通过如下命令查看:</div><div class="line">   vim ~/.config/autostart/chromium-browser.desktop</div></pre></td></tr></table></figure>
+<h3 id="使用systemd设置开机启动"><a href="#使用systemd设置开机启动" class="headerlink" title="使用systemd设置开机启动"></a>使用systemd设置开机启动</h3><p>systemd默认读取/etc/systemd/system下的配置文件，该目录下的文件会链接/lib/systemd/system/下的文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">sudo vim /lib/systemd/system/rslsync.service</div><div class="line"></div><div class="line">	[Unit]</div><div class="line">	Description=rslsync </div><div class="line">	After=network.target</div><div class="line">	</div><div class="line">	[Service]</div><div class="line">	Type=forking</div><div class="line">	ExecStart=/home/femn/resilio-sync_glibc23_x64/rslsync</div><div class="line">	</div><div class="line">	[Install]</div><div class="line">	WantedBy=multi-user.target</div><div class="line">sudo chmod 754 /lib/systemd/system/rslsync.service</div><div class="line">sudo systemctl start rslsync.service</div><div class="line">sudo systemctl <span class="built_in">enable</span> rslsync.service</div></pre></td></tr></table></figure></p>
+<p>也可以使用第三方包来<a href="http://apt.ubuntu.com/p/alacarte" target="_blank" rel="external">管理启动程序</a></p>
+<h3 id="定时任务"><a href="#定时任务" class="headerlink" title="定时任务"></a>定时任务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">vim /etc/crontab </div><div class="line"><span class="comment"># 权限要一致,且要可执行</span></div><div class="line"><span class="comment"># 分　时　日　月　周　命令</span></div><div class="line"><span class="comment"># 每天11点执行</span></div><div class="line">0 11 * * *  root  sh /home/python/xx.sh </div><div class="line"></div><div class="line"><span class="comment"># 每两个小时 </span></div><div class="line">0 */2 * * * <span class="built_in">echo</span> <span class="string">"Have a break now."</span> &gt;&gt; /tmp/test.txt</div><div class="line"></div><div class="line"><span class="comment"># 晚上11点到早上8点之间每两个小时和早上八点 </span></div><div class="line">0 23-7/2,8 * * * <span class="built_in">echo</span> <span class="string">"Have a good dream"</span> &gt;&gt; /tmp/test.txt</div><div class="line"></div><div class="line"><span class="comment"># 保存退出即生效(刚添加的任务会到2-3分钟后才开始生效)</span></div></pre></td></tr></table></figure>
+<h3 id="查看服务状态"><a href="#查看服务状态" class="headerlink" title="查看服务状态"></a>查看服务状态</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ubuntu centos</span></div><div class="line">service sshd status/stop/restart <span class="comment"># service 在rc*.d/的名字</span></div><div class="line"></div><div class="line">systemctl start docker <span class="comment">#centos启动服务</span></div><div class="line">systemctl <span class="built_in">enable</span> docker <span class="comment"># 开机启动</span></div><div class="line">systemctl status nginx</div><div class="line">systemctl start firewalld.service</div><div class="line">systemctl <span class="built_in">enable</span> firewalld.service</div><div class="line">systemctl daemon-reload <span class="comment"># 修改启动参数时的 </span></div><div class="line">systemctl restart docker</div><div class="line"><span class="comment"># 只有systmectl 状态 服务名</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># redhat 操作系统下</span></div><div class="line">chkconfig 命令</div><div class="line">chkconfig --list sshd</div></pre></td></tr></table></figure>
+<h3 id="进程有关的"><a href="#进程有关的" class="headerlink" title="进程有关的"></a>进程有关的</h3><p>“衍生出来的进程”正是 Linux 的父子进程的概念.<br>当我们登录系统后,会取得一个 bash shell,然后我们利用这个 bash 提供的接口去执行另一个命令,</p>
+<p>例如 bash 或者 ps 等.那些另外执行的命令也会被触发成为 PID,那个后来执行的命令产生的 PID 就是”子进程”,而原本的 bash 环境下,就称为”父进程”了<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">bash</div><div class="line">ps -o pid,ppid,tty,time,cmd</div><div class="line">    PID  PPID TT           TIME CMD</div><div class="line">    11373  4396 pts/12   00:00:00 bash</div><div class="line">    13043 11373 pts/12   00:00:00 bash</div><div class="line">    13110 13043 pts/12   00:00:00 ps -o pid,ppid,tty,time,cmd</div><div class="line">PID: 运行着的命令(CMD)的进程编号</div><div class="line">PPID:父进程号</div><div class="line">TTY: 命令所运行的位置(终端)</div><div class="line">TIME: 运行着的该命令所占用的CPU处理时间</div><div class="line">CMD: 该进程所运行的命令</div><div class="line"><span class="comment"># ps 仅仅显示本终端的进程</span></div></pre></td></tr></table></figure></p>
+<p>我所做的操作是在原来的 bash shell 中执行了 bash 命令,然后又执行了 ps -o pid,ppid,comm命令.我们可以看到<br>,第二个进程 bash 是第一个进程 bash 的子进程,而第三个进程ps是第二个进程的子进程</p>
+<p>新的进程要通过老的进程复制自身得到,这就是 fork.fork 是一个系统调用.<br>进程存活于内存中.每个进程都在内存中分配有属于自己的一片空间 (内存空间,包含栈、堆、全局静态区、文本常量区、程序代码区).</p>
+<p>当一个程序调用 fork 的时候,实际上就是将上面的内存空间,又复制出来一个,构成一个新的进程,<br>并在内核中为该进程创建新的附加信息 (比如新的 PID,而 PPID 为原进程的 PID).此后,两个进程分别地继续运行下去.<br>新的进程和原有进程有相同的运行状态(相同的变量值,相同的指令…).我们只能通过进程的附加信息来区分两者.</p>
+<h4 id="工作管理-job-control"><a href="#工作管理-job-control" class="headerlink" title="工作管理(job control)"></a>工作管理(job control)</h4><p>是用在 bash 环境下的,也就是说,当我们登录系统取得 bash shell 之后,在单一终端机下可以同时进行多个工作的行为管理.</p>
+<p>假如我们只有一个终端,因此在可以出现提示符让你操作的环境就成为前台(foreground),至于其他工作就可以放在后台(background)去暂停或运行<br>程序调用 exec 的时候,进程清空自身的内存空间,并根据新的程序文件重建程序代码、文本常量、全局静态、堆和栈(此时堆和栈大小都为 0),并开始运行.</p>
+<h4 id="直接将命令放到后台执行-amp"><a href="#直接将命令放到后台执行-amp" class="headerlink" title="直接将命令放到后台执行 ( &amp;)"></a>直接将命令放到后台执行 ( &amp;)</h4><h4 id="将目前工作放到后台并暂停-ctrl-z"><a href="#将目前工作放到后台并暂停-ctrl-z" class="headerlink" title="将目前工作放到后台并暂停(ctrl+z)"></a>将目前工作放到后台并暂停(ctrl+z)</h4><h4 id="将后台工作拿到前台来处理-fg-工作序号"><a href="#将后台工作拿到前台来处理-fg-工作序号" class="headerlink" title="将后台工作拿到前台来处理(fg %工作序号)"></a>将后台工作拿到前台来处理(fg %工作序号)</h4><h3 id="进程管理命令"><a href="#进程管理命令" class="headerlink" title="进程管理命令"></a>进程管理命令</h3><h4 id="ps-PID-CMD-PORT"><a href="#ps-PID-CMD-PORT" class="headerlink" title="ps: PID,CMD,PORT"></a>ps: PID,CMD,PORT</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">ps <span class="comment"># 仅仅显示本终端的进程</span></div><div class="line"></div><div class="line">-a <span class="comment"># 显示终端中进行的所有进程</span></div><div class="line">-x <span class="comment"># 会显示没有控制终端的进程</span></div><div class="line">-e <span class="comment"># 所有的进程</span></div><div class="line">-u <span class="comment"># 查看某个用户的所有进程</span></div><div class="line">-f <span class="comment"># 来查看格式化的信息列表</span></div><div class="line">ps -u femn <span class="comment"># 查看所有femn用户的进程 </span></div><div class="line">ps aux <span class="comment"># 可以对系统进程更加全面的了解</span></div><div class="line">ps -aux | less </div><div class="line"><span class="comment"># less是一个分页显示文件的工具工具,它允许你一页一页(或一个屏幕一个屏幕)地查看信息</span></div><div class="line"></div><div class="line">ps -ef <span class="comment"># 所有进程 PID PPID </span></div><div class="line">ps -efH <span class="comment"># 把输出的进程组成一个层级的格式 树状 </span></div><div class="line">ps axjf  <span class="comment"># 树状视图 等于 pstree</span></div><div class="line">ps -ef | grep python3 | cut -c 10-15 | xargs <span class="built_in">kill</span> -9 </div><div class="line"><span class="comment"># Kill 某个用户或命令的所有进程</span></div><div class="line">ps axjf |grep nginx</div><div class="line">pgrep nginx <span class="comment"># 单单的得到PID,和其子进程号</span></div><div class="line"></div><div class="line">ps -aux --sort -pcpu | head -n 10</div><div class="line"><span class="comment"># 根据 CPU 使用来升序排序 +pcpu倒序</span></div><div class="line">ps -aux --sort -pmem | head -n 10</div><div class="line"><span class="comment"># 根据 内存 使用来升序排序</span></div><div class="line">ps -aux --sort -pcpu,-pmem | head -n 10</div><div class="line"></div><div class="line"><span class="comment"># 仅仅得到本机的程序名相关的进程</span></div><div class="line">ps aux/-ef |grep ssserver <span class="comment"># 程序名(命令名)或者PID</span></div></pre></td></tr></table></figure>
+<h4 id="netstat-PID-CMD-PORT"><a href="#netstat-PID-CMD-PORT" class="headerlink" title="netstat:PID,CMD,PORT"></a>netstat:PID,CMD,PORT</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 会牵扯到此程序 相关联的socket服务,或其它的网络相接进程(网络是双向的)</span></div><div class="line">netstat -anp |grep ssh <span class="comment">#程序名  得到PID 端口号</span></div><div class="line">netstat -lnp |grep 8388  <span class="comment">#端口号 得到PID,进程名</span></div><div class="line">sudo lsof -i :8001   <span class="comment">#查看此端口 PID,User,进程名</span></div><div class="line"></div><div class="line">ll /proc/进程号  </div><div class="line">sudo lsof -p 1609</div><div class="line">killall http* 它支持通过进程名而不是进程号来结束进程,也支持通配符.</div></pre></td></tr></table></figure>
+<h4 id="top"><a href="#top" class="headerlink" title="top"></a>top</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">top <span class="comment"># 动态显示进程 q 退出, M 内存占用降序排序,P 按CPU占用降序排序 </span></div><div class="line">[top使用说明](http://www.linuxidc.com/Linux/2011-03/33582.htm)</div><div class="line">ssserver内存占用随时间升高</div><div class="line">free -m <span class="comment"># 内在的使用情况</span></div><div class="line"><span class="comment"># 查看目前进程正在实际被使用的内存,是used-(buffers+cache)</span></div><div class="line">htop <span class="comment"># 更加友好的显示top</span></div></pre></td></tr></table></figure>
+<h3 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h3><h4 id="sleeping"><a href="#sleeping" class="headerlink" title="sleeping"></a>sleeping</h4><p>D(sleeping),往往是由于 I/O(磁盘IO,网络IO,其他外设IO) 资源得不到满足,而引发等待</p>
+<p>举个例子,当 NFS 服务端关闭之时,若未事先 umount 相关目录,在 NFS 客户端执行 df 就会挂住整个登录会话,按 Ctrl+C 、Ctrl+Z 都无济于事.<br>断开连接再登录,执行 ps axf 则看到刚才的 df 进程状态位已变成了 D ,kill -9 无法杀灭.</p>
+<p>正确的处理方式,是马上恢复 NFS 服务端,再度提供服务,刚才挂起的 df 进程发现了其苦苦等待的资源,便完成任务,自动消亡.若 NFS 服务端无法恢复服务,在 reboot 之前也应将 /etc/mtab 里的相关 NFS mount 项删除,以免 reboot 过程例行调用 netfs stop 时再次发生等待资源,导致系统重启过程挂起.</p>
+<h3 id="zombile"><a href="#zombile" class="headerlink" title="zombile"></a>zombile</h3><p>Z(zombie) 之所以杀不死,是因为它已经死了,否则怎么叫 Zombie(僵尸).在UNIX/Linux中,每个进程都有一个父进程,进程号叫PID(Process ID), 相应地,父进程号就叫PPID(Parent PID).</p>
+<p>当进程死亡时,它会自动关闭已打开的文件,舍弃已占用的内存、交换空间等等系统资源,然后向其父进程返回一个退出状态值,报告死讯.如果程序有 bug,就会在这最后一步出问题.子进程说我死了,父进程却没听见,所以子进程便成了僵尸.在UNIX/Linux中消灭僵尸的手段比较残忍,执行 ps axjf 找出僵尸进程的父进程号(PPID,第一列),先杀其父,然后再由进程天子 init(其PID为1,PPID为0)来一起收拾父子僵尸.注意,子进程变成僵尸只是碍眼而已,并不碍事,如果僵尸的父进程当前有要务在身,则千万不可贸然杀之.</p>
+<p>这些进程已经死亡,但没有释放系统资源,包括内存和一些一些系统表等,如果这样的进程很多,会引发系统问题.用ps -el看出的进程状态如果是Z,就是僵尸进程.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ps -ef|grep defunc <span class="comment"># 可以找出僵尸进程</span></div><div class="line"><span class="comment"># 清除ZOMBIE(僵尸)进程可以使用如下方法:</span></div><div class="line"></div><div class="line"><span class="built_in">kill</span> –18 PPID (PPID是其父进程)</div><div class="line"><span class="comment"># 这个信号是告诉父进程,该子进程已经死亡了,请收回分配给他的资源.</span></div></pre></td></tr></table></figure></p>
+<p>如果不行则看能否终止其父进程(如果其父进程不需要的话).先看其父进程又无其他子进程,如果有,可能需要先kill其他子进程,也就是兄弟进程.方法是:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">kill</span> –15 PID1 PID2 <span class="comment"># (PID1,PID2是僵尸进程的父进程的其它子进程).</span></div><div class="line"><span class="built_in">kill</span> –15 PPID  <span class="comment"># 然后再kill父进程,这样僵尸进程就可能被完全杀掉了</span></div></pre></td></tr></table></figure></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/17/linux-server-process/" data-id="cjeoac9vg002506pcsi0iavqf" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/17/linux-server-process/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/linux-server-process/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-linux_gcc" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -270,7 +428,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/17/linux_gcc/" data-id="cjemp01nx002n07op07df0auv" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/17/linux_gcc/" data-id="cjeoac9vt002d06pcyw6tqp1u" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -339,136 +497,6 @@
             
     
         <a href="https://www.femn.me/2017/08/17/linux_gcc/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/linux_gcc/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-nginx" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/17/nginx/">nignx基本使用</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/17/nginx/">
-            <time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/tool/">tool</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>现代WEB服务架构也可以分为WEB(http)服务器(tornado.httpserver,Nginx,Apache)和应用服务器.因为严格意义上的WEB服务器只通过HTTP协议提供html,css等网页资源,<br>而动态语言一般需要专门的应用服务器(业务服务器)进行计算,因为动态语言是需要进行计算处理后生成html代码的</p>
-<p><a href="https://www.zybuluo.com/phper/note/90310" target="_blank" rel="external">nginx简介</a><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">pid是控制系统中重要文件,对Nginx服务进行的控制(nginx的控制文件).</div><div class="line">gzip on;<span class="comment">#传输过程经过压缩,提高速度,减少流量</span></div><div class="line">charset ;<span class="comment"># 设置字符编码</span></div><div class="line"></div><div class="line">server&#123;</div><div class="line">	listen 80; </div><div class="line">	server_name shuju.bzby365.com;</div><div class="line">	root /alidata/www/shuju/;</div><div class="line">	index index.html;</div><div class="line">	<span class="comment">#rewrite ^(app.bzby365.com:8010/c/.*)$  https://$1 redirect;# permanent</span></div><div class="line">	rewrite ^(/c/.*)$  https://<span class="variable">$1</span> permanent;</div><div class="line">	<span class="comment"># redirect这个参数给来测试时,用得多.一个已经是https协议的服务  调用另一个不是https的会报错</span></div><div class="line">	<span class="comment">#https to other https 可以是同一台服务器的https,</span></div><div class="line">	<span class="comment"># 也可以是其它的服务器 http://shuju.bzby365.com/pc/ to https://app.bzby365.com:8010/c/shuju</span></div><div class="line"></div><div class="line">	<span class="built_in">return</span> 301 https://<span class="variable">$server_name</span><span class="variable">$request_uri</span>; </div><div class="line">	<span class="comment">#当对外服务器时用https://$server_name$request_uri,也可以用$host$request_uri</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h4 id="SSL证书"><a href="#SSL证书" class="headerlink" title="SSL证书"></a>SSL证书</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">server&#123;</div><div class="line">	listen  443;</div><div class="line">	server_name  shuju.bzby365.com;</div><div class="line">	ssl on; </div><div class="line">	index index.htm index.html;</div><div class="line">	<span class="comment">#csr证书请求文件--交给CA签名后形成服务端自己的证书,认证通过之后,签证机构给你crt文件 crt+key = pem</span></div><div class="line">	ssl_certificate   /root/shuju/214051486510462.pem;</div><div class="line">	ssl_certificate_key  /root/shuju/214051486510462.key;</div><div class="line">	root /alidata/www/shuju/;</div><div class="line">	ssl_session_timeout 5m;</div><div class="line">	ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</div><div class="line">	ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</div><div class="line">	ssl_prefer_server_ciphers on; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="PHP解析"><a href="#PHP解析" class="headerlink" title="PHP解析"></a>PHP解析</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">	listen 80;</div><div class="line">	<span class="comment">#server_name localhost;#123.206.188.203;</span></div><div class="line">	<span class="comment">#server_name 123.206.188.203;</span></div><div class="line">	<span class="comment">#server_name 45.76.0.178;</span></div><div class="line">	<span class="comment">#server_name 0.0.0.0; 上面的公网IP也不行了,</span></div><div class="line">	<span class="comment"># /etc/hosts 相当于是DNS解析的文件</span></div><div class="line">	<span class="comment"># 购买域名之后 通过DNS解析成公网IP,但网址上输入什么,这里的server_name是什么,才会进这个虚拟主机</span></div><div class="line">	server_name www.femnyy.com 45.76.0.178 yy.femnyy.com;</div><div class="line"></div><div class="line">	<span class="comment">#此路径的所有都必须要有读写操作才行,因为如果没有读写权限,即使是找到了也显示不出来.</span></div><div class="line">	<span class="comment"># 表示在这整个server虚拟主机内,全部的root web根目录.注意要和locate &#123;&#125;下面定义的区分开来</span></div><div class="line">	root   /usr/share/nginx/html/wordpress;</div><div class="line">	index index.php index.html;</div><div class="line">	<span class="comment"># 定位URL,解析URL 它也提供了强大的正则匹配功能,也支持条件判断匹配,用户可以通过location指令实现Nginx对动、静态网页进行过滤处理 .</span></div><div class="line">	<span class="comment"># 用~来表示location开启正则匹配</span></div><div class="line">	location ~ .php$ &#123;</div><div class="line">		<span class="comment"># 指令用于指定访问根目录时,虚拟主机的web目录,这个目录可以是相对路径(相对路径是相对于nginx的安装目录).也可以是绝对路径</span></div><div class="line">		<span class="comment"># 表示虚拟主机的根目录</span></div><div class="line">			root /usr/share/nginx/html/wordpress;</div><div class="line">			<span class="comment"># 已经确定PHP服务已经启动成功</span></div><div class="line">			fastcgi_pass 127.0.0.1:9000;</div><div class="line">			fastcgi_index info.php;</div><div class="line">			fastcgi_param SCRIPT_FILENAME <span class="variable">$document_root</span><span class="variable">$fastcgi_script_name</span>;</div><div class="line">			include fastcgi_params;</div><div class="line">				&#125;</div><div class="line"></div><div class="line">	location / &#123;</div><div class="line">	<span class="comment"># 正向代理:正向代理是一个位于客户端和原始服务器(origin server)之间的服务器.</span></div><div class="line">	<span class="comment"># 为了从原始服务器取得内容,客户端向代理发送一个请求并指定目标(原始服务器),然后代理向原始服务器转交请求并将获得的内容返回给客户端.</span></div><div class="line">	<span class="comment"># Nginx使用 反向代理:客户端访问本机,但本机没有此资源,就可以通过反向代理到其它服务器中</span></div><div class="line">		proxy_pass http://192.168.33.10;</div><div class="line">			&#125;</div><div class="line">	</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/17/nginx/" data-id="cjemp01oj002y07opqm4sbnsy" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/17/nginx/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/nginx/">Comments</a>
     
 
         </footer>
@@ -846,7 +874,7 @@ g&lt;ctrl-]&gt;
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/17/vim_grammar/" data-id="cjemp01qu004f07opvwtl01k0" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/17/vim_grammar/" data-id="cjeoac9zg004506pcxr45wfkr" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -924,7 +952,7 @@ g&lt;ctrl-]&gt;
 
 
 
-    <article id="post-linux-server-process" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-nginx" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -932,7 +960,7 @@ g&lt;ctrl-]&gt;
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/17/linux-server-process/">linux 服务与进程</a>
+            <a class="article-title" href="/2017/08/17/nginx/">nignx基本使用</a>
         </h1>
     
 
@@ -941,7 +969,7 @@ g&lt;ctrl-]&gt;
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/17/linux-server-process/">
+        <a href="/2017/08/17/nginx/">
             <time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time>
         </a>
     </div>
@@ -950,15 +978,10 @@ g&lt;ctrl-]&gt;
                         
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/linux/">linux</a>
+        <a class="article-category-link" href="/categories/tool/">tool</a>
     </div>
 
                         
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/server/">server</a>
-    </div>
-
                     </div>
                 
             </header>
@@ -967,33 +990,10 @@ g&lt;ctrl-]&gt;
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h3 id="linux启动流程"><a href="#linux启动流程" class="headerlink" title="linux启动流程"></a><a href="http://www.ruanyifeng.com/blog/2013/08/linux_boot_process.html" target="_blank" rel="external">linux启动流程</a></h3><p>通电 –&gt;BIOS(哪个磁盘有MBR) –&gt;MBR(哪个分区为要开启的OS) –&gt;OS –&gt;/boot(kernel) –&gt;init(PID:1) –&gt;/etc/rc*.d/ –&gt;/etc/init.d/ –&gt;用户登陆(/etc/profilc–&gt;~/.profile .bash_login .bash_profile–&gt;~/.bashrc)</p>
-<h3 id="添加启动项"><a href="#添加启动项" class="headerlink" title="添加启动项"></a>添加启动项</h3><p>/etc/rc[0~6].d 这7个目录中,每个目录分别存放着对应运行级别加载时需要关闭或启动的服务,每个脚本文件都对应着/etc/init.d/目录下具体的服务</p>
-<p>K开头的脚本文件代表运行级别加载时需要关闭的,S开头的代表需要执行,数字代表执行顺序<br>因此,当我们需要开机启动自己的脚本时,只需要将可执行脚本丢在/etc/init.d目录下,然后在/etc/rc*.d中建立软链接即可</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">sudo shmod 755 /etc/init.d/ssh</div><div class="line"><span class="built_in">cd</span> /etc/init.d</div><div class="line">sudo update-rc.d ssh defaults 95 5 . <span class="comment"># 执行顺序95,加入运行级别5级中</span></div><div class="line"><span class="comment">#即在rc*.d中各建立了一个软连接,因此也可以自己手动建立软连接,如下</span></div><div class="line">ln -s /etc/init.d/ssh /etc/rc5.d/S95sshd</div><div class="line">sudo /etc/init.d/ssh start</div><div class="line">sudo service S95sshd start</div><div class="line"></div><div class="line"><span class="comment"># 开机启动</span></div><div class="line">sudo apt-get install openssh-server</div><div class="line"><span class="comment"># 二选一</span></div><div class="line">sudo /etc/init.d/ssh start</div><div class="line">sudo service sshd start</div></pre></td></tr></table></figure>
-<h3 id="简单的启动命令"><a href="#简单的启动命令" class="headerlink" title="简单的启动命令"></a>简单的启动命令</h3><p>Linux 在启动的时候会执行 /etc/rc.local 里面的脚本,所以只要在这里添加执行命令就可以</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">   vim /etc/rc.local</div><div class="line">   /usr/bin/supervisord -c /etc/supervisor/supervisord.conf</div><div class="line">   <span class="comment"># 如果是 Ubuntu 16.04 以上,rc.local 被当成了服务,而且默认是不会启动,需要手动启用一下服务</span></div><div class="line">   <span class="comment"># 启动rc.local服务:</span></div><div class="line">ln -fs /lib/systemd/system/rc-local.service /etc/systemd/system/rc-local.service</div><div class="line">systemctl cat rc.local</div><div class="line">sudo systemctl <span class="built_in">enable</span> rc-local.service</div><div class="line">   </div><div class="line">   <span class="comment"># 如果有图形桌面的话</span></div><div class="line">   super键--search <span class="string">"startup"</span>--&gt;设置开机启动选项,最重要的就是找到程序的绝对路经写上就可以.可以通过如下命令查看:</div><div class="line">   vim ~/.config/autostart/chromium-browser.desktop</div></pre></td></tr></table></figure>
-<h3 id="使用systemd设置开机启动"><a href="#使用systemd设置开机启动" class="headerlink" title="使用systemd设置开机启动"></a>使用systemd设置开机启动</h3><p>systemd默认读取/etc/systemd/system下的配置文件，该目录下的文件会链接/lib/systemd/system/下的文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">sudo vim /lib/systemd/system/rslsync.service</div><div class="line"></div><div class="line">	[Unit]</div><div class="line">	Description=rslsync </div><div class="line">	After=network.target</div><div class="line">	</div><div class="line">	[Service]</div><div class="line">	Type=forking</div><div class="line">	ExecStart=/home/femn/resilio-sync_glibc23_x64/rslsync</div><div class="line">	</div><div class="line">	[Install]</div><div class="line">	WantedBy=multi-user.target</div><div class="line">sudo chmod 754 /lib/systemd/system/rslsync.service</div><div class="line">sudo systemctl start rslsync.service</div><div class="line">sudo systemctl <span class="built_in">enable</span> rslsync.service</div></pre></td></tr></table></figure></p>
-<p>也可以使用第三方包来<a href="http://apt.ubuntu.com/p/alacarte" target="_blank" rel="external">管理启动程序</a></p>
-<h3 id="定时任务"><a href="#定时任务" class="headerlink" title="定时任务"></a>定时任务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">vim /etc/crontab </div><div class="line"><span class="comment"># 权限要一致,且要可执行</span></div><div class="line"><span class="comment"># 分　时　日　月　周　命令</span></div><div class="line"><span class="comment"># 每天11点执行</span></div><div class="line">0 11 * * *  root  sh /home/python/xx.sh </div><div class="line"></div><div class="line"><span class="comment"># 每两个小时 </span></div><div class="line">0 */2 * * * <span class="built_in">echo</span> <span class="string">"Have a break now."</span> &gt;&gt; /tmp/test.txt</div><div class="line"></div><div class="line"><span class="comment"># 晚上11点到早上8点之间每两个小时和早上八点 </span></div><div class="line">0 23-7/2,8 * * * <span class="built_in">echo</span> <span class="string">"Have a good dream"</span> &gt;&gt; /tmp/test.txt</div><div class="line"></div><div class="line"><span class="comment"># 保存退出即生效(刚添加的任务会到2-3分钟后才开始生效)</span></div></pre></td></tr></table></figure>
-<h3 id="查看服务状态"><a href="#查看服务状态" class="headerlink" title="查看服务状态"></a>查看服务状态</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ubuntu centos</span></div><div class="line">service sshd status/stop/restart <span class="comment"># service 在rc*.d/的名字</span></div><div class="line"></div><div class="line">systemctl start docker <span class="comment">#centos启动服务</span></div><div class="line">systemctl <span class="built_in">enable</span> docker <span class="comment"># 开机启动</span></div><div class="line">systemctl status nginx</div><div class="line">systemctl start firewalld.service</div><div class="line">systemctl <span class="built_in">enable</span> firewalld.service</div><div class="line">systemctl daemon-reload <span class="comment"># 修改启动参数时的 </span></div><div class="line">systemctl restart docker</div><div class="line"><span class="comment"># 只有systmectl 状态 服务名</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># redhat 操作系统下</span></div><div class="line">chkconfig 命令</div><div class="line">chkconfig --list sshd</div></pre></td></tr></table></figure>
-<h3 id="进程有关的"><a href="#进程有关的" class="headerlink" title="进程有关的"></a>进程有关的</h3><p>“衍生出来的进程”正是 Linux 的父子进程的概念.<br>当我们登录系统后,会取得一个 bash shell,然后我们利用这个 bash 提供的接口去执行另一个命令,</p>
-<p>例如 bash 或者 ps 等.那些另外执行的命令也会被触发成为 PID,那个后来执行的命令产生的 PID 就是”子进程”,而原本的 bash 环境下,就称为”父进程”了<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">bash</div><div class="line">ps -o pid,ppid,tty,time,cmd</div><div class="line">    PID  PPID TT           TIME CMD</div><div class="line">    11373  4396 pts/12   00:00:00 bash</div><div class="line">    13043 11373 pts/12   00:00:00 bash</div><div class="line">    13110 13043 pts/12   00:00:00 ps -o pid,ppid,tty,time,cmd</div><div class="line">PID: 运行着的命令(CMD)的进程编号</div><div class="line">PPID:父进程号</div><div class="line">TTY: 命令所运行的位置(终端)</div><div class="line">TIME: 运行着的该命令所占用的CPU处理时间</div><div class="line">CMD: 该进程所运行的命令</div><div class="line"><span class="comment"># ps 仅仅显示本终端的进程</span></div></pre></td></tr></table></figure></p>
-<p>我所做的操作是在原来的 bash shell 中执行了 bash 命令,然后又执行了 ps -o pid,ppid,comm命令.我们可以看到<br>,第二个进程 bash 是第一个进程 bash 的子进程,而第三个进程ps是第二个进程的子进程</p>
-<p>新的进程要通过老的进程复制自身得到,这就是 fork.fork 是一个系统调用.<br>进程存活于内存中.每个进程都在内存中分配有属于自己的一片空间 (内存空间,包含栈、堆、全局静态区、文本常量区、程序代码区).</p>
-<p>当一个程序调用 fork 的时候,实际上就是将上面的内存空间,又复制出来一个,构成一个新的进程,<br>并在内核中为该进程创建新的附加信息 (比如新的 PID,而 PPID 为原进程的 PID).此后,两个进程分别地继续运行下去.<br>新的进程和原有进程有相同的运行状态(相同的变量值,相同的指令…).我们只能通过进程的附加信息来区分两者.</p>
-<h4 id="工作管理-job-control"><a href="#工作管理-job-control" class="headerlink" title="工作管理(job control)"></a>工作管理(job control)</h4><p>是用在 bash 环境下的,也就是说,当我们登录系统取得 bash shell 之后,在单一终端机下可以同时进行多个工作的行为管理.</p>
-<p>假如我们只有一个终端,因此在可以出现提示符让你操作的环境就成为前台(foreground),至于其他工作就可以放在后台(background)去暂停或运行<br>程序调用 exec 的时候,进程清空自身的内存空间,并根据新的程序文件重建程序代码、文本常量、全局静态、堆和栈(此时堆和栈大小都为 0),并开始运行.</p>
-<h4 id="直接将命令放到后台执行-amp"><a href="#直接将命令放到后台执行-amp" class="headerlink" title="直接将命令放到后台执行 ( &amp;)"></a>直接将命令放到后台执行 ( &amp;)</h4><h4 id="将目前工作放到后台并暂停-ctrl-z"><a href="#将目前工作放到后台并暂停-ctrl-z" class="headerlink" title="将目前工作放到后台并暂停(ctrl+z)"></a>将目前工作放到后台并暂停(ctrl+z)</h4><h4 id="将后台工作拿到前台来处理-fg-工作序号"><a href="#将后台工作拿到前台来处理-fg-工作序号" class="headerlink" title="将后台工作拿到前台来处理(fg %工作序号)"></a>将后台工作拿到前台来处理(fg %工作序号)</h4><h3 id="进程管理命令"><a href="#进程管理命令" class="headerlink" title="进程管理命令"></a>进程管理命令</h3><h4 id="ps-PID-CMD-PORT"><a href="#ps-PID-CMD-PORT" class="headerlink" title="ps: PID,CMD,PORT"></a>ps: PID,CMD,PORT</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">ps <span class="comment"># 仅仅显示本终端的进程</span></div><div class="line"></div><div class="line">-a <span class="comment"># 显示终端中进行的所有进程</span></div><div class="line">-x <span class="comment"># 会显示没有控制终端的进程</span></div><div class="line">-e <span class="comment"># 所有的进程</span></div><div class="line">-u <span class="comment"># 查看某个用户的所有进程</span></div><div class="line">-f <span class="comment"># 来查看格式化的信息列表</span></div><div class="line">ps -u femn <span class="comment"># 查看所有femn用户的进程 </span></div><div class="line">ps aux <span class="comment"># 可以对系统进程更加全面的了解</span></div><div class="line">ps -aux | less </div><div class="line"><span class="comment"># less是一个分页显示文件的工具工具,它允许你一页一页(或一个屏幕一个屏幕)地查看信息</span></div><div class="line"></div><div class="line">ps -ef <span class="comment"># 所有进程 PID PPID </span></div><div class="line">ps -efH <span class="comment"># 把输出的进程组成一个层级的格式 树状 </span></div><div class="line">ps axjf  <span class="comment"># 树状视图 等于 pstree</span></div><div class="line">ps -ef | grep python3 | cut -c 10-15 | xargs <span class="built_in">kill</span> -9 </div><div class="line"><span class="comment"># Kill 某个用户或命令的所有进程</span></div><div class="line">ps axjf |grep nginx</div><div class="line">pgrep nginx <span class="comment"># 单单的得到PID,和其子进程号</span></div><div class="line"></div><div class="line">ps -aux --sort -pcpu | head -n 10</div><div class="line"><span class="comment"># 根据 CPU 使用来升序排序 +pcpu倒序</span></div><div class="line">ps -aux --sort -pmem | head -n 10</div><div class="line"><span class="comment"># 根据 内存 使用来升序排序</span></div><div class="line">ps -aux --sort -pcpu,-pmem | head -n 10</div><div class="line"></div><div class="line"><span class="comment"># 仅仅得到本机的程序名相关的进程</span></div><div class="line">ps aux/-ef |grep ssserver <span class="comment"># 程序名(命令名)或者PID</span></div></pre></td></tr></table></figure>
-<h4 id="netstat-PID-CMD-PORT"><a href="#netstat-PID-CMD-PORT" class="headerlink" title="netstat:PID,CMD,PORT"></a>netstat:PID,CMD,PORT</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 会牵扯到此程序 相关联的socket服务,或其它的网络相接进程(网络是双向的)</span></div><div class="line">netstat -anp |grep ssh <span class="comment">#程序名  得到PID 端口号</span></div><div class="line">netstat -lnp |grep 8388  <span class="comment">#端口号 得到PID,进程名</span></div><div class="line">sudo lsof -i :8001   <span class="comment">#查看此端口 PID,User,进程名</span></div><div class="line"></div><div class="line">ll /proc/进程号  </div><div class="line">sudo lsof -p 1609</div><div class="line">killall http* 它支持通过进程名而不是进程号来结束进程,也支持通配符.</div></pre></td></tr></table></figure>
-<h4 id="top"><a href="#top" class="headerlink" title="top"></a>top</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">top <span class="comment"># 动态显示进程 q 退出, M 内存占用降序排序,P 按CPU占用降序排序 </span></div><div class="line">[top使用说明](http://www.linuxidc.com/Linux/2011-03/33582.htm)</div><div class="line">ssserver内存占用随时间升高</div><div class="line">free -m <span class="comment"># 内在的使用情况</span></div><div class="line"><span class="comment"># 查看目前进程正在实际被使用的内存,是used-(buffers+cache)</span></div><div class="line">htop <span class="comment"># 更加友好的显示top</span></div></pre></td></tr></table></figure>
-<h3 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h3><h4 id="sleeping"><a href="#sleeping" class="headerlink" title="sleeping"></a>sleeping</h4><p>D(sleeping),往往是由于 I/O(磁盘IO,网络IO,其他外设IO) 资源得不到满足,而引发等待</p>
-<p>举个例子,当 NFS 服务端关闭之时,若未事先 umount 相关目录,在 NFS 客户端执行 df 就会挂住整个登录会话,按 Ctrl+C 、Ctrl+Z 都无济于事.<br>断开连接再登录,执行 ps axf 则看到刚才的 df 进程状态位已变成了 D ,kill -9 无法杀灭.</p>
-<p>正确的处理方式,是马上恢复 NFS 服务端,再度提供服务,刚才挂起的 df 进程发现了其苦苦等待的资源,便完成任务,自动消亡.若 NFS 服务端无法恢复服务,在 reboot 之前也应将 /etc/mtab 里的相关 NFS mount 项删除,以免 reboot 过程例行调用 netfs stop 时再次发生等待资源,导致系统重启过程挂起.</p>
-<h3 id="zombile"><a href="#zombile" class="headerlink" title="zombile"></a>zombile</h3><p>Z(zombie) 之所以杀不死,是因为它已经死了,否则怎么叫 Zombie(僵尸).在UNIX/Linux中,每个进程都有一个父进程,进程号叫PID(Process ID), 相应地,父进程号就叫PPID(Parent PID).</p>
-<p>当进程死亡时,它会自动关闭已打开的文件,舍弃已占用的内存、交换空间等等系统资源,然后向其父进程返回一个退出状态值,报告死讯.如果程序有 bug,就会在这最后一步出问题.子进程说我死了,父进程却没听见,所以子进程便成了僵尸.在UNIX/Linux中消灭僵尸的手段比较残忍,执行 ps axjf 找出僵尸进程的父进程号(PPID,第一列),先杀其父,然后再由进程天子 init(其PID为1,PPID为0)来一起收拾父子僵尸.注意,子进程变成僵尸只是碍眼而已,并不碍事,如果僵尸的父进程当前有要务在身,则千万不可贸然杀之.</p>
-<p>这些进程已经死亡,但没有释放系统资源,包括内存和一些一些系统表等,如果这样的进程很多,会引发系统问题.用ps -el看出的进程状态如果是Z,就是僵尸进程.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ps -ef|grep defunc <span class="comment"># 可以找出僵尸进程</span></div><div class="line"><span class="comment"># 清除ZOMBIE(僵尸)进程可以使用如下方法:</span></div><div class="line"></div><div class="line"><span class="built_in">kill</span> –18 PPID (PPID是其父进程)</div><div class="line"><span class="comment"># 这个信号是告诉父进程,该子进程已经死亡了,请收回分配给他的资源.</span></div></pre></td></tr></table></figure></p>
-<p>如果不行则看能否终止其父进程(如果其父进程不需要的话).先看其父进程又无其他子进程,如果有,可能需要先kill其他子进程,也就是兄弟进程.方法是:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">kill</span> –15 PID1 PID2 <span class="comment"># (PID1,PID2是僵尸进程的父进程的其它子进程).</span></div><div class="line"><span class="built_in">kill</span> –15 PPID  <span class="comment"># 然后再kill父进程,这样僵尸进程就可能被完全杀掉了</span></div></pre></td></tr></table></figure></p>
+            <p>现代WEB服务架构也可以分为WEB(http)服务器(tornado.httpserver,Nginx,Apache)和应用服务器.因为严格意义上的WEB服务器只通过HTTP协议提供html,css等网页资源,<br>而动态语言一般需要专门的应用服务器(业务服务器)进行计算,因为动态语言是需要进行计算处理后生成html代码的</p>
+<p><a href="https://www.zybuluo.com/phper/note/90310" target="_blank" rel="external">nginx简介</a><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">pid是控制系统中重要文件,对Nginx服务进行的控制(nginx的控制文件).</div><div class="line">gzip on;<span class="comment">#传输过程经过压缩,提高速度,减少流量</span></div><div class="line">charset ;<span class="comment"># 设置字符编码</span></div><div class="line"></div><div class="line">server&#123;</div><div class="line">	listen 80; </div><div class="line">	server_name shuju.bzby365.com;</div><div class="line">	root /alidata/www/shuju/;</div><div class="line">	index index.html;</div><div class="line">	<span class="comment">#rewrite ^(app.bzby365.com:8010/c/.*)$  https://$1 redirect;# permanent</span></div><div class="line">	rewrite ^(/c/.*)$  https://<span class="variable">$1</span> permanent;</div><div class="line">	<span class="comment"># redirect这个参数给来测试时,用得多.一个已经是https协议的服务  调用另一个不是https的会报错</span></div><div class="line">	<span class="comment">#https to other https 可以是同一台服务器的https,</span></div><div class="line">	<span class="comment"># 也可以是其它的服务器 http://shuju.bzby365.com/pc/ to https://app.bzby365.com:8010/c/shuju</span></div><div class="line"></div><div class="line">	<span class="built_in">return</span> 301 https://<span class="variable">$server_name</span><span class="variable">$request_uri</span>; </div><div class="line">	<span class="comment">#当对外服务器时用https://$server_name$request_uri,也可以用$host$request_uri</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="SSL证书"><a href="#SSL证书" class="headerlink" title="SSL证书"></a>SSL证书</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">server&#123;</div><div class="line">	listen  443;</div><div class="line">	server_name  shuju.bzby365.com;</div><div class="line">	ssl on; </div><div class="line">	index index.htm index.html;</div><div class="line">	<span class="comment">#csr证书请求文件--交给CA签名后形成服务端自己的证书,认证通过之后,签证机构给你crt文件 crt+key = pem</span></div><div class="line">	ssl_certificate   /root/shuju/214051486510462.pem;</div><div class="line">	ssl_certificate_key  /root/shuju/214051486510462.key;</div><div class="line">	root /alidata/www/shuju/;</div><div class="line">	ssl_session_timeout 5m;</div><div class="line">	ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</div><div class="line">	ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</div><div class="line">	ssl_prefer_server_ciphers on; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="PHP解析"><a href="#PHP解析" class="headerlink" title="PHP解析"></a>PHP解析</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">	listen 80;</div><div class="line">	<span class="comment">#server_name localhost;#123.206.188.203;</span></div><div class="line">	<span class="comment">#server_name 123.206.188.203;</span></div><div class="line">	<span class="comment">#server_name 45.76.0.178;</span></div><div class="line">	<span class="comment">#server_name 0.0.0.0; 上面的公网IP也不行了,</span></div><div class="line">	<span class="comment"># /etc/hosts 相当于是DNS解析的文件</span></div><div class="line">	<span class="comment"># 购买域名之后 通过DNS解析成公网IP,但网址上输入什么,这里的server_name是什么,才会进这个虚拟主机</span></div><div class="line">	server_name www.femnyy.com 45.76.0.178 yy.femnyy.com;</div><div class="line"></div><div class="line">	<span class="comment">#此路径的所有都必须要有读写操作才行,因为如果没有读写权限,即使是找到了也显示不出来.</span></div><div class="line">	<span class="comment"># 表示在这整个server虚拟主机内,全部的root web根目录.注意要和locate &#123;&#125;下面定义的区分开来</span></div><div class="line">	root   /usr/share/nginx/html/wordpress;</div><div class="line">	index index.php index.html;</div><div class="line">	<span class="comment"># 定位URL,解析URL 它也提供了强大的正则匹配功能,也支持条件判断匹配,用户可以通过location指令实现Nginx对动、静态网页进行过滤处理 .</span></div><div class="line">	<span class="comment"># 用~来表示location开启正则匹配</span></div><div class="line">	location ~ .php$ &#123;</div><div class="line">		<span class="comment"># 指令用于指定访问根目录时,虚拟主机的web目录,这个目录可以是相对路径(相对路径是相对于nginx的安装目录).也可以是绝对路径</span></div><div class="line">		<span class="comment"># 表示虚拟主机的根目录</span></div><div class="line">			root /usr/share/nginx/html/wordpress;</div><div class="line">			<span class="comment"># 已经确定PHP服务已经启动成功</span></div><div class="line">			fastcgi_pass 127.0.0.1:9000;</div><div class="line">			fastcgi_index info.php;</div><div class="line">			fastcgi_param SCRIPT_FILENAME <span class="variable">$document_root</span><span class="variable">$fastcgi_script_name</span>;</div><div class="line">			include fastcgi_params;</div><div class="line">				&#125;</div><div class="line"></div><div class="line">	location / &#123;</div><div class="line">	<span class="comment"># 正向代理:正向代理是一个位于客户端和原始服务器(origin server)之间的服务器.</span></div><div class="line">	<span class="comment"># 为了从原始服务器取得内容,客户端向代理发送一个请求并指定目标(原始服务器),然后代理向原始服务器转交请求并将获得的内容返回给客户端.</span></div><div class="line">	<span class="comment"># Nginx使用 反向代理:客户端访问本机,但本机没有此资源,就可以通过反向代理到其它服务器中</span></div><div class="line">		proxy_pass http://192.168.33.10;</div><div class="line">			&#125;</div><div class="line">	</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
 
         
         </div>
@@ -1004,7 +1004,7 @@ g&lt;ctrl-]&gt;
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/17/linux-server-process/" data-id="cjemp01nk002f07oph1p93u89" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/17/nginx/" data-id="cjeoac9wo002o06pcc5me0l3i" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1072,267 +1072,7 @@ g&lt;ctrl-]&gt;
 
             
     
-        <a href="https://www.femn.me/2017/08/17/linux-server-process/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/linux-server-process/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-sshd-server" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/16/sshd-server/">sshd</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/16/sshd-server/">
-            <time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/server/">server</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h4 id="server"><a href="#server" class="headerlink" title="server"></a>server</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install openssh-server</div><div class="line">ps ef|grep ssh</div><div class="line">sudo /etc/init.d/ssh start 或者 service sshd start</div><div class="line"></div><div class="line"><span class="comment"># 创建一个普通用户</span></div><div class="line">useradd username</div><div class="line">passwd username</div><div class="line">vim /etc/ssh/sshd_config</div><div class="line">    Port 22333</div><div class="line">    PermitRootLogin no</div><div class="line">    TCPKeepAlive yes</div><div class="line">    ClientAliveInterval 360</div><div class="line">    ClientAliveCountMax 20</div><div class="line"></div><div class="line"><span class="comment"># 给普通用户附sudo权限</span></div><div class="line">chmod u+w /etc/sudoers</div><div class="line">vim /etc/sudoers</div><div class="line">    root            ALL=(ALL)                ALL</div><div class="line">    username            ALL=(ALL)                ALL</div><div class="line">chmod u-w /etc/sudoers</div><div class="line"></div><div class="line">/etc/init.d/ssh start</div><div class="line">service sshd restart</div><div class="line">firewall-cmd --permanent --add-port=22333/tcp</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure>
-<h4 id="client"><a href="#client" class="headerlink" title="client"></a>client</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -p 22333 username@ip</div></pre></td></tr></table></figure>
-<h3 id="SSH无密码登录"><a href="#SSH无密码登录" class="headerlink" title="SSH无密码登录"></a>SSH无密码登录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># client:生成SSH公钥</span></div><div class="line">ssh-keygen -t rsa -C <span class="string">"邮箱"</span> </div><div class="line"></div><div class="line"><span class="comment"># 将SSH公钥上传到Linux服务器</span></div><div class="line">ssh-copy-id -p 22 username@remote-server</div><div class="line"><span class="comment"># 将client端的gedit ~/.ssh/id_rsa.pub的内容放到server端~/.ssh/authorized_keys</span></div><div class="line"><span class="comment"># 等同于如下</span></div><div class="line">cat ~/.ssh/id_rsa.pub | ssh username@your_host \ </div><div class="line">    <span class="string">"cat - &gt;&gt; /home/username/.ssh/authorized_keys"</span></div></pre></td></tr></table></figure>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/16/sshd-server/" data-id="cjemp01qh004307op4hdt9ytc" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/16/sshd-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/sshd-server/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-CDN-server" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/16/CDN-server/">内容分发网络</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/16/CDN-server/">
-            <time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/server/">server</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h3 id="CDN"><a href="#CDN" class="headerlink" title="CDN:"></a>CDN:</h3><p>内容分发网络(Content delivery network或Content distribution network,缩写:CDN)是指一种通过互联网互相连接的电脑网络系统,<br>利用最靠近每位用户的服务器,更快、更可靠地将音乐、图片、视频、应用程序及其他文件发送给用户,来提供高性能、可扩展性及低成本的网络内容传递给用户</p>
-<h3 id="CDN的作用"><a href="#CDN的作用" class="headerlink" title="CDN的作用"></a>CDN的作用</h3><h4 id="1-加速您网站的访问"><a href="#1-加速您网站的访问" class="headerlink" title="1.加速您网站的访问:"></a>1.加速您网站的访问:</h4><p>访问者的每个访问请求,都会被自动发送到物理距离最近、速度最快的节点上.<br>将blog内容的所有的东西(图片,文字,视频)都是保存在自己的服务器中,要从自己的服务器中取得,当如果某个页面需要加载很多内容时,速度就会变慢.<br>而cdn就会把所以网址上的东西,全部分送到它们在全世界各地所架设的云端的伺服务器上,也就是说我的网址会被散播(拆解)到全世界的伺服务器上,取最近的.</p>
-<h4 id="2-防骇客-抵御DoS攻击-访问我们的网址-相当于访问到云端的伺服务器上"><a href="#2-防骇客-抵御DoS攻击-访问我们的网址-相当于访问到云端的伺服务器上" class="headerlink" title="2.防骇客,抵御DoS攻击,访问我们的网址,相当于访问到云端的伺服务器上."></a>2.防骇客,抵御DoS攻击,访问我们的网址,相当于访问到云端的伺服务器上.</h4><h4 id="3-可以承受网站的流量-节省您的流量"><a href="#3-可以承受网站的流量-节省您的流量" class="headerlink" title="3.可以承受网站的流量,节省您的流量:"></a>3.可以承受网站的流量,节省您的流量:</h4><p>您的网站内容将被缓存在 CloudFlare 的节点中,访问者并不直接从您的主机获取内容,从而最大限度地节省主机的流量<br>同时网站的下载速度也会比以往的快些.</p>
-<h3 id="使用cloudflare加速"><a href="#使用cloudflare加速" class="headerlink" title="使用cloudflare加速"></a>使用<a href="https://www.cloudflare.com/" target="_blank" rel="external">cloudflare</a>加速</h3><p>cloudflare是一个国外著名的免费CDN网站加速服务公司<br>甚至可以在网站主服务器宕机的情况下,访问者依然可以通过 CloudFlare 的分发服务器访问到您的网站</p>
-<p><a href="http://www.xujiahua.com/4680.html" target="_blank" rel="external">使用cloudflare的教程</a></p>
-<h3 id="但使用了cloudflare之后-就不再支持泛域名的解析了-所以还得多配置nginx"><a href="#但使用了cloudflare之后-就不再支持泛域名的解析了-所以还得多配置nginx" class="headerlink" title="但使用了cloudflare之后,就不再支持泛域名的解析了,所以还得多配置nginx."></a>但使用了cloudflare之后,就不再支持泛域名的解析了,所以还得多配置nginx.</h3>
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/16/CDN-server/" data-id="cjemp01hg000207op2mgqqe80" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/16/CDN-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/CDN-server/">Comments</a>
+        <a href="https://www.femn.me/2017/08/17/nginx/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/nginx/">Comments</a>
     
 
         </footer>
@@ -1452,7 +1192,7 @@ g&lt;ctrl-]&gt;
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/16/shadowsocks-server/" data-id="cjemp01q1003v07optwxom7rj" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/16/shadowsocks-server/" data-id="cjeoac9yt003n06pcv6n7diwh" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1521,6 +1261,266 @@ g&lt;ctrl-]&gt;
             
     
         <a href="https://www.femn.me/2017/08/16/shadowsocks-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/shadowsocks-server/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-CDN-server" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/16/CDN-server/">内容分发网络</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/16/CDN-server/">
+            <time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/server/">server</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="CDN"><a href="#CDN" class="headerlink" title="CDN:"></a>CDN:</h3><p>内容分发网络(Content delivery network或Content distribution network,缩写:CDN)是指一种通过互联网互相连接的电脑网络系统,<br>利用最靠近每位用户的服务器,更快、更可靠地将音乐、图片、视频、应用程序及其他文件发送给用户,来提供高性能、可扩展性及低成本的网络内容传递给用户</p>
+<h3 id="CDN的作用"><a href="#CDN的作用" class="headerlink" title="CDN的作用"></a>CDN的作用</h3><h4 id="1-加速您网站的访问"><a href="#1-加速您网站的访问" class="headerlink" title="1.加速您网站的访问:"></a>1.加速您网站的访问:</h4><p>访问者的每个访问请求,都会被自动发送到物理距离最近、速度最快的节点上.<br>将blog内容的所有的东西(图片,文字,视频)都是保存在自己的服务器中,要从自己的服务器中取得,当如果某个页面需要加载很多内容时,速度就会变慢.<br>而cdn就会把所以网址上的东西,全部分送到它们在全世界各地所架设的云端的伺服务器上,也就是说我的网址会被散播(拆解)到全世界的伺服务器上,取最近的.</p>
+<h4 id="2-防骇客-抵御DoS攻击-访问我们的网址-相当于访问到云端的伺服务器上"><a href="#2-防骇客-抵御DoS攻击-访问我们的网址-相当于访问到云端的伺服务器上" class="headerlink" title="2.防骇客,抵御DoS攻击,访问我们的网址,相当于访问到云端的伺服务器上."></a>2.防骇客,抵御DoS攻击,访问我们的网址,相当于访问到云端的伺服务器上.</h4><h4 id="3-可以承受网站的流量-节省您的流量"><a href="#3-可以承受网站的流量-节省您的流量" class="headerlink" title="3.可以承受网站的流量,节省您的流量:"></a>3.可以承受网站的流量,节省您的流量:</h4><p>您的网站内容将被缓存在 CloudFlare 的节点中,访问者并不直接从您的主机获取内容,从而最大限度地节省主机的流量<br>同时网站的下载速度也会比以往的快些.</p>
+<h3 id="使用cloudflare加速"><a href="#使用cloudflare加速" class="headerlink" title="使用cloudflare加速"></a>使用<a href="https://www.cloudflare.com/" target="_blank" rel="external">cloudflare</a>加速</h3><p>cloudflare是一个国外著名的免费CDN网站加速服务公司<br>甚至可以在网站主服务器宕机的情况下,访问者依然可以通过 CloudFlare 的分发服务器访问到您的网站</p>
+<p><a href="http://www.xujiahua.com/4680.html" target="_blank" rel="external">使用cloudflare的教程</a></p>
+<h3 id="但使用了cloudflare之后-就不再支持泛域名的解析了-所以还得多配置nginx"><a href="#但使用了cloudflare之后-就不再支持泛域名的解析了-所以还得多配置nginx" class="headerlink" title="但使用了cloudflare之后,就不再支持泛域名的解析了,所以还得多配置nginx."></a>但使用了cloudflare之后,就不再支持泛域名的解析了,所以还得多配置nginx.</h3>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/16/CDN-server/" data-id="cjeoac9ou000106pcsm6270a3" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/16/CDN-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/CDN-server/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-sshd-server" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/16/sshd-server/">sshd</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/16/sshd-server/">
+            <time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/server/">server</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h4 id="server"><a href="#server" class="headerlink" title="server"></a>server</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install openssh-server</div><div class="line">ps ef|grep ssh</div><div class="line">sudo /etc/init.d/ssh start 或者 service sshd start</div><div class="line"></div><div class="line"><span class="comment"># 创建一个普通用户</span></div><div class="line">useradd username</div><div class="line">passwd username</div><div class="line">vim /etc/ssh/sshd_config</div><div class="line">    Port 22333</div><div class="line">    PermitRootLogin no</div><div class="line">    TCPKeepAlive yes</div><div class="line">    ClientAliveInterval 360</div><div class="line">    ClientAliveCountMax 20</div><div class="line"></div><div class="line"><span class="comment"># 给普通用户附sudo权限</span></div><div class="line">chmod u+w /etc/sudoers</div><div class="line">vim /etc/sudoers</div><div class="line">    root            ALL=(ALL)                ALL</div><div class="line">    username            ALL=(ALL)                ALL</div><div class="line">chmod u-w /etc/sudoers</div><div class="line"></div><div class="line">/etc/init.d/ssh start</div><div class="line">service sshd restart</div><div class="line">firewall-cmd --permanent --add-port=22333/tcp</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure>
+<h4 id="client"><a href="#client" class="headerlink" title="client"></a>client</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -p 22333 username@ip</div></pre></td></tr></table></figure>
+<h3 id="SSH无密码登录"><a href="#SSH无密码登录" class="headerlink" title="SSH无密码登录"></a>SSH无密码登录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># client:生成SSH公钥</span></div><div class="line">ssh-keygen -t rsa -C <span class="string">"邮箱"</span> </div><div class="line"></div><div class="line"><span class="comment"># 将SSH公钥上传到Linux服务器</span></div><div class="line">ssh-copy-id -p 22 username@remote-server</div><div class="line"><span class="comment"># 将client端的gedit ~/.ssh/id_rsa.pub的内容放到server端~/.ssh/authorized_keys</span></div><div class="line"><span class="comment"># 等同于如下</span></div><div class="line">cat ~/.ssh/id_rsa.pub | ssh username@your_host \ </div><div class="line">    <span class="string">"cat - &gt;&gt; /home/username/.ssh/authorized_keys"</span></div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/16/sshd-server/" data-id="cjeoac9z5003v06pck3mcacp8" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/16/sshd-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/sshd-server/">Comments</a>
     
 
         </footer>
@@ -1609,7 +1609,7 @@ g&lt;ctrl-]&gt;
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/15/vps-server/" data-id="cjemp01r5004j07opo61iiucr" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/15/vps-server/" data-id="cjeoac9zp004906pcclofezsz" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1738,7 +1738,7 @@ g&lt;ctrl-]&gt;
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/14/python-fun-program/" data-id="cjemp01pa003i07op07lgq6u1" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/14/python-fun-program/" data-id="cjeoac9xs003806pclr49q9fk" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1871,7 +1871,7 @@ g&lt;ctrl-]&gt;
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/14/进程间通信/" data-id="cjemp01rg004q07opc47ow34g" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/14/进程间通信/" data-id="cjeoaca00004g06pc0qwkq5vo" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
