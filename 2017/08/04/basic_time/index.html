@@ -11,7 +11,8 @@
 <meta property="og:url" content="https://www.femn.me/2017/08/04/basic_time/index.html">
 <meta property="og:site_name" content="Femn">
 <meta property="og:description" content="from datetime import date,datetime,timedelta datetime类型12345d = datetime.now()   datetime.datetime(2017, 6, 2, 17, 22, 5, 470694)datetime(2017,2,3)   datetime.datetime(2017, 2, 3, 0, 0)str(d)[:19]d.ye">
-<meta property="og:updated_time" content="2018-03-10T09:31:50.116Z">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-03-10T09:31:50.117Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="basic time">
 <meta name="twitter:description" content="from datetime import date,datetime,timedelta datetime类型12345d = datetime.now()   datetime.datetime(2017, 6, 2, 17, 22, 5, 470694)datetime(2017,2,3)   datetime.datetime(2017, 2, 3, 0, 0)str(d)[:19]d.ye">
@@ -159,11 +160,11 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                67
+                68
                 <span>posts</span>
             </div>
             <div class="article-info-block">
-                5
+                6
                 <span>tags</span>
             </div>
         </div>
@@ -256,16 +257,16 @@
         
             
             <p>from datetime import date,datetime,timedelta</p>
-<h4 id="datetime类型"><a href="#datetime类型" class="headerlink" title="datetime类型"></a>datetime类型</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">d = datetime.now()   datetime.datetime(2017, 6, 2, 17, 22, 5, 470694)</div><div class="line">datetime(2017,2,3)   datetime.datetime(2017, 2, 3, 0, 0)</div><div class="line">str(d)[:19]</div><div class="line">d.year d.month      (属性,都是int类型)</div><div class="line">current_day,month_days = calendar.monthrange(2017, 2)  (获取某年某月的 当前天数 和  此月共有天)</div></pre></td></tr></table></figure>
-<h4 id="date类型"><a href="#date类型" class="headerlink" title="date类型"></a>date类型</h4><p>datetime.datetime 会精确到 %H%M%S  而datetime.date 不需要<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">date_today = date.today()</div><div class="line">start_date = date(2017,2,6).replace(day=1) </div><div class="line"># 对应月份第一天的日期 datetime.date(2017, 2, 1) 如果输入是一个 datetime 实例,那么你得到的就是一个 datetime 实例</div><div class="line">end_date = start_date + timedelta(days=month_days-1) </div><div class="line"># 第一种获得当月月底的日期 datetime.date(2017, 2, 28)date类型和datetime类型 都可以通过 timedelta 进行前/后几天的计算</div><div class="line"></div><div class="line"># 加月份时</div><div class="line">from dateutil.relativedelta import relativedelta</div><div class="line">six_months = date.today() + relativedelta(months=+6)  datetime.date(2017, 12, 27)</div><div class="line">six_months = datetime.now() + relativedelta(months=+6) datetime.datetime(2017, 12, 27, 16, 2, 5, 260990)</div></pre></td></tr></table></figure></p>
-<h4 id="时间戳类型-timestamp"><a href="#时间戳类型-timestamp" class="headerlink" title="时间戳类型 timestamp"></a>时间戳类型 timestamp</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">time.time()   1483756148.2785556  type:float</div></pre></td></tr></table></figure>
-<h4 id="time-tuple类型"><a href="#time-tuple类型" class="headerlink" title="time tuple类型"></a>time tuple类型</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">time.localtime() time.struct_time(tm_year=2017, tm_mon=1, tm_mday=7, tm_hour=11, tm_min=0, t_m_sec=54, tm_wday=5, tm_yday=7, tm_isdst=0)</div></pre></td></tr></table></figure>
-<h3 id="转换关系"><a href="#转换关系" class="headerlink" title="转换关系"></a>转换关系</h3><h4 id="datetime-datetime-–-gt-str"><a href="#datetime-datetime-–-gt-str" class="headerlink" title="datetime.datetime –&gt; str"></a>datetime.datetime –&gt; str</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">s = d.strftime(&apos;%Y-%m-%d %H:%M:%S.%f&apos;)   (2017-01-07 10:16:12.962917)</div><div class="line">s = date_today.strftime(&apos;%Y-%m-%d&apos;) (2017-01-07)</div></pre></td></tr></table></figure>
-<h4 id="datetime-datetime-–-gt-time-tuple"><a href="#datetime-datetime-–-gt-time-tuple" class="headerlink" title="datetime.datetime –&gt; time tuple"></a>datetime.datetime –&gt; time tuple</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">d.timetuple()</div></pre></td></tr></table></figure>
-<h4 id="str-–-gt-datetime-datetime"><a href="#str-–-gt-datetime-datetime" class="headerlink" title="str –&gt; datetime.datetime"></a>str –&gt; datetime.datetime</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">datetime.strptime(&apos;20170107 10:21:28&apos;,&apos;%Y%m%d %H:%M:%S&apos;)</div></pre></td></tr></table></figure>
-<h4 id="timestamp-–-gt-datetime"><a href="#timestamp-–-gt-datetime" class="headerlink" title="timestamp –&gt; datetime"></a>timestamp –&gt; datetime</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">datetime.fromtimestamp(1483755372.0)</div></pre></td></tr></table></figure>
-<h4 id="str-–-gt-time-tuple"><a href="#str-–-gt-time-tuple" class="headerlink" title="str –&gt; time tuple"></a>str –&gt; time tuple</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tuple = time.strptime(&apos;2017-01-07 10:16:12&apos;, &apos;%Y-%m-%d %H:%M:%S&apos;)</div></pre></td></tr></table></figure>
-<h4 id="time-tuple-–-gt-timestamp"><a href="#time-tuple-–-gt-timestamp" class="headerlink" title="time tuple –&gt;timestamp"></a>time tuple –&gt;timestamp</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">time.mktime(tuple)</div></pre></td></tr></table></figure>
+<h4 id="datetime类型"><a href="#datetime类型" class="headerlink" title="datetime类型"></a>datetime类型</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">d = datetime.now()   datetime.datetime(2017, 6, 2, 17, 22, 5, 470694)</span><br><span class="line">datetime(2017,2,3)   datetime.datetime(2017, 2, 3, 0, 0)</span><br><span class="line">str(d)[:19]</span><br><span class="line">d.year d.month      (属性,都是int类型)</span><br><span class="line">current_day,month_days = calendar.monthrange(2017, 2)  (获取某年某月的 当前天数 和  此月共有天)</span><br></pre></td></tr></table></figure>
+<h4 id="date类型"><a href="#date类型" class="headerlink" title="date类型"></a>date类型</h4><p>datetime.datetime 会精确到 %H%M%S  而datetime.date 不需要<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">date_today = date.today()</span><br><span class="line">start_date = date(2017,2,6).replace(day=1) </span><br><span class="line"># 对应月份第一天的日期 datetime.date(2017, 2, 1) 如果输入是一个 datetime 实例,那么你得到的就是一个 datetime 实例</span><br><span class="line">end_date = start_date + timedelta(days=month_days-1) </span><br><span class="line"># 第一种获得当月月底的日期 datetime.date(2017, 2, 28)date类型和datetime类型 都可以通过 timedelta 进行前/后几天的计算</span><br><span class="line"></span><br><span class="line"># 加月份时</span><br><span class="line">from dateutil.relativedelta import relativedelta</span><br><span class="line">six_months = date.today() + relativedelta(months=+6)  datetime.date(2017, 12, 27)</span><br><span class="line">six_months = datetime.now() + relativedelta(months=+6) datetime.datetime(2017, 12, 27, 16, 2, 5, 260990)</span><br></pre></td></tr></table></figure></p>
+<h4 id="时间戳类型-timestamp"><a href="#时间戳类型-timestamp" class="headerlink" title="时间戳类型 timestamp"></a>时间戳类型 timestamp</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">time.time()   1483756148.2785556  type:float</span><br></pre></td></tr></table></figure>
+<h4 id="time-tuple类型"><a href="#time-tuple类型" class="headerlink" title="time tuple类型"></a>time tuple类型</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">time.localtime() time.struct_time(tm_year=2017, tm_mon=1, tm_mday=7, tm_hour=11, tm_min=0, t_m_sec=54, tm_wday=5, tm_yday=7, tm_isdst=0)</span><br></pre></td></tr></table></figure>
+<h3 id="转换关系"><a href="#转换关系" class="headerlink" title="转换关系"></a>转换关系</h3><h4 id="datetime-datetime-–-gt-str"><a href="#datetime-datetime-–-gt-str" class="headerlink" title="datetime.datetime –&gt; str"></a>datetime.datetime –&gt; str</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = d.strftime(&apos;%Y-%m-%d %H:%M:%S.%f&apos;)   (2017-01-07 10:16:12.962917)</span><br><span class="line">s = date_today.strftime(&apos;%Y-%m-%d&apos;) (2017-01-07)</span><br></pre></td></tr></table></figure>
+<h4 id="datetime-datetime-–-gt-time-tuple"><a href="#datetime-datetime-–-gt-time-tuple" class="headerlink" title="datetime.datetime –&gt; time tuple"></a>datetime.datetime –&gt; time tuple</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d.timetuple()</span><br></pre></td></tr></table></figure>
+<h4 id="str-–-gt-datetime-datetime"><a href="#str-–-gt-datetime-datetime" class="headerlink" title="str –&gt; datetime.datetime"></a>str –&gt; datetime.datetime</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">datetime.strptime(&apos;20170107 10:21:28&apos;,&apos;%Y%m%d %H:%M:%S&apos;)</span><br></pre></td></tr></table></figure>
+<h4 id="timestamp-–-gt-datetime"><a href="#timestamp-–-gt-datetime" class="headerlink" title="timestamp –&gt; datetime"></a>timestamp –&gt; datetime</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">datetime.fromtimestamp(1483755372.0)</span><br></pre></td></tr></table></figure>
+<h4 id="str-–-gt-time-tuple"><a href="#str-–-gt-time-tuple" class="headerlink" title="str –&gt; time tuple"></a>str –&gt; time tuple</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tuple = time.strptime(&apos;2017-01-07 10:16:12&apos;, &apos;%Y-%m-%d %H:%M:%S&apos;)</span><br></pre></td></tr></table></figure>
+<h4 id="time-tuple-–-gt-timestamp"><a href="#time-tuple-–-gt-timestamp" class="headerlink" title="time tuple –&gt;timestamp"></a>time tuple –&gt;timestamp</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">time.mktime(tuple)</span><br></pre></td></tr></table></figure>
 
         
         </div>
@@ -276,7 +277,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/basic_time/" data-id="cjeoac9rz000j06pcxiu4blll" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/basic_time/" data-id="cjgra84ns000t05lmpcevzt4p" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -353,11 +354,11 @@
         
 <nav id="article-nav">
     
-        <a href="/2017/08/04/basic_derivation/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/2017/08/04/WebSocket/" id="article-nav-newer" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Newer</strong>
             <div class="article-nav-title">
                 
-                    推导式(Derivation)
+                    WebSocket
                 
             </div>
         </a>
@@ -449,7 +450,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DRF/">DRF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span></li></ul>
         </div>
     </div>
 
@@ -458,7 +459,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">53</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">54</span></li></ul>
         </div>
     </div>
 
@@ -467,7 +468,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">tags</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Django/">Django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -476,7 +477,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">tag cloud</h3>
         <div class="widget tagcloud">
-            <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/大数据/" style="font-size: 20px;">大数据</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/计算机/" style="font-size: 10px;">计算机</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
+            <a href="/tags/Django/" style="font-size: 10px;">Django</a> <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/大数据/" style="font-size: 20px;">大数据</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/计算机/" style="font-size: 10px;">计算机</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
         </div>
     </div>
 

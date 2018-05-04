@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>DRF的JWT认证 | Femn</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="几种常用的认证机制HTTP Basic AuthHTTP Basic Auth 在HTTP中，基本认证是一种用来允许Web浏览器或其他客户端程序在请求时提供用户名和口令形式的身份凭证的一种登录验证方式，通常用户名和明码会通过HTTP头传递。 在发送之前是以用户名追加一个冒号然后串接上口令，并将得出的结果字符串再用Base64算法编码。例如，提供的用户名是Aladdin、口令是open sesame">
+<meta name="keywords" content="Django">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DRF的JWT认证">
+<meta property="og:url" content="https://www.femn.me/2017/08/18/DRF_JWT/index.html">
+<meta property="og:site_name" content="Femn">
+<meta property="og:description" content="几种常用的认证机制HTTP Basic AuthHTTP Basic Auth 在HTTP中，基本认证是一种用来允许Web浏览器或其他客户端程序在请求时提供用户名和口令形式的身份凭证的一种登录验证方式，通常用户名和明码会通过HTTP头传递。 在发送之前是以用户名追加一个冒号然后串接上口令，并将得出的结果字符串再用Base64算法编码。例如，提供的用户名是Aladdin、口令是open sesame">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://www.femn.me/2017/08/18/DRF_JWT/OAuth.jpg">
+<meta property="og:image" content="https://www.femn.me/2017/08/18/DRF_JWT/JWT.jpg">
+<meta property="og:updated_time" content="2018-03-27T03:37:44.164Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DRF的JWT认证">
+<meta name="twitter:description" content="几种常用的认证机制HTTP Basic AuthHTTP Basic Auth 在HTTP中，基本认证是一种用来允许Web浏览器或其他客户端程序在请求时提供用户名和口令形式的身份凭证的一种登录验证方式，通常用户名和明码会通过HTTP头传递。 在发送之前是以用户名追加一个冒号然后串接上口令，并将得出的结果字符串再用Base64算法编码。例如，提供的用户名是Aladdin、口令是open sesame">
+<meta name="twitter:image" content="https://www.femn.me/2017/08/18/DRF_JWT/OAuth.jpg">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="Femn" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/favicon.ico" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Femn</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/tags">Tags</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/4822598_105251_2.jpg" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">Tags</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/4822598_105251_2.jpg" />
+            <h2 id="name">leipengkai</h2>
+            <h3 id="title">Python Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>Shenzhen, China</span>
+            <a id="follow" target="_blank" href="https://github.com/leipengkai/">FOLLOW</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                68
+                <span>posts</span>
+            </div>
+            <div class="article-info-block">
+                6
+                <span>tags</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/leipengkai" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/femnyy" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://www.facebook.com/profile.php?id=100012089717648" target="_blank" title="facebook" class=tooltip>
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://www.instagram.com/leipengkai/" target="_blank" title="instagram" class=tooltip>
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://plus.google.com/108032606311958999451" target="_blank" title="google_plus" class=tooltip>
+                            <i class="fa fa-google_plus"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/atom.xml" target="_blank" title="rss" class=tooltip>
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-DRF_JWT" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            DRF的JWT认证
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/18/DRF_JWT/">
+            <time datetime="2017-08-18T14:48:02.000Z" itemprop="datePublished">2017-08-18</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/DRF/">DRF</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Django/">Django</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="几种常用的认证机制"><a href="#几种常用的认证机制" class="headerlink" title="几种常用的认证机制"></a>几种常用的认证机制</h3><h5 id="HTTP-Basic-Auth"><a href="#HTTP-Basic-Auth" class="headerlink" title="HTTP Basic Auth"></a>HTTP Basic Auth</h5><p>HTTP Basic Auth 在HTTP中，基本认证是一种用来允许Web浏览器或其他客户端程序在请求时提供用户名和口令形式的身份凭证的一种登录验证方式，通常用户名和明码会通过HTTP头传递。</p>
+<p>在发送之前是以用户名追加一个冒号然后串接上口令，并将得出的结果字符串再用Base64算法编码。例如，提供的用户名是Aladdin、口令是open sesame，则拼接后的结果就是Aladdin:open sesame，然后再将其用Base64编码，得到QWxhZGRpbjpvcGVuIHNlc2FtZQ==。最终将Base64编码的字符串发送出去，由接收者解码得到一个由冒号分隔的用户名和口令的字符串</p>
+<pre><code>优点 基本认证的一个优点是基本上所有流行的网页浏览器都支持基本认证。
+
+缺点 由于用户名和密码都是Base64编码的，而Base64编码是可逆的，所以用户名和密码可以认为是明文。
+所以只有在客户端和服务器主机之间的连接是安全可信的前提下才可以使用。
+</code></pre><h3 id="OAuth"><a href="#OAuth" class="headerlink" title="OAuth"></a>OAuth</h3><p>为第三方的认证所设计，但是更难配置。至少在服务器端更难,</p>
+<pre><code>名词定义:
+Third-party application: 第三方应用程序，又称”客户端”（client）
+HTTP service：HTTP服务提供商
+Resource Owner：资源所有者，通常称”用户”（user）。
+User Agent：用户代理，比如浏览器。
+Authorization server：认证服务器，即服务提供商专门用来处理认证的服务器。
+Resource server：资源服务器，即服务提供商存放用户生成的资源的服务器。
+                它与认证服务器，可以是同一台服务器，也可以是不同的服务器
+</code></pre><img src="/2017/08/18/DRF_JWT/OAuth.jpg" title="OAuth流程图,有点像是再次TCP握手的意思">
+<p>（A）用户打开客户端以后，客户端要求用户给予授权。 </p>
+<p>（B）用户同意给予客户端授权。 </p>
+<p>（C）客户端使用上一步获得的授权，向认证服务器申请令牌。 </p>
+<p>（D）认证服务器对客户端进行认证以后，确认无误，同意发放令牌。</p>
+<p>（E）客户端使用令牌，向资源服务器申请获取资源。 </p>
+<p>（F）资源服务器确认令牌无误，同意向客户端开放资源</p>
+<pre><code>优点 快速开发 实施代码量小 维护工作减少 如果设计的API要被不同的App使用
+    并且每个App使用的方式也不一样，使用OAuth2是个不错的选择。
+
+缺点： OAuth2是一个安全框架，描述了在各种不同场景下，多个应用之间的授权问题。
+    有海量的资料需要学习，要完全理解需要花费大量时间。 
+    OAuth2不是一个严格的标准协议，因此在实施过程中更容易出错
+</code></pre><h3 id="cookie-session"><a href="#cookie-session" class="headerlink" title="cookie session"></a>cookie session</h3><p>Cookie认证机制就是为一次请求认证在服务端创建一个Session对象，同时在客户端的浏览器端创建了一个Cookie对象,主要是为了解决HTTP这一无状态协议下服务器如何识别用户的问题；通过客户端带上来Cookie对象来与服务器端的session对象匹配来实现状态管理的。默认的，当我们关闭浏览器的时候，cookie会被删除。但可以通过修改cookie 的expire time使cookie在一定时间内有效</p>
+<h3 id="TOKEN"><a href="#TOKEN" class="headerlink" title="TOKEN"></a>TOKEN</h3><p>客户端通过一些可靠信息和服务器交换取token，这个token作为客服端再次请求的权限钥匙，当然token也是存在有效时间控制的。 Token通常比密码更加长而且复杂。那么一旦获得了token，在每次调用API的时候都要附加上它。这仍然比直接发送账户和密码更加安全，哪怕是 HTTPS。 把token想象成一个安全的护照。你在一个安全的前台验证你的身份（通过你的用户名和密码），如果你成功验证了自己，你就可以取得这个。当你走进大楼的时候（试图从调用API获取资源），你会被要求验证你的护照，而不是在前台重新验证</p>
+<pre><code>优点:
+支持跨域访问: Cookie是不允许垮域访问的，这一点对Token机制是不存在的，
+        前提是传输的用户认证信息通过HTTP头传输.
+
+无状态(也称：服务端可扩展行):Token机制在服务端不需要存储session信息，
+        因为Token 自身包含了所有登录用户的信息，只需要在客户端的cookie或本地介质存储状态信息.
+
+更适用CDN: 可以通过内容分发网络请求你服务端的所有资料（如：javascript，HTML,图片等）
+        而你的服务端只要提供API即可.
+
+去耦: 不需要绑定到一个特定的身份验证方案。Token可以在任何地方生成，
+        只要在你的API被调用的时候，你可以进行Token生成调用即可.
+
+更适用于移动应用: 当你的客户端是一个原生平台（iOS, Android，Windows 8等）时，
+        Cookie是不被支持的（你需要通过Cookie容器进行处理），这时采用Token认证机制就会简单得多。
+
+CSRF:因为不再依赖于Cookie，所以你就不需要考虑对CSRF（跨站请求伪造）的防范。
+
+性能: 一次网络往返时间（通过数据库查询session信息）
+        总比做一次HMACSHA256计算 的Token验证和解析要费时得多.
+
+不需要为登录页面做特殊处理: 如果你使用Protractor 做功能测试的时候，不再需要为登录页面做特殊处理.
+
+基于标准化:你的API可以采用标准化的 JSON Web Token (JWT). 
+        这个标准已经存在多个后端库（.NET, Ruby, Java,Python, PHP）和多家公司的支持（如：Firebase,Google, Microsoft）
+</code></pre><h3 id="JWT-JSON-Web-Token"><a href="#JWT-JSON-Web-Token" class="headerlink" title="JWT(JSON Web Token)"></a>JWT(JSON Web Token)</h3><p>JWT是Auth0提出的通过对JSON进行加密签名来实现授权验证的方案.给客户端的是公钥，然后用公钥把数据加密发送给服务端，服务端在根据来源的信息，使用对应的私钥来解析数据。这样就能保证数据的安全性</p>
+<p>编码之后的JWT看起来是这样的一串字符<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4LCJ1c2VybmFtZSI6ImZlbW4iLCJleHAiOjE1NDc5NjgyOTAsImVtYWlsIjpudWxsfQ.3TKg7HEHWipAjq7nSY2jMbnIdEvWoFGOWjzjUdP__XI</span><br></pre></td></tr></table></figure></p>
+<p>由 . 分为三段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Hearder: 可以对称解密</span><br><span class="line">&#123;</span><br><span class="line">&quot;alg&quot;: &quot;HS256&quot;,# 声明类型，这里是jwt</span><br><span class="line">&quot;typ&quot;: &quot;JWT&quot; # 声明加密的算法 通常直接使用 HMAC SHA256</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">Payload:载荷(存放有效信息的地方) 可以对称解密</span><br><span class="line">&#123;  </span><br><span class="line">&quot;nickname&quot;: &quot;goodspeed&quot;, </span><br><span class="line">&quot;username&quot;: &quot;goodspeed&quot;, </span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> Signature:签名</span><br><span class="line"> HMACSHA256(  </span><br><span class="line"> base64UrlEncode(header) + &quot;.&quot; +</span><br><span class="line"> base64UrlEncode(payload),</span><br><span class="line"> SECREATE_KEY</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<img src="/2017/08/18/DRF_JWT/JWT.jpg" title="client 使用 JWT 与server 交互过程">
+<p>server配置<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">pip install djangorestframework-jwt</span><br><span class="line"></span><br><span class="line"><span class="comment"># app/settings.py</span></span><br><span class="line">REST_FRAMEWORK = &#123;</span><br><span class="line"><span class="string">'DEFAULT_PERMISSION_CLASSES'</span>: (</span><br><span class="line">	<span class="string">'rest_framework.permissions.IsAuthenticated'</span>,</span><br><span class="line">),</span><br><span class="line"><span class="string">'DEFAULT_AUTHENTICATION_CLASSES'</span>: (</span><br><span class="line">	<span class="string">'rest_framework_jwt.authentication.JSONWebTokenAuthentication'</span>,</span><br><span class="line">	<span class="string">'rest_framework.authentication.SessionAuthentication'</span>,</span><br><span class="line">	<span class="string">'rest_framework.authentication.BasicAuthentication'</span>,</span><br><span class="line">),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># app/urls.py</span></span><br><span class="line"><span class="keyword">from</span> rest_framework_jwt.views <span class="keyword">import</span> obtain_jwt_token</span><br><span class="line"><span class="comment">#...</span></span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">	<span class="string">''</span>,</span><br><span class="line">	<span class="comment"># ...</span></span><br><span class="line"></span><br><span class="line">	url(<span class="string">r'^api-token-auth/'</span>, obtain_jwt_token),</span><br><span class="line">	<span class="comment"># 注意不是下面这个TOKEN啊</span></span><br><span class="line">	<span class="comment"># url(r'^api-token-auth/', views.obtain_auth_token),</span></span><br><span class="line">	<span class="comment"># 获取TokenAuthentication的 TOKEN API 需要INSTALL_APP:'rest_framework.authtoken'</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看JWT</span></span><br><span class="line">curl -X POST -d <span class="string">"username=femn&amp;password=asdf1234"</span> http:localhost:<span class="number">8000</span>/api-token-auth/</span><br><span class="line"><span class="comment"># 或者直接访问 http:localhost:8000/api-token-auth/ 输入对应的用户名和密码</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># post请求验证</span></span><br><span class="line">curl -H <span class="string">"Authorization: JWT token"</span> http://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">8000</span>/api</span><br><span class="line"></span><br><span class="line"><span class="comment"># 代码实现:手动创建令牌</span></span><br><span class="line"><span class="keyword">from</span> rest_framework_jwt.settings <span class="keyword">import</span> api_settings</span><br><span class="line"></span><br><span class="line">jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER</span><br><span class="line">jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">create</span><span class="params">(self, request, *args, **kwargs)</span>:</span></span><br><span class="line">		serializer = self.get_serializer(data=request.data)</span><br><span class="line">		serializer.is_valid(raise_exception=<span class="keyword">True</span>)</span><br><span class="line">		user = serializer.save()</span><br><span class="line">		payload = jwt_payload_handler(user)</span><br><span class="line">		token = jwt_encode_handler(payload)</span><br><span class="line">		<span class="keyword">return</span> Response(&#123;<span class="string">'token'</span>:token&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>前端手动获取</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--使用post方法获取token并存入html的localStorage中--&gt;</span><br><span class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">post_test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	   $.post(<span class="string">"http://10.127.48.204:8000/api-token-auth/"</span>,&#123;</span><br><span class="line">		   <span class="string">'username'</span>:<span class="string">'earthchen'</span>,</span><br><span class="line">		   <span class="string">'password'</span>:<span class="string">'xxxxxxxx'</span></span><br><span class="line">	   &#125;,</span><br><span class="line">	   <span class="function"><span class="keyword">function</span>(<span class="params">result</span>)</span>&#123;</span><br><span class="line">		   <span class="keyword">if</span>(result)&#123;</span><br><span class="line">			   localStorage.token=result.token;  存入数据</span><br><span class="line">		   &#125;</span><br><span class="line">	   &#125;)</span><br><span class="line">   &#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;!--在请求数据时需要在头部添加token--&gt;</span></span><br><span class="line"><span class="regexp">&lt;script type="text/</span>javascript<span class="string">"&gt;</span></span><br><span class="line"><span class="string">function test()&#123;</span></span><br><span class="line"><span class="string">	$.ajax(&#123;</span></span><br><span class="line"><span class="string">		headers:&#123;</span></span><br><span class="line"><span class="string">			'Authorization':'JWT '+localStorage.token  //注意：jwt后面有个空格</span></span><br><span class="line"><span class="string">		&#125;,</span></span><br><span class="line"><span class="string">		type:"</span>get<span class="string">",</span></span><br><span class="line"><span class="string">		url:"</span>http:<span class="comment">//10.127.48.204:8000/snippets/1/",</span></span><br><span class="line">		success:<span class="function"><span class="keyword">function</span>(<span class="params">result</span>)</span>&#123;</span><br><span class="line">		   <span class="built_in">document</span>.write(result.style);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br><span class="line">&lt;script&gt;</span><br></pre></td></tr></table></figure>
+<p>或者使用<a href="https:pyjwt.readthedocs.io/en/latest/" target="_blank" rel="noopener">PyJWT</a>实现:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> jwt</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_token</span><span class="params">(request)</span>:</span></span><br><span class="line">	grant_type = request.json.get(<span class="string">'grant_type'</span>)</span><br><span class="line">	username = request.json[<span class="string">'username'</span>]</span><br><span class="line">	password = request.json[<span class="string">'password'</span>]</span><br><span class="line">	<span class="keyword">if</span> grant_type == <span class="string">'password'</span>:</span><br><span class="line">		account = verify_password(username, password)</span><br><span class="line">	<span class="keyword">elif</span> grant_type == <span class="string">'wxapp'</span>:</span><br><span class="line">		account = verify_wxapp(username, password)</span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> account:</span><br><span class="line">		<span class="keyword">return</span> &#123;&#125;</span><br><span class="line">	payload = &#123;</span><br><span class="line">		<span class="string">"iss"</span>: <span class="string">"gusibi.com"</span>,</span><br><span class="line">		 <span class="string">"iat"</span>: int(time.time()),</span><br><span class="line">		 <span class="string">"exp"</span>: int(time.time()) + <span class="number">86400</span> * <span class="number">7</span>,</span><br><span class="line">		 <span class="string">"aud"</span>: <span class="string">"www.xx.com"</span>,</span><br><span class="line">		 <span class="string">"sub"</span>: account[<span class="string">'_id'</span>],</span><br><span class="line">		 <span class="string">"username"</span>: account[<span class="string">'username'</span>],</span><br><span class="line">		 <span class="string">"scopes"</span>: [<span class="string">'open'</span>]</span><br><span class="line">	&#125;</span><br><span class="line">	token = jwt.encode(payload, <span class="string">'secret'</span>, algorithm=<span class="string">'HS256'</span>)</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">True</span>, &#123;<span class="string">'access_token'</span>: token, <span class="string">'account_id'</span>: account[<span class="string">'_id'</span>]&#125;</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">verify_bearer_token</span><span class="params">(token)</span>:</span></span><br><span class="line">	<span class="comment">#  如果在生成token的时候使用了aud参数，那么校验的时候也需要添加此参数</span></span><br><span class="line">	payload = jwt.decode(token, <span class="string">'secret'</span>, audience=<span class="string">'www.xx.com'</span>, algorithms=[<span class="string">'HS256'</span>])</span><br><span class="line">	<span class="keyword">if</span> payload:</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">True</span>, token</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">False</span>, token</span><br></pre></td></tr></table></figure>
+<p>还需要注意的是:DRF用户认证(Authentication)和用户授权(Authorization)[权限控制Permissions]是两个不同的概念，认证解决的是“有没有”的问题，而授权解决的是“能不能”的问题</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/18/DRF_JWT/" data-id="cjgra84lk000005lmdpt5iiz8" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/18/DRF_JWT/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/18/DRF_JWT/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2017/08/18/pymongo/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    pymongo基本操作
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2017/08/18/mongodb/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">mongodb基本命令</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+        <section id="comments">
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+</section>
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">recent</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/28/storm/" class="title">hadoop storm(八)</a></p>
+                            <p class="item-date"><time datetime="2017-09-28T11:41:15.000Z" itemprop="datePublished">2017-09-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/28/hbase/" class="title">hadoop hbase(七)</a></p>
+                            <p class="item-date"><time datetime="2017-09-28T11:31:15.000Z" itemprop="datePublished">2017-09-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_cluster/" class="title">hadoop HDFS HA高可用的集群搭建部署(六)</a></p>
+                            <p class="item-date"><time datetime="2017-09-27T11:41:15.000Z" itemprop="datePublished">2017-09-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_hive/" class="title">hadoop hive(五)</a></p>
+                            <p class="item-date"><time datetime="2017-09-27T11:31:15.000Z" itemprop="datePublished">2017-09-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/09/25/zookeeper/" class="title">zookeeper(五)</a></p>
+                            <p class="item-date"><time datetime="2017-09-25T12:01:15.000Z" itemprop="datePublished">2017-09-25</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DRF/">DRF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">54</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Django/">Django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Django/" style="font-size: 10px;">Django</a> <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/大数据/" style="font-size: 20px;">大数据</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/计算机/" style="font-size: 10px;">计算机</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+                    <li>
+                        <a href="https://hub.docker.com/">Hub_docker</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2018 leipengkai<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_config = function () {
+        
+            this.page.url = 'https://www.femn.me/2017/08/18/DRF_JWT/';
+        
+        this.page.identifier = 'DRF_JWT';
+    };
+    (function() { 
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'femn' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

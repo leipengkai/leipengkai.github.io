@@ -11,8 +11,9 @@
 <meta property="og:url" content="https://www.femn.me/2017/08/11/python-builtins/index.html">
 <meta property="og:site_name" content="Femn">
 <meta property="og:description" content="Python在启动的时候会⾃动为我们载⼊很多内建的函数,类,属性,⽐如dict,list,type,print,这些都位于builtin    模块中,可以使⽤dir(builtin)来查看.这也是为什么我们在没有import任何模块的情况下,就能使⽤这么多丰富的函数和功能了. 在Python中,有⼀个内建模块,该模块中有⼀些常⽤函数;在Python启动后,且没有执⾏程序员所写的任何代码前,Pyt">
+<meta property="og:locale" content="default">
 <meta property="og:image" content="https://www.femn.me/2017/08/11/python-builtins/1.jpg">
-<meta property="og:updated_time" content="2018-03-10T09:31:50.168Z">
+<meta property="og:updated_time" content="2018-03-10T09:31:50.169Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python内建属性">
 <meta name="twitter:description" content="Python在启动的时候会⾃动为我们载⼊很多内建的函数,类,属性,⽐如dict,list,type,print,这些都位于builtin    模块中,可以使⽤dir(builtin)来查看.这也是为什么我们在没有import任何模块的情况下,就能使⽤这么多丰富的函数和功能了. 在Python中,有⼀个内建模块,该模块中有⼀些常⽤函数;在Python启动后,且没有执⾏程序员所写的任何代码前,Pyt">
@@ -161,11 +162,11 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                67
+                68
                 <span>posts</span>
             </div>
             <div class="article-info-block">
-                5
+                6
                 <span>tags</span>
             </div>
         </div>
@@ -260,8 +261,8 @@
             <p>Python在启动的时候会⾃动为我们载⼊很多内建的函数,类,属性,⽐如dict,list,type,print,这些都位于<strong>builtin</strong>    模块中,可以使⽤dir(<strong>builtin</strong>)来查看.<br>这也是为什么我们在没有import任何模块的情况下,就能使⽤这么多丰富的函数和功能了.</p>
 <p>在Python中,有⼀个内建模块,该模块中有⼀些常⽤函数;在Python启动后,且没有执⾏程序员所写的任何代码前,Python会⾸先加载该内建函数到内存.</p>
 <p>另外,该内建模块中的功能可以直接使⽤,不⽤在其前添加内建模块前缀</p>
-<img src="/2017/08/11/python-builtins/1.jpg" alt="常见的内建属性" title="常见的内建属性">
-<p>对象的内建属性<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Itcast</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,subject1)</span>:</span></div><div class="line">        self.subject1 = subject1</div><div class="line">        self.subject2 = <span class="string">'cpp'</span></div><div class="line"></div><div class="line">    <span class="comment">#属性访问时拦截器,只要访问属性就必须先调用此方法(包括方法(方法也是对象))</span></div><div class="line">    <span class="comment"># 所以此方法中,不能包含访问属性的语句:比如self.subject1</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattribute__</span><span class="params">(self,obj)</span>:</span></div><div class="line">        print(<span class="string">"====1&gt;%s"</span>%obj)</div><div class="line">        <span class="keyword">if</span> obj == <span class="string">'subject1'</span>:</div><div class="line">            print(<span class="string">'log subject1'</span>)</div><div class="line">            <span class="keyword">return</span> <span class="string">'redirect python'</span></div><div class="line">        <span class="keyword">else</span>:   </div><div class="line">            temp = object.__getattribute__(self,obj)</div><div class="line">            print(<span class="string">"====2&gt;%s"</span>%str(temp))</div><div class="line">            <span class="keyword">return</span> temp</div><div class="line">    </div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">'this is Itcast'</span>)</div><div class="line"></div><div class="line">s = Itcast(<span class="string">"python"</span>)</div><div class="line">print(s.subject1)</div><div class="line">print(s.subject2)</div><div class="line"></div><div class="line"><span class="comment">#1. 先获取show属性对应的结果,,,,应该是一个方法</span></div><div class="line"><span class="comment">#2. 再调用方法show()</span></div><div class="line">s.show()</div><div class="line"><span class="comment"># import types</span></div><div class="line"><span class="comment"># p1.eat = types.MethodType(eat, p1)</span></div><div class="line"></div><div class="line"><span class="comment"># ====1&gt;subject1</span></div><div class="line"><span class="comment"># log subject1</span></div><div class="line"><span class="comment"># redirect python</span></div><div class="line"><span class="comment"># ====1&gt;subject2</span></div><div class="line"><span class="comment"># ====2&gt;cpp</span></div><div class="line"><span class="comment"># cpp</span></div><div class="line"><span class="comment"># ====1&gt;show</span></div><div class="line"><span class="comment"># ====2&gt;&lt;bound method Itcast.show of &lt;__main__.Itcast object at 0x0&gt;&gt;</span></div><div class="line"><span class="comment"># this is Itcast</span></div></pre></td></tr></table></figure></p>
+<img src="/2017/08/11/python-builtins/1.jpg" title="常见的内建属性">
+<p>对象的内建属性<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Itcast</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,subject1)</span>:</span></span><br><span class="line">        self.subject1 = subject1</span><br><span class="line">        self.subject2 = <span class="string">'cpp'</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#属性访问时拦截器,只要访问属性就必须先调用此方法(包括方法(方法也是对象))</span></span><br><span class="line">    <span class="comment"># 所以此方法中,不能包含访问属性的语句:比如self.subject1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattribute__</span><span class="params">(self,obj)</span>:</span></span><br><span class="line">        print(<span class="string">"====1&gt;%s"</span>%obj)</span><br><span class="line">        <span class="keyword">if</span> obj == <span class="string">'subject1'</span>:</span><br><span class="line">            print(<span class="string">'log subject1'</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="string">'redirect python'</span></span><br><span class="line">        <span class="keyword">else</span>:   </span><br><span class="line">            temp = object.__getattribute__(self,obj)</span><br><span class="line">            print(<span class="string">"====2&gt;%s"</span>%str(temp))</span><br><span class="line">            <span class="keyword">return</span> temp</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'this is Itcast'</span>)</span><br><span class="line"></span><br><span class="line">s = Itcast(<span class="string">"python"</span>)</span><br><span class="line">print(s.subject1)</span><br><span class="line">print(s.subject2)</span><br><span class="line"></span><br><span class="line"><span class="comment">#1. 先获取show属性对应的结果,,,,应该是一个方法</span></span><br><span class="line"><span class="comment">#2. 再调用方法show()</span></span><br><span class="line">s.show()</span><br><span class="line"><span class="comment"># import types</span></span><br><span class="line"><span class="comment"># p1.eat = types.MethodType(eat, p1)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ====1&gt;subject1</span></span><br><span class="line"><span class="comment"># log subject1</span></span><br><span class="line"><span class="comment"># redirect python</span></span><br><span class="line"><span class="comment"># ====1&gt;subject2</span></span><br><span class="line"><span class="comment"># ====2&gt;cpp</span></span><br><span class="line"><span class="comment"># cpp</span></span><br><span class="line"><span class="comment"># ====1&gt;show</span></span><br><span class="line"><span class="comment"># ====2&gt;&lt;bound method Itcast.show of &lt;__main__.Itcast object at 0x0&gt;&gt;</span></span><br><span class="line"><span class="comment"># this is Itcast</span></span><br></pre></td></tr></table></figure></p>
 
         
         </div>
@@ -272,7 +273,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/python-builtins/" data-id="cjeoac9x5003006pckg65egq3" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/python-builtins/" data-id="cjgra84t7003e05lm6fmkmyk7" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -349,11 +350,11 @@
         
 <nav id="article-nav">
     
-        <a href="/2017/08/11/python-copy/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/2017/08/11/tornado/" id="article-nav-newer" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Newer</strong>
             <div class="article-nav-title">
                 
-                    深浅拷贝
+                    tornado
                 
             </div>
         </a>
@@ -445,7 +446,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DRF/">DRF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span></li></ul>
         </div>
     </div>
 
@@ -454,7 +455,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">53</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">54</span></li></ul>
         </div>
     </div>
 
@@ -463,7 +464,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">tags</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Django/">Django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -472,7 +473,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">tag cloud</h3>
         <div class="widget tagcloud">
-            <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/大数据/" style="font-size: 20px;">大数据</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/计算机/" style="font-size: 10px;">计算机</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
+            <a href="/tags/Django/" style="font-size: 10px;">Django</a> <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/大数据/" style="font-size: 20px;">大数据</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/计算机/" style="font-size: 10px;">计算机</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
         </div>
     </div>
 
