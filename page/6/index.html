@@ -215,171 +215,6 @@
 
             
             <section id="main">
-    <article id="post-docker-swarm" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/04/docker-swarm/">docker-swarm</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/docker-swarm/">
-            <time datetime="2017-08-04T15:24:48.000Z" itemprop="datePublished">2017-08-04</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/docker/">docker</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h3 id="swarm集群"><a href="#swarm集群" class="headerlink" title="swarm集群"></a>swarm集群</h3><h3 id="install-swarm"><a href="#install-swarm" class="headerlink" title="install swarm"></a>install swarm</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker pull swarm</span><br><span class="line"><span class="comment"># 查看swarm版本</span></span><br><span class="line">docker run --rm swarm -v</span><br></pre></td></tr></table></figure>
-<p><a href="https://yeasy.gitbooks.io/docker_practice/content/swarm/install.html" target="_blank" rel="noopener">Host_consul_ip的例子</a></p>
-<h3 id="基于-consel-服务发现后端来配置一个本地-Swarm-集群"><a href="#基于-consel-服务发现后端来配置一个本地-Swarm-集群" class="headerlink" title="基于 consel 服务发现后端来配置一个本地 Swarm 集群"></a>基于 consel 服务发现后端来配置一个本地 Swarm 集群</h3><h4 id="1-1-配置每个节点主机"><a href="#1-1-配置每个节点主机" class="headerlink" title="1.1 配置每个节点主机"></a>1.1 配置每个节点主机</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 我用的是virtualbox,ubuntu16,安装好docker并修改好如下的内容,</span></span><br><span class="line"><span class="comment"># reboot之后clone,clone过后的虚拟机只需要修改一下ip就行</span></span><br><span class="line">vim /lib/systemd/system/docker.service</span><br><span class="line">    ExecStart=xx  再这后面加上如下内容</span><br><span class="line">    -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock </span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br><span class="line">ps -aux |grep docket</span><br><span class="line">docker pull swarm</span><br></pre></td></tr></table></figure>
-<p>坑一<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># docker daemon on node is running with</span></span><br><span class="line"><span class="comment"># -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock</span></span><br><span class="line"><span class="built_in">alias</span> docker=<span class="string">"docker -H tcp://0.0.0.0:2375 \</span></span><br><span class="line"><span class="string">    -H unix:///var/run/docker.sock"</span></span><br><span class="line"><span class="built_in">type</span> docker</span><br><span class="line"><span class="built_in">unalias</span> docker</span><br></pre></td></tr></table></figure></p>
-<p>坑二<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock \</span><br><span class="line">    --daemon=<span class="literal">true</span> --pidfile=<span class="string">"/var/run/docker_2375.pid"</span> \</span><br><span class="line">    --graph=<span class="string">"/var/lib/docker_2375"</span></span><br><span class="line">docker -H tcp://0.0.0.0:2375 --daemon=<span class="literal">true</span> \</span><br><span class="line">    --pidfile=<span class="string">"/var/run/docker_2375.pid"</span> \</span><br><span class="line">    --graph=<span class="string">"/var/lib/docker_2375"</span></span><br></pre></td></tr></table></figure></p>
-<p>坑三<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vim /lib/systemd/system/docker.service</span><br><span class="line">    <span class="comment"># 成功的</span></span><br><span class="line">    DOCKER_OPTS=-g /usr/bin/docker -H tcp://0.0.0.0:2375 \</span><br><span class="line">        -H unix:///var/run/docker.sock</span><br><span class="line">    <span class="comment"># 这个是失败的 </span></span><br><span class="line">    OPTIONS=-g /usr/bin/docker -H tcp://0.0.0.0:2375 \</span><br><span class="line">        -H unix:///var/run/docker.sock</span><br></pre></td></tr></table></figure></p>
-<h4 id="1-2-启动集群"><a href="#1-2-启动集群" class="headerlink" title="1.2 启动集群"></a>1.2 启动集群</h4><p>1.2.1.启动 Consel 服务后端(consul_ip or token,本机ip:109)至少一个群集管理器<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -h ==--name</span></span><br><span class="line">docker run -d -p 8500:8500 --name=consul progrium/consul -server \</span><br><span class="line">    -bootstrap -ui-dir /ui</span><br><span class="line"><span class="comment"># 输出一个id:4b80d44e61d4e00510</span></span><br><span class="line"><span class="comment"># sudo docker restart id # 重新启动此容器</span></span><br><span class="line">docker ps -a</span><br><span class="line"><span class="comment"># 在浏览器中打开</span></span><br><span class="line">192.168.1.109:8500</span><br></pre></td></tr></table></figure></p>
-<p>1.2.2.启动管理节点主机(manager0_ip,ip为100的虚拟主机,一个群组工作者)</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># docker run -d -p 4000:4000 swarm manage -H :4000 --replication \</span></span><br><span class="line">    <span class="comment"># --advertise &lt;manager0_ip&gt;:4000 consul://&lt;consul_ip&gt;:8500</span></span><br><span class="line"><span class="comment"># 如果有4000端口占用的情况</span></span><br><span class="line">docker ps -a</span><br><span class="line">docker rm  -f -v containter_id</span><br><span class="line">docker run -d -p 4000:4000 swarm manage -H :4000 --replication \</span><br><span class="line">    --advertise 192.168.1.100:4000 consul://192.168.1.109:8500</span><br><span class="line"><span class="comment"># 输出一个id:b7a3c10f294f4718bcd0a516f</span></span><br><span class="line"><span class="comment"># 用户也可以启动 从管理节点</span></span><br><span class="line"><span class="comment"># docker run -d swarm manage -H :4000 --replication --advertise \</span></span><br><span class="line">    <span class="comment"># &lt;manager1_ip&gt;:4000 consul://&lt;consul_ip&gt;:8500</span></span><br></pre></td></tr></table></figure>
-<p>1.2.3.启动工作节点(node_ip,ip为101,102,103的虚拟主机)</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># docker run -d swarm join --advertise=&lt;node_ip&gt;:2375 \</span></span><br><span class="line">    <span class="comment"># consul://&lt;consul_ip&gt;:8500</span></span><br><span class="line">docker run -d swarm join --advertise=192.168.1.101:2375 \</span><br><span class="line">    consul://192.168.1.109:8500</span><br><span class="line">docker run -d swarm join --advertise=192.168.1.102:2375 \</span><br><span class="line">    consul://192.168.1.109:8500</span><br><span class="line">docker run -d swarm join --advertise=192.168.1.103:2375 \</span><br><span class="line">    consul://192.168.1.109:8500</span><br></pre></td></tr></table></figure>
-<p>节点启动后,用户可以指定 Docker 服务地址为 &lt;manager0_ip&gt;:4000&gt; 来测试各种 Docker 命令,可以看到整个 Swarm 集群就像一个虚拟的 Docker 主机一样正常工作.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo docker -H 192.168.1.100:4000 ps -a </span><br><span class="line">sudo docker -H tcp://192.168.1.100:4000 info</span><br><span class="line">sudo docker ps --no-trunc</span><br></pre></td></tr></table></figure>
-<p>由于 Swarm 实际上是通过 agent 调用了本地的 Docker daemon 来运行容器,当 Swarm 集群服务出现故障时,无法接受新的请求,但已经运行起来的容器将不会受到影响.</p>
-<p>在集群上运行容器<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker -H 192.168.1.100:2375 run -d --name web1 nginx</span><br></pre></td></tr></table></figure></p>
-<h3 id="2-token的例子"><a href="#2-token的例子" class="headerlink" title="2. token的例子"></a>2. <a href="http://dockone.io/article/227" target="_blank" rel="noopener">token的例子</a></h3><p>dockerHub 的服务发现后端,需要各个节点能通过公网访问到 DockerHub 的服务接口</p>
-<p>在任意一台安装了 Swarm 的机器上执行 swarm create 命令来在 DockerHub 服务上进行注册</p>
-<h4 id="2-1-创建集群-id"><a href="#2-1-创建集群-id" class="headerlink" title="2.1 创建集群 id"></a>2.1 创建集群 id</h4><p>Swarm   会通过服务发现后端(此处为 DockerHub 提供)来获取一个唯一的由数字和字母组成的 token,用来标识要管理的集群<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ip_109本机执行</span></span><br><span class="line">sudo docker ps -a</span><br><span class="line">sudo docker run --rm swarm create </span><br><span class="line"><span class="comment"># 只需要运行一次就行了,它会一直保存着,虽然在本机docker ps -a也查看不到</span></span><br><span class="line">token_id=ce2f14fa5ec481170d2bf62f40f832f7</span><br></pre></td></tr></table></figure></p>
-<h4 id="2-2-配置集群节点"><a href="#2-2-配置集群节点" class="headerlink" title="2.2 配置集群节点"></a>2.2 配置集群节点</h4><p>添加节点A(101)、B(102)到集群,在所有要加入集群的普通节点上面执行 swarm join 命令,表示把这台机器加入指定集群当中<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ip_109本机执行</span></span><br><span class="line">sudo docker run --rm swarm join --addr=192.168.1.100:2375 \</span><br><span class="line">    token://<span class="variable">$token_id</span></span><br><span class="line">sudo docker run --rm swarm join --addr=192.168.1.101:2375 \</span><br><span class="line">    token://<span class="variable">$token_id</span></span><br><span class="line">sudo docker run --rm swarm join --addr=192.168.1.102:2375 \</span><br><span class="line">    token://<span class="variable">$token_id</span></span><br><span class="line"><span class="comment"># 列出节点 只需要出现一条记录之后就ctrl+c</span></span><br><span class="line">sudo docker run --rm swarm list token://<span class="variable">$token_id</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="2-3配置管理节点"><a href="#2-3配置管理节点" class="headerlink" title="2.3配置管理节点"></a>2.3配置管理节点</h4><p>在任何一台主机A(A:192.168.1.100)B或者C上开启管理程序</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ip_100上执行</span></span><br><span class="line">docker run -d -p 8888:2375 swarm manage token://<span class="variable">$token_id</span></span><br><span class="line"><span class="comment"># 可以通过 docker ps 命令来查看启动的 swarm manager 服务容器</span></span><br><span class="line">docker ps</span><br><span class="line"></span><br><span class="line"><span class="comment"># ip_109本机上 管理集群</span></span><br><span class="line">sudo docker -H 192.168.1.100:8888 ps </span><br><span class="line"></span><br><span class="line"><span class="comment"># 在集群上运行容器</span></span><br><span class="line">sudo docker -H 192.168.1.100:8888 run -d --name web1 nginx</span><br></pre></td></tr></table></figure>
-<p>几个命令就将多个单机版本的 Docker daemon 变成一个 cluster,还支持了 service 概念(多个容器实例副本的抽象)</p>
-<h3 id="3-docker-machine-swarm-d-virtualbox"><a href="#3-docker-machine-swarm-d-virtualbox" class="headerlink" title="3. docker-machine swarm  -d virtualbox"></a>3. docker-machine swarm  -d virtualbox</h3><p>docker daemon是root</p>
-<p>python此用户才能在virtualbox中看到创建的dev等虚拟机,docker-machine是普通用户的命令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">docker run swarm -v</span><br><span class="line">sid=$(sudo docker run swarm create)</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$sid</span></span><br><span class="line">docker ps -a <span class="comment">#有上面两个但状态都是Exited</span></span><br><span class="line">docker-machine create -d virtualbox --swarm --swarm-master \</span><br><span class="line">    --swarm-discovery token://<span class="variable">$sid</span> swarm-master</span><br><span class="line"><span class="comment"># The host-only adapter is corrupted. Let's stop the VM, fix the host-only adapter and restart the VM</span></span><br><span class="line"><span class="comment"># 但我没有去做操作,它自动去改了？</span></span><br><span class="line">docker-machine ls</span><br><span class="line"></span><br><span class="line">docker-machine create -d virtualbox --engine-label itype=frontend \</span><br><span class="line">    --swarm --swarm-discovery token://<span class="variable">$sid</span> swarm-node-01</span><br><span class="line">docker-machine create -d virtualbox --engine-label itype=frontend \</span><br><span class="line">    --swarm --swarm-discovery token://<span class="variable">$sid</span> swarm-node-02</span><br><span class="line">docker-machine create -d virtualbox --engine-label itype=frontend \</span><br><span class="line">    --swarm --swarm-discovery token://<span class="variable">$sid</span> swarm-node-03</span><br><span class="line">docker-machine env swarm-master</span><br><span class="line">docker-machine env --swarm swarm-master</span><br><span class="line"></span><br><span class="line"><span class="built_in">eval</span> <span class="string">"<span class="variable">$(docker-machine env --swarm swarm-master)</span>"</span></span><br><span class="line">docker info</span><br><span class="line">docker run swarm list token://<span class="variable">$sid</span></span><br><span class="line">dokcer ps -a </span><br><span class="line"></span><br><span class="line">docker-machine ls</span><br><span class="line"><span class="built_in">eval</span> <span class="string">"<span class="variable">$(docker-machine env  swarm-master)</span>"</span></span><br><span class="line">docker ps -a</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">eval</span> <span class="string">"<span class="variable">$(docker-machine env --swarm swarm-master)</span>"</span></span><br><span class="line">docker-machine ls</span><br><span class="line">docker ps </span><br><span class="line"><span class="comment"># 进入环境了,docker run</span></span><br><span class="line">sudo docker run -itd --name engmgr ubuntu</span><br><span class="line"></span><br><span class="line">sudo docker ps </span><br><span class="line"><span class="comment"># 居然不是下在本机的 成功 有没有可能是主机的docker是什么权限,环境中的也是啊</span></span><br><span class="line"><span class="comment"># swarm-node-02/engmgr 而我的是engmgr</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `seq 1 6`; <span class="keyword">do</span> sudo docker run -itd -e \</span><br><span class="line">    constraint:itype!=frontend --name eng<span class="variable">$i</span> ubuntu; <span class="keyword">done</span></span><br><span class="line">sudo docker ps</span><br><span class="line"><span class="comment"># swarm-node-02/eng1 等还是没有前缀名</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># filter</span></span><br><span class="line">sudo docker run -itd --name engmgr-c -e \</span><br><span class="line">    affinity:container==engmgr ubuntu</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">docker-machine <span class="built_in">kill</span> $(docker-machine ls -q)</span><br><span class="line"><span class="comment"># 好像就回到了本机了</span></span><br><span class="line">sudo docker images </span><br><span class="line"><span class="comment"># ubuntu的镜像也在下载过来了</span></span><br></pre></td></tr></table></figure>
-<p>注意:您会注意到命令不能与前缀sudo .这是因为它假设您正在使用的登录到服务器docker-machine ssh使用Docker窗机设置后命令</p>
-<h3 id="4-docker-machine-swarm-d-digital"><a href="#4-docker-machine-swarm-d-digital" class="headerlink" title="4. docker-machine swarm -d digital"></a>4. docker-machine swarm -d <a href="https://www.howtoing.com/how-to-create-a-cluster-of-docker-containers-with-docker-swarm-and-digitalocean-on-ubuntu-16-04/" target="_blank" rel="noopener">digital</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">DOTOKEN=DOTOKEN_ID</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成节点</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> 1 2 3; <span class="keyword">do</span> docker-machine create --driver digitalocean \</span><br><span class="line">    --digitalocean-image  ubuntu-16-04-x64 \</span><br><span class="line">    --digitalocean-access-token <span class="variable">$DOTOKEN</span> node-<span class="variable">$i</span>; <span class="keyword">done</span></span><br><span class="line"><span class="comment"># 该开的端口,也都开了</span></span><br><span class="line"><span class="comment"># 命令成功完成后,您可以通过访问您的DigitalOcean仪表板或输入以下命令来验证是否已创建所有计算机:</span></span><br><span class="line"><span class="comment">#更新docker-machine之后执行,就如此简单的创建了主机,在控制面板就可以看到新创建出来的实例了:</span></span><br><span class="line"></span><br><span class="line">docker-machine ls </span><br><span class="line"><span class="built_in">eval</span> <span class="string">"<span class="variable">$(docker-machine env  node-1)</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使节点成为集群成员,选择其中一个节点并将其作为Docker Swarm(Node-1)管理器</span></span><br><span class="line">docker-machine ssh node-1</span><br><span class="line">docker swarm init --advertise-addr 45.55.87.176</span><br><span class="line"><span class="comment"># 会输出如下信息</span></span><br><span class="line"><span class="comment"># docker swarm join --token SWMTKN-1-xx 45.55.87.176:2377</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 并将其余部分配置为Docker Swarm工作线程. </span></span><br><span class="line">docker-machine ssh node-2</span><br><span class="line">docker swarm join --token SWMTKN-1-xx 45.55.87.176:2377</span><br><span class="line"></span><br><span class="line">docker-machine ssh node-3</span><br><span class="line">docker swarm join --token SWMTKN-1-xx 45.55.87.176:2377</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Docker Swarm管理命令必须在管理器节点上执行</span></span><br><span class="line">docker-machine ssh node-1</span><br><span class="line">docker node ls </span><br><span class="line">docker node --<span class="built_in">help</span></span><br><span class="line"><span class="comment"># 您可以随时从群集中添加或删除节点. 此外,工作节点可以升级为管理器,并且管理器可以转换为工作器</span></span><br><span class="line">docker info</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在Docker Swarm中运行服务 docker node命令一样, docker service命令只能在管理器节点上执行</span></span><br><span class="line">docker service create -p 80:80 --name webserver nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 要查看集群上运行的服务,请键入:</span></span><br><span class="line">docker service ls <span class="comment"># 可以输入node-1IP到浏览器中,可以看到Nginx的默认页面.</span></span><br><span class="line"><span class="comment"># 您可以通过使用docker service ps后跟服务名称来确定服务正在运行的节点</span></span><br><span class="line">docker service ps webserver</span><br><span class="line"></span><br><span class="line">docker-machine stop node-1 node-2 node-3</span><br><span class="line">docker swarm --<span class="built_in">help</span></span><br></pre></td></tr></table></figure>
-<p>大坑:</p>
-<p>-driver virtualbox </p>
-<p>docker-machine version 0.12.0 是没有问题的</p>
-<p>但 amazonec2 和 digitalocean ,都要是0.12.1版本才行,不然在创建时,会报如下错</p>
-<p>Error creating machine: Error running provisioning: ssh command error:<br>Unable to query docker version: Cannot connect to the docker engine endpoint</p>
-<h3 id="5-docker-machine-在AWS创建Docker主机-会创建一个新的实例-会有收费"><a href="#5-docker-machine-在AWS创建Docker主机-会创建一个新的实例-会有收费" class="headerlink" title="5. docker-machine 在AWS创建Docker主机(会创建一个新的实例,会有收费)"></a>5. docker-machine 在AWS创建Docker主机(会创建一个新的实例,会有收费)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># http://usyiyi.cn/documents/docker/machine/examples/aws.html</span></span><br><span class="line"><span class="comment"># 开放22,2376,2377,80 Docker machine的安全组</span></span><br><span class="line">docker-machine create --driver amazonec2 \</span><br><span class="line">    --amazonec2-access-key you_access_key \</span><br><span class="line">    --amazonec2-secret-key you_secret_key \</span><br><span class="line">    --amazonec2-region=us-west-2  aws-01</span><br><span class="line"><span class="comment"># /home/python/.docker/machine/machines/aws-01</span></span><br><span class="line">docker-machine ssh aws-01 <span class="comment"># 虽然有下面的各种坑,但还是能进去,一直报错所以一直没有执行此命令 </span></span><br><span class="line">docker swarm init --advertise-addr 54.244.58.2</span><br><span class="line"><span class="comment"># 不像digitalocean 一样顺利,还得vim /lib/systemd/system/docker.service 然后重启,再执行就和digitalocean一样了</span></span><br><span class="line">docker swarm join --token SWMTKN-1-xx 54.244.58.2:2377</span><br><span class="line"></span><br><span class="line">docker-machine create --driver amazonec2 \</span><br><span class="line">    --amazonec2-access-key you_access_key \</span><br><span class="line">    --amazonec2-secret-key you_secret_key \</span><br><span class="line">    --amazonec2-region=us-west-2  aws02</span><br><span class="line">docker-machine ssh aws02 </span><br><span class="line">sudo docker swarm join --token SWMTKN-1-xx 54.244.58.2:2377</span><br><span class="line"></span><br><span class="line">docker-machine ssh aws-01</span><br><span class="line">docker service create -p 80:80 --name webserver nginx</span><br><span class="line">docker service ls</span><br><span class="line">docker service ps  webserver</span><br><span class="line"><span class="comment"># Docker Swarm的另一个功能是缩放服务的能力,即启动服务的其他实例.假设我们想将我们之前启动的webserver服务扩展为五个实例</span></span><br><span class="line">docker service scale webserver=5 <span class="comment">#output: webserver scaled to 5</span></span><br><span class="line">docker service ps  webserver <span class="comment"># 可以看到这5个服务在都分布在哪些节点上</span></span><br></pre></td></tr></table></figure>
-<p>坑一:</p>
-<p>创建实例时,先要在EC2控制面板创建一对密钥对,在创建实例时,选择此密钥对,并保存好,当你创建好实例之后,要连接实例时需要此.pem文件,才能连接上,不然就悲剧了.</p>
-<p>坑二:</p>
-<p>IAM:不是你的用户名和密码(root) ,失败<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">docker-machine create --driver amazonec2 \</span><br><span class="line">    --amazonec2-access-key username \</span><br><span class="line">    --amazonec2-secret-key password \</span><br><span class="line">    --amazonec2-vpc-id vpc-a24484c4 aws-sandbox</span><br><span class="line"><span class="comment"># 你也可以创建其它的用户来管理aws,失败</span></span><br><span class="line">docker-machine create --driver amazonec2 \</span><br><span class="line">    --amazonec2-access-key AKIAIDGRV7O6MZ2DOYDA \</span><br><span class="line">    --amazonec2-secret-key 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 \</span><br><span class="line">    --amazonec2-vpc-id vpc-978f4cf1 aws-sandbox</span><br><span class="line"></span><br><span class="line"><span class="comment"># 但只能是root用户才能访问成功</span></span><br><span class="line">docker-machine create --driver amazonec2 \</span><br><span class="line">    --amazonec2-access-key you_access_key \</span><br><span class="line">    --amazonec2-secret-key you_secret_key \ </span><br><span class="line">    --amazonec2-vpc-id vpc-a24484c4 \</span><br><span class="line">    --amazonec2-zone=b aws-sandbox</span><br><span class="line"></span><br><span class="line"><span class="comment"># unable to find a subnet in the zone: us-east-1b to issue</span></span><br><span class="line">ssh -i <span class="string">"femn.pem"</span> ubuntu@ec2-34-212-39-188.us-west-2.compute.amazonaws.com</span><br><span class="line">sudo apt install awscli</span><br><span class="line">aws configure</span><br></pre></td></tr></table></figure></p>
-<p>坑三: 配置aws CLI ,IAM上面已得知了,Default region name:必须是这个实例的实际地址</p>
-<p>一定要选自己的地区  us-west-2</p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/04/docker-swarm/" data-id="cjgra84op001e05lmiokbsacq" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/04/docker-swarm/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/docker-swarm/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <article id="post-docker" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -471,7 +306,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/docker/" data-id="cjgra84ot001g05lmq83014oy" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/docker/" data-id="cjgssxuzi001306pshhn7zshh" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -549,153 +384,6 @@
 
 
 
-    <article id="post-docker-machine" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/04/docker-machine/">docker-machine</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/docker-machine/">
-            <time datetime="2017-08-04T15:24:48.000Z" itemprop="datePublished">2017-08-04</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/docker/">docker</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h3 id="Docker-Engine-主要用来接收和处理docker命令请求的-Docker-Engine-Docker引擎-Docker-Engine的客户端-docker"><a href="#Docker-Engine-主要用来接收和处理docker命令请求的-Docker-Engine-Docker引擎-Docker-Engine的客户端-docker" class="headerlink" title="Docker Engine 主要用来接收和处理docker命令请求的(Docker Engine==Docker引擎==Docker Engine的客户端==docker)"></a>Docker Engine 主要用来接收和处理docker命令请求的(Docker Engine==Docker引擎==Docker Engine的客户端==docker)</h3><p>Docker我们一般理解的,都是C/S模型,用户通过docker client向docker daemon发送REST 请求.</p>
-<p>Docker Engine包括这么几个部分:</p>
-<p>1.Docker Daemon — docker 的守护进程,属于C/S中的server</p>
-<p>2.Docker REST API — docker daemon向外暴露的REST 接口</p>
-<p>3.Docker CLI — docker向外暴露的命令行接口(Command Line API)</p>
-<p>因此,客户端访问服务端的方式有两种,一种是使用命令行工具,比如docker run, docker ps…等等.另一种就是直接通过调用REST API,比如发送一个curl http请求<br><img src="http://os1h5rv4q.bkt.clouddn.com/docker_engine.png" alt=""></p>
-<h3 id="Docker-Machine是一个工具-用来在虚拟主机上安装Docker-Engine-Machine-并使用-docker-machine命令来管理这些虚拟主机-Machine-是一个可以帮助我们在电脑上、在云端、在数据中心内创建-Docker-主机的应用"><a href="#Docker-Machine是一个工具-用来在虚拟主机上安装Docker-Engine-Machine-并使用-docker-machine命令来管理这些虚拟主机-Machine-是一个可以帮助我们在电脑上、在云端、在数据中心内创建-Docker-主机的应用" class="headerlink" title="Docker Machine是一个工具,用来在虚拟主机上安装Docker Engine(Machine),并使用 docker-machine命令来管理这些虚拟主机(Machine).是一个可以帮助我们在电脑上、在云端、在数据中心内创建 Docker 主机的应用"></a>Docker Machine是一个工具,用来在虚拟主机上安装Docker Engine(Machine),并使用 docker-machine命令来管理这些虚拟主机(Machine).是一个可以帮助我们在电脑上、在云端、在数据中心内创建 Docker 主机的应用</h3><h4 id="主要用来管理-docker化的-host-安装了Docker-Engine的主机"><a href="#主要用来管理-docker化的-host-安装了Docker-Engine的主机" class="headerlink" title="主要用来管理 docker化的 host (安装了Docker Engine的主机)"></a>主要用来管理 docker化的 host (安装了Docker Engine的主机)</h4><p>使用 docker-machine命令,你可以启动、查看、停止以及重启一个主机,升级Docker client和daemon,配置Machine 的 Docker client与你的主机进行通信</p>
-<p>无论是Mac,Windows或是Linux,你都可以在其上安装Docker Machine,使用docker-machine命令来创建和管理大量的Docker hosts.<br>它会自动创建主机,在主机上安装Docker Engine,然后配置docker client.每个被管理的主机(“machine”)都是一个Docker 主机和一个配置过的client的组合.</p>
-<h4 id="docker-Machine的具体使用场景"><a href="#docker-Machine的具体使用场景" class="headerlink" title="docker Machine的具体使用场景:"></a>docker Machine的具体使用场景:</h4><p>1.你目前只有一个老版本的MacOSX(比如10.10.2)或者Windows系统,想在上边运行docker.</p>
-<p>2.想在远程系统上创建Docker主机,比如想在网络上,云平台上,以及本地创建Docker host,你就需要Docker Machine.</p>
-<p>3.docker在不同的linux上得安装方法不一样,通过这个工具可以提供统一的安装方法.</p>
-<h4 id="你可以使用Machine在一个或多个虚拟机上安装Docker-Engine-这些虚拟机可以是在本地-当你使用Machine在VirtualBox安装和运行Docker-Engine时"><a href="#你可以使用Machine在一个或多个虚拟机上安装Docker-Engine-这些虚拟机可以是在本地-当你使用Machine在VirtualBox安装和运行Docker-Engine时" class="headerlink" title="你可以使用Machine在一个或多个虚拟机上安装Docker Engine.这些虚拟机可以是在本地(当你使用Machine在VirtualBox安装和运行Docker Engine时)"></a>你可以使用Machine在一个或多个虚拟机上安装Docker Engine.这些虚拟机可以是在本地(当你使用Machine在VirtualBox安装和运行Docker Engine时)</h4><h4 id="也可以是远程的-使用Machine在云平台上创建Docker化的主机时-这些虚拟化的主机可以被认为是”machine”"><a href="#也可以是远程的-使用Machine在云平台上创建Docker化的主机时-这些虚拟化的主机可以被认为是”machine”" class="headerlink" title="也可以是远程的(使用Machine在云平台上创建Docker化的主机时).这些虚拟化的主机可以被认为是”machine”"></a>也可以是远程的(使用Machine在云平台上创建Docker化的主机时).这些虚拟化的主机可以被认为是”machine”</h4><p>Machine<br>解决因操作系统异构导致的安装 Docker 困难的问题,所有系统部署 Docker 都变得非常方便.<br><img src="http://os1h5rv4q.bkt.clouddn.com/docker_machine.png" alt=""></p>
-<p><img src="http://os1h5rv4q.bkt.clouddn.com/docker_machine2.jpg" alt=""></p>
-<p><a href="https://docs.docker.com/machine/install-machine/" target="_blank" rel="noopener">install machine</a></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">curl -L https://github.com/docker/machine/releases/download/\</span><br><span class="line">    v0.12.1/docker-machine-`uname -s`-`uname -m` \ </span><br><span class="line">    &gt;/tmp/docker-machine &amp;&amp;</span><br><span class="line">chmod a+x /tmp/docker-machine </span><br><span class="line">sudo cp /tmp/docker-machine /usr/<span class="built_in">local</span>/bin/docker-machine</span><br><span class="line"><span class="comment">#如果超时,直接从网页中下载</span></span><br><span class="line">https://github.com/docker/machine/releases/download/v0.12.1/docker-machine-Linux-x86_64</span><br><span class="line">chmod a+x docker-machine-Linux-x86_64</span><br><span class="line">sudo mv docker-machine-Linux-x86_64 /usr/<span class="built_in">local</span>/bin/docker-machine</span><br></pre></td></tr></table></figure>
-<h3 id="use-machine"><a href="#use-machine" class="headerlink" title="use machine"></a>use machine</h3><p>你也可以在VirtualBox等虚拟机上安装Docker engine到Docker中.在本地客户端,就好像所有的Docker 引擎运行在本地一样</p>
-<ol>
-<li>需要先安装virtualbox这个软件</li>
-<li>需要的是boot2docker.iso 只是一个普通的iso文件.<br>Docker Machine使用boot2docker作为virtualbox的镜像 – boot2docker是一个运行Docker容器的轻量级Linux系统,完全在内存中运行<br>不是下载此镜像:sudo docker pull boot2docker/boot2docker<br>而是 将<a href="https://github.com/boot2docker/boot2docker/releases/download/v17.06.0-ce/boot2docker.iso" target="_blank" rel="noopener">iso</a>放到 /home/python/.docker/machine/cache/ 再运行<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">docker-machine create -d virtualbox dev</span><br><span class="line"><span class="comment"># -driver virtualbox 表示我们在VirtualBox 的虚拟机里面部署 docker,代表的是驱动类型</span></span><br><span class="line"><span class="comment"># 最后的参数"dev" 是虚拟机(Machine)的名称</span></span><br><span class="line"><span class="comment"># http://os1h5rv4q.bkt.clouddn.com/docker_dev.jpg</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#用这个Machine可以配置本地Docker客户端,用到env命令完成</span></span><br><span class="line">docker-machine env dev</span><br><span class="line"><span class="comment"># 目前已經建立出來的 docker VM</span></span><br><span class="line">docker-machine ls</span><br><span class="line"></span><br><span class="line"><span class="comment"># Docker客户端将会使用设置的相同的环境变量通过Docker API与运行在上面的机器互相通信</span></span><br><span class="line"><span class="comment"># 设置完成后,就可以在本地机器访问远程Docker</span></span><br><span class="line"><span class="built_in">eval</span> $(docker-machine env dev)</span><br><span class="line">docker ps</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/04/docker-machine/" data-id="cjgra84oh001905lmokmfmru1" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/04/docker-machine/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/docker-machine/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <article id="post-Dockerfile_compose" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -758,7 +446,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/Dockerfile_compose/" data-id="cjgra84o1001005lmyq44tfe3" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/Dockerfile_compose/" data-id="cjgssxuwm000506ps1wy6jmav" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -827,6 +515,147 @@
             
     
         <a href="https://www.femn.me/2017/08/04/Dockerfile_compose/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/Dockerfile_compose/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-docker-hub" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/04/docker-hub/">docker-hub</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/04/docker-hub/">
+            <time datetime="2017-08-04T15:24:48.000Z" itemprop="datePublished">2017-08-04</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/docker/">docker</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="新建私有镜像仓库-只有registry-2这个镜像运行时-才能push-pull私有镜像库"><a href="#新建私有镜像仓库-只有registry-2这个镜像运行时-才能push-pull私有镜像库" class="headerlink" title="新建私有镜像仓库,只有registry:2这个镜像运行时,才能push,pull私有镜像库"></a>新建私有镜像仓库,只有registry:2这个镜像运行时,才能push,pull私有镜像库</h3><p>私有镜像仓库的好处:</p>
+<p>1.上传下载速度快</p>
+<p>2.企业可自行维护镜像仓库</p>
+<p>3.需要维护镜像仓库服务器</p>
+<p>4.同步docker官方镜像到企业私有镜像仓库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">docker pull registry:2</span><br><span class="line"><span class="comment"># 使用官方的 registry 镜像来启动本地的私有仓库 </span></span><br><span class="line"><span class="comment"># 仓库会被创建在容器下/var/lib/registry下</span></span><br><span class="line"><span class="comment"># 将镜像文件存放在本机的指定路径/data/registry</span></span><br><span class="line">docker run -d -p 5000:5000 --restart=always --name registry \</span><br><span class="line">    -v /data/registry:/var/lib/registry registry:2</span><br><span class="line"><span class="comment"># 将镜像运行为容器 -d 将这个进程后台运行 -p 映射端口主机端口:容器端口     </span></span><br><span class="line"><span class="comment"># --restart=always当容器服务死掉之后自动重启 --name容器的名字 </span></span><br><span class="line"><span class="comment"># -v 映射容器的目录到宿主机下</span></span><br><span class="line"><span class="comment"># -m 128m 内存限制在128M</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看主机端口在容器的映射情况</span></span><br><span class="line">docker port nostalgic_morse 5000 </span><br><span class="line"></span><br><span class="line">docker pull nginx</span><br><span class="line"><span class="comment">#镜像的重命名 标记镜像</span></span><br><span class="line">docker tag nginx 47.52.94.126:5000/nginx:last  </span><br><span class="line">docker tag nginx 192.168.1.116:5000/nginx:last  </span><br><span class="line"></span><br><span class="line"><span class="comment"># modify docker daemon启动参数</span></span><br><span class="line">vim /usr/lib/systemd/system/docker.service</span><br><span class="line"><span class="comment"># centos   ubuntu:/lib/systemd/system/docker.service</span></span><br><span class="line">    ExecStart=之前的不要动加上  --insecure-registry=0.0.0.0/0</span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br><span class="line"><span class="comment"># 看参数有没有正确的添加.</span></span><br><span class="line">ps aux |grep docker  </span><br><span class="line"></span><br><span class="line"><span class="comment"># 上传标记镜像到私有仓库</span></span><br><span class="line">docker push 192.168.1.116:5000/nginx:last <span class="comment"># 本机测试的成功</span></span><br><span class="line">docker pull 192.168.1.116:5000/nginx:last </span><br><span class="line"><span class="comment"># 只要能连接上私有仓库,就可以从私有仓库中pull</span></span><br><span class="line"><span class="comment"># 因为本机做为私有仓库,已经有这image了,所以下载得很快</span></span><br><span class="line"><span class="comment"># docker push 47.52.94.126:5000/nginx:last 上传public IP失败</span></span><br></pre></td></tr></table></figure>
+<h3 id="镜像上传到Docker-Hub"><a href="#镜像上传到Docker-Hub" class="headerlink" title="镜像上传到Docker Hub"></a>镜像上传到Docker Hub</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker login <span class="comment">#输入 hub.docker.com注册时的用户名和密码</span></span><br><span class="line">docker pull registry</span><br><span class="line">docker tag   registry femn/registry:last</span><br><span class="line"><span class="comment"># 镜像名:femn/registry tag:last</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#上传到Docker Hub 镜像名必须是 username/imagesname,才能上传</span></span><br><span class="line"><span class="comment"># 并且不需要提前去Docker Hub创建仓库</span></span><br><span class="line">docker push femn/registry </span><br><span class="line"><span class="comment"># 将本地镜像上传到https://hub.docker.com的个人仓库中了.</span></span><br></pre></td></tr></table></figure>
+<h3 id="Docker-Hub"><a href="#Docker-Hub" class="headerlink" title="Docker Hub"></a>Docker Hub</h3><p>Docker通过docer search、pull、login和push等命令提供了连接Docker Hub服务的功能.</p>
+<p>Docker Hub是一个由Docker公司负责维护的公共注册中心,它包含了超过15,000个可用来下载和构建容器的镜像,并且还提供认证、工作组结构、工作流工具(比如webhooks)<br>构建触发器以及私有工具(比如私有仓库可用于存储你并不想公开分享的镜像)</p>
+<h3 id="自动构建"><a href="#自动构建" class="headerlink" title="自动构建"></a>自动构建</h3><p>自动构建功能会自动从Github或BitBucket直接将镜像构建或更新至Docker Hub,通过为Github或Bitbucket的仓库添加一个提交的hook来实现,<br>当你推送提交的时候就会触发构建和更新,但是,你不能通过docker push推送一个自动化构建,而只能通过在Github或者BitBucket提交你的代码来管理它.<br>你可以在一个Docker的仓库中创建多个自动构建,配置它们只指定的Dockerfile或Git 分支</p>
+<h3 id="Automated-Builds的一个实例"><a href="#Automated-Builds的一个实例" class="headerlink" title="Automated Builds的一个实例"></a><a href="https://hub.docker.com/r/leno730/pause/" target="_blank" rel="noopener">Automated Builds的一个实例</a></h3><p>建Dockerfile的目的,就是为了使用dockerfile里面的from语法的作用,来借用github服务器新建我需要的镜像</p>
+<p>由于不能从google container上直接pull镜像,所以这里通过docker hub的Automated Builds功能从项目的dockerfile中Build到docker的官方服务器上,然后再从它们上面拉取</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 步骤2中 创建一个带有Dockerfile的Github项目</span></span><br><span class="line">mkdir docker_lib</span><br><span class="line"><span class="built_in">cd</span> docker_lib</span><br><span class="line">git init</span><br><span class="line">mkdir google-etcd-amd64</span><br><span class="line"><span class="built_in">cd</span> google-etcd-amd64</span><br><span class="line">vim Dockerfile</span><br><span class="line">    FROM gcr.io/google_containers/etcd:2.0.12</span><br><span class="line">    MAINTAINER femn2014</span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">'增加Dockerfile文件,解决镜像被墙的问题'</span></span><br><span class="line"><span class="comment"># 在github 创建一个名为docker_lib的项目</span></span><br><span class="line">git remote add origin https://github.com/femn2014/docker_lib.git</span><br><span class="line">git push -u origin master</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当完成此实例的所有步骤之后,再测试下,推送提交的时候就会触发构建和更新</span></span><br><span class="line">vim Dockerfile</span><br><span class="line">    FROM nginx</span><br><span class="line">    MAINTAINER femn2014</span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">'当推送提交时触发构建和更新'</span></span><br><span class="line">git push -u origin master</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这时 docker pull femn/etcd 时下载的将会是nginx的镜像</span></span><br></pre></td></tr></table></figure>
+<h3 id="总结来说-自动构建的步骤"><a href="#总结来说-自动构建的步骤" class="headerlink" title="总结来说 自动构建的步骤"></a>总结来说 自动构建的步骤</h3><p>1.创建一个Docker Hub账户并且登陆<br>2.通过create选择 create automated build创建一个项目,再选择连接一个包含Dockerfile的GitHub或者BitBucket.<br>3.给自动构建创建一个名称:etcd(相当于也就是Docker Hub的项目的镜像名称)<br>4.配置自动化构建 (click here to customize)<br>5.选择你想用于构建的分支(默认是master分支)<br>6.指定Dockerfile的路径,默认是/,也可以在github中建立个目录再创建Dockerfile文件,为了方便我们后面区分镜像包<br>7.指定一个Docker标签来构建</p>
+<p><a href="https://blog.iliul.com/2017-01-02/set-docker-hub-gravatars/" target="_blank" rel="noopener">设置头像</a><br><a href="https://www.daocloud.io/" target="_blank" rel="noopener">国内docker_hub</a><br>另一个镜像管理工具<a href="https://quay.io/" target="_blank" rel="noopener">Quay</a></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/04/docker-hub/" data-id="cjgssxuz2000v06psjt64rjlf" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/04/docker-hub/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/docker-hub/">Comments</a>
     
 
         </footer>
@@ -910,7 +739,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/docker-set-net/" data-id="cjgra84om001c05lmxp4gvfxu" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/docker-set-net/" data-id="cjgssxuzd000z06psl8gfkrkg" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -988,7 +817,7 @@
 
 
 
-    <article id="post-supervisor-server" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-docker-machine" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -996,7 +825,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/04/supervisor-server/">supervisor</a>
+            <a class="article-title" href="/2017/08/04/docker-machine/">docker-machine</a>
         </h1>
     
 
@@ -1005,7 +834,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/supervisor-server/">
+        <a href="/2017/08/04/docker-machine/">
             <time datetime="2017-08-04T15:24:48.000Z" itemprop="datePublished">2017-08-04</time>
         </a>
     </div>
@@ -1014,7 +843,7 @@
                         
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/server/">server</a>
+        <a class="article-category-link" href="/categories/docker/">docker</a>
     </div>
 
                         
@@ -1026,28 +855,27 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>Linux的后台进程运行有好几种方法,例如nohup,screen等,但是,如果是一个服务程序,要可靠地在后台运行,我们就需要把它做成daemon,最好还能监控进程状态,在意外结束时能自动重启.</p>
-<p>supervisor就是用Python开发的一套通用的进程管理程序,能将一个普通的命令行进程变为后台daemon,并监控进程状态,异常退出时能自动重启.另一个进程管理工具:S6</p>
-<p>Debian / Ubuntu可以直接通过apt安装:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install supervisor</span><br></pre></td></tr></table></figure>
-<p>如果是通过pip安装的话,就需要echo_supervisord_conf程序生成supervisor的初始化配置文件:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo pip install supervisor</span><br><span class="line">mkdir /etc/supervisor</span><br><span class="line">echo_supervisord_conf &gt; /etc/supervisor/supervisord.conf</span><br></pre></td></tr></table></figure>
-<p>supervisor安装完成后会生成三个执行程序:supervisortd 守护进程服务,用于接收进程管理命令.supervisorctl 客户端,用于和守护进程通信,发送管理进程的指令.<br>echo_supervisord_conf 生成初始配置文件程序<br>然后,给我们自己开发的应用程序编写一个配置文件,让supervisor来管理它.每个进程的配置文件都可以单独分拆,放在/etc/supervisor/conf.d/目录下,以.conf作为扩展名</p>
-<p>vim server.conf<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[program:python8010]</span><br><span class="line"><span class="built_in">command</span> = /usr/bin/python3 HttpsRunner.py</span><br><span class="line">directory = /server/app1.6</span><br><span class="line">user = root</span><br><span class="line">redirect_stderr = <span class="literal">true</span></span><br><span class="line">stdout_logfile_maxbytes = 150MB</span><br><span class="line">stdout_logfile_backups = 20</span><br><span class="line">stdout_logfile = /server/app1.6/python8010.log</span><br><span class="line"></span><br><span class="line">[program:mongod]</span><br><span class="line">;<span class="built_in">command</span> = /mongo/mongodb-linux-x86_64-ubuntu1404-3.2.10/bin/mongod --dbpath /mnt/mongodb --auth</span><br><span class="line"><span class="built_in">command</span> = /mongo/mongodb-linux-x86_64-ubuntu1404-3.2.10/bin/mongod -f /server/app1.6/mongodb.conf</span><br><span class="line">directory = /server/app1.6</span><br><span class="line">user = root</span><br><span class="line">redirect_stderr = <span class="literal">true</span></span><br><span class="line">stdout_logfile_maxbytes = 150MB</span><br><span class="line">stdout_logfile_backups = 20</span><br><span class="line">stdout_logfile = /server/app1.6/mongodb.log</span><br></pre></td></tr></table></figure></p>
-<p>Supervisor只能管理非daemon的进程,也就是说Supervisor不能管理守护进程.否则提示Exited too quickly (process log may have details)异常.<br>启动Supervisor服务:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">supervisord -c /etc/supervisor/supervisord.conf</span><br></pre></td></tr></table></figure>
-<p>管理进程:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">supervisorctl status</span><br><span class="line">supervisorctl stop mongod</span><br><span class="line">supervisorctl start python8010</span><br><span class="line">supervisorctl restart python8001</span><br><span class="line"><span class="comment"># 重启所有属于名为groupworker这个分组的进程(start,restart同理)</span></span><br><span class="line">supervisorctl stop groupworker</span><br><span class="line"><span class="comment"># 停止全部进程,注:start、restart、stop都不会载入最新的配置文件</span></span><br><span class="line">supervisorctl stop all </span><br><span class="line"><span class="comment"># 载入最新的配置文件,停止原有进程并按新的配置启动、管理所有进程</span></span><br><span class="line">supervisorctl reread/reload</span><br><span class="line"><span class="comment"># 根据最新的配置文件,启动新配置或有改动的进程,配置没有改动的进程不会受影响而重启</span></span><br><span class="line">supervisorctl update</span><br><span class="line">supervisorctl tail &lt;APP_NAME&gt;</span><br></pre></td></tr></table></figure>
-<p>进入CLI管理台:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">supervisorctl</span><br></pre></td></tr></table></figure>
-<p>Web管理界面 </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/supervisor/supervisord.conf</span><br><span class="line">    [inet_http_server] ; inet (TCP) server disabled by default</span><br><span class="line">    port=0.0.0.0:9001  ; (ip_address:port specifier, *:port <span class="keyword">for</span> all iface)</span><br><span class="line">    username=root      ; (default is no username (open server))</span><br><span class="line">    password=root      ; (default is no password (open server))</span><br></pre></td></tr></table></figure>
-<p>重启Supervisor服务,如果有Unlinking stale socket /var/run/supervisor.sock 执行unlink /var/run/supervisor.sock:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps aux |grep supervisord</span><br><span class="line">supervisord -c /etc/supervisor/supervisord.conf</span><br></pre></td></tr></table></figure>
-<h5 id="开机启动Supervisor"><a href="#开机启动Supervisor" class="headerlink" title="开机启动Supervisor:"></a>开机启动Supervisor:</h5><p>方法1:<br>    Linux 在启动的时候会执行 /etc/rc.local 里面的脚本,所以只要在这里添加执行命令就可以<br>    以下内容需要添加在 exit 命令前,而且由于在执行 rc.local 脚本时,PATH 环境变量未全部初始化,因此命令需要使用绝对路径.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/supervisord -c /etc/supervisor/supervisord.conf</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://askubuntu.com/questions/765120/after-upgrade-to-16-04-lts-rc-local-is-not-executing-a-command" target="_blank" rel="noopener">如果是 Ubuntu 16.04 以上,rc.local 被当成了服务,而且默认是不会启动,需要手动启用一下服务</a></p>
-<p>启动rc.local服务:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl <span class="built_in">enable</span> rc-local.service</span><br></pre></td></tr></table></figure></p>
-<p>方法二:<br>Supervisord 默认情况下并没有被安装成服务,它本身也是一个进程.官方已经给出了脚本可以将 Supervisord 安装成服务,<br>可以参考<a href="https://github.com/Supervisor/initscripts" target="_blank" rel="noopener">这里</a>查看各种操作系统的安装脚本,但是我用官方这里给的 Ubuntu 脚本却无法运行.<br>安装方法可以参考<a href="https://serverfault.com/questions/96499/how-to-automatically-start-supervisord-on-linux-ubuntu" target="_blank" rel="noopener"> serverfault</a><br>这个脚本下载下来后,还需检查一下与我们的配置是否相符合,比如默认的配置文件路径,pid 文件路径等,如果存在不同则需要进行一些修改</p>
+            <h3 id="Docker-Engine-主要用来接收和处理docker命令请求的-Docker-Engine-Docker引擎-Docker-Engine的客户端-docker"><a href="#Docker-Engine-主要用来接收和处理docker命令请求的-Docker-Engine-Docker引擎-Docker-Engine的客户端-docker" class="headerlink" title="Docker Engine 主要用来接收和处理docker命令请求的(Docker Engine==Docker引擎==Docker Engine的客户端==docker)"></a>Docker Engine 主要用来接收和处理docker命令请求的(Docker Engine==Docker引擎==Docker Engine的客户端==docker)</h3><p>Docker我们一般理解的,都是C/S模型,用户通过docker client向docker daemon发送REST 请求.</p>
+<p>Docker Engine包括这么几个部分:</p>
+<p>1.Docker Daemon — docker 的守护进程,属于C/S中的server</p>
+<p>2.Docker REST API — docker daemon向外暴露的REST 接口</p>
+<p>3.Docker CLI — docker向外暴露的命令行接口(Command Line API)</p>
+<p>因此,客户端访问服务端的方式有两种,一种是使用命令行工具,比如docker run, docker ps…等等.另一种就是直接通过调用REST API,比如发送一个curl http请求<br><img src="http://os1h5rv4q.bkt.clouddn.com/docker_engine.png" alt=""></p>
+<h3 id="Docker-Machine是一个工具-用来在虚拟主机上安装Docker-Engine-Machine-并使用-docker-machine命令来管理这些虚拟主机-Machine-是一个可以帮助我们在电脑上、在云端、在数据中心内创建-Docker-主机的应用"><a href="#Docker-Machine是一个工具-用来在虚拟主机上安装Docker-Engine-Machine-并使用-docker-machine命令来管理这些虚拟主机-Machine-是一个可以帮助我们在电脑上、在云端、在数据中心内创建-Docker-主机的应用" class="headerlink" title="Docker Machine是一个工具,用来在虚拟主机上安装Docker Engine(Machine),并使用 docker-machine命令来管理这些虚拟主机(Machine).是一个可以帮助我们在电脑上、在云端、在数据中心内创建 Docker 主机的应用"></a>Docker Machine是一个工具,用来在虚拟主机上安装Docker Engine(Machine),并使用 docker-machine命令来管理这些虚拟主机(Machine).是一个可以帮助我们在电脑上、在云端、在数据中心内创建 Docker 主机的应用</h3><h4 id="主要用来管理-docker化的-host-安装了Docker-Engine的主机"><a href="#主要用来管理-docker化的-host-安装了Docker-Engine的主机" class="headerlink" title="主要用来管理 docker化的 host (安装了Docker Engine的主机)"></a>主要用来管理 docker化的 host (安装了Docker Engine的主机)</h4><p>使用 docker-machine命令,你可以启动、查看、停止以及重启一个主机,升级Docker client和daemon,配置Machine 的 Docker client与你的主机进行通信</p>
+<p>无论是Mac,Windows或是Linux,你都可以在其上安装Docker Machine,使用docker-machine命令来创建和管理大量的Docker hosts.<br>它会自动创建主机,在主机上安装Docker Engine,然后配置docker client.每个被管理的主机(“machine”)都是一个Docker 主机和一个配置过的client的组合.</p>
+<h4 id="docker-Machine的具体使用场景"><a href="#docker-Machine的具体使用场景" class="headerlink" title="docker Machine的具体使用场景:"></a>docker Machine的具体使用场景:</h4><p>1.你目前只有一个老版本的MacOSX(比如10.10.2)或者Windows系统,想在上边运行docker.</p>
+<p>2.想在远程系统上创建Docker主机,比如想在网络上,云平台上,以及本地创建Docker host,你就需要Docker Machine.</p>
+<p>3.docker在不同的linux上得安装方法不一样,通过这个工具可以提供统一的安装方法.</p>
+<h4 id="你可以使用Machine在一个或多个虚拟机上安装Docker-Engine-这些虚拟机可以是在本地-当你使用Machine在VirtualBox安装和运行Docker-Engine时"><a href="#你可以使用Machine在一个或多个虚拟机上安装Docker-Engine-这些虚拟机可以是在本地-当你使用Machine在VirtualBox安装和运行Docker-Engine时" class="headerlink" title="你可以使用Machine在一个或多个虚拟机上安装Docker Engine.这些虚拟机可以是在本地(当你使用Machine在VirtualBox安装和运行Docker Engine时)"></a>你可以使用Machine在一个或多个虚拟机上安装Docker Engine.这些虚拟机可以是在本地(当你使用Machine在VirtualBox安装和运行Docker Engine时)</h4><h4 id="也可以是远程的-使用Machine在云平台上创建Docker化的主机时-这些虚拟化的主机可以被认为是”machine”"><a href="#也可以是远程的-使用Machine在云平台上创建Docker化的主机时-这些虚拟化的主机可以被认为是”machine”" class="headerlink" title="也可以是远程的(使用Machine在云平台上创建Docker化的主机时).这些虚拟化的主机可以被认为是”machine”"></a>也可以是远程的(使用Machine在云平台上创建Docker化的主机时).这些虚拟化的主机可以被认为是”machine”</h4><p>Machine<br>解决因操作系统异构导致的安装 Docker 困难的问题,所有系统部署 Docker 都变得非常方便.<br><img src="http://os1h5rv4q.bkt.clouddn.com/docker_machine.png" alt=""></p>
+<p><img src="http://os1h5rv4q.bkt.clouddn.com/docker_machine2.jpg" alt=""></p>
+<p><a href="https://docs.docker.com/machine/install-machine/" target="_blank" rel="noopener">install machine</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">curl -L https://github.com/docker/machine/releases/download/\</span><br><span class="line">    v0.12.1/docker-machine-`uname -s`-`uname -m` \ </span><br><span class="line">    &gt;/tmp/docker-machine &amp;&amp;</span><br><span class="line">chmod a+x /tmp/docker-machine </span><br><span class="line">sudo cp /tmp/docker-machine /usr/<span class="built_in">local</span>/bin/docker-machine</span><br><span class="line"><span class="comment">#如果超时,直接从网页中下载</span></span><br><span class="line">https://github.com/docker/machine/releases/download/v0.12.1/docker-machine-Linux-x86_64</span><br><span class="line">chmod a+x docker-machine-Linux-x86_64</span><br><span class="line">sudo mv docker-machine-Linux-x86_64 /usr/<span class="built_in">local</span>/bin/docker-machine</span><br></pre></td></tr></table></figure>
+<h3 id="use-machine"><a href="#use-machine" class="headerlink" title="use machine"></a>use machine</h3><p>你也可以在VirtualBox等虚拟机上安装Docker engine到Docker中.在本地客户端,就好像所有的Docker 引擎运行在本地一样</p>
+<ol>
+<li>需要先安装virtualbox这个软件</li>
+<li>需要的是boot2docker.iso 只是一个普通的iso文件.<br>Docker Machine使用boot2docker作为virtualbox的镜像 – boot2docker是一个运行Docker容器的轻量级Linux系统,完全在内存中运行<br>不是下载此镜像:sudo docker pull boot2docker/boot2docker<br>而是 将<a href="https://github.com/boot2docker/boot2docker/releases/download/v17.06.0-ce/boot2docker.iso" target="_blank" rel="noopener">iso</a>放到 /home/python/.docker/machine/cache/ 再运行<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">docker-machine create -d virtualbox dev</span><br><span class="line"><span class="comment"># -driver virtualbox 表示我们在VirtualBox 的虚拟机里面部署 docker,代表的是驱动类型</span></span><br><span class="line"><span class="comment"># 最后的参数"dev" 是虚拟机(Machine)的名称</span></span><br><span class="line"><span class="comment"># http://os1h5rv4q.bkt.clouddn.com/docker_dev.jpg</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#用这个Machine可以配置本地Docker客户端,用到env命令完成</span></span><br><span class="line">docker-machine env dev</span><br><span class="line"><span class="comment"># 目前已經建立出來的 docker VM</span></span><br><span class="line">docker-machine ls</span><br><span class="line"></span><br><span class="line"><span class="comment"># Docker客户端将会使用设置的相同的环境变量通过Docker API与运行在上面的机器互相通信</span></span><br><span class="line"><span class="comment"># 设置完成后,就可以在本地机器访问远程Docker</span></span><br><span class="line"><span class="built_in">eval</span> $(docker-machine env dev)</span><br><span class="line">docker ps</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
 
         
         </div>
@@ -1058,7 +886,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/supervisor-server/" data-id="cjgra84w3004b05lm8krih523" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/docker-machine/" data-id="cjgssxuzb000x06psae0tqk34" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1126,7 +954,172 @@
 
             
     
-        <a href="https://www.femn.me/2017/08/04/supervisor-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/supervisor-server/">Comments</a>
+        <a href="https://www.femn.me/2017/08/04/docker-machine/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/docker-machine/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-docker-swarm" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/04/docker-swarm/">docker-swarm</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/04/docker-swarm/">
+            <time datetime="2017-08-04T15:24:48.000Z" itemprop="datePublished">2017-08-04</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/docker/">docker</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="swarm集群"><a href="#swarm集群" class="headerlink" title="swarm集群"></a>swarm集群</h3><h3 id="install-swarm"><a href="#install-swarm" class="headerlink" title="install swarm"></a>install swarm</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker pull swarm</span><br><span class="line"><span class="comment"># 查看swarm版本</span></span><br><span class="line">docker run --rm swarm -v</span><br></pre></td></tr></table></figure>
+<p><a href="https://yeasy.gitbooks.io/docker_practice/content/swarm/install.html" target="_blank" rel="noopener">Host_consul_ip的例子</a></p>
+<h3 id="基于-consel-服务发现后端来配置一个本地-Swarm-集群"><a href="#基于-consel-服务发现后端来配置一个本地-Swarm-集群" class="headerlink" title="基于 consel 服务发现后端来配置一个本地 Swarm 集群"></a>基于 consel 服务发现后端来配置一个本地 Swarm 集群</h3><h4 id="1-1-配置每个节点主机"><a href="#1-1-配置每个节点主机" class="headerlink" title="1.1 配置每个节点主机"></a>1.1 配置每个节点主机</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 我用的是virtualbox,ubuntu16,安装好docker并修改好如下的内容,</span></span><br><span class="line"><span class="comment"># reboot之后clone,clone过后的虚拟机只需要修改一下ip就行</span></span><br><span class="line">vim /lib/systemd/system/docker.service</span><br><span class="line">    ExecStart=xx  再这后面加上如下内容</span><br><span class="line">    -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock </span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br><span class="line">ps -aux |grep docket</span><br><span class="line">docker pull swarm</span><br></pre></td></tr></table></figure>
+<p>坑一<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># docker daemon on node is running with</span></span><br><span class="line"><span class="comment"># -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock</span></span><br><span class="line"><span class="built_in">alias</span> docker=<span class="string">"docker -H tcp://0.0.0.0:2375 \</span></span><br><span class="line"><span class="string">    -H unix:///var/run/docker.sock"</span></span><br><span class="line"><span class="built_in">type</span> docker</span><br><span class="line"><span class="built_in">unalias</span> docker</span><br></pre></td></tr></table></figure></p>
+<p>坑二<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock \</span><br><span class="line">    --daemon=<span class="literal">true</span> --pidfile=<span class="string">"/var/run/docker_2375.pid"</span> \</span><br><span class="line">    --graph=<span class="string">"/var/lib/docker_2375"</span></span><br><span class="line">docker -H tcp://0.0.0.0:2375 --daemon=<span class="literal">true</span> \</span><br><span class="line">    --pidfile=<span class="string">"/var/run/docker_2375.pid"</span> \</span><br><span class="line">    --graph=<span class="string">"/var/lib/docker_2375"</span></span><br></pre></td></tr></table></figure></p>
+<p>坑三<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vim /lib/systemd/system/docker.service</span><br><span class="line">    <span class="comment"># 成功的</span></span><br><span class="line">    DOCKER_OPTS=-g /usr/bin/docker -H tcp://0.0.0.0:2375 \</span><br><span class="line">        -H unix:///var/run/docker.sock</span><br><span class="line">    <span class="comment"># 这个是失败的 </span></span><br><span class="line">    OPTIONS=-g /usr/bin/docker -H tcp://0.0.0.0:2375 \</span><br><span class="line">        -H unix:///var/run/docker.sock</span><br></pre></td></tr></table></figure></p>
+<h4 id="1-2-启动集群"><a href="#1-2-启动集群" class="headerlink" title="1.2 启动集群"></a>1.2 启动集群</h4><p>1.2.1.启动 Consel 服务后端(consul_ip or token,本机ip:109)至少一个群集管理器<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -h ==--name</span></span><br><span class="line">docker run -d -p 8500:8500 --name=consul progrium/consul -server \</span><br><span class="line">    -bootstrap -ui-dir /ui</span><br><span class="line"><span class="comment"># 输出一个id:4b80d44e61d4e00510</span></span><br><span class="line"><span class="comment"># sudo docker restart id # 重新启动此容器</span></span><br><span class="line">docker ps -a</span><br><span class="line"><span class="comment"># 在浏览器中打开</span></span><br><span class="line">192.168.1.109:8500</span><br></pre></td></tr></table></figure></p>
+<p>1.2.2.启动管理节点主机(manager0_ip,ip为100的虚拟主机,一个群组工作者)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># docker run -d -p 4000:4000 swarm manage -H :4000 --replication \</span></span><br><span class="line">    <span class="comment"># --advertise &lt;manager0_ip&gt;:4000 consul://&lt;consul_ip&gt;:8500</span></span><br><span class="line"><span class="comment"># 如果有4000端口占用的情况</span></span><br><span class="line">docker ps -a</span><br><span class="line">docker rm  -f -v containter_id</span><br><span class="line">docker run -d -p 4000:4000 swarm manage -H :4000 --replication \</span><br><span class="line">    --advertise 192.168.1.100:4000 consul://192.168.1.109:8500</span><br><span class="line"><span class="comment"># 输出一个id:b7a3c10f294f4718bcd0a516f</span></span><br><span class="line"><span class="comment"># 用户也可以启动 从管理节点</span></span><br><span class="line"><span class="comment"># docker run -d swarm manage -H :4000 --replication --advertise \</span></span><br><span class="line">    <span class="comment"># &lt;manager1_ip&gt;:4000 consul://&lt;consul_ip&gt;:8500</span></span><br></pre></td></tr></table></figure>
+<p>1.2.3.启动工作节点(node_ip,ip为101,102,103的虚拟主机)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># docker run -d swarm join --advertise=&lt;node_ip&gt;:2375 \</span></span><br><span class="line">    <span class="comment"># consul://&lt;consul_ip&gt;:8500</span></span><br><span class="line">docker run -d swarm join --advertise=192.168.1.101:2375 \</span><br><span class="line">    consul://192.168.1.109:8500</span><br><span class="line">docker run -d swarm join --advertise=192.168.1.102:2375 \</span><br><span class="line">    consul://192.168.1.109:8500</span><br><span class="line">docker run -d swarm join --advertise=192.168.1.103:2375 \</span><br><span class="line">    consul://192.168.1.109:8500</span><br></pre></td></tr></table></figure>
+<p>节点启动后,用户可以指定 Docker 服务地址为 &lt;manager0_ip&gt;:4000&gt; 来测试各种 Docker 命令,可以看到整个 Swarm 集群就像一个虚拟的 Docker 主机一样正常工作.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo docker -H 192.168.1.100:4000 ps -a </span><br><span class="line">sudo docker -H tcp://192.168.1.100:4000 info</span><br><span class="line">sudo docker ps --no-trunc</span><br></pre></td></tr></table></figure>
+<p>由于 Swarm 实际上是通过 agent 调用了本地的 Docker daemon 来运行容器,当 Swarm 集群服务出现故障时,无法接受新的请求,但已经运行起来的容器将不会受到影响.</p>
+<p>在集群上运行容器<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker -H 192.168.1.100:2375 run -d --name web1 nginx</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-token的例子"><a href="#2-token的例子" class="headerlink" title="2. token的例子"></a>2. <a href="http://dockone.io/article/227" target="_blank" rel="noopener">token的例子</a></h3><p>dockerHub 的服务发现后端,需要各个节点能通过公网访问到 DockerHub 的服务接口</p>
+<p>在任意一台安装了 Swarm 的机器上执行 swarm create 命令来在 DockerHub 服务上进行注册</p>
+<h4 id="2-1-创建集群-id"><a href="#2-1-创建集群-id" class="headerlink" title="2.1 创建集群 id"></a>2.1 创建集群 id</h4><p>Swarm   会通过服务发现后端(此处为 DockerHub 提供)来获取一个唯一的由数字和字母组成的 token,用来标识要管理的集群<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ip_109本机执行</span></span><br><span class="line">sudo docker ps -a</span><br><span class="line">sudo docker run --rm swarm create </span><br><span class="line"><span class="comment"># 只需要运行一次就行了,它会一直保存着,虽然在本机docker ps -a也查看不到</span></span><br><span class="line">token_id=ce2f14fa5ec481170d2bf62f40f832f7</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-2-配置集群节点"><a href="#2-2-配置集群节点" class="headerlink" title="2.2 配置集群节点"></a>2.2 配置集群节点</h4><p>添加节点A(101)、B(102)到集群,在所有要加入集群的普通节点上面执行 swarm join 命令,表示把这台机器加入指定集群当中<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ip_109本机执行</span></span><br><span class="line">sudo docker run --rm swarm join --addr=192.168.1.100:2375 \</span><br><span class="line">    token://<span class="variable">$token_id</span></span><br><span class="line">sudo docker run --rm swarm join --addr=192.168.1.101:2375 \</span><br><span class="line">    token://<span class="variable">$token_id</span></span><br><span class="line">sudo docker run --rm swarm join --addr=192.168.1.102:2375 \</span><br><span class="line">    token://<span class="variable">$token_id</span></span><br><span class="line"><span class="comment"># 列出节点 只需要出现一条记录之后就ctrl+c</span></span><br><span class="line">sudo docker run --rm swarm list token://<span class="variable">$token_id</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="2-3配置管理节点"><a href="#2-3配置管理节点" class="headerlink" title="2.3配置管理节点"></a>2.3配置管理节点</h4><p>在任何一台主机A(A:192.168.1.100)B或者C上开启管理程序</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ip_100上执行</span></span><br><span class="line">docker run -d -p 8888:2375 swarm manage token://<span class="variable">$token_id</span></span><br><span class="line"><span class="comment"># 可以通过 docker ps 命令来查看启动的 swarm manager 服务容器</span></span><br><span class="line">docker ps</span><br><span class="line"></span><br><span class="line"><span class="comment"># ip_109本机上 管理集群</span></span><br><span class="line">sudo docker -H 192.168.1.100:8888 ps </span><br><span class="line"></span><br><span class="line"><span class="comment"># 在集群上运行容器</span></span><br><span class="line">sudo docker -H 192.168.1.100:8888 run -d --name web1 nginx</span><br></pre></td></tr></table></figure>
+<p>几个命令就将多个单机版本的 Docker daemon 变成一个 cluster,还支持了 service 概念(多个容器实例副本的抽象)</p>
+<h3 id="3-docker-machine-swarm-d-virtualbox"><a href="#3-docker-machine-swarm-d-virtualbox" class="headerlink" title="3. docker-machine swarm  -d virtualbox"></a>3. docker-machine swarm  -d virtualbox</h3><p>docker daemon是root</p>
+<p>python此用户才能在virtualbox中看到创建的dev等虚拟机,docker-machine是普通用户的命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">docker run swarm -v</span><br><span class="line">sid=$(sudo docker run swarm create)</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$sid</span></span><br><span class="line">docker ps -a <span class="comment">#有上面两个但状态都是Exited</span></span><br><span class="line">docker-machine create -d virtualbox --swarm --swarm-master \</span><br><span class="line">    --swarm-discovery token://<span class="variable">$sid</span> swarm-master</span><br><span class="line"><span class="comment"># The host-only adapter is corrupted. Let's stop the VM, fix the host-only adapter and restart the VM</span></span><br><span class="line"><span class="comment"># 但我没有去做操作,它自动去改了？</span></span><br><span class="line">docker-machine ls</span><br><span class="line"></span><br><span class="line">docker-machine create -d virtualbox --engine-label itype=frontend \</span><br><span class="line">    --swarm --swarm-discovery token://<span class="variable">$sid</span> swarm-node-01</span><br><span class="line">docker-machine create -d virtualbox --engine-label itype=frontend \</span><br><span class="line">    --swarm --swarm-discovery token://<span class="variable">$sid</span> swarm-node-02</span><br><span class="line">docker-machine create -d virtualbox --engine-label itype=frontend \</span><br><span class="line">    --swarm --swarm-discovery token://<span class="variable">$sid</span> swarm-node-03</span><br><span class="line">docker-machine env swarm-master</span><br><span class="line">docker-machine env --swarm swarm-master</span><br><span class="line"></span><br><span class="line"><span class="built_in">eval</span> <span class="string">"<span class="variable">$(docker-machine env --swarm swarm-master)</span>"</span></span><br><span class="line">docker info</span><br><span class="line">docker run swarm list token://<span class="variable">$sid</span></span><br><span class="line">dokcer ps -a </span><br><span class="line"></span><br><span class="line">docker-machine ls</span><br><span class="line"><span class="built_in">eval</span> <span class="string">"<span class="variable">$(docker-machine env  swarm-master)</span>"</span></span><br><span class="line">docker ps -a</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">eval</span> <span class="string">"<span class="variable">$(docker-machine env --swarm swarm-master)</span>"</span></span><br><span class="line">docker-machine ls</span><br><span class="line">docker ps </span><br><span class="line"><span class="comment"># 进入环境了,docker run</span></span><br><span class="line">sudo docker run -itd --name engmgr ubuntu</span><br><span class="line"></span><br><span class="line">sudo docker ps </span><br><span class="line"><span class="comment"># 居然不是下在本机的 成功 有没有可能是主机的docker是什么权限,环境中的也是啊</span></span><br><span class="line"><span class="comment"># swarm-node-02/engmgr 而我的是engmgr</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `seq 1 6`; <span class="keyword">do</span> sudo docker run -itd -e \</span><br><span class="line">    constraint:itype!=frontend --name eng<span class="variable">$i</span> ubuntu; <span class="keyword">done</span></span><br><span class="line">sudo docker ps</span><br><span class="line"><span class="comment"># swarm-node-02/eng1 等还是没有前缀名</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># filter</span></span><br><span class="line">sudo docker run -itd --name engmgr-c -e \</span><br><span class="line">    affinity:container==engmgr ubuntu</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">docker-machine <span class="built_in">kill</span> $(docker-machine ls -q)</span><br><span class="line"><span class="comment"># 好像就回到了本机了</span></span><br><span class="line">sudo docker images </span><br><span class="line"><span class="comment"># ubuntu的镜像也在下载过来了</span></span><br></pre></td></tr></table></figure>
+<p>注意:您会注意到命令不能与前缀sudo .这是因为它假设您正在使用的登录到服务器docker-machine ssh使用Docker窗机设置后命令</p>
+<h3 id="4-docker-machine-swarm-d-digital"><a href="#4-docker-machine-swarm-d-digital" class="headerlink" title="4. docker-machine swarm -d digital"></a>4. docker-machine swarm -d <a href="https://www.howtoing.com/how-to-create-a-cluster-of-docker-containers-with-docker-swarm-and-digitalocean-on-ubuntu-16-04/" target="_blank" rel="noopener">digital</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">DOTOKEN=DOTOKEN_ID</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成节点</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> 1 2 3; <span class="keyword">do</span> docker-machine create --driver digitalocean \</span><br><span class="line">    --digitalocean-image  ubuntu-16-04-x64 \</span><br><span class="line">    --digitalocean-access-token <span class="variable">$DOTOKEN</span> node-<span class="variable">$i</span>; <span class="keyword">done</span></span><br><span class="line"><span class="comment"># 该开的端口,也都开了</span></span><br><span class="line"><span class="comment"># 命令成功完成后,您可以通过访问您的DigitalOcean仪表板或输入以下命令来验证是否已创建所有计算机:</span></span><br><span class="line"><span class="comment">#更新docker-machine之后执行,就如此简单的创建了主机,在控制面板就可以看到新创建出来的实例了:</span></span><br><span class="line"></span><br><span class="line">docker-machine ls </span><br><span class="line"><span class="built_in">eval</span> <span class="string">"<span class="variable">$(docker-machine env  node-1)</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使节点成为集群成员,选择其中一个节点并将其作为Docker Swarm(Node-1)管理器</span></span><br><span class="line">docker-machine ssh node-1</span><br><span class="line">docker swarm init --advertise-addr 45.55.87.176</span><br><span class="line"><span class="comment"># 会输出如下信息</span></span><br><span class="line"><span class="comment"># docker swarm join --token SWMTKN-1-xx 45.55.87.176:2377</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 并将其余部分配置为Docker Swarm工作线程. </span></span><br><span class="line">docker-machine ssh node-2</span><br><span class="line">docker swarm join --token SWMTKN-1-xx 45.55.87.176:2377</span><br><span class="line"></span><br><span class="line">docker-machine ssh node-3</span><br><span class="line">docker swarm join --token SWMTKN-1-xx 45.55.87.176:2377</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Docker Swarm管理命令必须在管理器节点上执行</span></span><br><span class="line">docker-machine ssh node-1</span><br><span class="line">docker node ls </span><br><span class="line">docker node --<span class="built_in">help</span></span><br><span class="line"><span class="comment"># 您可以随时从群集中添加或删除节点. 此外,工作节点可以升级为管理器,并且管理器可以转换为工作器</span></span><br><span class="line">docker info</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在Docker Swarm中运行服务 docker node命令一样, docker service命令只能在管理器节点上执行</span></span><br><span class="line">docker service create -p 80:80 --name webserver nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 要查看集群上运行的服务,请键入:</span></span><br><span class="line">docker service ls <span class="comment"># 可以输入node-1IP到浏览器中,可以看到Nginx的默认页面.</span></span><br><span class="line"><span class="comment"># 您可以通过使用docker service ps后跟服务名称来确定服务正在运行的节点</span></span><br><span class="line">docker service ps webserver</span><br><span class="line"></span><br><span class="line">docker-machine stop node-1 node-2 node-3</span><br><span class="line">docker swarm --<span class="built_in">help</span></span><br></pre></td></tr></table></figure>
+<p>大坑:</p>
+<p>-driver virtualbox </p>
+<p>docker-machine version 0.12.0 是没有问题的</p>
+<p>但 amazonec2 和 digitalocean ,都要是0.12.1版本才行,不然在创建时,会报如下错</p>
+<p>Error creating machine: Error running provisioning: ssh command error:<br>Unable to query docker version: Cannot connect to the docker engine endpoint</p>
+<h3 id="5-docker-machine-在AWS创建Docker主机-会创建一个新的实例-会有收费"><a href="#5-docker-machine-在AWS创建Docker主机-会创建一个新的实例-会有收费" class="headerlink" title="5. docker-machine 在AWS创建Docker主机(会创建一个新的实例,会有收费)"></a>5. docker-machine 在AWS创建Docker主机(会创建一个新的实例,会有收费)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># http://usyiyi.cn/documents/docker/machine/examples/aws.html</span></span><br><span class="line"><span class="comment"># 开放22,2376,2377,80 Docker machine的安全组</span></span><br><span class="line">docker-machine create --driver amazonec2 \</span><br><span class="line">    --amazonec2-access-key you_access_key \</span><br><span class="line">    --amazonec2-secret-key you_secret_key \</span><br><span class="line">    --amazonec2-region=us-west-2  aws-01</span><br><span class="line"><span class="comment"># /home/python/.docker/machine/machines/aws-01</span></span><br><span class="line">docker-machine ssh aws-01 <span class="comment"># 虽然有下面的各种坑,但还是能进去,一直报错所以一直没有执行此命令 </span></span><br><span class="line">docker swarm init --advertise-addr 54.244.58.2</span><br><span class="line"><span class="comment"># 不像digitalocean 一样顺利,还得vim /lib/systemd/system/docker.service 然后重启,再执行就和digitalocean一样了</span></span><br><span class="line">docker swarm join --token SWMTKN-1-xx 54.244.58.2:2377</span><br><span class="line"></span><br><span class="line">docker-machine create --driver amazonec2 \</span><br><span class="line">    --amazonec2-access-key you_access_key \</span><br><span class="line">    --amazonec2-secret-key you_secret_key \</span><br><span class="line">    --amazonec2-region=us-west-2  aws02</span><br><span class="line">docker-machine ssh aws02 </span><br><span class="line">sudo docker swarm join --token SWMTKN-1-xx 54.244.58.2:2377</span><br><span class="line"></span><br><span class="line">docker-machine ssh aws-01</span><br><span class="line">docker service create -p 80:80 --name webserver nginx</span><br><span class="line">docker service ls</span><br><span class="line">docker service ps  webserver</span><br><span class="line"><span class="comment"># Docker Swarm的另一个功能是缩放服务的能力,即启动服务的其他实例.假设我们想将我们之前启动的webserver服务扩展为五个实例</span></span><br><span class="line">docker service scale webserver=5 <span class="comment">#output: webserver scaled to 5</span></span><br><span class="line">docker service ps  webserver <span class="comment"># 可以看到这5个服务在都分布在哪些节点上</span></span><br></pre></td></tr></table></figure>
+<p>坑一:</p>
+<p>创建实例时,先要在EC2控制面板创建一对密钥对,在创建实例时,选择此密钥对,并保存好,当你创建好实例之后,要连接实例时需要此.pem文件,才能连接上,不然就悲剧了.</p>
+<p>坑二:</p>
+<p>IAM:不是你的用户名和密码(root) ,失败<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">docker-machine create --driver amazonec2 \</span><br><span class="line">    --amazonec2-access-key username \</span><br><span class="line">    --amazonec2-secret-key password \</span><br><span class="line">    --amazonec2-vpc-id vpc-a24484c4 aws-sandbox</span><br><span class="line"><span class="comment"># 你也可以创建其它的用户来管理aws,失败</span></span><br><span class="line">docker-machine create --driver amazonec2 \</span><br><span class="line">    --amazonec2-access-key AKIAIDGRV7O6MZ2DOYDA \</span><br><span class="line">    --amazonec2-secret-key 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 \</span><br><span class="line">    --amazonec2-vpc-id vpc-978f4cf1 aws-sandbox</span><br><span class="line"></span><br><span class="line"><span class="comment"># 但只能是root用户才能访问成功</span></span><br><span class="line">docker-machine create --driver amazonec2 \</span><br><span class="line">    --amazonec2-access-key you_access_key \</span><br><span class="line">    --amazonec2-secret-key you_secret_key \ </span><br><span class="line">    --amazonec2-vpc-id vpc-a24484c4 \</span><br><span class="line">    --amazonec2-zone=b aws-sandbox</span><br><span class="line"></span><br><span class="line"><span class="comment"># unable to find a subnet in the zone: us-east-1b to issue</span></span><br><span class="line">ssh -i <span class="string">"femn.pem"</span> ubuntu@ec2-34-212-39-188.us-west-2.compute.amazonaws.com</span><br><span class="line">sudo apt install awscli</span><br><span class="line">aws configure</span><br></pre></td></tr></table></figure></p>
+<p>坑三: 配置aws CLI ,IAM上面已得知了,Default region name:必须是这个实例的实际地址</p>
+<p>一定要选自己的地区  us-west-2</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/04/docker-swarm/" data-id="cjgssxuzf001106ps1wov7q42" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/04/docker-swarm/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/docker-swarm/">Comments</a>
     
 
         </footer>
@@ -1225,7 +1218,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/linux_firewall/" data-id="cjgra84rs002r05lmbcjv43jt" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/linux_firewall/" data-id="cjgssxv8r002m06psovkuin5e" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1366,7 +1359,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/basic_socket/" data-id="cjgra84nh000m05lm1ea0e71x" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/basic_socket/" data-id="cjgssxuy9000n06psv4k0uzb8" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1444,7 +1437,7 @@
 
 
 
-    <article id="post-shell" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-os" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -1452,7 +1445,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/04/shell/">Shell基本</a>
+            <a class="article-title" href="/2017/08/04/os/">os模块</a>
         </h1>
     
 
@@ -1461,7 +1454,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/shell/">
+        <a href="/2017/08/04/os/">
             <time datetime="2017-08-04T08:10:53.000Z" itemprop="datePublished">2017-08-04</time>
         </a>
     </div>
@@ -1470,7 +1463,7 @@
                         
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/shell/">shell</a>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
     </div>
 
                         
@@ -1482,64 +1475,10 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>shell:是一种命令解释器还是一种编程语言(shell脚本,shell编程),擅长处理文本类型的数据,所以Shell脚本在管理Linux系统中发挥了巨大作用<br>备份文件、安装软件、下载数据之类的事情,学着使用sh,bash会是一个好主意.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># "#!"是一个约定的标记,它告诉系统这个脚本需要什么解释器来执行</span></span><br><span class="line"><span class="comment"># shell脚本会被分解成一行一行的依次执行.</span></span><br><span class="line"><span class="comment"># bash shell会将空格,制表符,换行符当作字段分隔符</span></span><br><span class="line">IFS=$<span class="string">'\n'</span> <span class="comment"># 只识别换行符</span></span><br><span class="line">IFS=$<span class="string">'\n:;"'</span> <span class="comment"># 将换行,冒号,分号和双引号作为字段分隔符</span></span><br></pre></td></tr></table></figure>
-<h3 id="脚本文件没有可执行权限时"><a href="#脚本文件没有可执行权限时" class="headerlink" title="脚本文件没有可执行权限时"></a>脚本文件没有可执行权限时</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh test.sh</span><br></pre></td></tr></table></figure>
-<h3 id="脚本有可执行权限"><a href="#脚本有可执行权限" class="headerlink" title="脚本有可执行权限"></a>脚本有可执行权限</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">./test.sh</span><br><span class="line"><span class="comment"># 注意,一定要写成./test.sh,而不是test.sh,运行其它二进制的程序也一样,</span></span><br><span class="line"><span class="comment"># 直接写test.sh,linux系统会去PATH里寻找有没有叫test.sh的,</span></span><br><span class="line"><span class="comment"># 而只有/bin, /sbin, /usr/bin,/usr/sbin等在PATH里,你的当前目录通常不在PATH里</span></span><br><span class="line"><span class="comment"># 所以写成test.sh是会找不到命令的,要用./test.sh告诉系统说,就在当前目录找</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> 或. </span><br><span class="line"><span class="comment"># 命令执行与上面执行不同,上面执行 shell 都会分配一个子进程来进行</span></span><br><span class="line"><span class="comment"># source 或. 命令就在本进程执行,也就是说一些非环境变量也能读取到</span></span><br></pre></td></tr></table></figure>
-<h3 id="重定向输入和输出-将某个命令的输出重定向到另一个位置-文件-或者命令"><a href="#重定向输入和输出-将某个命令的输出重定向到另一个位置-文件-或者命令" class="headerlink" title="重定向输入和输出:将某个命令的输出重定向到另一个位置(文件,或者命令)"></a>重定向输入和输出:将某个命令的输出重定向到另一个位置(文件,或者命令)</h3><p>命令行的数据流定义:STDIN(0),STDOUT(1),STDERR(2),用来管理SHELL中的信息流的分流.</p>
-<h4 id="重定向输出-将命令的输出发到一个文件中"><a href="#重定向输出-将命令的输出发到一个文件中" class="headerlink" title="重定向输出:将命令的输出发到一个文件中"></a>重定向输出:将命令的输出发到一个文件中</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">STDOUT: &gt;(覆盖) &gt;&gt;(追加) 重定向到文件</span><br><span class="line">STDERR: 2&gt;</span><br><span class="line">STDOUT STDERR: 2&gt;&amp;1 </span><br><span class="line">ehco <span class="string">"alias ll='ls -alF'"</span> &gt;&gt; test.txt</span><br><span class="line">date &gt; test.txt</span><br></pre></td></tr></table></figure>
-<h4 id="重定向输入-将文件的内容重定向到命令中"><a href="#重定向输入-将文件的内容重定向到命令中" class="headerlink" title="重定向输入:将文件的内容重定向到命令中"></a>重定向输入:将文件的内容重定向到命令中</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">grep femn &lt; /etc/passwd          </span><br><span class="line">grep femn &lt; /etc/passwd</span><br><span class="line"><span class="built_in">echo</span> `grep femn &lt; /etc/passwd`</span><br></pre></td></tr></table></figure>
-<h4 id="管道命令-将一个集合的输出做会一个命令的输入-STDOUT-STDERR-STDIN"><a href="#管道命令-将一个集合的输出做会一个命令的输入-STDOUT-STDERR-STDIN" class="headerlink" title="管道命令:将一个集合的输出做会一个命令的输入  STDOUT,STDERR | STDIN"></a>管道命令:将一个集合的输出做会一个命令的输入  STDOUT,STDERR | STDIN</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa | sort | more</span><br></pre></td></tr></table></figure>
-<p> 生成已安装包的列表,经过管理排序,再经过管理传给More命令显示</p>
-<h3 id="Shell基本类型"><a href="#Shell基本类型" class="headerlink" title="Shell基本类型"></a>Shell基本类型</h3><p>赋值与引用:<br>脚本编程中的一个主要构件  反引号 ( <code></code> ) 它允许你将shell命令的输出赋给变量<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">testing=`date +%y%m%d`  <span class="comment">#你必须用把整个命令行命令圈起来 </span></span><br><span class="line"><span class="variable">$HOME</span> <span class="variable">$&#123;HOME&#125;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="comment"># -n 在同一行显示一个文本字符串作为命令输出.</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"OK! \n"</span> <span class="comment"># -e 开启转义</span></span><br><span class="line">/<span class="variable">$15</span> <span class="comment"># 转义符</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="变量类型只能为Int-str-数组-而且等于两边不能有空格"><a href="#变量类型只能为Int-str-数组-而且等于两边不能有空格" class="headerlink" title="变量类型只能为Int,str,数组,而且等于两边不能有空格"></a>变量类型只能为Int,str,数组,而且等于两边不能有空格</h4><p><em>数字</em><br>在将一个数学运算结果赋值给一个变量时,你可以用美元符和方括号将数字表达式圈起来<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$[option]</span><br><span class="line">$(())</span><br></pre></td></tr></table></figure></p>
-<p>注意只支持整数运算<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var=1 </span><br><span class="line">var1=$[2 * 5]</span><br><span class="line">var1=$((<span class="variable">$var</span>*5))</span><br></pre></td></tr></table></figure></p>
-<p><em>字符串</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">var=femn</span><br><span class="line">greeting=<span class="string">"hello, <span class="variable">$&#123;var&#125;</span> !"</span> </span><br><span class="line">var=<span class="string">"my name"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;#var&#125;</span> <span class="comment">#获取字符串长度</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var:1:4&#125;</span> <span class="comment">#字符串分片</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [-z str 为0 ]  </span><br><span class="line"><span class="comment"># -z 字符串的长度为零则为真,退出状态为0.</span></span><br><span class="line"><span class="keyword">if</span> [-n str 非0]</span><br><span class="line"><span class="comment"># -n str 字符串的长度不为零则为真</span></span><br><span class="line"></span><br><span class="line">var=http://www.aaa.com/123.htm </span><br><span class="line">1. <span class="comment"># 号截取,删除左边字符,保留右边字符.</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var#*//&#125;</span> <span class="comment"># www.aaa.com/123.htm </span></span><br><span class="line">2. <span class="comment">## 号截取,删除左边字符,保留右边字符</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var##*/&#125;</span> <span class="comment"># 123.htm </span></span><br><span class="line">3. %号截取,删除右边字符,保留左边字符</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var%/*&#125;</span> <span class="comment"># http://www.aaa.com</span></span><br><span class="line">4. %% 号截取,删除右边字符,保留左边字符</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var%%/*&#125;</span> <span class="comment"># http:</span></span><br><span class="line">5. 从左边第几个字符开始,及字符的个数</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var:0:5&#125;</span> <span class="comment"># http: </span></span><br><span class="line">6. 从左边第几个字符开始,一直到结束</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var:7&#125;</span> <span class="comment"># www.aaa.com/123.htm</span></span><br><span class="line">7. 从右边第几个字符开始,及字符的个数</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var:0-7:3&#125;</span> <span class="comment">#  123</span></span><br><span class="line">8. 从右边第几个字符开始,一直到结束</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var:0-7&#125;</span> <span class="comment">#123.htm</span></span><br></pre></td></tr></table></figure></p>
-<p><em>数组</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">list=(1 2 3 4)</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;list[0]&#125;</span> <span class="comment"># </span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;list[@]&#125;</span> <span class="comment">#获取数组中所有的元素</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;#list[@]&#125;</span> <span class="comment"># 计算数组个数</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="shell语法"><a href="#shell语法" class="headerlink" title="shell语法"></a>shell语法</h3><h4 id="结构化命令允许你改变程序执行的顺序-在某些条件下执行一些命令而在其它条件下跳过另一些命令"><a href="#结构化命令允许你改变程序执行的顺序-在某些条件下执行一些命令而在其它条件下跳过另一些命令" class="headerlink" title="结构化命令允许你改变程序执行的顺序,在某些条件下执行一些命令而在其它条件下跳过另一些命令."></a>结构化命令允许你改变程序执行的顺序,在某些条件下执行一些命令而在其它条件下跳过另一些命令.</h4><p>if-then语句,只能测试跟命令的退出状态码有关的条件.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">1.if <span class="built_in">command</span>:<span class="keyword">then</span></span><br><span class="line">    commands </span><br><span class="line"><span class="keyword">fi</span> </span><br><span class="line"><span class="comment"># 使用一行,多用于终端</span></span><br><span class="line"><span class="keyword">if</span> [ $(ps -ef | grep -c <span class="string">"ssh"</span>) -gt 1 ]; <span class="keyword">then</span> <span class="built_in">echo</span> <span class="string">"true"</span>; <span class="keyword">fi</span> </span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果else分支没有语句执行,就不要写这个else.</span></span><br><span class="line">2.if command1</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    commands</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="comment"># 使用一行,多用于终端</span></span><br><span class="line"><span class="keyword">if</span> [ $(ps -ef | grep -c <span class="string">"ssh"</span>) -gt 1 ]; <span class="keyword">then</span> <span class="built_in">echo</span> <span class="string">"true"</span>; \</span><br><span class="line">    <span class="keyword">else</span> <span class="built_in">echo</span> <span class="string">'false'</span>; <span class="keyword">fi</span> </span><br><span class="line"></span><br><span class="line">3.if command1 </span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    commands </span><br><span class="line"><span class="keyword">elif</span> command2 </span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    commands </span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="case命令-替代elif语句来不断检查相同变量值-case命令提供了一个更清晰的方法来为变量每个可以的值指定不同的选项"><a href="#case命令-替代elif语句来不断检查相同变量值-case命令提供了一个更清晰的方法来为变量每个可以的值指定不同的选项" class="headerlink" title="case命令,替代elif语句来不断检查相同变量值.case命令提供了一个更清晰的方法来为变量每个可以的值指定不同的选项."></a>case命令,替代elif语句来不断检查相同变量值.case命令提供了一个更清晰的方法来为变量每个可以的值指定不同的选项.</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> <span class="variable">$USER</span> <span class="keyword">in</span></span><br><span class="line">femn | pattern2 )</span><br><span class="line">    commands1;;</span><br><span class="line">parrent3)</span><br><span class="line">    commands2;;</span><br><span class="line">*)</span><br><span class="line">    commands;;</span><br><span class="line"><span class="keyword">esac</span></span><br></pre></td></tr></table></figure>
-<h4 id="test命令会将所有的标点和大小写也考虑在内"><a href="#test命令会将所有的标点和大小写也考虑在内" class="headerlink" title="test命令会将所有的标点和大小写也考虑在内"></a>test命令会将所有的标点和大小写也考虑在内</h4><p>在其它编程语言中,if语句之后的对象是一个等式来测试是 true or false .bash shell并不是这样工作的.</p>
-<h4 id="当command1命令退出状态码是0-位于then部分的命令就会被执行-如果是非0则执行else命令块"><a href="#当command1命令退出状态码是0-位于then部分的命令就会被执行-如果是非0则执行else命令块" class="headerlink" title="当command1命令退出状态码是0,位于then部分的命令就会被执行.如果是非0则执行else命令块."></a>当command1命令退出状态码是0,位于then部分的命令就会被执行.如果是非0则执行else命令块.</h4><p>test命令提供了在if-then语句中测试不同条件的途径.<br>test命令格式:test condition(要测试的一系列参数和值)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># test condition==[ condition ] </span></span><br><span class="line"><span class="comment"># 你必须在左括号右侧和右括号左侧各加一个空格,否则会报错.</span></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">test</span> <span class="variable">$&#123;num1&#125;</span> -eq <span class="variable">$&#123;num2&#125;</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$&#123;num1&#125;</span> -eq <span class="variable">$&#123;num2&#125;</span> ]</span><br><span class="line"><span class="comment"># 复合条件测试</span></span><br><span class="line">[ condition1 ] &amp;&amp; [ condition2 ]</span><br><span class="line">               ||</span><br></pre></td></tr></table></figure></p>
-<p>test可以判断3类条件:1.数值比较,2.字符串比较,3.文件比较<br><em>数值比较:</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-gt: 大于(-g)</span><br><span class="line">-lt: 小于(-l)</span><br><span class="line">-eq: 等于(-e)</span><br><span class="line">-ne: 不等于</span><br><span class="line">-ge: 大于等于 </span><br><span class="line">-le: 小于等于</span><br></pre></td></tr></table></figure></p>
-<p>bash shell能处理的数仅有整数.使用bash计算器时,你可以让shell将浮点值作为字符串值存储进一个变量,如果你只是要通过echo语句来显示这个结果,那它能很好地工作,便它无法在基于数字的函数中工作.</p>
-<p><em>字符串比较:</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;</span><br><span class="line">&gt;</span><br><span class="line">=</span><br><span class="line">!=</span><br><span class="line">-z</span><br><span class="line">-n</span><br></pre></td></tr></table></figure></p>
-<p>字符串顺序:要测试一个字符串要比另一个字符串大就开始变得烦琐了,大于小于符号必须转义,否则shell会把它们当做重写向符号而把字符串值当做文件名.而且大于小于顺序和sort命令所采用的不同.test命令中大写字母会被当成小于小写字母.<br>if [Test \&lt; test]</p>
-<p><em>文件比较:</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 检查new.sh文件是否比old.sh新,在此之前要先确认文件是否存在.</span></span><br><span class="line"><span class="keyword">if</span> [ ./new.sh -nt ./old.sh ] </span><br><span class="line"><span class="keyword">if</span> [ ./old.sh -ot ./new.sh ] <span class="comment">#</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -e <span class="variable">$HOME</span> ] <span class="comment">#检查文件是否存在 下面的所有检查都要满足这个前提条件</span></span><br><span class="line"><span class="keyword">if</span> [ -d <span class="variable">$HOME</span> ] <span class="comment"># 检查文件是否存在并是个目录</span></span><br><span class="line"><span class="keyword">if</span> [ -f <span class="variable">$HOME</span>/.vimrc ] <span class="comment"># 并是个文件</span></span><br><span class="line"><span class="keyword">if</span> [ ! -f <span class="variable">$HOME</span>/.vimrc ] <span class="comment"># 如果不是文件则执行</span></span><br><span class="line"><span class="keyword">if</span> [ -r <span class="variable">$HOME</span> ] <span class="comment"># 并是可读</span></span><br><span class="line"><span class="keyword">if</span> [ -w <span class="variable">$HOME</span>/.vimrc ] <span class="comment"># 并是可写</span></span><br><span class="line"><span class="keyword">if</span> [ -x <span class="variable">$HOME</span>/.vimrc ] <span class="comment"># 并是可执行</span></span><br><span class="line"><span class="keyword">if</span> [ -O <span class="variable">$HOME</span>/.vimrc ] <span class="comment"># 并是 属于当前用户所有</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -s <span class="variable">$HOME</span>/.vimrc ] <span class="comment"># 并是不为空,说明有数据,删除时就小心了.</span></span><br></pre></td></tr></table></figure></p>
-<p>if-then的高级特征:</p>
-<p>双圆括号命令允许你将高级数学表达式放入比较中<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(( expression ))</span><br></pre></td></tr></table></figure></p>
-<p>test命令只允许在比较中进行简单的算术操作.双圆括号命令提供了更多的为用过其它编程语言的程序员所熟悉的数学符号.你不需要将圆括号中表达式里的大于号转义,这是双圆括号命令提供的另一个高级特性.</p>
-<p>用于高级字符串处理功能的双方括号.   [[ expression ]]<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (( <span class="variable">$var1</span> ** 2 &gt; 90 )) || [[ <span class="variable">$USER</span> == f* ]]</span><br><span class="line"><span class="comment"># 幂运算之后比较大小</span></span><br><span class="line"><span class="comment"># 匹配$USER是否以f字母开头</span></span><br><span class="line"><span class="comment"># 模式匹配中,你可以定义一个正则表达式来匹配字符串值.</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="循环中定义的test命令和if-then语句中定义的是一样的格式"><a href="#循环中定义的test命令和if-then语句中定义的是一样的格式" class="headerlink" title="循环中定义的test命令和if-then语句中定义的是一样的格式."></a>循环中定义的test命令和if-then语句中定义的是一样的格式.</h4><p>你需要重复一组命令直到达到某个特定条件.for, while, until<br><em>for循环假定每个值都是用空格分割的</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> var <span class="keyword">in</span> list</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">	commands</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span> `ls /etc`</span><br><span class="line"><span class="keyword">for</span> loop <span class="keyword">in</span> 1 2 3 4 5</span><br><span class="line"><span class="keyword">for</span> var <span class="keyword">in</span> item1 item2 ... itemN; <span class="keyword">do</span> command1; command2… <span class="keyword">done</span>;</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">test</span> <span class="keyword">in</span> I don\<span class="string">'t know if "this'</span>ll <span class="string">" work</span></span><br></pre></td></tr></table></figure></p>
-<p>用通配符读取目录:你可以你for命令来自动遍历满是文件的目录.进行操作时,你必须在文件名或路径名使用通配符.它会强制shell命令使用文件扩展匹配(file globbing):它是生成匹配指定的通配符的文件名或路径外的过程.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span> <span class="variable">$HOME</span>/*</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">	<span class="keyword">if</span> [-d <span class="string">"<span class="variable">$file</span>"</span>]</span><br><span class="line">    <span class="comment"># 为了解决含有空格的目录名或文件名,将$file变量用双引号圈起来</span></span><br><span class="line">	<span class="keyword">then</span></span><br><span class="line">		<span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span> is a directory"</span></span><br><span class="line">	<span class="keyword">elif</span> [-f <span class="string">"<span class="variable">$file</span>"</span>]</span><br><span class="line">	<span class="keyword">then</span> </span><br><span class="line">		<span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span> is a file"</span></span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span> is doesn't exist"</span></span><br><span class="line">	<span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure></p>
-<p>C语言的for命令:通常会定义一个变量,然后这个变量会在每次迭代时自动改变.程序员会将这个变量当作计数器,并在每次迭代中让计数器增一或减一.<br>这是bash中C语言风格的for循环的基本格式:for((variable assignment;condition;iteration process))<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (i=0;i&lt;10;i++)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"the next number is %d\n"</span>,i)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> ((a=1,b=10;a&lt;10;a++,b--))</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"<span class="variable">$a</span> -  <span class="variable">$b</span>"</span></span><br><span class="line"><span class="keyword">done</span> </span><br><span class="line"><span class="comment">#  使用多个变量时,循环会单独处理每个变量,</span></span><br><span class="line"><span class="comment"># 允许你为每个变量定义不同的迭代过程,但只能定义一种条件.</span></span><br></pre></td></tr></table></figure></p>
-<p><em>while</em><br>while命令在某种意义上是if-then语句和for循环的混杂体.它会在每个迭代的一开始测试test命令.只有测试条件成立,while命令才会继续遍历执行定义好的命令.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="built_in">test</span> <span class="built_in">command</span>				</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    other <span class="built_in">command</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">int=1</span><br><span class="line"><span class="keyword">while</span>(( <span class="variable">$int</span>&lt;=5 ))</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="variable">$int</span></span><br><span class="line">        <span class="built_in">let</span> <span class="string">"int++"</span></span><br><span class="line"><span class="keyword">done</span> ))</span><br></pre></td></tr></table></figure></p>
-<p>break终止执行后面的所有循环<br>continue命令类似,只有一点差别,它不会跳出所有循环,仅仅跳出当前循环</p>
-<p>until命令和while命令工作的方式完全相反<br>测试条件中用到的变量必须被修改,否则会进入一个无限循环.<br>嵌套循环nested loop:可以在循环内使用任何类型的命令,自然也包括其它循环命令.在使用nested loop时,你是在迭代中使用迭代,命令运行的次数是乘积关系.内部循环会有外部循环的每次迭代中遍历一遍它所有的值.<br>以两个for命令写个nested loop</p>
-<h3 id="shell变量"><a href="#shell变量" class="headerlink" title="shell变量"></a>shell变量</h3><p>bash shell提供了不同的方法从用户处获得数据,包括命令行参数,命令行选项以及直接从键盘读取输入的能力.</p>
-<h5 id="命令行参数-添加在命令后的数据值"><a href="#命令行参数-添加在命令后的数据值" class="headerlink" title="命令行参数(添加在命令后的数据值)"></a>命令行参数(添加在命令后的数据值)</h5><ol>
-<li><p>$?专属变量来保存上个执行命令的退出状态码(0:命令成功结束,126:没有执行权限,1:无效参数等通用未知错误)</p>
-</li>
-<li><p>$1-$9 第一到第九个命令行参数</p>
-</li>
-<li><p>${10} # 第十个命令行参数的读取方式</p>
-</li>
-</ol>
-<p>当传给$0变量的真实字符串是整个脚本路径时,程序中就会使用整个路径,而不仅仅是程序名.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">vim tesh.sh </span><br><span class="line">    <span class="comment">#!/bin/bash</span></span><br><span class="line">    name=`basename <span class="variable">$0</span>`</span><br><span class="line">    <span class="comment"># basename命令仅仅会返回程序名</span></span><br><span class="line">    <span class="built_in">echo</span> the <span class="built_in">command</span> entered is <span class="variable">$name</span></span><br><span class="line">    <span class="built_in">echo</span> the <span class="built_in">command</span> entered is <span class="variable">$0</span></span><br><span class="line">sh ./test.sh </span><br><span class="line"><span class="comment"># the command entered is test.sh</span></span><br><span class="line"><span class="comment"># the command entered is ./test.sh</span></span><br><span class="line">sh ~/test.sh </span><br><span class="line"><span class="comment"># the command entered is test.sh</span></span><br><span class="line"><span class="comment"># the command entered is /home/femn/test.sh</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查命令行参数中是否有数据,有的话就执行then语句</span></span><br><span class="line"><span class="keyword">if</span> [ -n <span class="string">"<span class="variable">$1</span>"</span> ] </span><br><span class="line"><span class="comment"># 所有命令行参数的个数 </span></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$#</span> -ne 2 ]</span><br><span class="line"><span class="comment"># $*和$@变量提供了对所有参数的快速访问</span></span><br><span class="line"><span class="comment"># $*变量将会把所有参数当成单个参数</span></span><br><span class="line"><span class="keyword">for</span> param <span class="keyword">in</span> <span class="string">"$*"</span></span><br><span class="line"><span class="comment"># $@变量会单独处理每个参数</span></span><br><span class="line"><span class="keyword">for</span> param <span class="keyword">in</span> <span class="string">"<span class="variable">$@</span>"</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="shell-命令"><a href="#shell-命令" class="headerlink" title="shell 命令"></a>shell 命令</h4><p>bash shell工具链中另一个工具是shift命令.bash shell提供了shell命令来帮助操作命令行参数.<br>默认情况下,shell命令会将参数变量减一,所以变量$2会移到$1,而变量$1的值会被删除并且无法恢复<br>变量$0是程序名不会改变.这是遍历命令行参数的另一个绝妙方法,尤其是你不知道有多少参数时.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">vim test1.sh </span><br><span class="line">    <span class="comment">#!/bin/bash </span></span><br><span class="line">    <span class="comment"># demonstration the shift command</span></span><br><span class="line">    count=1</span><br><span class="line">    <span class="keyword">while</span> [ -n <span class="string">"<span class="variable">$1</span>"</span> ]</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"Parameter #<span class="variable">$count</span> = <span class="variable">$1</span>"</span></span><br><span class="line">        count=$(( <span class="variable">$count</span>+1 ))</span><br><span class="line">        <span class="built_in">shift</span></span><br><span class="line">    <span class="keyword">done</span></span><br><span class="line">sh ./test1.sh femn leipengkai yuyu</span><br><span class="line"><span class="comment"># Parameter #1 = femn</span></span><br><span class="line"><span class="comment"># Parameter #2 = leipengkai</span></span><br><span class="line"><span class="comment"># Parameter #3 = yuyu</span></span><br></pre></td></tr></table></figure></p>
-<h5 id="命令行选项-是跟在单破折线后面的单个字母-可以修改命令行为的单字母值"><a href="#命令行选项-是跟在单破折线后面的单个字母-可以修改命令行为的单字母值" class="headerlink" title="命令行选项(是跟在单破折线后面的单个字母,可以修改命令行为的单字母值)"></a>命令行选项(是跟在单破折线后面的单个字母,可以修改命令行为的单字母值)</h5><p>当脚本看到”–” ,脚本会安全地将剩下的命令行参数当做参数来处理而不是选项.<br>你可以像处理命令行参数一样处理命令行选项<br>你经常遇到想在脚本中同时使用选项和参数的情况.<br>Linux处理这个问题的标准方式是用特殊的字符将二者分开,该字符(–双破折线)会告诉脚本选项何时结束,以及普通参数何时开始.</p>
-<h4 id="getopt命令"><a href="#getopt命令" class="headerlink" title="getopt命令"></a>getopt命令</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">getopt -q ab:<span class="built_in">cd</span> -a -b test1 -cde test2 test3</span><br><span class="line"><span class="comment"># 用getopt 命令生成的格式化后的版本来替换已有的命令行选项和参数</span></span><br><span class="line"><span class="comment"># -a -b 'test1' -c -d -- 'test2' 'test3'</span></span><br><span class="line">vim test2.sh </span><br><span class="line">    <span class="comment">#!/bin/bash </span></span><br><span class="line">    <span class="comment"># extraction command line options and values.</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> [ -n <span class="string">"<span class="variable">$1</span>"</span> ]</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">        <span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span></span><br><span class="line">        -a)</span><br><span class="line">            <span class="built_in">echo</span> <span class="string">"Found the -a options"</span>;;</span><br><span class="line">        -b) param=<span class="string">"<span class="variable">$2</span>"</span></span><br><span class="line">            <span class="built_in">echo</span> <span class="string">"Found the -b options,with parameter value <span class="variable">$param</span>"</span></span><br><span class="line">            <span class="built_in">shift</span>;;</span><br><span class="line">        -c)</span><br><span class="line">            <span class="built_in">echo</span> <span class="string">"Found the -c options"</span>;;</span><br><span class="line">        --) <span class="built_in">shift</span></span><br><span class="line">            <span class="built_in">break</span>;;</span><br><span class="line">        *) <span class="built_in">echo</span> <span class="string">"<span class="variable">$1</span> is not an optionso"</span>;;</span><br><span class="line">        <span class="keyword">esac</span></span><br><span class="line">        <span class="built_in">shift</span></span><br><span class="line">    <span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">    count=1</span><br><span class="line">    <span class="keyword">for</span> param <span class="keyword">in</span> <span class="string">"<span class="variable">$@</span>"</span></span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"Parameter #<span class="variable">$count</span>: <span class="variable">$param</span>"</span></span><br><span class="line">        count=$(( <span class="variable">$count</span> +1 ))</span><br><span class="line">    <span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">sh ./test2.sh -b test2 -a -d </span><br><span class="line"><span class="comment"># Found the -b options,with parameter value test2</span></span><br><span class="line"><span class="comment"># Found the -a options</span></span><br><span class="line"><span class="comment"># -d is not an optionso</span></span><br><span class="line"></span><br><span class="line">sh ./test2.sh -b test2 -a -b </span><br><span class="line"><span class="comment"># Found the -b options,with parameter value test2</span></span><br><span class="line"><span class="comment"># Found the -a options</span></span><br><span class="line"><span class="comment"># Found the -b options,with parameter value </span></span><br><span class="line"><span class="comment"># ./test2.sh: 18: shift: can't shift that many</span></span><br></pre></td></tr></table></figure>
-<p>你可以在脚本中使用getopt命令来格式化输入脚本的任何命令行选项和参数,但用起来略微复杂.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> -- `getopt -q ab:<span class="built_in">cd</span> <span class="string">"<span class="variable">$@</span>"</span> `    options parameters用<span class="string">"<span class="variable">$@</span>"</span></span><br></pre></td></tr></table></figure>
-<p>该方法将原本的脚本的命令行参数传给getopt命令,之后再将getopt的输出传给set命令,用getopt命令格式化后的命令行参数来替换原始命令行参数.</p>
-<p>set 命令的选项之一是双破折线,它会将命令行参数替换成set命令的命令行的值.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sh ./test2.sh -ac</span><br><span class="line">    <span class="comment"># 合并选项 增加下面这句</span></span><br><span class="line">    <span class="built_in">set</span> -- `getopt -q ab:c <span class="string">"<span class="variable">$@</span>"</span>`</span><br><span class="line">    <span class="keyword">while</span> [ -n <span class="string">"<span class="variable">$1</span>"</span> ]</span><br><span class="line"><span class="comment"># Found the -a options</span></span><br><span class="line"><span class="comment"># Found the -c options</span></span><br><span class="line"></span><br><span class="line">sh ./test2.sh -a -b test1 -<span class="built_in">cd</span> test2 test3</span><br><span class="line"><span class="comment"># Found the -a options</span></span><br><span class="line"><span class="comment"># Found the -b options,with parameter value 'test1'</span></span><br><span class="line"><span class="comment"># Found the -c options</span></span><br><span class="line"><span class="comment"># Parameter #1: 'test2'</span></span><br><span class="line"><span class="comment"># Parameter #2: 'test3'</span></span><br></pre></td></tr></table></figure>
-<p>但getopt命令并不擅长处理带空格的参数值,它会将空格当做参数分隔符,而不是根据双引号将二者当作一个参数.</p>
-<p>getopts命令扩展了getopt命令的功能:getopts optstring variable</p>
-<p>与getopt命令将命令行上找到的选项和参数处理后只生成一个输出不同,getopts命令能够和已有的shell参数变量对应地顺序工作.</p>
-<p>getopts命令将当前参数保存在命令行中定义的variable中.它会用到两个环境变量,如果选项需要参数值,OPTARG环境变量就会保存这个值.OPTIND环境变量保存了参数列表中getopts正在处理的参数位置.</p>
-<h4 id="获得用户输入"><a href="#获得用户输入" class="headerlink" title="获得用户输入"></a>获得用户输入</h4><p>你想在运行脚本时,问一个问题,并等运行脚本的人来回答.bash shell为此提供了read命令.<br>read命令接受从标准输入(键盘)或另一个文件描述符的输入.<br>echo -n -n会移除字符串末尾的换行符,允许脚本用户紧跟其后输入数据,而不是下一行<br>read -n1 -t 5 -p 接受单个字符后退出而不必回车,超时,直接在read命令行提示符<br>read -s隐藏方式读取,实际上数据会被显示,只是read命令会将文本颜色设成跟背景色一样.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vim test.sh </span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># echo -n "ENter your name:"</span></span><br><span class="line"><span class="comment"># read name </span></span><br><span class="line"><span class="built_in">read</span> -p <span class="string">"ENter your name:"</span> name</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Hello <span class="variable">$name</span>, Welcome"</span></span><br></pre></td></tr></table></figure>
-<h4 id="从文件中读取-每次调用read命令会从文件中读取一行文本-当文件没能内容时-read命令会退出并返回一个非零的状态码"><a href="#从文件中读取-每次调用read命令会从文件中读取一行文本-当文件没能内容时-read命令会退出并返回一个非零的状态码" class="headerlink" title="从文件中读取.每次调用read命令会从文件中读取一行文本,当文件没能内容时,read命令会退出并返回一个非零的状态码."></a>从文件中读取.每次调用read命令会从文件中读取一行文本,当文件没能内容时,read命令会退出并返回一个非零的状态码.</h4><p>最常见的方法是将文件通过cat命令后的输出通过管道直接传给含有read命令的while命令.cat test |while read line</p>
+            <h3 id="import-os"><a href="#import-os" class="headerlink" title="import os"></a>import os</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">path = <span class="string">r"aa/"</span></span><br><span class="line">path1 = <span class="string">r'bb/'</span></span><br><span class="line"><span class="comment"># 如果path路径不加'/'的话,默认是从运行路径再加aa</span></span><br><span class="line">os.getcwd() </span><br><span class="line"><span class="comment">#'/home/python'</span></span><br><span class="line"><span class="comment"># 运行ipython的路径,如果是python3 /home/python/app1.6/runner.py</span></span><br><span class="line"><span class="comment"># 则是/home/python/app1.6</span></span><br><span class="line"></span><br><span class="line">os.path.abspath(path) <span class="comment"># path规范化的绝对路径</span></span><br><span class="line"><span class="comment">#'/home/python/aa'</span></span><br><span class="line"></span><br><span class="line">os.path.join(os.getcwd(),path,path1)</span><br><span class="line"><span class="comment">#'/home/python/aa/bb/'</span></span><br><span class="line"></span><br><span class="line">os.path.normpath(os.path.join(os.getcwd(),path,path1)) </span><br><span class="line"><span class="comment"># path规范化的绝对路径</span></span><br><span class="line"><span class="comment">#'/home/python/aa/bb'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">将多个路径组合后返回,第一个绝对路径之前的参数将被忽略</span><br><span class="line">os.path.join(<span class="string">'/home/python'</span>,<span class="string">'/'</span>,<span class="string">'aa'</span>,<span class="string">'/home/'</span>)</span><br><span class="line"><span class="comment"># '/home/'</span></span><br></pre></td></tr></table></figure>
+<h3 id="判断"><a href="#判断" class="headerlink" title="判断"></a>判断</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">os.path.exists(path)<span class="comment"># 如果path存在,返回True;如果path不存在,返回False.</span></span><br><span class="line">os.path.isabs(os.getcwd()) <span class="comment"># 如果只要path是绝对路径,不管是不是存在,返回True</span></span><br><span class="line">os.path.isfile(path) </span><br><span class="line">os.path.isdir(path)</span><br><span class="line"><span class="string">'1.jpg'</span>.endswith(<span class="string">'.jpng'</span>) <span class="comment"># False</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算此文件的大小 </span></span><br><span class="line">(os.path.getsize(abspath))/<span class="number">1024</span>/<span class="number">1024</span> <span class="comment"># byte/k/M</span></span><br><span class="line"><span class="comment">#改变一个文件的文件名</span></span><br><span class="line">os.rename(os.path.join(<span class="string">'abspath'</span>,<span class="string">'filename'</span>), \</span><br><span class="line">    os.path.join(<span class="string">'abspath'</span>,<span class="string">'new_name'</span>))</span><br><span class="line"><span class="comment"># 如果没有则创建目录,有的话就没原来的,防止</span></span><br><span class="line">os.makedirs(<span class="string">'/home/python/1/1/1'</span>,exist_ok=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="分割"><a href="#分割" class="headerlink" title="分割"></a>分割</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">os.path.splitext(<span class="string">r'/home/python/22.json'</span>)</span><br><span class="line"><span class="comment">#('/home/python/22', '.json')</span></span><br><span class="line">os.path.split(<span class="string">'/home/python/app1.6/1.txt'</span>)</span><br><span class="line"><span class="comment"># 将path分割成目录和文件名二元组返回</span></span><br><span class="line"><span class="comment">#('/home/python/app1.6', '1.txt')</span></span><br><span class="line"></span><br><span class="line">os.path.dirname(<span class="string">'/home/python/app1.6/1.txt'</span>) </span><br><span class="line"><span class="comment"># 相当于os.path.split(path)的第一元素</span></span><br><span class="line"><span class="comment">#'/home/python/app1.6'</span></span><br><span class="line"></span><br><span class="line">os.path.basename(<span class="string">'/home/python/app1.6/1.txt'</span>) </span><br><span class="line"><span class="comment"># 相当于os.path.split(path)的第二元素</span></span><br><span class="line"><span class="comment">#'1.txt'</span></span><br></pre></td></tr></table></figure>
+<h3 id="from-urllib-parse-import-urljoin"><a href="#from-urllib-parse-import-urljoin" class="headerlink" title="from urllib.parse import urljoin"></a>from urllib.parse import urljoin</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">urljoin(<span class="string">'https://femnyy.com/'</span>,<span class="string">'VPS/xx'</span>) </span><br><span class="line"><span class="comment"># 第一个路径必须要有最后一个'/'</span></span><br></pre></td></tr></table></figure>
 
         
         </div>
@@ -1550,7 +1489,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/shell/" data-id="cjgra84vp004405lmbbx4kmq8" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/os/" data-id="cjgssxv9x003006psc6ip105y" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1618,7 +1557,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/08/04/shell/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/shell/">Comments</a>
+        <a href="https://www.femn.me/2017/08/04/os/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/os/">Comments</a>
     
 
         </footer>
@@ -1683,7 +1622,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/basic_sort/" data-id="cjgra84nm000p05lmfayug45x" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/basic_sort/" data-id="cjgssxuxt000i06psmouvmhg1" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
