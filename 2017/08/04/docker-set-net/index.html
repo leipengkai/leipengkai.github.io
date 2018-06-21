@@ -11,8 +11,7 @@
 <meta property="og:url" content="https://www.femn.me/2017/08/04/docker-set-net/index.html">
 <meta property="og:site_name" content="Femn">
 <meta property="og:description" content="背景在一些实验室环境,服务器没有直接连接外网的权限,需要通过网络代理.我们通常会将网络代理直接配置在/etc/environment、/etc/profile之类的配置文件中,这对于大部分操作都是可行的.然而,docker命令却使用不了这些代理.比如docker pull时需要从外网下载镜像,就会出现如下错误:1docker pull hello-world Unable to find imag">
-<meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-03-10T09:31:50.125Z">
+<meta property="og:updated_time" content="2018-03-10T09:31:50.124Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="docker网络代理设置">
 <meta name="twitter:description" content="背景在一些实验室环境,服务器没有直接连接外网的权限,需要通过网络代理.我们通常会将网络代理直接配置在/etc/environment、/etc/profile之类的配置文件中,这对于大部分操作都是可行的.然而,docker命令却使用不了这些代理.比如docker pull时需要从外网下载镜像,就会出现如下错误:1docker pull hello-world Unable to find imag">
@@ -160,7 +159,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                68
+                69
                 <span>posts</span>
             </div>
             <div class="article-info-block">
@@ -256,30 +255,30 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>背景<br>在一些实验室环境,服务器没有直接连接外网的权限,需要通过网络代理.我们通常会将网络代理直接配置在/etc/environment、/etc/profile之类的配置文件中,这对于大部分操作都是可行的.<br>然而,docker命令却使用不了这些代理.比如docker pull时需要从外网下载镜像,就会出现如下错误:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull hello-world</span><br></pre></td></tr></table></figure></p>
+            <p>背景<br>在一些实验室环境,服务器没有直接连接外网的权限,需要通过网络代理.我们通常会将网络代理直接配置在/etc/environment、/etc/profile之类的配置文件中,这对于大部分操作都是可行的.<br>然而,docker命令却使用不了这些代理.比如docker pull时需要从外网下载镜像,就会出现如下错误:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker pull hello-world</div></pre></td></tr></table></figure></p>
 <p>Unable to find image,hello-world:latest locally<br>Pulling repository docker.io/library/hello-world</p>
-<p>docker: Network timed out while trying to connect to <a href="https://index.docker.io/v1/repositories/library/hello-world/images" target="_blank" rel="noopener">here</a>. You may want to check your internet connection or if you are behind a proxy..</p>
+<p>docker: Network timed out while trying to connect to <a href="https://index.docker.io/v1/repositories/library/hello-world/images" target="_blank" rel="external">here</a>. You may want to check your internet connection or if you are behind a proxy..</p>
 <p>解决方案一:<br>停止docker服务,手动以使用2375端口监听所有网络接口的方式启动docker daemon.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop docker.service</span><br><span class="line">nohup docker daemon -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock &amp;</span><br></pre></td></tr></table></figure>
-<p><a href="https://docs.docker.com/v1.11/engine/reference/commandline/daemon/" target="_blank" rel="noopener">详情参见</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">systemctl stop docker.service</div><div class="line">nohup docker daemon -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock &amp;</div></pre></td></tr></table></figure>
+<p><a href="https://docs.docker.com/v1.11/engine/reference/commandline/daemon/" target="_blank" rel="external">详情参见</a></p>
 <p>解决方案二:<br>该方法是持久化的,修改后会一直生效.该方法覆盖了默认的docker.service文件.</p>
 <ol>
 <li><p>为docker服务创建一个内嵌的systemd目录</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /etc/systemd/system/docker.service.d</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir -p /etc/systemd/system/docker.service.d</div></pre></td></tr></table></figure>
 </li>
 <li><p>创建/etc/systemd/system/docker.service.d/http-proxy.conf文件,并添加HTTP_PROXY环境变量.其中[proxy-addr]和[proxy-port]分别改成实际情况的代理地址和端口:</p>
 </li>
 </ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/systemd/system/docker.service.d/http-proxy.conf</span><br><span class="line">    [Service]</span><br><span class="line">    Environment=<span class="string">"HTTP_PROXY=http://0.0.0.0:2375/"</span></span><br></pre></td></tr></table></figure>
-<ol start="3">
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">vim /etc/systemd/system/docker.service.d/http-proxy.conf</div><div class="line">    [Service]</div><div class="line">    Environment=<span class="string">"HTTP_PROXY=http://0.0.0.0:2375/"</span></div></pre></td></tr></table></figure>
+<ol>
 <li><p>如果还有内部的不需要使用代理来访问的Docker registries,那么还需要制定NO_PROXY环境变量:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[Service]</span><br><span class="line">Environment=<span class="string">"HTTP_PROXY=http://[proxy-addr]:[proxy-port]/"</span> \</span><br><span class="line">     <span class="string">"HTTPS_PROXY=https://[proxy-addr]:[proxy-port]/"</span> \</span><br><span class="line">     <span class="string">"NO_PROXY=localhost,127.0.0.1,docker-registry.somecorporation.com"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[Service]</div><div class="line">Environment=<span class="string">"HTTP_PROXY=http://[proxy-addr]:[proxy-port]/"</span> \</div><div class="line">     <span class="string">"HTTPS_PROXY=https://[proxy-addr]:[proxy-port]/"</span> \</div><div class="line">     <span class="string">"NO_PROXY=localhost,127.0.0.1,docker-registry.somecorporation.com"</span></div></pre></td></tr></table></figure>
 </li>
 <li><p>更新配置:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">systemctl daemon-reload</div></pre></td></tr></table></figure>
 </li>
 <li><p>重启Docker服务:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">systemctl restart docker</div></pre></td></tr></table></figure>
 </li>
 </ol>
 
@@ -292,7 +291,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/docker-set-net/" data-id="cjgssxuzd000z06psl8gfkrkg" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/docker-set-net/" data-id="cjio7f1a200140rt2st0ua315" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -369,11 +368,11 @@
         
 <nav id="article-nav">
     
-        <a href="/2017/08/04/docker-hub/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/2017/08/04/supervisor-server/" id="article-nav-newer" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Newer</strong>
             <div class="article-nav-title">
                 
-                    docker-hub
+                    supervisor
                 
             </div>
         </a>
@@ -414,6 +413,15 @@
                     <li>
                         
                         <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2018/05/16/ab/" class="title">ab压力测试</a></p>
+                            <p class="item-date"><time datetime="2018-05-16T15:24:48.000Z" itemprop="datePublished">2018-05-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
                             <p class="item-title"><a href="/2017/09/28/storm/" class="title">hadoop storm(八)</a></p>
                             <p class="item-date"><time datetime="2017-09-28T11:41:15.000Z" itemprop="datePublished">2017-09-28</time></p>
@@ -447,15 +455,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/2017/09/25/zookeeper/" class="title">zookeeper(五)</a></p>
-                            <p class="item-date"><time datetime="2017-09-25T12:01:15.000Z" itemprop="datePublished">2017-09-25</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -465,7 +464,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DRF/">DRF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DRF/">DRF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span></li></ul>
         </div>
     </div>
 
@@ -474,7 +473,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">54</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">54</span></li></ul>
         </div>
     </div>
 

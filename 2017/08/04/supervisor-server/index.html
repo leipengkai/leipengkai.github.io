@@ -11,8 +11,7 @@
 <meta property="og:url" content="https://www.femn.me/2017/08/04/supervisor-server/index.html">
 <meta property="og:site_name" content="Femn">
 <meta property="og:description" content="Linux的后台进程运行有好几种方法,例如nohup,screen等,但是,如果是一个服务程序,要可靠地在后台运行,我们就需要把它做成daemon,最好还能监控进程状态,在意外结束时能自动重启. supervisor就是用Python开发的一套通用的进程管理程序,能将一个普通的命令行进程变为后台daemon,并监控进程状态,异常退出时能自动重启.另一个进程管理工具:S6 Debian / Ubun">
-<meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-03-10T09:31:50.185Z">
+<meta property="og:updated_time" content="2018-03-10T09:31:50.184Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="supervisor">
 <meta name="twitter:description" content="Linux的后台进程运行有好几种方法,例如nohup,screen等,但是,如果是一个服务程序,要可靠地在后台运行,我们就需要把它做成daemon,最好还能监控进程状态,在意外结束时能自动重启. supervisor就是用Python开发的一套通用的进程管理程序,能将一个普通的命令行进程变为后台daemon,并监控进程状态,异常退出时能自动重启.另一个进程管理工具:S6 Debian / Ubun">
@@ -160,7 +159,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                68
+                69
                 <span>posts</span>
             </div>
             <div class="article-info-block">
@@ -259,25 +258,25 @@
             <p>Linux的后台进程运行有好几种方法,例如nohup,screen等,但是,如果是一个服务程序,要可靠地在后台运行,我们就需要把它做成daemon,最好还能监控进程状态,在意外结束时能自动重启.</p>
 <p>supervisor就是用Python开发的一套通用的进程管理程序,能将一个普通的命令行进程变为后台daemon,并监控进程状态,异常退出时能自动重启.另一个进程管理工具:S6</p>
 <p>Debian / Ubuntu可以直接通过apt安装:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install supervisor</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install supervisor</div></pre></td></tr></table></figure>
 <p>如果是通过pip安装的话,就需要echo_supervisord_conf程序生成supervisor的初始化配置文件:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo pip install supervisor</span><br><span class="line">mkdir /etc/supervisor</span><br><span class="line">echo_supervisord_conf &gt; /etc/supervisor/supervisord.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo pip install supervisor</div><div class="line">mkdir /etc/supervisor</div><div class="line">echo_supervisord_conf &gt; /etc/supervisor/supervisord.conf</div></pre></td></tr></table></figure>
 <p>supervisor安装完成后会生成三个执行程序:supervisortd 守护进程服务,用于接收进程管理命令.supervisorctl 客户端,用于和守护进程通信,发送管理进程的指令.<br>echo_supervisord_conf 生成初始配置文件程序<br>然后,给我们自己开发的应用程序编写一个配置文件,让supervisor来管理它.每个进程的配置文件都可以单独分拆,放在/etc/supervisor/conf.d/目录下,以.conf作为扩展名</p>
-<p>vim server.conf<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[program:python8010]</span><br><span class="line"><span class="built_in">command</span> = /usr/bin/python3 HttpsRunner.py</span><br><span class="line">directory = /server/app1.6</span><br><span class="line">user = root</span><br><span class="line">redirect_stderr = <span class="literal">true</span></span><br><span class="line">stdout_logfile_maxbytes = 150MB</span><br><span class="line">stdout_logfile_backups = 20</span><br><span class="line">stdout_logfile = /server/app1.6/python8010.log</span><br><span class="line"></span><br><span class="line">[program:mongod]</span><br><span class="line">;<span class="built_in">command</span> = /mongo/mongodb-linux-x86_64-ubuntu1404-3.2.10/bin/mongod --dbpath /mnt/mongodb --auth</span><br><span class="line"><span class="built_in">command</span> = /mongo/mongodb-linux-x86_64-ubuntu1404-3.2.10/bin/mongod -f /server/app1.6/mongodb.conf</span><br><span class="line">directory = /server/app1.6</span><br><span class="line">user = root</span><br><span class="line">redirect_stderr = <span class="literal">true</span></span><br><span class="line">stdout_logfile_maxbytes = 150MB</span><br><span class="line">stdout_logfile_backups = 20</span><br><span class="line">stdout_logfile = /server/app1.6/mongodb.log</span><br></pre></td></tr></table></figure></p>
+<p>vim server.conf<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">[program:python8010]</div><div class="line"><span class="built_in">command</span> = /usr/bin/python3 HttpsRunner.py</div><div class="line">directory = /server/app1.6</div><div class="line">user = root</div><div class="line">redirect_stderr = <span class="literal">true</span></div><div class="line">stdout_logfile_maxbytes = 150MB</div><div class="line">stdout_logfile_backups = 20</div><div class="line">stdout_logfile = /server/app1.6/python8010.log</div><div class="line"></div><div class="line">[program:mongod]</div><div class="line">;<span class="built_in">command</span> = /mongo/mongodb-linux-x86_64-ubuntu1404-3.2.10/bin/mongod --dbpath /mnt/mongodb --auth</div><div class="line"><span class="built_in">command</span> = /mongo/mongodb-linux-x86_64-ubuntu1404-3.2.10/bin/mongod -f /server/app1.6/mongodb.conf</div><div class="line">directory = /server/app1.6</div><div class="line">user = root</div><div class="line">redirect_stderr = <span class="literal">true</span></div><div class="line">stdout_logfile_maxbytes = 150MB</div><div class="line">stdout_logfile_backups = 20</div><div class="line">stdout_logfile = /server/app1.6/mongodb.log</div></pre></td></tr></table></figure></p>
 <p>Supervisor只能管理非daemon的进程,也就是说Supervisor不能管理守护进程.否则提示Exited too quickly (process log may have details)异常.<br>启动Supervisor服务:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">supervisord -c /etc/supervisor/supervisord.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">supervisord -c /etc/supervisor/supervisord.conf</div></pre></td></tr></table></figure>
 <p>管理进程:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">supervisorctl status</span><br><span class="line">supervisorctl stop mongod</span><br><span class="line">supervisorctl start python8010</span><br><span class="line">supervisorctl restart python8001</span><br><span class="line"><span class="comment"># 重启所有属于名为groupworker这个分组的进程(start,restart同理)</span></span><br><span class="line">supervisorctl stop groupworker</span><br><span class="line"><span class="comment"># 停止全部进程,注:start、restart、stop都不会载入最新的配置文件</span></span><br><span class="line">supervisorctl stop all </span><br><span class="line"><span class="comment"># 载入最新的配置文件,停止原有进程并按新的配置启动、管理所有进程</span></span><br><span class="line">supervisorctl reread/reload</span><br><span class="line"><span class="comment"># 根据最新的配置文件,启动新配置或有改动的进程,配置没有改动的进程不会受影响而重启</span></span><br><span class="line">supervisorctl update</span><br><span class="line">supervisorctl tail &lt;APP_NAME&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">supervisorctl status</div><div class="line">supervisorctl stop mongod</div><div class="line">supervisorctl start python8010</div><div class="line">supervisorctl restart python8001</div><div class="line"><span class="comment"># 重启所有属于名为groupworker这个分组的进程(start,restart同理)</span></div><div class="line">supervisorctl stop groupworker</div><div class="line"><span class="comment"># 停止全部进程,注:start、restart、stop都不会载入最新的配置文件</span></div><div class="line">supervisorctl stop all </div><div class="line"><span class="comment"># 载入最新的配置文件,停止原有进程并按新的配置启动、管理所有进程</span></div><div class="line">supervisorctl reread/reload</div><div class="line"><span class="comment"># 根据最新的配置文件,启动新配置或有改动的进程,配置没有改动的进程不会受影响而重启</span></div><div class="line">supervisorctl update</div><div class="line">supervisorctl tail &lt;APP_NAME&gt;</div></pre></td></tr></table></figure>
 <p>进入CLI管理台:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">supervisorctl</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">supervisorctl</div></pre></td></tr></table></figure>
 <p>Web管理界面 </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/supervisor/supervisord.conf</span><br><span class="line">    [inet_http_server] ; inet (TCP) server disabled by default</span><br><span class="line">    port=0.0.0.0:9001  ; (ip_address:port specifier, *:port <span class="keyword">for</span> all iface)</span><br><span class="line">    username=root      ; (default is no username (open server))</span><br><span class="line">    password=root      ; (default is no password (open server))</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">vim /etc/supervisor/supervisord.conf</div><div class="line">    [inet_http_server] ; inet (TCP) server disabled by default</div><div class="line">    port=0.0.0.0:9001  ; (ip_address:port specifier, *:port <span class="keyword">for</span> all iface)</div><div class="line">    username=root      ; (default is no username (open server))</div><div class="line">    password=root      ; (default is no password (open server))</div></pre></td></tr></table></figure>
 <p>重启Supervisor服务,如果有Unlinking stale socket /var/run/supervisor.sock 执行unlink /var/run/supervisor.sock:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps aux |grep supervisord</span><br><span class="line">supervisord -c /etc/supervisor/supervisord.conf</span><br></pre></td></tr></table></figure>
-<h5 id="开机启动Supervisor"><a href="#开机启动Supervisor" class="headerlink" title="开机启动Supervisor:"></a>开机启动Supervisor:</h5><p>方法1:<br>    Linux 在启动的时候会执行 /etc/rc.local 里面的脚本,所以只要在这里添加执行命令就可以<br>    以下内容需要添加在 exit 命令前,而且由于在执行 rc.local 脚本时,PATH 环境变量未全部初始化,因此命令需要使用绝对路径.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/supervisord -c /etc/supervisor/supervisord.conf</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://askubuntu.com/questions/765120/after-upgrade-to-16-04-lts-rc-local-is-not-executing-a-command" target="_blank" rel="noopener">如果是 Ubuntu 16.04 以上,rc.local 被当成了服务,而且默认是不会启动,需要手动启用一下服务</a></p>
-<p>启动rc.local服务:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl <span class="built_in">enable</span> rc-local.service</span><br></pre></td></tr></table></figure></p>
-<p>方法二:<br>Supervisord 默认情况下并没有被安装成服务,它本身也是一个进程.官方已经给出了脚本可以将 Supervisord 安装成服务,<br>可以参考<a href="https://github.com/Supervisor/initscripts" target="_blank" rel="noopener">这里</a>查看各种操作系统的安装脚本,但是我用官方这里给的 Ubuntu 脚本却无法运行.<br>安装方法可以参考<a href="https://serverfault.com/questions/96499/how-to-automatically-start-supervisord-on-linux-ubuntu" target="_blank" rel="noopener"> serverfault</a><br>这个脚本下载下来后,还需检查一下与我们的配置是否相符合,比如默认的配置文件路径,pid 文件路径等,如果存在不同则需要进行一些修改</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ps aux |grep supervisord</div><div class="line">supervisord -c /etc/supervisor/supervisord.conf</div></pre></td></tr></table></figure>
+<h5 id="开机启动Supervisor"><a href="#开机启动Supervisor" class="headerlink" title="开机启动Supervisor:"></a>开机启动Supervisor:</h5><p>方法1:<br>    Linux 在启动的时候会执行 /etc/rc.local 里面的脚本,所以只要在这里添加执行命令就可以<br>    以下内容需要添加在 exit 命令前,而且由于在执行 rc.local 脚本时,PATH 环境变量未全部初始化,因此命令需要使用绝对路径.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/bin/supervisord -c /etc/supervisor/supervisord.conf</div></pre></td></tr></table></figure></p>
+<p><a href="https://askubuntu.com/questions/765120/after-upgrade-to-16-04-lts-rc-local-is-not-executing-a-command" target="_blank" rel="external">如果是 Ubuntu 16.04 以上,rc.local 被当成了服务,而且默认是不会启动,需要手动启用一下服务</a></p>
+<p>启动rc.local服务:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo systemctl <span class="built_in">enable</span> rc-local.service</div></pre></td></tr></table></figure></p>
+<p>方法二:<br>Supervisord 默认情况下并没有被安装成服务,它本身也是一个进程.官方已经给出了脚本可以将 Supervisord 安装成服务,<br>可以参考<a href="https://github.com/Supervisor/initscripts" target="_blank" rel="external">这里</a>查看各种操作系统的安装脚本,但是我用官方这里给的 Ubuntu 脚本却无法运行.<br>安装方法可以参考<a href="https://serverfault.com/questions/96499/how-to-automatically-start-supervisord-on-linux-ubuntu" target="_blank" rel="external"> serverfault</a><br>这个脚本下载下来后,还需检查一下与我们的配置是否相符合,比如默认的配置文件路径,pid 文件路径等,如果存在不同则需要进行一些修改</p>
 
         
         </div>
@@ -288,7 +287,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/supervisor-server/" data-id="cjgssxvbo004306psvln49yv0" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/supervisor-server/" data-id="cjio7f1ik004c0rt2er5gad41" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -365,19 +364,19 @@
         
 <nav id="article-nav">
     
-        <a href="/2017/08/04/docker-RUN-ENTRYPOINT-CMD/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/2017/08/04/Dockerfile_compose/" id="article-nav-newer" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Newer</strong>
             <div class="article-nav-title">
                 
-                    docker RUN ENTRYPOINT CMD命令
+                    Dockerfile docker-compose
                 
             </div>
         </a>
     
     
-        <a href="/2017/08/04/docker/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2017/08/04/docker-set-net/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Older</strong>
-            <div class="article-nav-title">docker容器与镜像</div>
+            <div class="article-nav-title">docker网络代理设置</div>
         </a>
     
 </nav>
@@ -406,6 +405,15 @@
         <h3 class="widget-title">recent</h3>
         <div class="widget">
             <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2018/05/16/ab/" class="title">ab压力测试</a></p>
+                            <p class="item-date"><time datetime="2018-05-16T15:24:48.000Z" itemprop="datePublished">2018-05-16</time></p>
+                        </div>
+                    </li>
                 
                     <li>
                         
@@ -443,15 +451,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/2017/09/25/zookeeper/" class="title">zookeeper(五)</a></p>
-                            <p class="item-date"><time datetime="2017-09-25T12:01:15.000Z" itemprop="datePublished">2017-09-25</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -461,7 +460,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DRF/">DRF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DRF/">DRF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span></li></ul>
         </div>
     </div>
 
@@ -470,7 +469,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">54</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">54</span></li></ul>
         </div>
     </div>
 

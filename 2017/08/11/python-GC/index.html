@@ -11,9 +11,8 @@
 <meta property="og:url" content="https://www.femn.me/2017/08/11/python-GC/index.html">
 <meta property="og:site_name" content="Femn">
 <meta property="og:description" content="垃圾回收机制:python采⽤的是以引用计数为主,隔代回收机制为辅的策略 小整数对象池(Python运行之前就已经创建好了),常驻内存Python对小整数的定义是[-5,257)这些整数对象是提前建立好的,不会被垃圾回收.在一个Python的程序中,所有位于这个范围内的整数使用的都是同一个对象.同理,单个字母也是这样的123a ,b= 100,100id(a) == id(b)# True int">
-<meta property="og:locale" content="default">
 <meta property="og:image" content="https://www.femn.me/2017/08/11/python-GC/1.jpg">
-<meta property="og:updated_time" content="2018-03-10T09:31:50.169Z">
+<meta property="og:updated_time" content="2018-03-10T09:31:50.168Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python垃圾回收机制">
 <meta name="twitter:description" content="垃圾回收机制:python采⽤的是以引用计数为主,隔代回收机制为辅的策略 小整数对象池(Python运行之前就已经创建好了),常驻内存Python对小整数的定义是[-5,257)这些整数对象是提前建立好的,不会被垃圾回收.在一个Python的程序中,所有位于这个范围内的整数使用的都是同一个对象.同理,单个字母也是这样的123a ,b= 100,100id(a) == id(b)# True int">
@@ -162,7 +161,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                68
+                69
                 <span>posts</span>
             </div>
             <div class="article-info-block">
@@ -259,9 +258,9 @@
         
             
             <p>垃圾回收机制:python采⽤的是以引用计数为主,隔代回收机制为辅的策略</p>
-<h4 id="小整数对象池-Python运行之前就已经创建好了-常驻内存"><a href="#小整数对象池-Python运行之前就已经创建好了-常驻内存" class="headerlink" title="小整数对象池(Python运行之前就已经创建好了),常驻内存"></a>小整数对象池(Python运行之前就已经创建好了),常驻内存</h4><p>Python对小整数的定义是[-5,257)这些整数对象是提前建立好的,不会被垃圾回收.在一个Python的程序中,所有位于这个范围内的整数使用的都是同一个对象.<br>同理,单个字母也是这样的<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a ,b= <span class="number">100</span>,<span class="number">100</span></span><br><span class="line">id(a) == id(b)</span><br><span class="line"><span class="comment"># True</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="intern机制尽量地共享一份内存地址-靠引用计数去维护何时释放"><a href="#intern机制尽量地共享一份内存地址-靠引用计数去维护何时释放" class="headerlink" title="intern机制尽量地共享一份内存地址,靠引用计数去维护何时释放"></a>intern机制尽量地共享一份内存地址,靠引用计数去维护何时释放</h4><p>但如果是包含有特殊字符的就不会共享了<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 共享</span></span><br><span class="line">a = <span class="string">"hello"</span></span><br><span class="line">b = <span class="string">"hello"</span></span><br><span class="line"><span class="comment"># 不共享</span></span><br><span class="line">a = <span class="string">"hello world"</span></span><br><span class="line">b = <span class="string">"hello world"</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gc</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClassA</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'object born,id:%s'</span>%str(hex(id(self))))</span><br><span class="line"><span class="comment"># 引用计数 解决不了 变量的循环引用或互相引用</span></span><br><span class="line"><span class="comment"># 才有分代收集机制才会减一来辅助完成回收</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f2</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        c1 = ClassA()</span><br><span class="line">        c2 = ClassA()</span><br><span class="line">        c1.t = c2</span><br><span class="line">        c2.t = c1</span><br><span class="line">        <span class="keyword">del</span> c1</span><br><span class="line">        <span class="keyword">del</span> c2</span><br><span class="line">        <span class="comment"># 如果没有下面一行代码,则内存使用快速上升</span></span><br><span class="line">        gc.collect() <span class="comment"># 手动启动垃圾回收</span></span><br><span class="line">gc.disable()</span><br><span class="line"><span class="comment"># 隔(零)代回收:promote</span></span><br><span class="line">f2()</span><br></pre></td></tr></table></figure>
+<h4 id="小整数对象池-Python运行之前就已经创建好了-常驻内存"><a href="#小整数对象池-Python运行之前就已经创建好了-常驻内存" class="headerlink" title="小整数对象池(Python运行之前就已经创建好了),常驻内存"></a>小整数对象池(Python运行之前就已经创建好了),常驻内存</h4><p>Python对小整数的定义是[-5,257)这些整数对象是提前建立好的,不会被垃圾回收.在一个Python的程序中,所有位于这个范围内的整数使用的都是同一个对象.<br>同理,单个字母也是这样的<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a ,b= <span class="number">100</span>,<span class="number">100</span></div><div class="line">id(a) == id(b)</div><div class="line"><span class="comment"># True</span></div></pre></td></tr></table></figure></p>
+<h4 id="intern机制尽量地共享一份内存地址-靠引用计数去维护何时释放"><a href="#intern机制尽量地共享一份内存地址-靠引用计数去维护何时释放" class="headerlink" title="intern机制尽量地共享一份内存地址,靠引用计数去维护何时释放"></a>intern机制尽量地共享一份内存地址,靠引用计数去维护何时释放</h4><p>但如果是包含有特殊字符的就不会共享了<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 共享</span></div><div class="line">a = <span class="string">"hello"</span></div><div class="line">b = <span class="string">"hello"</span></div><div class="line"><span class="comment"># 不共享</span></div><div class="line">a = <span class="string">"hello world"</span></div><div class="line">b = <span class="string">"hello world"</span></div></pre></td></tr></table></figure></p>
+<h4 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> gc</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClassA</span><span class="params">()</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">'object born,id:%s'</span>%str(hex(id(self))))</div><div class="line"><span class="comment"># 引用计数 解决不了 变量的循环引用或互相引用</span></div><div class="line"><span class="comment"># 才有分代收集机制才会减一来辅助完成回收</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">f2</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">        c1 = ClassA()</div><div class="line">        c2 = ClassA()</div><div class="line">        c1.t = c2</div><div class="line">        c2.t = c1</div><div class="line">        <span class="keyword">del</span> c1</div><div class="line">        <span class="keyword">del</span> c2</div><div class="line">        <span class="comment"># 如果没有下面一行代码,则内存使用快速上升</span></div><div class="line">        gc.collect() <span class="comment"># 手动启动垃圾回收</span></div><div class="line">gc.disable()</div><div class="line"><span class="comment"># 隔(零)代回收:promote</span></div><div class="line">f2()</div></pre></td></tr></table></figure>
 <p>引用计数的优点是</p>
 <ol>
 <li>简单性</li>
@@ -272,7 +271,7 @@
 <li>维护引用计数消耗资源</li>
 <li>循环引用或相互引用,不能完成回收</li>
 </ol>
-<img src="/2017/08/11/python-GC/1.jpg" title="GC(Garbage Collection)垃圾回收机制">
+<img src="/2017/08/11/python-GC/1.jpg" alt="GC(Garbage Collection)垃圾回收机制" title="GC(Garbage Collection)垃圾回收机制">
 <p>gc模块唯一处理不了的是循环引用的类都有<strong>del</strong>方法,所以项目中要避免<br>重写<strong>del</strong>方法</p>
 <p>触发垃圾回收的情况:</p>
 <ol>
@@ -291,7 +290,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/python-GC/" data-id="cjgssxvch004s06psjdkxn9zp" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/python-GC/" data-id="cjio7f1jc004w0rt2c3rfeok0" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -368,11 +367,11 @@
         
 <nav id="article-nav">
     
-        <a href="/2017/08/11/python-builtins/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/2017/08/11/python-process/" id="article-nav-newer" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Newer</strong>
             <div class="article-nav-title">
                 
-                    python内建属性
+                    多任务实现之进程-process
                 
             </div>
         </a>
@@ -413,6 +412,15 @@
                     <li>
                         
                         <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2018/05/16/ab/" class="title">ab压力测试</a></p>
+                            <p class="item-date"><time datetime="2018-05-16T15:24:48.000Z" itemprop="datePublished">2018-05-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
                             <p class="item-title"><a href="/2017/09/28/storm/" class="title">hadoop storm(八)</a></p>
                             <p class="item-date"><time datetime="2017-09-28T11:41:15.000Z" itemprop="datePublished">2017-09-28</time></p>
@@ -446,15 +454,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/2017/09/25/zookeeper/" class="title">zookeeper(五)</a></p>
-                            <p class="item-date"><time datetime="2017-09-25T12:01:15.000Z" itemprop="datePublished">2017-09-25</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -464,7 +463,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DRF/">DRF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DRF/">DRF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span></li></ul>
         </div>
     </div>
 
@@ -473,7 +472,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">54</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">54</span></li></ul>
         </div>
     </div>
 

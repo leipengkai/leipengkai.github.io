@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>ab压力测试 | Femn</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="查看服务器的基本信息# 总核数 = 物理CPU个数 X 每颗物理CPU的核数  # 总逻辑CPU数 = 物理CPU个数 X 每颗物理CPU的核数 X 超线程数 # 一个物理封装的CPU(通过physical id区分判断)可以有多个核(通过core id区分判断).而每个核可以有多个逻辑cpu(通过processor区分判断)  # 查看物理CPU个数(主机上看得见摸得着那块CPU硬件) cat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ab压力测试">
+<meta property="og:url" content="https://www.femn.me/2018/05/16/ab/index.html">
+<meta property="og:site_name" content="Femn">
+<meta property="og:description" content="查看服务器的基本信息# 总核数 = 物理CPU个数 X 每颗物理CPU的核数  # 总逻辑CPU数 = 物理CPU个数 X 每颗物理CPU的核数 X 超线程数 # 一个物理封装的CPU(通过physical id区分判断)可以有多个核(通过core id区分判断).而每个核可以有多个逻辑cpu(通过processor区分判断)  # 查看物理CPU个数(主机上看得见摸得着那块CPU硬件) cat">
+<meta property="og:updated_time" content="2018-06-21T07:21:26.088Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ab压力测试">
+<meta name="twitter:description" content="查看服务器的基本信息# 总核数 = 物理CPU个数 X 每颗物理CPU的核数  # 总逻辑CPU数 = 物理CPU个数 X 每颗物理CPU的核数 X 超线程数 # 一个物理封装的CPU(通过physical id区分判断)可以有多个核(通过core id区分判断).而每个核可以有多个逻辑cpu(通过processor区分判断)  # 查看物理CPU个数(主机上看得见摸得着那块CPU硬件) cat">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="Femn" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/css/images/favicon.ico" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Femn</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/tags">Tags</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/4822598_105251_2.jpg" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">Tags</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/4822598_105251_2.jpg" />
+            <h2 id="name">leipengkai</h2>
+            <h3 id="title">Python Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>Shenzhen, China</span>
+            <a id="follow" target="_blank" href="https://github.com/leipengkai/">FOLLOW</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                69
+                <span>posts</span>
+            </div>
+            <div class="article-info-block">
+                6
+                <span>tags</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="http://github.com/leipengkai" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/femnyy" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://www.facebook.com/profile.php?id=100012089717648" target="_blank" title="facebook" class=tooltip>
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://www.instagram.com/leipengkai/" target="_blank" title="instagram" class=tooltip>
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://plus.google.com/108032606311958999451" target="_blank" title="google_plus" class=tooltip>
+                            <i class="fa fa-google_plus"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/atom.xml" target="_blank" title="rss" class=tooltip>
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-ab" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            ab压力测试
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2018/05/16/ab/">
+            <time datetime="2018-05-16T15:24:48.000Z" itemprop="datePublished">2018-05-16</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/server/">server</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h4 id="查看服务器的基本信息"><a href="#查看服务器的基本信息" class="headerlink" title="查看服务器的基本信息"></a>查看服务器的基本信息</h4><pre><code># 总核数 = 物理CPU个数 X 每颗物理CPU的核数 
+# 总逻辑CPU数 = 物理CPU个数 X 每颗物理CPU的核数 X 超线程数
+# 一个物理封装的CPU(通过physical id区分判断)可以有多个核(通过core id区分判断).而每个核可以有多个逻辑cpu(通过processor区分判断)
+
+# 查看物理CPU个数(主机上看得见摸得着那块CPU硬件)
+cat /proc/cpuinfo| grep &quot;physical id&quot;| sort| uniq| wc -l
+
+# 查看每个物理CPU中core的个数(即核数:处理数据的芯片组数量,双核,四核就是指的CPU核心)
+cat /proc/cpuinfo| grep &quot;cpu cores&quot;| uniq
+
+# 超线程:一个CPU核就是一个物理线程,由英特尔开发超线程技术可以把一个物理线程模拟出两个线程来使用,使得单个核心用起来像两个核一样,以充分发挥CPU的性能
+
+# 查看逻辑CPU的个数(top命令,然后输入1也是可以的)
+cat /proc/cpuinfo| grep &quot;processor&quot;| wc -l
+
+# 查看CPU信息(逻辑核数和型号)
+cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c
+
+# 系统简单查看CPU
+lscpu
+
+# 查看内存 cat /proc/meminfo
+free -m
+
+# 查看磁盘空间
+df -h 
+
+# 查看目录大小
+du -sh ./ # (目录名)
+
+# 查看用户登录日志
+last
+
+# 查看网速
+pip install speedtest-cli
+speedtest-cli # 上行/下行网速
+
+#磁盘的读取速度
+yum install hdparm
+hdparm -Tt /dev/vda1
+</code></pre><h4 id="进程管理工具之ps"><a href="#进程管理工具之ps" class="headerlink" title="进程管理工具之ps"></a>进程管理工具之ps</h4><pre><code>ps # 仅仅显示本终端的进程
+
+-a # 显示终端中进行的所有进程
+-x # 会显示没有控制终端的进程
+-e # 所有的进程
+-u # 查看某个用户的所有进程
+-f # 来查看格式化的信息列表
+ps -u femn # 查看所有femn用户的进程 
+ps aux # 可以对系统进程更加全面的了解
+ps -aux | less 
+# less是一个分页显示文件的工具工具,它允许你一页一页(或一个屏幕一个屏幕)地查看信息
+
+ps -ef # 所有进程 PID PPID 
+ps -efH # 把输出的进程组成一个层级的格式 树状 
+ps axjf  # 树状视图 等于 pstree
+ps -ef | grep python3 | cut -c 10-15 | xargs kill -9 
+# Kill 某个用户或命令的所有进程
+ps axjf |grep nginx
+pgrep nginx # 单单的得到PID,和其子进程号
+
+ps -aux --sort -pcpu | head -n 10
+# 根据 CPU 使用来升序排序 +pcpu倒序
+ps -aux --sort -pmem | head -n 10
+# 根据 内存 使用来升序排序
+ps -aux --sort -pcpu,-pmem | head -n 10
+
+# 仅仅得到本机的程序名相关的进程
+ps aux/-ef |grep ssserver # 程序名(命令名)或者PID
+</code></pre><h4 id="进程管理工具之top"><a href="#进程管理工具之top" class="headerlink" title="进程管理工具之top"></a>进程管理工具之top</h4><p>top操作:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">操作</th>
+<th>显示</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">P</td>
+<td>CPU占用百分比排序，%CPU</td>
+</tr>
+<tr>
+<td style="text-align:center">M</td>
+<td>占据内存百分比排序，%MEM</td>
+</tr>
+<tr>
+<td style="text-align:center">T</td>
+<td>累计占据CPU时间排序，TIME+</td>
+</tr>
+<tr>
+<td style="text-align:center">R</td>
+<td>将当前的排序倒转</td>
+</tr>
+<tr>
+<td style="text-align:center">大写U</td>
+<td>输入用户名，系统就会切换为指定用户的进程运行界面</td>
+</tr>
+<tr>
+<td style="text-align:center">m</td>
+<td>以条形的格式输出内存的使用量,再次按m可切换不同模式</td>
+</tr>
+<tr>
+<td style="text-align:center">t</td>
+<td>以条形的格式输出CPU的使用量,再次按t可切换不同模式</td>
+</tr>
+<tr>
+<td style="text-align:center">小写k</td>
+<td>再次输入进程的PID号,即可终止进程</td>
+</tr>
+<tr>
+<td style="text-align:center">s</td>
+<td>再输入数字,如1就表示1秒刷新一次</td>
+</tr>
+<tr>
+<td style="text-align:center">f</td>
+<td>选择显示的内容,space显示或隐藏对应的列</td>
+</tr>
+<tr>
+<td style="text-align:center">c</td>
+<td>切换显示命令名称和完整命令行</td>
+</tr>
+<tr>
+<td style="text-align:center">数字1</td>
+<td>显示所有CPU</td>
+</tr>
+</tbody>
+</table>
+<p>前五行是系统整体的统计信息.第一行是任务队列信息,同 uptime 命令的执行结果</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th>含意</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">11:12:00</td>
+<td>当前时间</td>
+</tr>
+<tr>
+<td style="text-align:center">up  2:13</td>
+<td>系统总运行时间,格式为时:分</td>
+</tr>
+<tr>
+<td style="text-align:center">8 users</td>
+<td>当前登录用户数,同一帐号登录多个终端也会累加</td>
+</tr>
+<tr>
+<td style="text-align:center">load average: 0.32, 0.22, 0.23</td>
+<td>系统负载,即任务队列的平均长度. 三个数值分别为 1分钟,5分钟,15分钟前到现在的平均值. 0.32/CPU核数不大于1系统性能处于良好状态(最好以15分钟的负载计算来判断,是否需要调整服务器)</td>
+</tr>
+</tbody>
+</table>
+<p>第二三行为进程和CPU的信息.当有多个CPU时,这些内容可能会超过两行.内容如下:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th>含意</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Tasks: 322 total</td>
+<td>进程总数</td>
+</tr>
+<tr>
+<td style="text-align:center">1 running</td>
+<td>正在运行的进程数</td>
+</tr>
+<tr>
+<td style="text-align:center">320 sleeping</td>
+<td>睡眠的进程数</td>
+</tr>
+<tr>
+<td style="text-align:center">0 stopped</td>
+<td>停止的进程数</td>
+</tr>
+<tr>
+<td style="text-align:center">1 zombie</td>
+<td>僵尸的进程数</td>
+</tr>
+<tr>
+<td style="text-align:center">%Cpu(s):  5.6 us</td>
+<td>用户空间占用CPU百分比</td>
+</tr>
+<tr>
+<td style="text-align:center">4.2 sy</td>
+<td>内核空间占用CPU百分比</td>
+</tr>
+<tr>
+<td style="text-align:center">0.0 ni</td>
+<td>用户空间内改变过优先级的进程\占用CPU百分比(Nice)</td>
+</tr>
+<tr>
+<td style="text-align:center">90.3 id</td>
+<td>空闲CPU百分比</td>
+</tr>
+<tr>
+<td style="text-align:center">0.0 wa</td>
+<td>等待输入输出(IO)的CPU时间百分比</td>
+</tr>
+<tr>
+<td style="text-align:center">0.0 hi</td>
+<td>硬件中断</td>
+</tr>
+<tr>
+<td style="text-align:center">0.0 si</td>
+<td>软件中断</td>
+</tr>
+<tr>
+<td style="text-align:center">0.0 st</td>
+<td>被虚拟化程序偷走的时间</td>
+</tr>
+</tbody>
+</table>
+<p>最后两行为内存信息:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th>含意</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">KiB Mem :  7634204 total</td>
+<td>物理内存总量</td>
+</tr>
+<tr>
+<td style="text-align:center">292728 free</td>
+<td>使用的物理内存总量</td>
+</tr>
+<tr>
+<td style="text-align:center">5354884 used</td>
+<td>空闲内存总量</td>
+</tr>
+<tr>
+<td style="text-align:center">1986592 buff/cache</td>
+<td>用于缓冲和缓存的内存空间</td>
+</tr>
+<tr>
+<td style="text-align:center">KiB Swap:  3990524 total</td>
+<td>交换区总量</td>
+</tr>
+<tr>
+<td style="text-align:center">3988988 free</td>
+<td>空闲交换区总量</td>
+</tr>
+<tr>
+<td style="text-align:center">1536 used</td>
+<td>已用交换区总量</td>
+</tr>
+<tr>
+<td style="text-align:center">1811888 avail Mem</td>
+<td>可用内存空间</td>
+</tr>
+</tbody>
+</table>
+<p>top中显示状态的字段</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th>含意</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">PID</td>
+<td>进程ID</td>
+</tr>
+<tr>
+<td style="text-align:center">USER</td>
+<td>任务所有者名称</td>
+</tr>
+<tr>
+<td style="text-align:center">PR</td>
+<td>Priority优先级</td>
+</tr>
+<tr>
+<td style="text-align:center">NI</td>
+<td>Nice值:负值表示高优先级,正值表示低优先级</td>
+</tr>
+<tr>
+<td style="text-align:center">VIRT</td>
+<td>虚拟内存总量(集),单位kb VIRT=SWAP+RES</td>
+</tr>
+<tr>
+<td style="text-align:center">RES</td>
+<td>常驻内存总量(集) ,单位kb RES=CODE+DATA</td>
+</tr>
+<tr>
+<td style="text-align:center">SHR</td>
+<td>共享内存空间 ,单位kb</td>
+</tr>
+<tr>
+<td style="text-align:center">S</td>
+<td>Process Statue当前进程状态:D=不可中断的睡眠状态  R=运行  S=睡眠  T=跟踪/停止  Z=僵尸进程</td>
+</tr>
+<tr>
+<td style="text-align:center">%CPU</td>
+<td>CPU使用率</td>
+</tr>
+<tr>
+<td style="text-align:center">%MEM</td>
+<td>内存使用率</td>
+</tr>
+<tr>
+<td style="text-align:center">TIME+</td>
+<td>进程使用的CPU时间,进程占用多个cpu的时间是累加的 2:32.45代表2分钟,30秒,2秒,十分之4秒,百分之5秒,是按位来计算的</td>
+</tr>
+<tr>
+<td style="text-align:center">COMMAND</td>
+<td>启动命令</td>
+</tr>
+<tr>
+<td style="text-align:center">SWAP</td>
+<td>进程使用的虚拟内存中,被换出的大小,单位kb</td>
+</tr>
+<tr>
+<td style="text-align:center">CODE</td>
+<td>可执行代码占用的物理内存大小,单位kb</td>
+</tr>
+<tr>
+<td style="text-align:center">DATA</td>
+<td>可执行代码以外的部分(数据段+栈)占用的物理内存大小,单位kb</td>
+</tr>
+</tbody>
+</table>
+<h4 id="ab"><a href="#ab" class="headerlink" title="ab"></a>ab</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th>含意</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Total transferred:</td>
+<td>总共网络传输量</td>
+</tr>
+<tr>
+<td style="text-align:center">HTML transferred:</td>
+<td>HTML内容传输量</td>
+</tr>
+<tr>
+<td style="text-align:center">Failed requests:</td>
+<td>失败的请求数: <br>Connect(连接失败的次数),<br>Receive(接收数据失败的次数),<br>Length(接收到的数据长度不一致的次数),<br>Exceptions(程序异常的次数)</td>
+</tr>
+<tr>
+<td style="text-align:center">Non-2xx responses:</td>
+<td>非2xx状态请求数,并不代表请求一定是失败的</td>
+</tr>
+<tr>
+<td style="text-align:center">Requests per second(QPS):</td>
+<td>吞吐率:每秒处理请求的数量</td>
+</tr>
+<tr>
+<td style="text-align:center">Time per request:</td>
+<td>用户平均请求等待时间</td>
+</tr>
+<tr>
+<td style="text-align:center">Time per request:</td>
+<td>服务器平均请求处理时间(across all concurrent requests)</td>
+</tr>
+<tr>
+<td style="text-align:center">Transfer rate:</td>
+<td>传输流量,单位KB/s,反映网络传输压力</td>
+</tr>
+<tr>
+<td style="text-align:center">Connection Times (ms):</td>
+<td>网络上消耗的时间的分解:<br> Connect: 创建TCP连接到服务器或者代理服务器所花费的时间,通常我们习惯设置Web服务器的Connection:keep-alive，防止重复建立连接，减少请求时间<br> Processing: 写入缓冲区消耗+链路消耗+服务端消耗<br>Waiting: 写入缓冲区消耗+链路消耗+服务端消耗+读取数据消耗<br> Total: 总花费时间<br></td>
+</tr>
+<tr>
+<td style="text-align:center">Percentage of the requests served within a certain time (ms)</td>
+<td>50%    112: 其中50%的用户响应时间小于112 毫秒<br>90%    190: 90% 的用户响应时间小于190 毫秒,<br>100%    293 (longest request): 最大的响应时间小于293 毫秒<br></td>
+</tr>
+</tbody>
+</table>
+<p>由于对于并发请求,cpu实际上并不是同时处理的,而是按照每个请求获得的时间片逐个轮转处理的,所以基本上第一个Time per request时间约等于第二个Time per request时间乘以并发请求数</p>
+<p> 并发继续增大后nginx遇到的第一个瓶颈在CPU</p>
+<h4 id="网络相关的服务-socket服务-或其它的网络相接进程-网络是双向的"><a href="#网络相关的服务-socket服务-或其它的网络相接进程-网络是双向的" class="headerlink" title="网络相关的服务(socket服务),或其它的网络相接进程(网络是双向的)"></a>网络相关的服务(socket服务),或其它的网络相接进程(网络是双向的)</h4><pre><code>netstat -anpt |grep ssh #程序名  得到PID 端口号
+netstat -lnpt |grep 8388  #端口号 得到PID,进程名
+sudo lsof -i :8001   #端口号 PID,User,进程名
+sudo lsof -p 1609    #PID 
+
+ll /proc/进程号  
+killall http* 它支持通过进程名而不是进程号来结束进程,也支持通配符
+</code></pre>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2018/05/16/ab/" data-id="cjio7f15200060rt2hkmp450f" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2018/05/16/ab/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2018/05/16/ab/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2017/09/28/storm/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">hadoop storm(八)</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+        <section id="comments">
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+</section>
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">recent</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2018/05/16/ab/" class="title">ab压力测试</a></p>
+                            <p class="item-date"><time datetime="2018-05-16T15:24:48.000Z" itemprop="datePublished">2018-05-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/28/storm/" class="title">hadoop storm(八)</a></p>
+                            <p class="item-date"><time datetime="2017-09-28T11:41:15.000Z" itemprop="datePublished">2017-09-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/28/hbase/" class="title">hadoop hbase(七)</a></p>
+                            <p class="item-date"><time datetime="2017-09-28T11:31:15.000Z" itemprop="datePublished">2017-09-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_cluster/" class="title">hadoop HDFS HA高可用的集群搭建部署(六)</a></p>
+                            <p class="item-date"><time datetime="2017-09-27T11:41:15.000Z" itemprop="datePublished">2017-09-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
+                            <p class="item-title"><a href="/2017/09/27/hadoop_hive/" class="title">hadoop hive(五)</a></p>
+                            <p class="item-date"><time datetime="2017-09-27T11:31:15.000Z" itemprop="datePublished">2017-09-27</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">categories</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DRF/">DRF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">54</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Django/">Django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机/">计算机</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面向对象/">面向对象</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Django/" style="font-size: 10px;">Django</a> <a href="/tags/server/" style="font-size: 10px;">server</a> <a href="/tags/大数据/" style="font-size: 20px;">大数据</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/计算机/" style="font-size: 10px;">计算机</a> <a href="/tags/面向对象/" style="font-size: 10px;">面向对象</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+                    <li>
+                        <a href="https://hub.docker.com/">Hub_docker</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2018 leipengkai<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_config = function () {
+        
+            this.page.url = 'https://www.femn.me/2018/05/16/ab/';
+        
+        this.page.identifier = 'ab';
+    };
+    (function() { 
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'femn' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

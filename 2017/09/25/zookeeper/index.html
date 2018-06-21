@@ -12,9 +12,8 @@
 <meta property="og:url" content="https://www.femn.me/2017/09/25/zookeeper/index.html">
 <meta property="og:site_name" content="Femn">
 <meta property="og:description" content="Zookeeper是Google的Chubby的一个开源的实现,是Hadoop的分布协调服务,它包含一个简单的原语集,分布式应用程序可以基于它实现同步服务,配置维护和命名服务等,保证hadoop的HA(高可用),它本身也是个集群(提供少量数据的存储和管理) 大部分分布式应用需要一个主控,协调器或控制器来管理物理分布的子进程(资源,任务分配等)Zookeeper:提供通用的分布式锁服务,用以协调分布">
-<meta property="og:locale" content="default">
 <meta property="og:image" content="https://drive.google.com/file/d/0B9NEWVh_ricqWDVEeXo3aGdvRjQ/view?usp=sharing">
-<meta property="og:updated_time" content="2018-03-10T09:31:50.189Z">
+<meta property="og:updated_time" content="2018-03-10T09:31:50.188Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="zookeeper(五)">
 <meta name="twitter:description" content="Zookeeper是Google的Chubby的一个开源的实现,是Hadoop的分布协调服务,它包含一个简单的原语集,分布式应用程序可以基于它实现同步服务,配置维护和命名服务等,保证hadoop的HA(高可用),它本身也是个集群(提供少量数据的存储和管理) 大部分分布式应用需要一个主控,协调器或控制器来管理物理分布的子进程(资源,任务分配等)Zookeeper:提供通用的分布式锁服务,用以协调分布">
@@ -163,7 +162,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                68
+                69
                 <span>posts</span>
             </div>
             <div class="article-info-block">
@@ -261,7 +260,7 @@
             
             <p>Zookeeper是Google的Chubby的一个开源的实现,是Hadoop的分布协调服务,它包含一个简单的原语集,分布式应用程序可以基于它实现同步服务,配置维护和命名服务等,保证hadoop的HA(高可用),它本身也是个集群(提供少量数据的存储和管理)</p>
 <p>大部分分布式应用需要一个主控,协调器或控制器来管理物理分布的子进程(资源,任务分配等)<br>Zookeeper:提供通用的分布式锁服务,用以协调分布式应用</p>
-<p>Zookeeper安装和配置(集群模式)<br>在一台虚拟机上运行如下脚本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl https://file.femnyy.com/file/install_zookeeper.sh |sudo sh</span><br></pre></td></tr></table></figure></p>
+<p>Zookeeper安装和配置(集群模式)<br>在一台虚拟机上运行如下脚本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl https://file.femnyy.com/file/install_zookeeper.sh |sudo sh</div></pre></td></tr></table></figure></p>
 <p>准备工作</p>
 <ol>
 <li>clone三台之后,修改主机名为zookeeper1,zookeeper2,zookeeper3,修改/etc/hosts</li>
@@ -269,11 +268,11 @@
 <li>关闭防火墙</li>
 <li>ssh免登陆</li>
 <li>安装JDK,配置环境变量</li>
-<li>zoo.conf的配置dataDir中的目录下创建一个myid文件<br>再修改vim /root/zookeeper-3.4.10/data/myid 对应的Id号<br>启动Zookeeper:<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在三台虚拟机中都执行</span></span><br><span class="line">zkServer.sh start</span><br></pre></td></tr></table></figure>
+<li>zoo.conf的配置dataDir中的目录下创建一个myid文件<br>再修改vim /root/zookeeper-3.4.10/data/myid 对应的Id号<br>启动Zookeeper:<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 在三台虚拟机中都执行</span></div><div class="line">zkServer.sh start</div></pre></td></tr></table></figure>
 </li>
 </ol>
-<p>查看Zookeeper状态:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在三台虚拟机中都执行</span></span><br><span class="line">zkServer.sh status</span><br></pre></td></tr></table></figure></p>
-<p>提供一个命令行的客户端<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">zkCli.sh</span><br><span class="line"><span class="built_in">help</span></span><br><span class="line"><span class="comment"># 创建一个共同的配置文件,所有的zookeeper集群都能访问到</span></span><br><span class="line">create /zp241 path:/home/femn/ </span><br><span class="line">get /zp241 </span><br><span class="line"><span class="comment"># 启动另一个虚拟机的命令行客户端也可以看到上传的内容</span></span><br><span class="line">zkCli.sh</span><br><span class="line">get /zp241 </span><br><span class="line">quit</span><br></pre></td></tr></table></figure></p>
+<p>查看Zookeeper状态:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 在三台虚拟机中都执行</span></div><div class="line">zkServer.sh status</div></pre></td></tr></table></figure></p>
+<p>提供一个命令行的客户端<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">zkCli.sh</div><div class="line"><span class="built_in">help</span></div><div class="line"><span class="comment"># 创建一个共同的配置文件,所有的zookeeper集群都能访问到</span></div><div class="line">create /zp241 path:/home/femn/ </div><div class="line">get /zp241 </div><div class="line"><span class="comment"># 启动另一个虚拟机的命令行客户端也可以看到上传的内容</span></div><div class="line">zkCli.sh</div><div class="line">get /zp241 </div><div class="line">quit</div></pre></td></tr></table></figure></p>
 <p>zookeeper管理客户所存放的数据采用的是类似于文件树的结构<br>每一个节点叫做一个node:节点分为两种类型短暂的和持久<br>短暂的Node的客户端会话结束时,zookeeper会将该短暂的node删除,同时 短暂的node不可以有子节点<br><img src="https://drive.google.com/file/d/0B9NEWVh_ricqWDVEeXo3aGdvRjQ/view?usp=sharing" alt=""></p>
 
         
@@ -285,7 +284,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/25/zookeeper/" data-id="cjgssxvc5004h06psbxso5qkn" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/25/zookeeper/" data-id="cjio7f1j1004n0rt26d8zg1a8" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -407,6 +406,15 @@
                     <li>
                         
                         <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2018/05/16/ab/" class="title">ab压力测试</a></p>
+                            <p class="item-date"><time datetime="2018-05-16T15:24:48.000Z" itemprop="datePublished">2018-05-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
                             <p class="item-title"><a href="/2017/09/28/storm/" class="title">hadoop storm(八)</a></p>
                             <p class="item-date"><time datetime="2017-09-28T11:41:15.000Z" itemprop="datePublished">2017-09-28</time></p>
@@ -440,15 +448,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/2017/09/25/zookeeper/" class="title">zookeeper(五)</a></p>
-                            <p class="item-date"><time datetime="2017-09-25T12:01:15.000Z" itemprop="datePublished">2017-09-25</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -458,7 +457,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DRF/">DRF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DRF/">DRF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span></li></ul>
         </div>
     </div>
 
@@ -467,7 +466,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">54</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">54</span></li></ul>
         </div>
     </div>
 

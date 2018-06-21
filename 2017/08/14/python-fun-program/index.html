@@ -11,8 +11,7 @@
 <meta property="og:url" content="https://www.femn.me/2017/08/14/python-fun-program/index.html">
 <meta property="og:site_name" content="Femn">
 <meta property="og:description" content="函数式编程最常见的技术就是对一个集合做Map,Reduce,Filter操作.这比起过程式的语言来说,在代码上要更容易阅读.(传统过程式的语言需要使用for/while循环,然后在各种变量中把数据倒过来倒过去的) 函数式编程的准则:不依赖于外部的数据,而且也不改变外部数据的值,而是返回一个新的值给你 1234567891011121314151617181920212223242526272829">
-<meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-03-10T09:31:50.177Z">
+<meta property="og:updated_time" content="2018-03-10T09:31:50.176Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python 函数式编程">
 <meta name="twitter:description" content="函数式编程最常见的技术就是对一个集合做Map,Reduce,Filter操作.这比起过程式的语言来说,在代码上要更容易阅读.(传统过程式的语言需要使用for/while循环,然后在各种变量中把数据倒过来倒过去的) 函数式编程的准则:不依赖于外部的数据,而且也不改变外部数据的值,而是返回一个新的值给你 1234567891011121314151617181920212223242526272829">
@@ -160,7 +159,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                68
+                69
                 <span>posts</span>
             </div>
             <div class="article-info-block">
@@ -258,7 +257,7 @@
             
             <p>函数式编程最常见的技术就是对一个集合做Map,Reduce,Filter操作.这比起过程式的语言来说,在代码上要更容易阅读.(传统过程式的语言需要使用for/while循环,然后在各种变量中把数据倒过来倒过去的)</p>
 <p>函数式编程的准则:不依赖于外部的数据,而且也不改变外部数据的值,而是返回一个新的值给你</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">return_add_model_id</span><span class="params">(self, modelList)</span>:</span></span><br><span class="line">    func = <span class="keyword">lambda</span> x: modify_idKeys(x) <span class="comment"># 闭包</span></span><br><span class="line">    model_id = self._id</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">modify_idKeys</span><span class="params">(goods)</span>:</span>  </span><br><span class="line">        g = goods.copy()</span><br><span class="line">        <span class="keyword">for</span> keys, value <span class="keyword">in</span> goods.items():</span><br><span class="line">            <span class="keyword">if</span> keys == <span class="string">'_id'</span>:</span><br><span class="line">                g[model_id] = value</span><br><span class="line">                <span class="comment"># g.pop('_id'),还保留着</span></span><br><span class="line">                <span class="keyword">return</span> g</span><br><span class="line">    <span class="keyword">return</span> list(map(func, modelList))</span><br><span class="line"><span class="comment"># 依次执行函数得到结果,并将结果组成一个新的list对象后进行返回</span></span><br><span class="line"></span><br><span class="line">province_list = [&#123;<span class="string">'name'</span>: <span class="string">'北京市'</span>, <span class="string">'code'</span>: <span class="string">'11'</span>&#125;, \</span><br><span class="line">    &#123;<span class="string">'name'</span>:<span class="string">'天津市'</span>,<span class="string">'code'</span>:<span class="string">'12'</span>&#125;,&#123;<span class="string">'name'</span>:<span class="string">'河北省'</span>,<span class="string">'code'</span>:<span class="string">'13'</span>&#125;]</span><br><span class="line">remove_province_list = [<span class="string">'河北省'</span>]</span><br><span class="line"><span class="comment"># 函数式编程的filter 不仅可以做判断的依据,而且还可以修改其值</span></span><br><span class="line">list(filter(<span class="keyword">lambda</span> x: x.get(<span class="string">'name'</span>) <span class="keyword">not</span> <span class="keyword">in</span> remove_province_list \</span><br><span class="line">    <span class="keyword">and</span> x.pop(<span class="string">'code'</span>), province_list))</span><br><span class="line"><span class="comment"># [&#123;'name': '北京市'&#125;, &#123;'name': '天津市'&#125;]</span></span><br><span class="line"></span><br><span class="line">a = list(map(<span class="keyword">lambda</span> x, y : x*y, [<span class="number">1.2</span>, <span class="number">3</span>, <span class="number">5</span>], [<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>]))</span><br><span class="line">print(a)<span class="comment">#[2.4,12,30]</span></span><br><span class="line">a = reduce(<span class="keyword">lambda</span> x,y:x+y,a)</span><br><span class="line">print(a)<span class="comment">#44.4</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">toUpper</span><span class="params">(item)</span>:</span></span><br><span class="line">  <span class="keyword">return</span> item.upper()</span><br><span class="line"> </span><br><span class="line">list(map(toUpper, [<span class="string">"hao"</span>, <span class="string">"chen"</span>, <span class="string">"coolshell"</span>]))</span><br><span class="line"><span class="comment"># ['HAO', 'CHEN', 'COOLSHELL']</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">return_add_model_id</span><span class="params">(self, modelList)</span>:</span></div><div class="line">    func = <span class="keyword">lambda</span> x: modify_idKeys(x) <span class="comment"># 闭包</span></div><div class="line">    model_id = self._id</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">modify_idKeys</span><span class="params">(goods)</span>:</span>  </div><div class="line">        g = goods.copy()</div><div class="line">        <span class="keyword">for</span> keys, value <span class="keyword">in</span> goods.items():</div><div class="line">            <span class="keyword">if</span> keys == <span class="string">'_id'</span>:</div><div class="line">                g[model_id] = value</div><div class="line">                <span class="comment"># g.pop('_id'),还保留着</span></div><div class="line">                <span class="keyword">return</span> g</div><div class="line">    <span class="keyword">return</span> list(map(func, modelList))</div><div class="line"><span class="comment"># 依次执行函数得到结果,并将结果组成一个新的list对象后进行返回</span></div><div class="line"></div><div class="line">province_list = [&#123;<span class="string">'name'</span>: <span class="string">'北京市'</span>, <span class="string">'code'</span>: <span class="string">'11'</span>&#125;, \</div><div class="line">    &#123;<span class="string">'name'</span>:<span class="string">'天津市'</span>,<span class="string">'code'</span>:<span class="string">'12'</span>&#125;,&#123;<span class="string">'name'</span>:<span class="string">'河北省'</span>,<span class="string">'code'</span>:<span class="string">'13'</span>&#125;]</div><div class="line">remove_province_list = [<span class="string">'河北省'</span>]</div><div class="line"><span class="comment"># 函数式编程的filter 不仅可以做判断的依据,而且还可以修改其值</span></div><div class="line">list(filter(<span class="keyword">lambda</span> x: x.get(<span class="string">'name'</span>) <span class="keyword">not</span> <span class="keyword">in</span> remove_province_list \</div><div class="line">    <span class="keyword">and</span> x.pop(<span class="string">'code'</span>), province_list))</div><div class="line"><span class="comment"># [&#123;'name': '北京市'&#125;, &#123;'name': '天津市'&#125;]</span></div><div class="line"></div><div class="line">a = list(map(<span class="keyword">lambda</span> x, y : x*y, [<span class="number">1.2</span>, <span class="number">3</span>, <span class="number">5</span>], [<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>]))</div><div class="line">print(a)<span class="comment">#[2.4,12,30]</span></div><div class="line">a = reduce(<span class="keyword">lambda</span> x,y:x+y,a)</div><div class="line">print(a)<span class="comment">#44.4</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">toUpper</span><span class="params">(item)</span>:</span></div><div class="line">  <span class="keyword">return</span> item.upper()</div><div class="line"> </div><div class="line">list(map(toUpper, [<span class="string">"hao"</span>, <span class="string">"chen"</span>, <span class="string">"coolshell"</span>]))</div><div class="line"><span class="comment"># ['HAO', 'CHEN', 'COOLSHELL']</span></div></pre></td></tr></table></figure>
 
         
         </div>
@@ -269,7 +268,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/14/python-fun-program/" data-id="cjgssxvah003e06psocpokgow" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/14/python-fun-program/" data-id="cjio7f1g3003j0rt2uec4w82q" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -391,6 +390,15 @@
                     <li>
                         
                         <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2018/05/16/ab/" class="title">ab压力测试</a></p>
+                            <p class="item-date"><time datetime="2018-05-16T15:24:48.000Z" itemprop="datePublished">2018-05-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
                             <p class="item-title"><a href="/2017/09/28/storm/" class="title">hadoop storm(八)</a></p>
                             <p class="item-date"><time datetime="2017-09-28T11:41:15.000Z" itemprop="datePublished">2017-09-28</time></p>
@@ -424,15 +432,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/2017/09/25/zookeeper/" class="title">zookeeper(五)</a></p>
-                            <p class="item-date"><time datetime="2017-09-25T12:01:15.000Z" itemprop="datePublished">2017-09-25</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -442,7 +441,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DRF/">DRF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DRF/">DRF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span></li></ul>
         </div>
     </div>
 
@@ -451,7 +450,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">54</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">54</span></li></ul>
         </div>
     </div>
 
