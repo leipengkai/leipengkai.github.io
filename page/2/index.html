@@ -214,6 +214,154 @@
 
             
             <section id="main">
+    <article id="post-hadoop" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/09/23/hadoop/">hadoop简介与安装(一)</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/09/23/hadoop/">
+            <time datetime="2017-09-23T11:31:15.000Z" itemprop="datePublished">2017-09-23</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/hadoop/">hadoop</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/大数据/">大数据</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h4 id="介绍hadoop"><a href="#介绍hadoop" class="headerlink" title="介绍hadoop"></a>介绍hadoop</h4><p>在海量数据的场景下,为了解决分布式部署中的公共问题一些框架就出现了hadoop,zookeeper<br>hadoop:由很多的技术框架组成的一个生态系统.它是一个上层的应用软件(java编写的)<br>不关是用来做海量数据储存的,因为在解决海量数据的处理中,解决了一些分布式很共同的问题,把解决这些问题的方法抽离出来,形成各种各样的框架.将这些框架单独拿出来也可以在项目中使用.</p>
+<p>hadoop三个主要框架:</p>
+<h4 id="海量数据的存储-HDFS-分布式集群的文件系统-区别本机的文件系统"><a href="#海量数据的存储-HDFS-分布式集群的文件系统-区别本机的文件系统" class="headerlink" title="海量数据的存储(HDFS):分布式集群的文件系统,区别本机的文件系统"></a>海量数据的存储(HDFS):分布式集群的文件系统,区别本机的文件系统</h4><h4 id="海量数据的分析-运算模型-MapReduce-分析运算的模型-自己写运算逻辑-程序-写出来的就是MapReduce程序-通过YARM分配到节点之后运行MapReduce程序"><a href="#海量数据的分析-运算模型-MapReduce-分析运算的模型-自己写运算逻辑-程序-写出来的就是MapReduce程序-通过YARM分配到节点之后运行MapReduce程序" class="headerlink" title="海量数据的分析(运算模型)(MapReduce):分析运算的模型,自己写运算逻辑(程序),写出来的就是MapReduce程序,通过YARM分配到节点之后运行MapReduce程序"></a>海量数据的分析(运算模型)(MapReduce):分析运算的模型,自己写运算逻辑(程序),写出来的就是MapReduce程序,通过YARM分配到节点之后运行MapReduce程序</h4><p>Map程序:在不同节点并发运行<br>Reduce程序:全局处理,只在一同节点上运行,通过网络取得Map程序的结果.在分组统计时,Reduce也可以有多个</p>
+<p>MapReduce:擅长海量离线日志分析,可由hive工具编写<br>storm:实时的流计算<br>spark:实时的迭代运算</p>
+<h4 id="资源管理调度-YARN-集群"><a href="#资源管理调度-YARN-集群" class="headerlink" title="资源管理调度(YARN):集群"></a>资源管理调度(YARN):集群</h4><h4 id="安装hadoop"><a href="#安装hadoop" class="headerlink" title="安装hadoop:"></a>安装hadoop:</h4><p>集群的安装是很繁琐的事,Cloudera这个公司开发的安装系统(脚本)之后,只需要在一个节点,在浏览器中打开Cloudera,然后选择你所需要的服务,点确定之后,所以的程序包自动下载并安装好,同时还提供对集群的管理监控</p>
+<p>但个人还是使用apache官方的hadoop</p>
+<pre><code>环境为: centos7 + hadoop.2.8.1 + virtualbox5 + jdk8
+</code></pre><p>前提:</p>
+<ol>
+<li><a href="https://www.femn.me/2017/09/20/virtualbox/">virtualbox5网络配置</a>,联网成功</li>
+<li>vim /etc/sysconfig/network-scripts/ifcfg-enp0s3 设置IP为192.168.1.222,并重启network</li>
+<li>在/root目录下执行如下脚本,并且请在此目录提前下载好hadoop-2.8.1.tar.gz</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl https://file.femnyy.com/file/install_hadoop.sh | sudo sh</div></pre></td></tr></table></figure>
+<pre><code>注意:之后的所有操作也是root用户操作
+</code></pre><h4 id="访问-http-192-168-1-222-50070"><a href="#访问-http-192-168-1-222-50070" class="headerlink" title="访问:http://192.168.1.222:50070"></a>访问:<a href="http://192.168.1.222:50070" target="_blank" rel="external">http://192.168.1.222:50070</a></h4><p>巨坑:所有的服务都成功开启,但就是在主机访问不了,关闭了防火墙也不行,弄了半天的virtualbox的网络设置(自认为是没有错的)也不行,没想到居然是配置文件的问题<br><img src="/2017/09/23/hadoop/error1.png" alt="配置文件的巨坑" title="配置文件的巨坑"></p>
+<h4 id="centos-7启动图形界面"><a href="#centos-7启动图形界面" class="headerlink" title="centos 7启动图形界面"></a>centos 7启动图形界面</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 方法一</span></div><div class="line">yum group list</div><div class="line">yum group install <span class="string">"GNOME Desktop"</span></div><div class="line">startx</div><div class="line"><span class="comment"># 当重新启动时执行,就可以进入系统了</span></div><div class="line"><span class="comment"># You might have to hit 1, then 2 to agree to the license, then C to continue.</span></div><div class="line">1--2--c--yes</div><div class="line"></div><div class="line"><span class="comment"># yum group install "GNOME Desktop" "Graphical Administration Tools"</span></div><div class="line"><span class="comment"># 开机时自动就是设置图形界面</span></div><div class="line"><span class="comment"># ln -sf /lib/systemd/system/runlevel5.target /etc/systemd/system/default.target </span></div><div class="line"><span class="comment"># reboot</span></div><div class="line"></div><div class="line"><span class="comment"># 方法二</span></div><div class="line">init 5</div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/09/23/hadoop/" data-id="cjipt53yi001n07mvc00w31p1" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/09/23/hadoop/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/23/hadoop/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-internet" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -313,7 +461,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/20/internet/" data-id="cjio7f1bh00240rt2v0ht1khq" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/20/internet/" data-id="cjipt53zh002i07mvt6yqkfzc" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -457,7 +605,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/20/virtualbox/" data-id="cjio7f1ix004l0rt2gbhi9nqp" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/20/virtualbox/" data-id="cjipt542o004l07mv4oeefasy" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -594,7 +742,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/10/内存交换/" data-id="cjio7f1j4004p0rt2vacd7kuf" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/10/内存交换/" data-id="cjipt542z004r07mvf9uffzde" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -734,7 +882,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/05/MER/" data-id="cjio7f14n00050rt2szhx8ha3" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/05/MER/" data-id="cjipt53qb000207mvda263hwo" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -871,7 +1019,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/05/BUB/" data-id="cjio7f14a00030rt2gjmtl2zv" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/05/BUB/" data-id="cjipt53po000007mvluqzn2cf" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1025,7 +1173,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/23/shell-grep-sed-awk/" data-id="cjio7f1ho00410rt2ggqrysjc" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/23/shell-grep-sed-awk/" data-id="cjipt541n003z07mvgdc4jl0t" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1094,158 +1242,6 @@
             
     
         <a href="https://www.femn.me/2017/08/23/shell-grep-sed-awk/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/23/shell-grep-sed-awk/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-pymongo" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/18/pymongo/">pymongo基本操作</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/18/pymongo/">
-            <time datetime="2017-08-18T14:48:02.000Z" itemprop="datePublished">2017-08-18</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/python3/">python3</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>知道了大概的mongodb命令后,再下载Mongodb的python驱动,sudo pip3 install pymongo ,然后在python文件中导入相应的库,进行如下的配置:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">from pymongo import MongoClient</div><div class="line">_client = MongoClient(<span class="string">'127.0.0.1'</span>, 27017) <span class="comment">#主机IP,Port</span></div><div class="line"><span class="comment">#先创建一个名为Mongodb的数据库,再连接到此数据库</span></div><div class="line">_db = _client[<span class="string">'Mongodb'</span>]</div><div class="line">_db.authenticate(<span class="string">'username'</span>, <span class="string">'password'</span>)<span class="comment">#如果是设置了密码登陆时</span></div><div class="line"><span class="built_in">test</span> = _db[<span class="string">'test'</span>] <span class="comment"># 表名</span></div><div class="line">femn = _db[<span class="string">'femn'</span>]</div></pre></td></tr></table></figure>
-<h3 id="返回结果"><a href="#返回结果" class="headerlink" title="返回结果"></a>返回结果</h3><p><code>insert , insert_one , insert_many</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">insert(&#123;<span class="string">'name'</span>:<span class="number">1</span>&#125;)         <span class="comment"># &lt;class 'bson.objectid.ObjectId'&gt; </span></div><div class="line">insert([&#123;<span class="string">'name'</span>:<span class="number">1</span>&#125;,&#123;<span class="string">'name'</span>:<span class="number">2</span>&#125;])   <span class="comment"># [ObjectId('xx'),ObjectId('xx')]</span></div><div class="line">insert_one  <span class="comment"># r.inserted_id &lt;class 'bson.objectid.ObjectId'&gt;</span></div><div class="line">insert_many          <span class="comment"># &lt;class 'pymongo.results.InsertManyResult'&gt;</span></div><div class="line">print(r.inserted_ids) <span class="comment"># list [ObjectId('xx'), ObjectId('xx')]</span></div></pre></td></tr></table></figure></p>
-<p> <code>update</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;<span class="string">'ok'</span>: 1, <span class="string">'updatedExisting'</span>: True, <span class="string">'nModified'</span>: 1, <span class="string">'n'</span>: 1&#125;</div></pre></td></tr></table></figure></p>
-<p> <code>upsert=True</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;<span class="string">'ok'</span>:1,<span class="string">'nModified'</span>:0,<span class="string">'upserted'</span>:ObjectId(<span class="string">''</span>),<span class="string">'n'</span>:1,<span class="string">'updatedExisting'</span>:True&#125;</div></pre></td></tr></table></figure></p>
-<p> <code>update_one</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">r = db.test.update_one(&#123;<span class="string">'_id'</span>:<span class="string">'xx'</span>&#125;,&#123;<span class="string">'$set'</span>:&#123;<span class="string">'name'</span>:<span class="string">'femn'</span>&#125;&#125;) </div><div class="line"><span class="comment"># &lt;pymongo.results.UpdateResult object at 0x7f9cb2ebaaf8&gt;</span></div><div class="line">r.raw_result =&#123;<span class="string">'nModified'</span>: <span class="number">0</span>, <span class="string">'n'</span>: <span class="number">1</span>, <span class="string">'updatedExisting'</span>: <span class="keyword">True</span>, <span class="string">'ok'</span>: <span class="number">1</span>&#125;</div></pre></td></tr></table></figure></p>
-<p><code>delete_many delete_one</code></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">result = db.test.delete_many(&#123;<span class="string">'x'</span>: <span class="number">1</span>&#125;)      <span class="comment">#pymongo.results.DeleteResult</span></div><div class="line">result.deleted_count  <span class="comment"># 2</span></div><div class="line">result.raw_result <span class="comment"># &#123;'n': 2, 'ok': 1&#125;   </span></div><div class="line"> <span class="comment">#n表示匹配成功删除的个数 和delete_one是一样的</span></div></pre></td></tr></table></figure>
-<p><code>find find_one</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">find() find(&#123;&#125;)         <span class="comment"># return 一个pymongo.cursor.CursorType</span></div><div class="line">find_one(&#123;<span class="string">'_id'</span>:<span class="string">'xx'</span>&#125;)  <span class="comment"># return dict 如果没有则返回None</span></div><div class="line">find_one_and_update()   <span class="comment"># return dict</span></div></pre></td></tr></table></figure></p>
-<h3 id="find-find-one-命令"><a href="#find-find-one-命令" class="headerlink" title="find find_one 命令"></a>find find_one 命令</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">femn.find(filter=&#123;<span class="string">'field'</span>:<span class="string">'xx'</span>&#125;,</div><div class="line">    projection=&#123;<span class="string">'mobile'</span>:<span class="number">1</span>,<span class="string">'name'</span>:<span class="number">0</span>&#125;,limit=<span class="number">10</span>,skip=<span class="number">0</span>,</div><div class="line">    sort=[(<span class="string">'update_time'</span>:pymongo.DESCENDING)])</div><div class="line"></div><div class="line">femn.find(&#123;<span class="string">'name'</span>:xx&#125;,&#123;<span class="string">'name'</span>:<span class="number">1</span>&#125;).limit().skip().</div><div class="line">    sort=([(<span class="string">'update_time'</span>:pymongo.DESCENDING)])</div></pre></td></tr></table></figure>
-<p>filter中的多个查询操作符</p>
-<p><code>$all $in $nin 此字段可包含(或排除)多个值的文档</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">(&#123;filed:&#123;<span class="string">'$all'</span>:[]&#125;&#125;) </div><div class="line"><span class="comment"># 这个字段是数组并满足这个数组的值和指定的相同的文档</span></div><div class="line"></div><div class="line">(&#123;filed:&#123;<span class="string">'$in'</span>,<span class="string">'$nin'</span> :[<span class="string">'x'</span>]&#125;&#125;) </div><div class="line"><span class="comment"># 而这个只表示'x'在字段不管是数组类型的值,还是字符串类型的值,只要有这个'x'的文档就行</span></div></pre></td></tr></table></figure></p>
-<p><code>$regex 正规匹配字段的值</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(&#123;filed:&#123;<span class="string">'$regex'</span>: <span class="string">'%s'</span> % student_name&#125;&#125;) 就是    <span class="string">' *%s* '</span></div><div class="line">(&#123;filed:&#123;<span class="string">'$not'</span>:&#123;<span class="string">'$regex'</span>:<span class="string">'femn'</span>&#125;&#125;&#125;)</div></pre></td></tr></table></figure></p>
-<p><code>$exists 判断文档是否有此字段</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(&#123;filed: &#123;<span class="string">'$exists'</span>: <span class="keyword">False</span>&#125;&#125;)</div><div class="line"><span class="comment">#得到所有不存在flag字段的文档 可取True</span></div></pre></td></tr></table></figure></p>
-<p><code>$or 满足一个字段的值就行</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(&#123;<span class="string">'gender'</span>: <span class="string">'女'</span>, <span class="string">'$or'</span>: [&#123;<span class="string">'expand.expand_time'</span>: <span class="string">'2015-01-01'</span>&#125;,</div><div class="line">     &#123;<span class="string">'coin'</span>: &#123;<span class="string">'$lt'</span>: <span class="number">2</span>&#125;&#125;]&#125;)</div></pre></td></tr></table></figure></p>
-<p><code>$slice</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(&#123;<span class="string">'expand.expand_time'</span>:&#123;<span class="string">'$slice'</span>:[<span class="number">5</span>,<span class="number">3</span>]&#125;&#125;)</div><div class="line"><span class="comment"># 不是分片,去掉前5个后,再取3个 ,-5时去掉后5个取,取最后3个</span></div></pre></td></tr></table></figure></p>
-<p><code>混合包含和排除不能同时用</code></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(&#123;<span class="string">'album_id'</span>:&#123;<span class="string">'$in'</span>:[i]&#125;&#125;,projection=&#123;<span class="string">'play_count'</span>:<span class="number">1</span>,<span class="string">'cover_image'</span>:<span class="number">1</span>&#125;)</div></pre></td></tr></table></figure>
-<p>混合包含和排除不能同时用,既in:[],cover_image:1,comment:0不能同时使用,但可以 in:[],cover_image:1,comment:1</p>
-<p>其它的查询操作符 $eachMatch,$gt:2, $lte, $gte, $lt, ‘$slice’  $ne不等于</p>
-<h3 id="find-one-and-update命令"><a href="#find-one-and-update命令" class="headerlink" title="find_one_and_update命令"></a>find_one_and_update命令</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">find_one_and_update(q,u,p,upsert=<span class="keyword">False</span>,</div><div class="line">    return_document=ReturnDocument.AFTER)</div><div class="line"></div><div class="line">test.update(&#123;<span class="string">'name'</span>:<span class="string">'femn'</span>&#125;,</div><div class="line">    &#123;</div><div class="line">    <span class="comment"># update中的多个更新操作符</span></div><div class="line">    <span class="string">'$set'</span>:&#123;<span class="string">'name'</span>:<span class="string">'xx'</span>&#125;,</div><div class="line">    <span class="comment"># 改变某个字段的值</span></div><div class="line"></div><div class="line">    <span class="string">'$inc'</span>:&#123;<span class="string">'age'</span>:<span class="number">-1</span>&#125;,</div><div class="line">    <span class="comment"># 增加或减少 一个字段内容是数值的值</span></div><div class="line"></div><div class="line">    <span class="string">'$addToSet'</span>:&#123;<span class="string">'name_list'</span>:&#123;<span class="string">'$each'</span>:[<span class="string">''</span>,<span class="string">''</span>]&#125;&#125;,</div><div class="line">    <span class="comment"># 往一个数组的字段,添加不一样的内容,可避免反复添加</span></div><div class="line">    <span class="comment"># $each 一次性增加多个值</span></div><div class="line">    <span class="comment"># $push 往一个数组的字段中,可重复的添加一样的内容</span></div><div class="line"></div><div class="line">    <span class="string">'$pull'</span>:&#123;<span class="string">'list'</span>:&#123;<span class="string">'key'</span>:<span class="string">'value'</span>&#125;&#125;,</div><div class="line">    <span class="comment"># 删除数组中 所有key为value的数组都会删除掉 将所有匹配到的数据都删除</span></div><div class="line"></div><div class="line">    <span class="string">'$pullAll'</span>:&#123;<span class="string">'l'</span>:[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]&#125;</div><div class="line">    <span class="comment"># 一次性删除多个数组</span></div><div class="line">    &#125;)</div><div class="line"></div><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,&#123;<span class="string">'$set'</span>:</div><div class="line">    &#123;<span class="string">'recording'</span>:&#123;<span class="string">'openid'</span>:openid,<span class="string">'book_id'</span>:book_id&#125;&#125;&#125;)</div><div class="line"> <span class="comment"># recording 是一个Object类型</span></div><div class="line">test.find_one(&#123;<span class="string">'_id'</span>:bookcase_id,recording.book_id<span class="string">':book_id&#125;)</span></div></pre></td></tr></table></figure>
-<p>改变数值中的值 通过位置或者操作符$</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 通过$</span></div><div class="line">test.update(&#123;<span class="string">"relationships.fname"</span>:<span class="string">"xiong"</span>,<span class="string">'_id'</span>:id&#125;,</div><div class="line">        &#123;$set:&#123;<span class="string">"relationships.$.age"</span>:<span class="number">22</span>&#125;&#125;) </div><div class="line"><span class="comment"># 通过位置用来定位查询文档已匹配的元素,并进行更新</span></div><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,</div><div class="line">    &#123;<span class="string">'$inc'</span>:&#123;<span class="string">'book_class.'</span>+str(i)+<span class="string">'.class_count'</span>:count&#125;&#125;)</div><div class="line"><span class="comment"># 指定一个数组中的一个字段改变 </span></div><div class="line"></div><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,</div><div class="line">    &#123;<span class="string">'activity_history'</span>:&#123;<span class="string">'click_total'</span>:<span class="number">1</span>,per:<span class="number">1</span>,<span class="string">'login'</span>:<span class="number">1</span>&#125;&#125;&#125;)</div><div class="line"><span class="comment"># 此方法不行 换成如下方法</span></div><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,</div><div class="line">    &#123;<span class="string">'$inc'</span>:&#123;<span class="string">'activity_history.0.click_total'</span>:<span class="number">1</span>,</div><div class="line">    <span class="string">'activity_history.0.2017-02'</span>:<span class="number">1</span>,</div><div class="line">    <span class="string">'activity_history.0.login'</span>:<span class="number">1</span>&#125;&#125;,)</div></pre></td></tr></table></figure>
-<h4 id="注意pull一个个的数组是个整体"><a href="#注意pull一个个的数组是个整体" class="headerlink" title="注意pull一个个的数组是个整体"></a>注意<a href="https://docs.mongodb.com/manual/reference/operator/update/pull/#up._S_pull" target="_blank" rel="external">pull</a>一个个的数组是个整体</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="string">'reservation_list'</span>:[&#123;<span class="string">'time'</span>:<span class="string">""</span>,<span class="string">'device_id'</span>:<span class="string">''</span>,</div><div class="line">        <span class="string">'order_book'</span>:[&#123;<span class="number">1</span>&#125;,&#123;<span class="number">2</span>&#125;]&#125;,&#123;...&#125;,&#123;...&#125;]</div><div class="line">    <span class="comment"># 错误的设计 不可能单独的删除order_book中的1,2还保留着...</span></div><div class="line">    <span class="comment"># 它会删除整个的那个数组reservation_list</span></div><div class="line"><span class="string">'reservation_list'</span>:[&#123;<span class="string">'device_id'</span>:<span class="string">''</span>,<span class="string">'book_id'</span>:<span class="string">''</span>,</div><div class="line">        <span class="string">'book_plu'</span>:<span class="string">''</span>,<span class="string">'shelf_number'</span>:<span class="number">101</span>&#125;]</div><div class="line">    <span class="comment"># 所以要将order_book中保存的信息,放出来</span></div></pre></td></tr></table></figure>
-<p><code>数组字段的内容album_id = [&#39;1&#39;,&#39;xx&#39;],不是JSON类型</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,&#123;<span class="string">'$pull'</span>:&#123;<span class="string">'album_id'</span>:<span class="string">'xx'</span>&#125;&#125;) </div><div class="line"><span class="comment"># album_id必须是数组</span></div><div class="line">&#123;<span class="string">'$pull'</span>: &#123;<span class="string">'album_id'</span>: &#123;<span class="string">'$in'</span>: [<span class="string">'xx'</span>]&#125;&#125;</div><div class="line"> <span class="comment">#也可以使用其它的查询操作符 $gt</span></div></pre></td></tr></table></figure></p>
-<p><code>删除以字典形式保存的数组</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"> &#123;<span class="string">'$pull'</span>: &#123;<span class="string">'praise'</span>: &#123;<span class="string">'user_id'</span>: user_id,<span class="string">'_id'</span>:<span class="string">'xx'</span>&#125;&#125; </div><div class="line">&#123;<span class="string">'$pull'</span>: &#123;<span class="string">'save_receiver_address'</span>: &#123;<span class="string">'flag'</span>: del_flag&#125;&#125;&#125;)</div></pre></td></tr></table></figure></p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/18/pymongo/" data-id="cjio7f1jf004y0rt2gwemvvwh" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/18/pymongo/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/18/pymongo/">Comments</a>
     
 
         </footer>
@@ -1374,7 +1370,7 @@ CSRF:因为不再依赖于Cookie，所以你就不需要考虑对CSRF（跨站�
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/18/DRF_JWT/" data-id="cjio7f13x00010rt2wxrc3y1x" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/18/DRF_JWT/" data-id="cjipt53rt000a07mv7j045wm1" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1452,6 +1448,158 @@ CSRF:因为不再依赖于Cookie，所以你就不需要考虑对CSRF（跨站�
 
 
 
+    <article id="post-pymongo" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/18/pymongo/">pymongo基本操作</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/18/pymongo/">
+            <time datetime="2017-08-18T14:48:02.000Z" itemprop="datePublished">2017-08-18</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>知道了大概的mongodb命令后,再下载Mongodb的python驱动,sudo pip3 install pymongo ,然后在python文件中导入相应的库,进行如下的配置:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">from pymongo import MongoClient</div><div class="line">_client = MongoClient(<span class="string">'127.0.0.1'</span>, 27017) <span class="comment">#主机IP,Port</span></div><div class="line"><span class="comment">#先创建一个名为Mongodb的数据库,再连接到此数据库</span></div><div class="line">_db = _client[<span class="string">'Mongodb'</span>]</div><div class="line">_db.authenticate(<span class="string">'username'</span>, <span class="string">'password'</span>)<span class="comment">#如果是设置了密码登陆时</span></div><div class="line"><span class="built_in">test</span> = _db[<span class="string">'test'</span>] <span class="comment"># 表名</span></div><div class="line">femn = _db[<span class="string">'femn'</span>]</div></pre></td></tr></table></figure>
+<h3 id="返回结果"><a href="#返回结果" class="headerlink" title="返回结果"></a>返回结果</h3><p><code>insert , insert_one , insert_many</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">insert(&#123;<span class="string">'name'</span>:<span class="number">1</span>&#125;)         <span class="comment"># &lt;class 'bson.objectid.ObjectId'&gt; </span></div><div class="line">insert([&#123;<span class="string">'name'</span>:<span class="number">1</span>&#125;,&#123;<span class="string">'name'</span>:<span class="number">2</span>&#125;])   <span class="comment"># [ObjectId('xx'),ObjectId('xx')]</span></div><div class="line">insert_one  <span class="comment"># r.inserted_id &lt;class 'bson.objectid.ObjectId'&gt;</span></div><div class="line">insert_many          <span class="comment"># &lt;class 'pymongo.results.InsertManyResult'&gt;</span></div><div class="line">print(r.inserted_ids) <span class="comment"># list [ObjectId('xx'), ObjectId('xx')]</span></div></pre></td></tr></table></figure></p>
+<p> <code>update</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;<span class="string">'ok'</span>: 1, <span class="string">'updatedExisting'</span>: True, <span class="string">'nModified'</span>: 1, <span class="string">'n'</span>: 1&#125;</div></pre></td></tr></table></figure></p>
+<p> <code>upsert=True</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;<span class="string">'ok'</span>:1,<span class="string">'nModified'</span>:0,<span class="string">'upserted'</span>:ObjectId(<span class="string">''</span>),<span class="string">'n'</span>:1,<span class="string">'updatedExisting'</span>:True&#125;</div></pre></td></tr></table></figure></p>
+<p> <code>update_one</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">r = db.test.update_one(&#123;<span class="string">'_id'</span>:<span class="string">'xx'</span>&#125;,&#123;<span class="string">'$set'</span>:&#123;<span class="string">'name'</span>:<span class="string">'femn'</span>&#125;&#125;) </div><div class="line"><span class="comment"># &lt;pymongo.results.UpdateResult object at 0x7f9cb2ebaaf8&gt;</span></div><div class="line">r.raw_result =&#123;<span class="string">'nModified'</span>: <span class="number">0</span>, <span class="string">'n'</span>: <span class="number">1</span>, <span class="string">'updatedExisting'</span>: <span class="keyword">True</span>, <span class="string">'ok'</span>: <span class="number">1</span>&#125;</div></pre></td></tr></table></figure></p>
+<p><code>delete_many delete_one</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">result = db.test.delete_many(&#123;<span class="string">'x'</span>: <span class="number">1</span>&#125;)      <span class="comment">#pymongo.results.DeleteResult</span></div><div class="line">result.deleted_count  <span class="comment"># 2</span></div><div class="line">result.raw_result <span class="comment"># &#123;'n': 2, 'ok': 1&#125;   </span></div><div class="line"> <span class="comment">#n表示匹配成功删除的个数 和delete_one是一样的</span></div></pre></td></tr></table></figure>
+<p><code>find find_one</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">find() find(&#123;&#125;)         <span class="comment"># return 一个pymongo.cursor.CursorType</span></div><div class="line">find_one(&#123;<span class="string">'_id'</span>:<span class="string">'xx'</span>&#125;)  <span class="comment"># return dict 如果没有则返回None</span></div><div class="line">find_one_and_update()   <span class="comment"># return dict</span></div></pre></td></tr></table></figure></p>
+<h3 id="find-find-one-命令"><a href="#find-find-one-命令" class="headerlink" title="find find_one 命令"></a>find find_one 命令</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">femn.find(filter=&#123;<span class="string">'field'</span>:<span class="string">'xx'</span>&#125;,</div><div class="line">    projection=&#123;<span class="string">'mobile'</span>:<span class="number">1</span>,<span class="string">'name'</span>:<span class="number">0</span>&#125;,limit=<span class="number">10</span>,skip=<span class="number">0</span>,</div><div class="line">    sort=[(<span class="string">'update_time'</span>:pymongo.DESCENDING)])</div><div class="line"></div><div class="line">femn.find(&#123;<span class="string">'name'</span>:xx&#125;,&#123;<span class="string">'name'</span>:<span class="number">1</span>&#125;).limit().skip().</div><div class="line">    sort=([(<span class="string">'update_time'</span>:pymongo.DESCENDING)])</div></pre></td></tr></table></figure>
+<p>filter中的多个查询操作符</p>
+<p><code>$all $in $nin 此字段可包含(或排除)多个值的文档</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">(&#123;filed:&#123;<span class="string">'$all'</span>:[]&#125;&#125;) </div><div class="line"><span class="comment"># 这个字段是数组并满足这个数组的值和指定的相同的文档</span></div><div class="line"></div><div class="line">(&#123;filed:&#123;<span class="string">'$in'</span>,<span class="string">'$nin'</span> :[<span class="string">'x'</span>]&#125;&#125;) </div><div class="line"><span class="comment"># 而这个只表示'x'在字段不管是数组类型的值,还是字符串类型的值,只要有这个'x'的文档就行</span></div></pre></td></tr></table></figure></p>
+<p><code>$regex 正规匹配字段的值</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(&#123;filed:&#123;<span class="string">'$regex'</span>: <span class="string">'%s'</span> % student_name&#125;&#125;) 就是    <span class="string">' *%s* '</span></div><div class="line">(&#123;filed:&#123;<span class="string">'$not'</span>:&#123;<span class="string">'$regex'</span>:<span class="string">'femn'</span>&#125;&#125;&#125;)</div></pre></td></tr></table></figure></p>
+<p><code>$exists 判断文档是否有此字段</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(&#123;filed: &#123;<span class="string">'$exists'</span>: <span class="keyword">False</span>&#125;&#125;)</div><div class="line"><span class="comment">#得到所有不存在flag字段的文档 可取True</span></div></pre></td></tr></table></figure></p>
+<p><code>$or 满足一个字段的值就行</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(&#123;<span class="string">'gender'</span>: <span class="string">'女'</span>, <span class="string">'$or'</span>: [&#123;<span class="string">'expand.expand_time'</span>: <span class="string">'2015-01-01'</span>&#125;,</div><div class="line">     &#123;<span class="string">'coin'</span>: &#123;<span class="string">'$lt'</span>: <span class="number">2</span>&#125;&#125;]&#125;)</div></pre></td></tr></table></figure></p>
+<p><code>$slice</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(&#123;<span class="string">'expand.expand_time'</span>:&#123;<span class="string">'$slice'</span>:[<span class="number">5</span>,<span class="number">3</span>]&#125;&#125;)</div><div class="line"><span class="comment"># 不是分片,去掉前5个后,再取3个 ,-5时去掉后5个取,取最后3个</span></div></pre></td></tr></table></figure></p>
+<p><code>混合包含和排除不能同时用</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(&#123;<span class="string">'album_id'</span>:&#123;<span class="string">'$in'</span>:[i]&#125;&#125;,projection=&#123;<span class="string">'play_count'</span>:<span class="number">1</span>,<span class="string">'cover_image'</span>:<span class="number">1</span>&#125;)</div></pre></td></tr></table></figure>
+<p>混合包含和排除不能同时用,既in:[],cover_image:1,comment:0不能同时使用,但可以 in:[],cover_image:1,comment:1</p>
+<p>其它的查询操作符 $eachMatch,$gt:2, $lte, $gte, $lt, ‘$slice’  $ne不等于</p>
+<h3 id="find-one-and-update命令"><a href="#find-one-and-update命令" class="headerlink" title="find_one_and_update命令"></a>find_one_and_update命令</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">find_one_and_update(q,u,p,upsert=<span class="keyword">False</span>,</div><div class="line">    return_document=ReturnDocument.AFTER)</div><div class="line"></div><div class="line">test.update(&#123;<span class="string">'name'</span>:<span class="string">'femn'</span>&#125;,</div><div class="line">    &#123;</div><div class="line">    <span class="comment"># update中的多个更新操作符</span></div><div class="line">    <span class="string">'$set'</span>:&#123;<span class="string">'name'</span>:<span class="string">'xx'</span>&#125;,</div><div class="line">    <span class="comment"># 改变某个字段的值</span></div><div class="line"></div><div class="line">    <span class="string">'$inc'</span>:&#123;<span class="string">'age'</span>:<span class="number">-1</span>&#125;,</div><div class="line">    <span class="comment"># 增加或减少 一个字段内容是数值的值</span></div><div class="line"></div><div class="line">    <span class="string">'$addToSet'</span>:&#123;<span class="string">'name_list'</span>:&#123;<span class="string">'$each'</span>:[<span class="string">''</span>,<span class="string">''</span>]&#125;&#125;,</div><div class="line">    <span class="comment"># 往一个数组的字段,添加不一样的内容,可避免反复添加</span></div><div class="line">    <span class="comment"># $each 一次性增加多个值</span></div><div class="line">    <span class="comment"># $push 往一个数组的字段中,可重复的添加一样的内容</span></div><div class="line"></div><div class="line">    <span class="string">'$pull'</span>:&#123;<span class="string">'list'</span>:&#123;<span class="string">'key'</span>:<span class="string">'value'</span>&#125;&#125;,</div><div class="line">    <span class="comment"># 删除数组中 所有key为value的数组都会删除掉 将所有匹配到的数据都删除</span></div><div class="line"></div><div class="line">    <span class="string">'$pullAll'</span>:&#123;<span class="string">'l'</span>:[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]&#125;</div><div class="line">    <span class="comment"># 一次性删除多个数组</span></div><div class="line">    &#125;)</div><div class="line"></div><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,&#123;<span class="string">'$set'</span>:</div><div class="line">    &#123;<span class="string">'recording'</span>:&#123;<span class="string">'openid'</span>:openid,<span class="string">'book_id'</span>:book_id&#125;&#125;&#125;)</div><div class="line"> <span class="comment"># recording 是一个Object类型</span></div><div class="line">test.find_one(&#123;<span class="string">'_id'</span>:bookcase_id,recording.book_id<span class="string">':book_id&#125;)</span></div></pre></td></tr></table></figure>
+<p>改变数值中的值 通过位置或者操作符$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 通过$</span></div><div class="line">test.update(&#123;<span class="string">"relationships.fname"</span>:<span class="string">"xiong"</span>,<span class="string">'_id'</span>:id&#125;,</div><div class="line">        &#123;$set:&#123;<span class="string">"relationships.$.age"</span>:<span class="number">22</span>&#125;&#125;) </div><div class="line"><span class="comment"># 通过位置用来定位查询文档已匹配的元素,并进行更新</span></div><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,</div><div class="line">    &#123;<span class="string">'$inc'</span>:&#123;<span class="string">'book_class.'</span>+str(i)+<span class="string">'.class_count'</span>:count&#125;&#125;)</div><div class="line"><span class="comment"># 指定一个数组中的一个字段改变 </span></div><div class="line"></div><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,</div><div class="line">    &#123;<span class="string">'activity_history'</span>:&#123;<span class="string">'click_total'</span>:<span class="number">1</span>,per:<span class="number">1</span>,<span class="string">'login'</span>:<span class="number">1</span>&#125;&#125;&#125;)</div><div class="line"><span class="comment"># 此方法不行 换成如下方法</span></div><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,</div><div class="line">    &#123;<span class="string">'$inc'</span>:&#123;<span class="string">'activity_history.0.click_total'</span>:<span class="number">1</span>,</div><div class="line">    <span class="string">'activity_history.0.2017-02'</span>:<span class="number">1</span>,</div><div class="line">    <span class="string">'activity_history.0.login'</span>:<span class="number">1</span>&#125;&#125;,)</div></pre></td></tr></table></figure>
+<h4 id="注意pull一个个的数组是个整体"><a href="#注意pull一个个的数组是个整体" class="headerlink" title="注意pull一个个的数组是个整体"></a>注意<a href="https://docs.mongodb.com/manual/reference/operator/update/pull/#up._S_pull" target="_blank" rel="external">pull</a>一个个的数组是个整体</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="string">'reservation_list'</span>:[&#123;<span class="string">'time'</span>:<span class="string">""</span>,<span class="string">'device_id'</span>:<span class="string">''</span>,</div><div class="line">        <span class="string">'order_book'</span>:[&#123;<span class="number">1</span>&#125;,&#123;<span class="number">2</span>&#125;]&#125;,&#123;...&#125;,&#123;...&#125;]</div><div class="line">    <span class="comment"># 错误的设计 不可能单独的删除order_book中的1,2还保留着...</span></div><div class="line">    <span class="comment"># 它会删除整个的那个数组reservation_list</span></div><div class="line"><span class="string">'reservation_list'</span>:[&#123;<span class="string">'device_id'</span>:<span class="string">''</span>,<span class="string">'book_id'</span>:<span class="string">''</span>,</div><div class="line">        <span class="string">'book_plu'</span>:<span class="string">''</span>,<span class="string">'shelf_number'</span>:<span class="number">101</span>&#125;]</div><div class="line">    <span class="comment"># 所以要将order_book中保存的信息,放出来</span></div></pre></td></tr></table></figure>
+<p><code>数组字段的内容album_id = [&#39;1&#39;,&#39;xx&#39;],不是JSON类型</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">test.update(&#123;<span class="string">'_id'</span>:id&#125;,&#123;<span class="string">'$pull'</span>:&#123;<span class="string">'album_id'</span>:<span class="string">'xx'</span>&#125;&#125;) </div><div class="line"><span class="comment"># album_id必须是数组</span></div><div class="line">&#123;<span class="string">'$pull'</span>: &#123;<span class="string">'album_id'</span>: &#123;<span class="string">'$in'</span>: [<span class="string">'xx'</span>]&#125;&#125;</div><div class="line"> <span class="comment">#也可以使用其它的查询操作符 $gt</span></div></pre></td></tr></table></figure></p>
+<p><code>删除以字典形式保存的数组</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"> &#123;<span class="string">'$pull'</span>: &#123;<span class="string">'praise'</span>: &#123;<span class="string">'user_id'</span>: user_id,<span class="string">'_id'</span>:<span class="string">'xx'</span>&#125;&#125; </div><div class="line">&#123;<span class="string">'$pull'</span>: &#123;<span class="string">'save_receiver_address'</span>: &#123;<span class="string">'flag'</span>: del_flag&#125;&#125;&#125;)</div></pre></td></tr></table></figure></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/18/pymongo/" data-id="cjipt540j003907mvd99y1g7d" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/18/pymongo/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/18/pymongo/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-mysql" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -1506,7 +1654,7 @@ CSRF:因为不再依赖于Cookie，所以你就不需要考虑对CSRF（跨站�
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/18/mysql/" data-id="cjio7f1c0002k0rt2jb7fjr8c" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/18/mysql/" data-id="cjipt540e003407mvptumhgxm" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1584,160 +1732,6 @@ CSRF:因为不再依赖于Cookie，所以你就不需要考虑对CSRF（跨站�
 
 
 
-    <article id="post-mongodb" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/18/mongodb/">mongodb基本命令</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/18/mongodb/">
-            <time datetime="2017-08-18T11:56:18.000Z" itemprop="datePublished">2017-08-18</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/数据库/">数据库</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>先去<a href="https://www.mongodb.com/" target="_blank" rel="external">mongodb官网</a>下载mongod,配置好环境变量.最好也再下个<a href="https://robomongo.org/" target="_blank" rel="external">robomongo</a>,进行更好的图形界面管理</p>
-<p><a href="https://docs.mongodb.com/manual/" target="_blank" rel="external">mongodb官方文档</a>    </p>
-<p><a href="http://docs.mongoing.com/manual-zh/" target="_blank" rel="external">mongodb中文文档</a></p>
-<h4 id="启动Mongod"><a href="#启动Mongod" class="headerlink" title="启动Mongod:"></a>启动Mongod:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongod --dbpath /home/python/data/mongodb  --logpath /home/python/data/<span class="built_in">log</span> --auth</div></pre></td></tr></table></figure>
-<p>或者用配置文件的方式启动:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">mongod -f ./mongod.conf</div><div class="line">vim ./mongod.conf</div><div class="line">    dbpath = /home/python/data/mongodb/</div><div class="line">    logpath = /home/python/data/<span class="built_in">log</span></div><div class="line">    port = 27017</div><div class="line">    auth = <span class="literal">true</span></div></pre></td></tr></table></figure></p>
-<h4 id="进入Mongo的CLI"><a href="#进入Mongo的CLI" class="headerlink" title="进入Mongo的CLI:"></a>进入Mongo的CLI:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">monogo -uusername -ppasswd 192.168.0.197:27017/db </div><div class="line"><span class="comment"># 如果有语言上的错误</span></div><div class="line"><span class="built_in">export</span> LC_ALL=C</div></pre></td></tr></table></figure>
-<h4 id="选择admin数据库-并认证"><a href="#选择admin数据库-并认证" class="headerlink" title="选择admin数据库,并认证:"></a>选择admin数据库,并认证:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">use admin</div><div class="line">db.auth(<span class="string">'username'</span>,<span class="string">'password'</span>)</div></pre></td></tr></table></figure>
-<p>指定好当前数据库后,用db命令查看,之后用密码登陆.</p>
-<p><em>查看所有的数据库</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">show dbs</div></pre></td></tr></table></figure>
-<h3 id="创建或选定数据库"><a href="#创建或选定数据库" class="headerlink" title="创建或选定数据库"></a>创建或选定数据库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">use 1 <span class="comment"># 该命令将创建一个新的数据库,如果它不存在,否则将返回现有的数据库.</span></div><div class="line">db.dropDatabase(<span class="string">'1'</span>)  <span class="comment"># 删除数据库</span></div></pre></td></tr></table></figure>
-<p><em>创建集合(表),删除表,显示所有表</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">db.createCollection(<span class="string">'test'</span>)</div><div class="line">db.test.drop()</div><div class="line">show collections</div></pre></td></tr></table></figure>
-<p><em>创建文档(记录)</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.test_table.insert(&#123;<span class="string">'1'</span>:1&#125;)</div></pre></td></tr></table></figure>
-<p><em>指定数据库,一定要先选定再创建,创建用户角色</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">use <span class="built_in">test</span></div><div class="line">db.createUser( &#123;</div><div class="line">user: <span class="string">"femn2014"</span>,</div><div class="line"><span class="built_in">pwd</span>: <span class="string">"femn2014"</span>,</div><div class="line">roles: [ &#123; role : <span class="string">"readWrite"</span>, db: <span class="string">"test"</span> &#125; ]</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p>role:”sysadmin”,”read”,”readWrite”,”sysadmin”和”root”角色只能在第一次创建一次,之后创建的必须是其它的角色,同时也要注意db:’xxx’要改变,如果指定的是admin数据库,则此用户可以看到所有的数据库,并只是针对db:’test’这个数据库有读写操作.</p>
-<p><em>指定数据库之后,查看用户</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">use <span class="built_in">test</span></div><div class="line">db.getUsers()</div></pre></td></tr></table></figure></p>
-<h3 id="一旦创建好用户之后-就必须要切换到admin数据库中-才能进行对用户角色的管理"><a href="#一旦创建好用户之后-就必须要切换到admin数据库中-才能进行对用户角色的管理" class="headerlink" title="一旦创建好用户之后,就必须要切换到admin数据库中,才能进行对用户角色的管理"></a>一旦创建好用户之后,就必须要切换到admin数据库中,才能进行对用户角色的管理</h3><p><em>用admin数据库,查看,管理所有数据库中的所有用户</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">use admin</div><div class="line">db.system.users.find()</div><div class="line">db.system.users.remove(&#123;user:<span class="string">'femn2014'</span>&#125;) 删除用户</div></pre></td></tr></table></figure></p>
-<h4 id="得到test表的索引"><a href="#得到test表的索引" class="headerlink" title="得到test表的索引"></a>得到test表的索引</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.test.getIndexes()</div></pre></td></tr></table></figure>
-<p><em>创建新的索引,此命令不会覆盖掉之前的索引</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.test.ensureIndex(&#123;<span class="string">'mobile'</span>:1&#125;)</div></pre></td></tr></table></figure>
-<p><em>创建二维索引,通过查询location这个数组,来得到文档</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">db.test.ensureIndex(&#123;<span class="string">"location"</span> : <span class="string">"2d"</span>&#125;,&#123;<span class="string">"background"</span> : <span class="literal">true</span>&#125;,</div><div class="line">    &#123;min:-180,max:180&#125;)</div></pre></td></tr></table></figure>
-<p>MongoDB的Geospatial Indexing 2d默认取值范围[-179,-179]到[180,180] 包含这两个点,超出范围将报错</p>
-<h4 id="备份Mongo"><a href="#备份Mongo" class="headerlink" title="备份Mongo:"></a>备份Mongo:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mongodump --host=192.168.1.217 --port=27017 --username=username \</div><div class="line">    --password=passwd --authenticationDatabase admin -dMongodb \</div><div class="line">    -cfemn -o /home/python/nosql_dump</div></pre></td></tr></table></figure>
-<h4 id="恢复Mongo"><a href="#恢复Mongo" class="headerlink" title="恢复Mongo:"></a>恢复Mongo:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">mongorestore -udba -pdba --host=60.205.140.13 --port=27017 \ </div><div class="line">    --authenticationDatabase admin -dbozhongboyue -cvideo \ </div><div class="line">    --drop /home/python/nosql_dump/1-5/bozhongboyue/video.bson</div><div class="line"><span class="comment"># 不经常使用如下命令</span></div><div class="line">mongoexport --host=192.168.1.217 --port=27017 --username=username \ </div><div class="line">    --password=passwd --authenticationDatabase admin -dMongodb -cfemn -o femn.json</div></pre></td></tr></table></figure>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/18/mongodb/" data-id="cjio7f1cb002t0rt2ggl6e9yp" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/18/mongodb/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/18/mongodb/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <nav id="page-nav">
         <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
@@ -1751,6 +1745,15 @@ CSRF:因为不再依赖于Cookie，所以你就不需要考虑对CSRF（跨站�
         <h3 class="widget-title">recent</h3>
         <div class="widget">
             <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2018/05/17/nginx/" class="title">nginx优化静态内容</a></p>
+                            <p class="item-date"><time datetime="2018-05-17T15:24:48.000Z" itemprop="datePublished">2018-05-17</time></p>
+                        </div>
+                    </li>
                 
                     <li>
                         
@@ -1788,15 +1791,6 @@ CSRF:因为不再依赖于Cookie，所以你就不需要考虑对CSRF（跨站�
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
-                            <p class="item-title"><a href="/2017/09/27/hadoop_hive/" class="title">hadoop hive(五)</a></p>
-                            <p class="item-date"><time datetime="2017-09-27T11:31:15.000Z" itemprop="datePublished">2017-09-27</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -1806,7 +1800,7 @@ CSRF:因为不再依赖于Cookie，所以你就不需要考虑对CSRF（跨站�
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DRF/">DRF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DRF/">DRF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span></li></ul>
         </div>
     </div>
 
@@ -1815,7 +1809,7 @@ CSRF:因为不再依赖于Cookie，所以你就不需要考虑对CSRF（跨站�
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">54</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">53</span></li></ul>
         </div>
     </div>
 

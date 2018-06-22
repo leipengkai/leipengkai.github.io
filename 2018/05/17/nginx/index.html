@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Dockerfile docker-compose | Femn</title>
+    <title>nginx优化静态内容 | Femn</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="Dockerfile定制镜像命令,docker镜像:业务代码和运行环境进行整体的打包:一个Dockerfile的文件:系统基本所需要的环境和软件 1234567891011vim Dockerfile    FROM centos7    RUN # 对原镜像进行命令操作    ADD . /opt/ # 将宿主机此目录下的文件原copy到容器的/opt/下    EXPOSE 80 8000 #">
+    <meta name="description" content="nginx 基本知识location 匹配url 优先级: [精确匹配(同等类型顺序越前,优先级越高)]  [开头匹配(同等类型长度越长,优先级越高)]  [正则匹配(同等类型顺序越前,优先级越高)] [通用匹配(同等类型长度越长,优先级越高)]   语法规则：location [=|^~|~|~*] /uri/ {…} 先匹配普通location，在匹配正则location     类型 操作符">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Dockerfile docker-compose">
-<meta property="og:url" content="https://www.femn.me/2017/08/04/Dockerfile_compose/index.html">
+<meta property="og:title" content="nginx优化静态内容">
+<meta property="og:url" content="https://www.femn.me/2018/05/17/nginx/index.html">
 <meta property="og:site_name" content="Femn">
-<meta property="og:description" content="Dockerfile定制镜像命令,docker镜像:业务代码和运行环境进行整体的打包:一个Dockerfile的文件:系统基本所需要的环境和软件 1234567891011vim Dockerfile    FROM centos7    RUN # 对原镜像进行命令操作    ADD . /opt/ # 将宿主机此目录下的文件原copy到容器的/opt/下    EXPOSE 80 8000 #">
-<meta property="og:updated_time" content="2018-03-10T09:31:50.112Z">
+<meta property="og:description" content="nginx 基本知识location 匹配url 优先级: [精确匹配(同等类型顺序越前,优先级越高)]  [开头匹配(同等类型长度越长,优先级越高)]  [正则匹配(同等类型顺序越前,优先级越高)] [通用匹配(同等类型长度越长,优先级越高)]   语法规则：location [=|^~|~|~*] /uri/ {…} 先匹配普通location，在匹配正则location     类型 操作符">
+<meta property="og:updated_time" content="2018-06-22T10:02:56.456Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Dockerfile docker-compose">
-<meta name="twitter:description" content="Dockerfile定制镜像命令,docker镜像:业务代码和运行环境进行整体的打包:一个Dockerfile的文件:系统基本所需要的环境和软件 1234567891011vim Dockerfile    FROM centos7    RUN # 对原镜像进行命令操作    ADD . /opt/ # 将宿主机此目录下的文件原copy到容器的/opt/下    EXPOSE 80 8000 #">
+<meta name="twitter:title" content="nginx优化静态内容">
+<meta name="twitter:description" content="nginx 基本知识location 匹配url 优先级: [精确匹配(同等类型顺序越前,优先级越高)]  [开头匹配(同等类型长度越长,优先级越高)]  [正则匹配(同等类型顺序越前,优先级越高)] [通用匹配(同等类型长度越长,优先级越高)]   语法规则：location [=|^~|~|~*] /uri/ {…} 先匹配普通location，在匹配正则location     类型 操作符">
     
 
     
@@ -217,7 +217,7 @@
 </aside>
 
             
-            <section id="main"><article id="post-Dockerfile_compose" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-nginx" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -225,7 +225,7 @@
                 
     
         <h1 class="article-title" itemprop="name">
-            Dockerfile docker-compose
+            nginx优化静态内容
         </h1>
     
 
@@ -234,8 +234,8 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/Dockerfile_compose/">
-            <time datetime="2017-08-04T15:24:48.000Z" itemprop="datePublished">2017-08-04</time>
+        <a href="/2018/05/17/nginx/">
+            <time datetime="2018-05-17T15:24:48.000Z" itemprop="datePublished">2018-05-17</time>
         </a>
     </div>
 
@@ -243,7 +243,7 @@
                         
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/docker/">docker</a>
+        <a class="article-category-link" href="/categories/server/">server</a>
     </div>
 
                         
@@ -255,21 +255,282 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h3 id="Dockerfile定制镜像命令-docker镜像-业务代码和运行环境进行整体的打包"><a href="#Dockerfile定制镜像命令-docker镜像-业务代码和运行环境进行整体的打包" class="headerlink" title="Dockerfile定制镜像命令,docker镜像:业务代码和运行环境进行整体的打包:"></a>Dockerfile定制镜像命令,docker镜像:业务代码和运行环境进行整体的打包:</h3><p><a href="https://github.com/imagine10255/centos6-lnmp-php56/blob/master/Dockerfile" target="_blank" rel="external">一个Dockerfile的文件</a>:系统基本所需要的环境和软件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">vim Dockerfile</div><div class="line">    FROM centos7</div><div class="line">    RUN <span class="comment"># 对原镜像进行命令操作</span></div><div class="line">    ADD . /opt/ <span class="comment"># 将宿主机此目录下的文件原copy到容器的/opt/下</span></div><div class="line">    EXPOSE 80 8000 <span class="comment"># 容器可映射的端口</span></div><div class="line">    VOLUME [<span class="string">"/home/python"</span>,<span class="string">""</span>]</div><div class="line">    WORKDIR <span class="string">'/home/xx'</span> <span class="comment"># 相当于宿主机的cd /home/xx</span></div><div class="line">    CMD [<span class="string">"nginx"</span>, <span class="string">"-g"</span>, <span class="string">"daemon off;"</span>] <span class="comment">#一开始运行这个容器所执行的命令</span></div><div class="line"><span class="comment"># 所有的文件复制均使用 COPY 指令,仅在需要自动解压缩的场合使用 ADD</span></div><div class="line"><span class="comment"># 用Dockerfile 生成镜像app</span></div><div class="line">docker build -t app .</div></pre></td></tr></table></figure>
-<h3 id="Dockerfile-模板文件-可以很方便的定义一个单独的应用容器-记录了-单-一个镜像的制作过程"><a href="#Dockerfile-模板文件-可以很方便的定义一个单独的应用容器-记录了-单-一个镜像的制作过程" class="headerlink" title="Dockerfile 模板文件,可以很方便的定义一个单独的应用容器,记录了(单)一个镜像的制作过程"></a>Dockerfile 模板文件,可以很方便的定义一个单独的应用容器,记录了(单)一个镜像的制作过程</h3><p>如果 dockerhub 的镜像不能满足我的需求就 dockerfile 自己 build 镜像</p>
-<p>为什么还要docker-compose,是因为Dockerfile要去执行CMD [“bash”]之后,再去启动nginx,node等其它的服务,不能直观的看到端口之间的映射,以及服务之间的link的原因吗？</p>
-<h3 id="但是很多时候-需要多个镜像合作才能启动一个服务-比如前端要有nginx-数据库mysql-邮件服务等等-当然你可以把所有这些都弄到一个镜像里去-但这样做就无法复用了"><a href="#但是很多时候-需要多个镜像合作才能启动一个服务-比如前端要有nginx-数据库mysql-邮件服务等等-当然你可以把所有这些都弄到一个镜像里去-但这样做就无法复用了" class="headerlink" title="但是很多时候,需要多个镜像合作才能启动一个服务,比如前端要有nginx,数据库mysql,邮件服务等等,当然你可以把所有这些都弄到一个镜像里去,但这样做就无法复用了."></a>但是很多时候,需要多个镜像合作才能启动一个服务,比如前端要有nginx,数据库mysql,邮件服务等等,当然你可以把所有这些都弄到一个镜像里去,但这样做就无法复用了.</h3><p>更常见的是,nginx,mysql,smtp都分别是个镜像,然后这些镜像合作,共同服务一个项目.<br>docker-compose就是解决这个问题的.你的项目需要哪些镜像,每个镜像怎么配置,要挂载哪些volume,等等信息都包含在docker-compose.yml里.<br>要启动服务,只需要docker-compose up就行,停止也只需要docker-compse stop/down</p>
-<p>dockerfile+docker-compose, 是因为docker-compose.yml本身没有镜像构建的信息,如果镜像是从docker registry拉取下来的,那么Dockerfile就不需要;如果镜像是需要build的,那就需要提供Dockerfile.</p>
-<h3 id="docker-compost-定义和运行多个Docker容器的应用"><a href="#docker-compost-定义和运行多个Docker容器的应用" class="headerlink" title="docker-compost:定义和运行多个Docker容器的应用"></a>docker-compost:定义和运行多个Docker容器的应用</h3><p>编排工具,定义并运行基于Docker的分布式应用,简化部署复杂应用的流程,管理容器化应用的完整开发周期</p>
-<p>1.允许用户通过一个单独的docker-compose.yml模板文件(YAML格式)来定义一组相关联的应用容器为一个项目:project<br>,包括注明需要哪些服务,服务之间的关联,开放的port,对外连结的路径volumes</p>
-<p>2.以启动container为目的的、先build image再以此启动container</p>
-<p>3.定义好了管理起来轻松,你如果喜欢用docker run带一大串parameters也是可以的</p>
-<h3 id="install-compose"><a href="#install-compose" class="headerlink" title="install compose"></a>install compose</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">curl -L https://github.com/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m` \</div><div class="line">     &gt; /usr/<span class="built_in">local</span>/bin/docker-compose</div><div class="line"><span class="comment"># 如果命令行下载超时 </span></div><div class="line">https://github.com/docker/compose/releases/download/1.8.0/docker-compose-Linux-x86_64</div><div class="line"><span class="built_in">cd</span> Download</div><div class="line">cp docker-compose-Linux-x86_64 /usr/<span class="built_in">local</span>/bin/docker-compose</div><div class="line"></div><div class="line">chmod a+x /usr/<span class="built_in">local</span>/bin/docker-compose</div><div class="line">docker-compose -h</div><div class="line">docker-compose up/down/stop</div></pre></td></tr></table></figure>
-<p>管理server(contient)执行的顺序,但其实这只是希望是这样执行(docker run),但其实真正的启动时的, 还需要其它的工具去控制.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">    mkdir 1</div><div class="line">    <span class="built_in">cd</span> 1</div><div class="line">    vim docker-compose.yml</div><div class="line">        nginx:</div><div class="line">            image: nginx</div><div class="line"><span class="comment"># 1. 只定义 image :先找本地、本地没有找 docker hub 、再没有就报错 </span></div><div class="line"><span class="comment"># 2.只定义build:跑Dockerfile做image,有image直接用,image没有name和tag </span></div><div class="line"><span class="comment"># 3.同时定义image和build:没有image就先跑build,name和tag用image定义的那个</span></div><div class="line"><span class="comment"># 有了image就直接跑container</span></div><div class="line">            <span class="comment"># build: ./nginx  ##nginx目录下有Dockerfile文件 </span></div><div class="line">            ports:</div><div class="line">                - <span class="string">"80:80"</span></div><div class="line">            volumes:</div><div class="line">                - <span class="variable">$PWD</span>/nginx/nginx.conf:/etc/nginx/nginx.conf</div><div class="line">                - ./nginx/sites-enabled:/etc/nginx/sites-enabled</div><div class="line">            restart: always</div><div class="line">        node:</div><div class="line">            image: node</div><div class="line">            ports:</div><div class="line">                -<span class="string">"8000:8000"</span></div><div class="line">            volumes:</div><div class="line">                - <span class="variable">$PWD</span>/node:/src/app</div><div class="line">            restart: always</div><div class="line"></div><div class="line">    mkdir node </div><div class="line">    mkdir nginx</div><div class="line">    <span class="built_in">cd</span> nginx</div><div class="line">    mkdir sites-enabled</div><div class="line">    vim nginx.conf</div><div class="line">        daemon off;</div><div class="line"></div><div class="line">    还要去配置node</div><div class="line">    <span class="built_in">cd</span> ../</div><div class="line">    docker-compose up</div><div class="line">    docker-compose down</div><div class="line">    docker ps -l</div></pre></td></tr></table></figure></p>
-<h3 id="用docker-compose-自动一个一个的安装软件-client"><a href="#用docker-compose-自动一个一个的安装软件-client" class="headerlink" title="用docker-compose 自动一个一个的安装软件(client)"></a>用docker-compose 自动一个一个的安装软件(client)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">vim docker-compose.yml</div><div class="line">    version: <span class="string">'2'</span></div><div class="line">    services:</div><div class="line">    mongodb:</div><div class="line">        image: tutum/mongodb</div><div class="line">        ports:</div><div class="line">            - <span class="string">"27017:27017"</span></div><div class="line">            - <span class="string">"28017:28017"</span></div><div class="line">        environment:</div><div class="line">            - AUTH=no</div><div class="line">        container_name: mongodb</div><div class="line">        restart: always</div><div class="line"></div><div class="line">    memcached:</div><div class="line">        image: memcached</div><div class="line">        ports:</div><div class="line">            - <span class="string">"11211:11211"</span></div><div class="line">        container_name: memcached</div><div class="line">        restart: always</div><div class="line"></div><div class="line"><span class="comment"># 效果:只要运行docker-compose up,就会自动安装mongodb和memcached</span></div><div class="line"><span class="comment"># 并且会在机器重启的时候自启动</span></div></pre></td></tr></table></figure>
-<p><a href="https://cola.workxplay.net/devops-docker-development-environment/" target="_blank" rel="external">一个项目的例子</a></p>
+            <h4 id="nginx-基本知识"><a href="#nginx-基本知识" class="headerlink" title="nginx 基本知识"></a>nginx 基本知识</h4><h5 id="location-匹配url"><a href="#location-匹配url" class="headerlink" title="location 匹配url"></a>location 匹配url</h5><ul>
+<li>优先级:<ul>
+<li>[精确匹配(同等类型顺序越前,优先级越高)] </li>
+<li>[开头匹配(同等类型长度越长,优先级越高)] </li>
+<li>[正则匹配(同等类型顺序越前,优先级越高)]</li>
+<li>[通用匹配(同等类型长度越长,优先级越高)]</li>
+</ul>
+</li>
+<li>语法规则：location [=|^~|~|~*] /uri/ {…} 先匹配普通location，在匹配正则location</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">操作符</th>
+<th>含意</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">精确匹配</td>
+<td style="text-align:center">=</td>
+<td>= /hello :完全相等</td>
+</tr>
+<tr>
+<td style="text-align:center">开头匹配</td>
+<td style="text-align:center">^~</td>
+<td>^~ /hello/yesno  :<br>uri以某个常规字符串开头,理解为匹配url路径即可,无需考虑编解码</td>
+</tr>
+<tr>
+<td style="text-align:center">正则匹配</td>
+<td style="text-align:center">~</td>
+<td>~ /hello/y[a-e][e-z] :<br>开头表示区分大小写的正则匹配</td>
+</tr>
+<tr>
+<td style="text-align:center">正则匹配</td>
+<td style="text-align:center">~*</td>
+<td>location ~* /hello/y[a-e][a-z][1-9] :<br>开头表示不区分大小写的正则匹配</td>
+</tr>
+<tr>
+<td style="text-align:center">正则匹配</td>
+<td style="text-align:center">!~</td>
+<td>开头表示区分大小写的不匹配的正则匹配</td>
+</tr>
+<tr>
+<td style="text-align:center">正则匹配</td>
+<td style="text-align:center">!~*</td>
+<td>开头表示不区分大小写的不匹配的正则匹配</td>
+</tr>
+<tr>
+<td style="text-align:center">通用匹配</td>
+<td style="text-align:center">/</td>
+<td>/hello/no :<br>任何请求都会被匹配到</td>
+</tr>
+</tbody>
+</table>
+<h4 id="设置静态资源的过期时间"><a href="#设置静态资源的过期时间" class="headerlink" title="设置静态资源的过期时间"></a>设置静态资源的过期时间</h4><ul>
+<li><p>服务器缓存启用是存在两个判断机制的：</p>
+<ul>
+<li>新鲜度检测阶段:需要依赖响应头的Cache-Control/Expires，通过才会返回200(from cache)</li>
+<li>资源二次校验阶段:校验资源一致性,Last-Modified/ETag 这两个数据用于确定数据是否改变.如果一致返回304,如果不一致返回200,当然，如果没有找到返回404</li>
+</ul>
+</li>
+<li><p>expires指令用来对浏览器本地缓存的控制,指令可以放置在http {}，server {}，location {}或位置{}块内的if语句中</p>
+<ul>
+<li>当没有设置expires指令时:</li>
+</ul>
+</li>
+</ul>
+<pre><code>curl -I http://0.0.0.0/logo.png
+HTTP/1.1 200 OK
+Server: nginx/1.10.3 (Ubuntu)
+Date: Fri, 22 Jun 2018 03:16:20 GMT
+Content-Type: image/png
+Content-Length: 18
+Connection: keep-alive
+Pragma: public
+Cache-Control: public
+</code></pre><ul>
+<li><ul>
+<li>当设置expires指令时:</li>
+</ul>
+</li>
+</ul>
+<pre><code>curl -I http://0.0.0.0/logo.png
+HTTP/1.1 200 OK
+Server: nginx/1.10.3 (Ubuntu)
+Date: Fri, 22 Jun 2018 03:16:20 GMT
+Content-Type: image/png
+Content-Length: 18
+Connection: keep-alive
+Pragma: public
+Cache-Control: public
+Expires: Sun, 22 Jul 2018 03:16:20 GMT
+Cache-Control: max-age=2592000
+</code></pre><ul>
+<li><p>遇到的坑(一直没有效果)</p>
+<ul>
+<li>想着是否还需要额外的模块支持</li>
+<li>参数是否增加的不够全(还要加请求头)</li>
+<li>location匹配是否有错误</li>
+<li>各种变着法的换其它各种形式的写法</li>
+</ul>
+</li>
+<li><p>server_name问题(要写明name,不然只会匹配 location / {…}规则)</p>
+<ul>
+<li>没有添加 0.0.0.0<ul>
+<li><a href="http://0.0.0.0/" target="_blank" rel="external">http://0.0.0.0/</a>  可正常访问</li>
+<li><a href="http://localhost/" target="_blank" rel="external">http://localhost/</a>  可正常访问</li>
+<li><a href="http://127.0.0.1/" target="_blank" rel="external">http://127.0.0.1/</a>  可正常访问</li>
+<li><a href="http://0.0.0.0/hello" target="_blank" rel="external">http://0.0.0.0/hello</a>  不可正常访问</li>
+<li><a href="http://localhost/hello" target="_blank" rel="external">http://localhost/hello</a> 可正常访问</li>
+<li><a href="http://127.0.0.1/hello" target="_blank" rel="external">http://127.0.0.1/hello</a> 不可正常访问</li>
+</ul>
+</li>
+<li>新添加 0.0.0.0后<ul>
+<li><a href="http://0.0.0.0/" target="_blank" rel="external">http://0.0.0.0/</a>  可正常访问</li>
+<li><a href="http://localhost/" target="_blank" rel="external">http://localhost/</a>  可正常访问</li>
+<li><a href="http://127.0.0.1/" target="_blank" rel="external">http://127.0.0.1/</a>  可正常访问</li>
+<li><a href="http://0.0.0.0/hello" target="_blank" rel="external">http://0.0.0.0/hello</a>  可正常访问</li>
+<li><a href="http://localhost/hello" target="_blank" rel="external">http://localhost/hello</a> 可正常访问</li>
+<li><a href="http://127.0.0.1/hello" target="_blank" rel="external">http://127.0.0.1/hello</a> 不可正常访问</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>解决的方法:原因居然是server_name 没有加0.0.0.0(在命令行和浏览器中测试都是使用0.0.0.0)</p>
+</li>
+</ul>
+<h4 id="缓存设置-配置proxy-cahe"><a href="#缓存设置-配置proxy-cahe" class="headerlink" title="缓存设置(配置proxy_cahe)"></a>缓存设置(配置proxy_cahe)</h4><ul>
+<li>参数说明:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">指令</th>
+<th style="text-align:center">指令与参数值</th>
+<th>含意</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">proxy_cache_path</td>
+<td style="text-align:center">/tmp/nginx</td>
+<td>cache这个zone的文件要存放的目录,会在已经的路径下生成一个目录</td>
+</tr>
+<tr>
+<td style="text-align:center">proxy_cache_path</td>
+<td style="text-align:center">levels=1:2</td>
+<td>表示缓存目录的第一级目录是1个字符,第二级目录是2个字符.<br>即/tmp/nginx/a/1b这种形式</td>
+</tr>
+<tr>
+<td style="text-align:center">proxy_cache_path</td>
+<td style="text-align:center">keys_zone=cache:10m</td>
+<td>zone名称为cache1,分配的内存大小为10MB</td>
+</tr>
+<tr>
+<td style="text-align:center">proxy_cache_path</td>
+<td style="text-align:center">inactive=1d</td>
+<td>这个zone中的缓存文件如果在1天内都没有被访问，那么文件会被cache manager进程删除掉</td>
+</tr>
+<tr>
+<td style="text-align:center">proxy_cache_valid</td>
+<td style="text-align:center">200 304 30m</td>
+<td>设置状态码为200和304的响应可以进行缓存,并且缓存时间为30分钟</td>
+</tr>
+<tr>
+<td style="text-align:center">upstream_cache_status</td>
+<td style="text-align:center">MISS</td>
+<td>未命中,请求被传送到后端</td>
+</tr>
+<tr>
+<td style="text-align:center">upstream_cache_status</td>
+<td style="text-align:center">HIT</td>
+<td>缓存命中</td>
+</tr>
+<tr>
+<td style="text-align:center">upstream_cache_status</td>
+<td style="text-align:center">EXPIRED</td>
+<td>缓存已经过期请求被传送到后端</td>
+</tr>
+<tr>
+<td style="text-align:center">upstream_cache_status</td>
+<td style="text-align:center">UPDATING</td>
+<td>正在更新缓存，将使用旧的应答</td>
+</tr>
+<tr>
+<td style="text-align:center">upstream_cache_status</td>
+<td style="text-align:center">STALE</td>
+<td>后端将得到过期的应答</td>
+</tr>
+<tr>
+<td style="text-align:center">upstream_cache_status</td>
+<td style="text-align:center">BYPASS</td>
+<td>缓存被绕过了</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>遇到的坑(也一直没有效果)</p>
+<ul>
+<li>proxy_pass <a href="http://0.0.0.0/" target="_blank" rel="external">http://0.0.0.0/</a>; # 一定要加这个,而且连uwsgi_pass都不行</li>
+</ul>
+</li>
+<li><p>查看是否生效</p>
+<pre><code>curl -I http://0.0.0.0/logo.png
+X-Cache: MISS
+X-Cache: HIT  # 第二次请求,如果是HIT,则表示缓存生效
+</code></pre></li>
+</ul>
+<p>最终配置如下:</p>
+<pre><code>proxy_cache_path /tmp/nginx levels=1:2 keys_zone=cache:10m inactive=60m;
 
+map $sent_http_content_type $expires {
+    default                    off;
+    text/html                  epoch;
+    text/css                   max;
+    application/javascript     max;
+    image/png                  2d;
+    ~*\.(jpg|jpeg|png|gif|ico|css|js|pdf)(\?|$) 7d;
+
+}
+
+server {
+    listen       80;
+    server_name 0.0.0.0 localhost ;
+    location = /hello {
+        return 302  https://www.baidu.com;    
+    }
+
+    # expires 1d;
+
+    # location ~* .*\.(ico|css|js|gif|jpe?g|png|woff|woff2|eot|svg|ttf|)$ {
+        # expires 1d;
+    # }
+
+    # location ~* \.(jpg|jpeg|png|gif){
+        # expires 1d;
+    # }
+
+    # location = /logo.png {
+        # root /usr/share/nginx/html;
+        # expires 30d;
+        # access_log off;
+        # log_not_found off;
+        # add_header Pragma public;
+        # add_header Cache-Control &quot;public&quot;; # 任何系统都可以缓存它们
+    # }
+
+    # expires $expires; # 这种方式在chrome,firefox没有Expires,在命令行中就有
+    location / {
+
+        root /usr/share/nginx/html;
+        index index.html;
+        if ($request_uri ~* &quot;\.(ico|css|js|gif|jpe?g|png)$&quot;) {
+            expires 30d;
+            access_log off;
+            add_header Cache-Control &quot;public&quot;;
+        }
+
+
+        proxy_cache cache;
+        proxy_cache_valid 200 301 304 30m;
+        proxy_pass    http://0.0.0.0:8000;
+
+        # 缓存 key 的值
+        proxy_cache_key $host$uri$is_args$args;
+        # proxy_cache_key &quot;$scheme$request_method$host$request_uri&quot;;
+        proxy_cache_use_stale updating error timeout invalid_header http_500 http_502 http_503 http_504;
+
+        expires 1m;
+        # 将缓存的状态添加到 Header 中
+        add_header X-Cache &apos;$upstream_cache_status&apos;;
+    }
+}
+</code></pre>
         
         </div>
         <footer class="article-footer">
@@ -279,7 +540,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/Dockerfile_compose/" data-id="cjipt53r4000607mvq7omlttn" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2018/05/17/nginx/" data-id="cjipt5400002v07mv9b5w9lqy" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -347,7 +608,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/08/04/Dockerfile_compose/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/Dockerfile_compose/">Comments</a>
+        <a href="https://www.femn.me/2018/05/17/nginx/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2018/05/17/nginx/">Comments</a>
     
 
         </footer>
@@ -356,19 +617,10 @@
         
 <nav id="article-nav">
     
-        <a href="/2017/08/04/docker/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Newer</strong>
-            <div class="article-nav-title">
-                
-                    docker容器与镜像
-                
-            </div>
-        </a>
     
-    
-        <a href="/2017/08/04/docker-swarm/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2018/05/16/ab/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Older</strong>
-            <div class="article-nav-title">docker-swarm</div>
+            <div class="article-nav-title">ab压力测试</div>
         </a>
     
 </nav>
@@ -522,9 +774,9 @@
     <script>
     var disqus_config = function () {
         
-            this.page.url = 'https://www.femn.me/2017/08/04/Dockerfile_compose/';
+            this.page.url = 'https://www.femn.me/2018/05/17/nginx/';
         
-        this.page.identifier = 'Dockerfile_compose';
+        this.page.identifier = 'nginx';
     };
     (function() { 
         var d = document, s = d.createElement('script');  

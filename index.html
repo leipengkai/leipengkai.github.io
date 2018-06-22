@@ -214,6 +214,407 @@
 
             
             <section id="main">
+    <article id="post-nginx" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2018/05/17/nginx/">nginx优化静态内容</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2018/05/17/nginx/">
+            <time datetime="2018-05-17T15:24:48.000Z" itemprop="datePublished">2018-05-17</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/server/">server</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h4 id="nginx-基本知识"><a href="#nginx-基本知识" class="headerlink" title="nginx 基本知识"></a>nginx 基本知识</h4><h5 id="location-匹配url"><a href="#location-匹配url" class="headerlink" title="location 匹配url"></a>location 匹配url</h5><ul>
+<li>优先级:<ul>
+<li>[精确匹配(同等类型顺序越前,优先级越高)] </li>
+<li>[开头匹配(同等类型长度越长,优先级越高)] </li>
+<li>[正则匹配(同等类型顺序越前,优先级越高)]</li>
+<li>[通用匹配(同等类型长度越长,优先级越高)]</li>
+</ul>
+</li>
+<li>语法规则：location [=|^~|~|~*] /uri/ {…} 先匹配普通location，在匹配正则location</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">操作符</th>
+<th>含意</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">精确匹配</td>
+<td style="text-align:center">=</td>
+<td>= /hello :完全相等</td>
+</tr>
+<tr>
+<td style="text-align:center">开头匹配</td>
+<td style="text-align:center">^~</td>
+<td>^~ /hello/yesno  :<br>uri以某个常规字符串开头,理解为匹配url路径即可,无需考虑编解码</td>
+</tr>
+<tr>
+<td style="text-align:center">正则匹配</td>
+<td style="text-align:center">~</td>
+<td>~ /hello/y[a-e][e-z] :<br>开头表示区分大小写的正则匹配</td>
+</tr>
+<tr>
+<td style="text-align:center">正则匹配</td>
+<td style="text-align:center">~*</td>
+<td>location ~* /hello/y[a-e][a-z][1-9] :<br>开头表示不区分大小写的正则匹配</td>
+</tr>
+<tr>
+<td style="text-align:center">正则匹配</td>
+<td style="text-align:center">!~</td>
+<td>开头表示区分大小写的不匹配的正则匹配</td>
+</tr>
+<tr>
+<td style="text-align:center">正则匹配</td>
+<td style="text-align:center">!~*</td>
+<td>开头表示不区分大小写的不匹配的正则匹配</td>
+</tr>
+<tr>
+<td style="text-align:center">通用匹配</td>
+<td style="text-align:center">/</td>
+<td>/hello/no :<br>任何请求都会被匹配到</td>
+</tr>
+</tbody>
+</table>
+<h4 id="设置静态资源的过期时间"><a href="#设置静态资源的过期时间" class="headerlink" title="设置静态资源的过期时间"></a>设置静态资源的过期时间</h4><ul>
+<li><p>服务器缓存启用是存在两个判断机制的：</p>
+<ul>
+<li>新鲜度检测阶段:需要依赖响应头的Cache-Control/Expires，通过才会返回200(from cache)</li>
+<li>资源二次校验阶段:校验资源一致性,Last-Modified/ETag 这两个数据用于确定数据是否改变.如果一致返回304,如果不一致返回200,当然，如果没有找到返回404</li>
+</ul>
+</li>
+<li><p>expires指令用来对浏览器本地缓存的控制,指令可以放置在http {}，server {}，location {}或位置{}块内的if语句中</p>
+<ul>
+<li>当没有设置expires指令时:</li>
+</ul>
+</li>
+</ul>
+<pre><code>curl -I http://0.0.0.0/logo.png
+HTTP/1.1 200 OK
+Server: nginx/1.10.3 (Ubuntu)
+Date: Fri, 22 Jun 2018 03:16:20 GMT
+Content-Type: image/png
+Content-Length: 18
+Connection: keep-alive
+Pragma: public
+Cache-Control: public
+</code></pre><ul>
+<li><ul>
+<li>当设置expires指令时:</li>
+</ul>
+</li>
+</ul>
+<pre><code>curl -I http://0.0.0.0/logo.png
+HTTP/1.1 200 OK
+Server: nginx/1.10.3 (Ubuntu)
+Date: Fri, 22 Jun 2018 03:16:20 GMT
+Content-Type: image/png
+Content-Length: 18
+Connection: keep-alive
+Pragma: public
+Cache-Control: public
+Expires: Sun, 22 Jul 2018 03:16:20 GMT
+Cache-Control: max-age=2592000
+</code></pre><ul>
+<li><p>遇到的坑(一直没有效果)</p>
+<ul>
+<li>想着是否还需要额外的模块支持</li>
+<li>参数是否增加的不够全(还要加请求头)</li>
+<li>location匹配是否有错误</li>
+<li>各种变着法的换其它各种形式的写法</li>
+</ul>
+</li>
+<li><p>server_name问题(要写明name,不然只会匹配 location / {…}规则)</p>
+<ul>
+<li>没有添加 0.0.0.0<ul>
+<li><a href="http://0.0.0.0/" target="_blank" rel="external">http://0.0.0.0/</a>  可正常访问</li>
+<li><a href="http://localhost/" target="_blank" rel="external">http://localhost/</a>  可正常访问</li>
+<li><a href="http://127.0.0.1/" target="_blank" rel="external">http://127.0.0.1/</a>  可正常访问</li>
+<li><a href="http://0.0.0.0/hello" target="_blank" rel="external">http://0.0.0.0/hello</a>  不可正常访问</li>
+<li><a href="http://localhost/hello" target="_blank" rel="external">http://localhost/hello</a> 可正常访问</li>
+<li><a href="http://127.0.0.1/hello" target="_blank" rel="external">http://127.0.0.1/hello</a> 不可正常访问</li>
+</ul>
+</li>
+<li>新添加 0.0.0.0后<ul>
+<li><a href="http://0.0.0.0/" target="_blank" rel="external">http://0.0.0.0/</a>  可正常访问</li>
+<li><a href="http://localhost/" target="_blank" rel="external">http://localhost/</a>  可正常访问</li>
+<li><a href="http://127.0.0.1/" target="_blank" rel="external">http://127.0.0.1/</a>  可正常访问</li>
+<li><a href="http://0.0.0.0/hello" target="_blank" rel="external">http://0.0.0.0/hello</a>  可正常访问</li>
+<li><a href="http://localhost/hello" target="_blank" rel="external">http://localhost/hello</a> 可正常访问</li>
+<li><a href="http://127.0.0.1/hello" target="_blank" rel="external">http://127.0.0.1/hello</a> 不可正常访问</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>解决的方法:原因居然是server_name 没有加0.0.0.0(在命令行和浏览器中测试都是使用0.0.0.0)</p>
+</li>
+</ul>
+<h4 id="缓存设置-配置proxy-cahe"><a href="#缓存设置-配置proxy-cahe" class="headerlink" title="缓存设置(配置proxy_cahe)"></a>缓存设置(配置proxy_cahe)</h4><ul>
+<li>参数说明:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">指令</th>
+<th style="text-align:center">指令与参数值</th>
+<th>含意</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">proxy_cache_path</td>
+<td style="text-align:center">/tmp/nginx</td>
+<td>cache这个zone的文件要存放的目录,会在已经的路径下生成一个目录</td>
+</tr>
+<tr>
+<td style="text-align:center">proxy_cache_path</td>
+<td style="text-align:center">levels=1:2</td>
+<td>表示缓存目录的第一级目录是1个字符,第二级目录是2个字符.<br>即/tmp/nginx/a/1b这种形式</td>
+</tr>
+<tr>
+<td style="text-align:center">proxy_cache_path</td>
+<td style="text-align:center">keys_zone=cache:10m</td>
+<td>zone名称为cache1,分配的内存大小为10MB</td>
+</tr>
+<tr>
+<td style="text-align:center">proxy_cache_path</td>
+<td style="text-align:center">inactive=1d</td>
+<td>这个zone中的缓存文件如果在1天内都没有被访问，那么文件会被cache manager进程删除掉</td>
+</tr>
+<tr>
+<td style="text-align:center">proxy_cache_valid</td>
+<td style="text-align:center">200 304 30m</td>
+<td>设置状态码为200和304的响应可以进行缓存,并且缓存时间为30分钟</td>
+</tr>
+<tr>
+<td style="text-align:center">upstream_cache_status</td>
+<td style="text-align:center">MISS</td>
+<td>未命中,请求被传送到后端</td>
+</tr>
+<tr>
+<td style="text-align:center">upstream_cache_status</td>
+<td style="text-align:center">HIT</td>
+<td>缓存命中</td>
+</tr>
+<tr>
+<td style="text-align:center">upstream_cache_status</td>
+<td style="text-align:center">EXPIRED</td>
+<td>缓存已经过期请求被传送到后端</td>
+</tr>
+<tr>
+<td style="text-align:center">upstream_cache_status</td>
+<td style="text-align:center">UPDATING</td>
+<td>正在更新缓存，将使用旧的应答</td>
+</tr>
+<tr>
+<td style="text-align:center">upstream_cache_status</td>
+<td style="text-align:center">STALE</td>
+<td>后端将得到过期的应答</td>
+</tr>
+<tr>
+<td style="text-align:center">upstream_cache_status</td>
+<td style="text-align:center">BYPASS</td>
+<td>缓存被绕过了</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>遇到的坑(也一直没有效果)</p>
+<ul>
+<li>proxy_pass <a href="http://0.0.0.0/" target="_blank" rel="external">http://0.0.0.0/</a>; # 一定要加这个,而且连uwsgi_pass都不行</li>
+</ul>
+</li>
+<li><p>查看是否生效</p>
+<pre><code>curl -I http://0.0.0.0/logo.png
+X-Cache: MISS
+X-Cache: HIT  # 第二次请求,如果是HIT,则表示缓存生效
+</code></pre></li>
+</ul>
+<p>最终配置如下:</p>
+<pre><code>proxy_cache_path /tmp/nginx levels=1:2 keys_zone=cache:10m inactive=60m;
+
+map $sent_http_content_type $expires {
+    default                    off;
+    text/html                  epoch;
+    text/css                   max;
+    application/javascript     max;
+    image/png                  2d;
+    ~*\.(jpg|jpeg|png|gif|ico|css|js|pdf)(\?|$) 7d;
+
+}
+
+server {
+    listen       80;
+    server_name 0.0.0.0 localhost ;
+    location = /hello {
+        return 302  https://www.baidu.com;    
+    }
+
+    # expires 1d;
+
+    # location ~* .*\.(ico|css|js|gif|jpe?g|png|woff|woff2|eot|svg|ttf|)$ {
+        # expires 1d;
+    # }
+
+    # location ~* \.(jpg|jpeg|png|gif){
+        # expires 1d;
+    # }
+
+    # location = /logo.png {
+        # root /usr/share/nginx/html;
+        # expires 30d;
+        # access_log off;
+        # log_not_found off;
+        # add_header Pragma public;
+        # add_header Cache-Control &quot;public&quot;; # 任何系统都可以缓存它们
+    # }
+
+    # expires $expires; # 这种方式在chrome,firefox没有Expires,在命令行中就有
+    location / {
+
+        root /usr/share/nginx/html;
+        index index.html;
+        if ($request_uri ~* &quot;\.(ico|css|js|gif|jpe?g|png)$&quot;) {
+            expires 30d;
+            access_log off;
+            add_header Cache-Control &quot;public&quot;;
+        }
+
+
+        proxy_cache cache;
+        proxy_cache_valid 200 301 304 30m;
+        proxy_pass    http://0.0.0.0:8000;
+
+        # 缓存 key 的值
+        proxy_cache_key $host$uri$is_args$args;
+        # proxy_cache_key &quot;$scheme$request_method$host$request_uri&quot;;
+        proxy_cache_use_stale updating error timeout invalid_header http_500 http_502 http_503 http_504;
+
+        expires 1m;
+        # 将缓存的状态添加到 Header 中
+        add_header X-Cache &apos;$upstream_cache_status&apos;;
+    }
+}
+</code></pre>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2018/05/17/nginx/" data-id="cjipt5400002v07mv9b5w9lqy" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2018/05/17/nginx/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2018/05/17/nginx/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-ab" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -652,7 +1053,7 @@ killall http* 它支持通过进程名而不是进程号来结束进程,也支�
 
 </div>
 
-    <a data-url="https://www.femn.me/2018/05/16/ab/" data-id="cjio7f15200060rt2hkmp450f" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2018/05/16/ab/" data-id="cjipt53xj001e07mvz7s4wz2v" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -794,7 +1195,7 @@ killall http* 它支持通过进程名而不是进程号来结束进程,也支�
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/28/storm/" data-id="cjio7f1id004a0rt24w22hj4e" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/28/storm/" data-id="cjipt5425004907mvqebunmg4" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -938,7 +1339,7 @@ killall http* 它支持通过进程名而不是进程号来结束进程,也支�
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/28/hbase/" data-id="cjio7f1bb001y0rt2dhywufrb" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/28/hbase/" data-id="cjipt53z4002307mv06z10f9y" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1125,7 +1526,7 @@ killall http* 它支持通过进程名而不是进程号来结束进程,也支�
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/27/hadoop_cluster/" data-id="cjio7f1ar001l0rt2ivvr4vri" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/27/hadoop_cluster/" data-id="cjipt53ys001v07mv9gs53d8l" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1274,7 +1675,7 @@ killall http* 它支持通过进程名而不是进程号来结束进程,也支�
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/27/hadoop_hive/" data-id="cjio7f1b2001s0rt26fka7qi1" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/27/hadoop_hive/" data-id="cjipt53yp001s07mv7t8zjxiv" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1416,7 +1817,7 @@ killall http* 它支持通过进程名而不是进程号来结束进程,也支�
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/25/zookeeper/" data-id="cjio7f1j1004n0rt26d8zg1a8" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/25/zookeeper/" data-id="cjipt542w004p07mvqwxui5ah" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1583,7 +1984,7 @@ killall http* 它支持通过进程名而不是进程号来结束进程,也支�
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/23/hadoop_mapreduce/" data-id="cjio7f1b6001v0rt21lwrff44" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/23/hadoop_mapreduce/" data-id="cjipt53z7002707mvvirwe0bl" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1725,7 +2126,7 @@ killall http* 它支持通过进程名而不是进程号来结束进程,也支�
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/23/hadoop_RPC/" data-id="cjio7f1ag001f0rt2nquckkfd" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/23/hadoop_RPC/" data-id="cjipt53yf001k07mvcwhnu8wd" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1869,7 +2270,7 @@ killall http* 它支持通过进程名而不是进程号来结束进程,也支�
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/23/hadoop_hdfs/" data-id="cjio7f1aw001n0rt2414cta26" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/23/hadoop_hdfs/" data-id="cjipt53ym001q07mvsg7vu912" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1947,154 +2348,6 @@ killall http* 它支持通过进程名而不是进程号来结束进程,也支�
 
 
 
-    <article id="post-hadoop" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/09/23/hadoop/">hadoop简介与安装(一)</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/09/23/hadoop/">
-            <time datetime="2017-09-23T11:31:15.000Z" itemprop="datePublished">2017-09-23</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/hadoop/">hadoop</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/大数据/">大数据</a>
-    </div>
-
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h4 id="介绍hadoop"><a href="#介绍hadoop" class="headerlink" title="介绍hadoop"></a>介绍hadoop</h4><p>在海量数据的场景下,为了解决分布式部署中的公共问题一些框架就出现了hadoop,zookeeper<br>hadoop:由很多的技术框架组成的一个生态系统.它是一个上层的应用软件(java编写的)<br>不关是用来做海量数据储存的,因为在解决海量数据的处理中,解决了一些分布式很共同的问题,把解决这些问题的方法抽离出来,形成各种各样的框架.将这些框架单独拿出来也可以在项目中使用.</p>
-<p>hadoop三个主要框架:</p>
-<h4 id="海量数据的存储-HDFS-分布式集群的文件系统-区别本机的文件系统"><a href="#海量数据的存储-HDFS-分布式集群的文件系统-区别本机的文件系统" class="headerlink" title="海量数据的存储(HDFS):分布式集群的文件系统,区别本机的文件系统"></a>海量数据的存储(HDFS):分布式集群的文件系统,区别本机的文件系统</h4><h4 id="海量数据的分析-运算模型-MapReduce-分析运算的模型-自己写运算逻辑-程序-写出来的就是MapReduce程序-通过YARM分配到节点之后运行MapReduce程序"><a href="#海量数据的分析-运算模型-MapReduce-分析运算的模型-自己写运算逻辑-程序-写出来的就是MapReduce程序-通过YARM分配到节点之后运行MapReduce程序" class="headerlink" title="海量数据的分析(运算模型)(MapReduce):分析运算的模型,自己写运算逻辑(程序),写出来的就是MapReduce程序,通过YARM分配到节点之后运行MapReduce程序"></a>海量数据的分析(运算模型)(MapReduce):分析运算的模型,自己写运算逻辑(程序),写出来的就是MapReduce程序,通过YARM分配到节点之后运行MapReduce程序</h4><p>Map程序:在不同节点并发运行<br>Reduce程序:全局处理,只在一同节点上运行,通过网络取得Map程序的结果.在分组统计时,Reduce也可以有多个</p>
-<p>MapReduce:擅长海量离线日志分析,可由hive工具编写<br>storm:实时的流计算<br>spark:实时的迭代运算</p>
-<h4 id="资源管理调度-YARN-集群"><a href="#资源管理调度-YARN-集群" class="headerlink" title="资源管理调度(YARN):集群"></a>资源管理调度(YARN):集群</h4><h4 id="安装hadoop"><a href="#安装hadoop" class="headerlink" title="安装hadoop:"></a>安装hadoop:</h4><p>集群的安装是很繁琐的事,Cloudera这个公司开发的安装系统(脚本)之后,只需要在一个节点,在浏览器中打开Cloudera,然后选择你所需要的服务,点确定之后,所以的程序包自动下载并安装好,同时还提供对集群的管理监控</p>
-<p>但个人还是使用apache官方的hadoop</p>
-<pre><code>环境为: centos7 + hadoop.2.8.1 + virtualbox5 + jdk8
-</code></pre><p>前提:</p>
-<ol>
-<li><a href="https://www.femn.me/2017/09/20/virtualbox/">virtualbox5网络配置</a>,联网成功</li>
-<li>vim /etc/sysconfig/network-scripts/ifcfg-enp0s3 设置IP为192.168.1.222,并重启network</li>
-<li>在/root目录下执行如下脚本,并且请在此目录提前下载好hadoop-2.8.1.tar.gz</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl https://file.femnyy.com/file/install_hadoop.sh | sudo sh</div></pre></td></tr></table></figure>
-<pre><code>注意:之后的所有操作也是root用户操作
-</code></pre><h4 id="访问-http-192-168-1-222-50070"><a href="#访问-http-192-168-1-222-50070" class="headerlink" title="访问:http://192.168.1.222:50070"></a>访问:<a href="http://192.168.1.222:50070" target="_blank" rel="external">http://192.168.1.222:50070</a></h4><p>巨坑:所有的服务都成功开启,但就是在主机访问不了,关闭了防火墙也不行,弄了半天的virtualbox的网络设置(自认为是没有错的)也不行,没想到居然是配置文件的问题<br><img src="/2017/09/23/hadoop/error1.png" alt="配置文件的巨坑" title="配置文件的巨坑"></p>
-<h4 id="centos-7启动图形界面"><a href="#centos-7启动图形界面" class="headerlink" title="centos 7启动图形界面"></a>centos 7启动图形界面</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 方法一</span></div><div class="line">yum group list</div><div class="line">yum group install <span class="string">"GNOME Desktop"</span></div><div class="line">startx</div><div class="line"><span class="comment"># 当重新启动时执行,就可以进入系统了</span></div><div class="line"><span class="comment"># You might have to hit 1, then 2 to agree to the license, then C to continue.</span></div><div class="line">1--2--c--yes</div><div class="line"></div><div class="line"><span class="comment"># yum group install "GNOME Desktop" "Graphical Administration Tools"</span></div><div class="line"><span class="comment"># 开机时自动就是设置图形界面</span></div><div class="line"><span class="comment"># ln -sf /lib/systemd/system/runlevel5.target /etc/systemd/system/default.target </span></div><div class="line"><span class="comment"># reboot</span></div><div class="line"></div><div class="line"><span class="comment"># 方法二</span></div><div class="line">init 5</div></pre></td></tr></table></figure>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/09/23/hadoop/" data-id="cjio7f1ac001d0rt2l4u5x2ov" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/09/23/hadoop/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/09/23/hadoop/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <nav id="page-nav">
         <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
@@ -2108,6 +2361,15 @@ killall http* 它支持通过进程名而不是进程号来结束进程,也支�
         <h3 class="widget-title">recent</h3>
         <div class="widget">
             <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/server/">server</a></p>
+                            <p class="item-title"><a href="/2018/05/17/nginx/" class="title">nginx优化静态内容</a></p>
+                            <p class="item-date"><time datetime="2018-05-17T15:24:48.000Z" itemprop="datePublished">2018-05-17</time></p>
+                        </div>
+                    </li>
                 
                     <li>
                         
@@ -2145,15 +2407,6 @@ killall http* 它支持通过进程名而不是进程号来结束进程,也支�
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/hadoop/">hadoop</a></p>
-                            <p class="item-title"><a href="/2017/09/27/hadoop_hive/" class="title">hadoop hive(五)</a></p>
-                            <p class="item-date"><time datetime="2017-09-27T11:31:15.000Z" itemprop="datePublished">2017-09-27</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -2163,7 +2416,7 @@ killall http* 它支持通过进程名而不是进程号来结束进程,也支�
     <div class="widget-wrap">
         <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DRF/">DRF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DRF/">DRF</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python3/">python3</a><span class="category-list-count">26</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/server/">server</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">2</span></li></ul>
         </div>
     </div>
 
@@ -2172,7 +2425,7 @@ killall http* 它支持通过进程名而不是进程号来结束进程,也支�
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">54</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">53</span></li></ul>
         </div>
     </div>
 
