@@ -265,7 +265,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/14/python-fun-program/" data-id="cjipt5412003m07mv85zp2rzn" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/14/python-fun-program/" data-id="cjitxf3ht003k0ekzj2a3dcfy" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -398,7 +398,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/14/进程间通信/" data-id="cjipt5432004u07mv38reznzw" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/14/进程间通信/" data-id="cjitxf3jq004r0ekzc127x0p4" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -614,7 +614,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/tornado/" data-id="cjipt542i004h07mv2x3iuek6" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/tornado/" data-id="cjitxf3j9004e0ekzusq4hljb" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -692,7 +692,7 @@
 
 
 
-    <article id="post-python-builtins" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-closure" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -700,7 +700,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/11/python-builtins/">python内建属性</a>
+            <a class="article-title" href="/2017/08/11/closure/">闭包</a>
         </h1>
     
 
@@ -709,7 +709,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/11/python-builtins/">
+        <a href="/2017/08/11/closure/">
             <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
         </a>
     </div>
@@ -730,11 +730,16 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>Python在启动的时候会⾃动为我们载⼊很多内建的函数,类,属性,⽐如dict,list,type,print,这些都位于<strong>builtin</strong>    模块中,可以使⽤dir(<strong>builtin</strong>)来查看.<br>这也是为什么我们在没有import任何模块的情况下,就能使⽤这么多丰富的函数和功能了.</p>
-<p>在Python中,有⼀个内建模块,该模块中有⼀些常⽤函数;在Python启动后,且没有执⾏程序员所写的任何代码前,Python会⾸先加载该内建函数到内存.</p>
-<p>另外,该内建模块中的功能可以直接使⽤,不⽤在其前添加内建模块前缀</p>
-<img src="/2017/08/11/python-builtins/1.jpg" alt="常见的内建属性" title="常见的内建属性">
-<p>对象的内建属性<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Itcast</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,subject1)</span>:</span></div><div class="line">        self.subject1 = subject1</div><div class="line">        self.subject2 = <span class="string">'cpp'</span></div><div class="line"></div><div class="line">    <span class="comment">#属性访问时拦截器,只要访问属性就必须先调用此方法(包括方法(方法也是对象))</span></div><div class="line">    <span class="comment"># 所以此方法中,不能包含访问属性的语句:比如self.subject1</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattribute__</span><span class="params">(self,obj)</span>:</span></div><div class="line">        print(<span class="string">"====1&gt;%s"</span>%obj)</div><div class="line">        <span class="keyword">if</span> obj == <span class="string">'subject1'</span>:</div><div class="line">            print(<span class="string">'log subject1'</span>)</div><div class="line">            <span class="keyword">return</span> <span class="string">'redirect python'</span></div><div class="line">        <span class="keyword">else</span>:   </div><div class="line">            temp = object.__getattribute__(self,obj)</div><div class="line">            print(<span class="string">"====2&gt;%s"</span>%str(temp))</div><div class="line">            <span class="keyword">return</span> temp</div><div class="line">    </div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">'this is Itcast'</span>)</div><div class="line"></div><div class="line">s = Itcast(<span class="string">"python"</span>)</div><div class="line">print(s.subject1)</div><div class="line">print(s.subject2)</div><div class="line"></div><div class="line"><span class="comment">#1. 先获取show属性对应的结果,,,,应该是一个方法</span></div><div class="line"><span class="comment">#2. 再调用方法show()</span></div><div class="line">s.show()</div><div class="line"><span class="comment"># import types</span></div><div class="line"><span class="comment"># p1.eat = types.MethodType(eat, p1)</span></div><div class="line"></div><div class="line"><span class="comment"># ====1&gt;subject1</span></div><div class="line"><span class="comment"># log subject1</span></div><div class="line"><span class="comment"># redirect python</span></div><div class="line"><span class="comment"># ====1&gt;subject2</span></div><div class="line"><span class="comment"># ====2&gt;cpp</span></div><div class="line"><span class="comment"># cpp</span></div><div class="line"><span class="comment"># ====1&gt;show</span></div><div class="line"><span class="comment"># ====2&gt;&lt;bound method Itcast.show of &lt;__main__.Itcast object at 0x0&gt;&gt;</span></div><div class="line"><span class="comment"># this is Itcast</span></div></pre></td></tr></table></figure></p>
+            <p> 在python中,不管是定义变量还是方法,还是类,实际上你定义的时候,分配了内存空间,仅仅是使用一个变量名指向了这一块的内存空间而已.<br><img src="/2017/08/11/closure/rep.png" alt="变量名引用值和函数" title="变量名引用值和函数"><br><img src="/2017/08/11/closure/rep1.png" alt="重名方法导致代码无效" title="重名方法导致代码无效"></p>
+<h3 id="闭包-Closure-又称函数闭包-function-closures-内部函数对外部函数作⽤域⾥变量的引⽤-⾮全局变量-则称内部函数为闭包"><a href="#闭包-Closure-又称函数闭包-function-closures-内部函数对外部函数作⽤域⾥变量的引⽤-⾮全局变量-则称内部函数为闭包" class="headerlink" title="闭包(Closure)又称函数闭包(function closures):内部函数对外部函数作⽤域⾥变量的引⽤(⾮全局变量),则称内部函数为闭包"></a>闭包(Closure)又称函数闭包(function closures):内部函数对外部函数作⽤域⾥变量的引⽤(⾮全局变量),则称内部函数为闭包</h3><p>引用了自由变量的函数.这个被引用的自由变量将和这个函数一同存在,即使已经离开了创造它的环境也不例外.所以,有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体.闭包在运行时可以有多个实例,不同的引用环境和相同的函数组合可以产生不同的实例</p>
+<p>在一些语言中,在函数中可以(嵌套)定义另一个函数时,如果内部的函数引用了外部的函数的变量,则可能产生闭包.运行时,一旦外部的 函数被执行,一个闭包就形成了,闭包中包含了内部函数的代码,以及所需外部函数中的变量的引用.</p>
+<p>闭包被广泛使用于函数式编程语言</p>
+<p>闭包可以形象的把它理解为一个封闭的包裹(封闭作用域),这个包裹就是一个函数,当然还有函数内部对应的逻辑,包裹里面的东西就是自由变量,自由变量可以在随着包裹到处游荡.当然还得有个前提,这个包裹是被创建出来的.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(name)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner_func</span><span class="params">(age)</span>:</span> <span class="comment"># 闭包</span></div><div class="line">        <span class="comment"># name为自由变量</span></div><div class="line">        print( <span class="string">'name:'</span>, name, <span class="string">'age:'</span>, age)</div><div class="line">    <span class="keyword">return</span> inner_func</div><div class="line">bb = func(<span class="string">'the5fire'</span>)</div><div class="line">bb(<span class="number">26</span>)</div><div class="line"><span class="comment"># name: the5fire age: 26</span></div></pre></td></tr></table></figure>
+<p>这里面调用func的时候就产生了一个闭包——inner_func,并且该闭包持有自由变量——name,因此这也意味着,当函数func的生命周期结束之后,name这个变量依然存在,因为它被闭包引用了,所以不会被回收</p>
+<h4 id="nonlocal访问外部函数的局部变量"><a href="#nonlocal访问外部函数的局部变量" class="headerlink" title="nonlocal访问外部函数的局部变量:"></a>nonlocal访问外部函数的局部变量:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">counter</span><span class="params">(start=<span class="number">0</span>)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">incr</span><span class="params">()</span>:</span></div><div class="line">        <span class="keyword">nonlocal</span> start</div><div class="line">        start += <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> start</div><div class="line">    <span class="keyword">return</span> incr</div><div class="line">c1 = counter(<span class="number">5</span>) </div><div class="line">print(c1()) <span class="comment"># 6</span></div><div class="line">print(c1()) <span class="comment"># 7</span></div><div class="line">c2 = counter(<span class="number">50</span>)</div><div class="line">print(c2()) <span class="comment"># 51</span></div><div class="line">print(c2()) <span class="comment"># 52</span></div><div class="line">print(c1()) <span class="comment"># 8</span></div><div class="line">print(c1()) <span class="comment"># 9</span></div></pre></td></tr></table></figure>
+<h4 id="闭包思考"><a href="#闭包思考" class="headerlink" title="闭包思考:"></a>闭包思考:</h4><p>1.闭包似优化了变量,原来需要类对象完成的⼯作,闭包也可以完成 2.由于闭包引⽤了外部函数的局部变量,则外部函数的局部变量没有及时释放,消耗内存</p>
+<img src="/2017/08/11/closure/rep2.png" alt="闭包减少参数传递,同时增加代码的可移植性" title="闭包减少参数传递,同时增加代码的可移植性">
 
         
         </div>
@@ -745,7 +750,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/python-builtins/" data-id="cjipt540q003e07mv5ghon2ln" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/closure/" data-id="cjitxf3e300110ekzzcctsf96" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -813,136 +818,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/08/11/python-builtins/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-builtins/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-python-copy" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/11/python-copy/">深浅拷贝</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/11/python-copy/">
-            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/python3/">python3</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h4 id="is-是⽐较两个引⽤是否指向了同⼀个对象-引⽤⽐较"><a href="#is-是⽐较两个引⽤是否指向了同⼀个对象-引⽤⽐较" class="headerlink" title="is    是⽐较两个引⽤是否指向了同⼀个对象(引⽤⽐较)"></a>is    是⽐较两个引⽤是否指向了同⼀个对象(引⽤⽐较)</h4><h4 id="是⽐较两个对象内容是否相等"><a href="#是⽐较两个对象内容是否相等" class="headerlink" title="==    是⽐较两个对象内容是否相等"></a>==    是⽐较两个对象内容是否相等</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line">b = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line">a == b  <span class="comment"># True</span></div><div class="line">a <span class="keyword">is</span> b <span class="comment"># Flase</span></div><div class="line">c = copy.deepcopy(a)<span class="comment">#　深拷贝</span></div><div class="line">a == c  <span class="comment"># True</span></div><div class="line">a <span class="keyword">is</span> c <span class="comment"># Flase</span></div><div class="line">id(a) <span class="comment"># 指向a的内存地址</span></div><div class="line">d = a <span class="comment">#　id(d)和id(a)值相等 浅拷贝</span></div><div class="line">a <span class="keyword">is</span> d <span class="comment">#　True</span></div></pre></td></tr></table></figure>
-<h4 id="拷贝-一个变量引用另外一个变量"><a href="#拷贝-一个变量引用另外一个变量" class="headerlink" title="拷贝:一个变量引用另外一个变量"></a>拷贝:一个变量引用另外一个变量</h4><p>深拷⻉是对于⼀个对象所有层次的拷⻉(递归)<br><img src="/2017/08/11/python-copy/1.jpg" alt="深拷贝" title="深拷贝"></p>
-<p>浅拷⻉是对于⼀个对象的顶层拷⻉,只是拷⻉了引⽤,并没有拷⻉内容(没重新生成新的内存地址)<br><img src="/2017/08/11/python-copy/2.jpg" alt="浅拷贝列表" title="浅拷贝列表"><br>浅拷⻉对不可变类型和可变类型的copy不同<br><img src="/2017/08/11/python-copy/3.jpg" alt="浅拷贝元组" title="浅拷贝元组"></p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/11/python-copy/" data-id="cjipt540u003g07mvcje3inj4" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/11/python-copy/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-copy/">Comments</a>
+        <a href="https://www.femn.me/2017/08/11/closure/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/closure/">Comments</a>
     
 
         </footer>
@@ -1005,7 +881,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/python-mateclass/" data-id="cjipt541c003q07mvmj5huy24" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/python-mateclass/" data-id="cjitxf3i8003r0ekz10f46a0n" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1135,7 +1011,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/python-dynamic/" data-id="cjipt5410003k07mve4oqwmmr" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/python-dynamic/" data-id="cjitxf3hq003i0ekzwv786jts" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1204,6 +1080,404 @@
             
     
         <a href="https://www.femn.me/2017/08/11/python-dynamic/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-dynamic/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-python-process" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/11/python-process/">多任务实现之进程-process</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/11/python-process/">
+            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>单核CPU多任务实现的原理,是由操作系统中的调度算法:</p>
+<ol>
+<li>时间片轮转</li>
+<li>优先级调度<br>并发:看着像一起执行</li>
+</ol>
+<p>多核才有并行</p>
+<h4 id="fork-创建新进程"><a href="#fork-创建新进程" class="headerlink" title="fork()创建新进程"></a>fork()创建新进程</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> os</div><div class="line"></div><div class="line">ret = os.fork()<span class="comment">#　创建一个新进程,父子进程都从这里开始</span></div><div class="line"><span class="comment"># 父进程的返回值会大于0(子进程ID),而子进程的返回值为0</span></div><div class="line">print(ret)</div><div class="line"><span class="comment"># 父进程返回的是子进程ID,子进程中返回的是0</span></div><div class="line"><span class="keyword">if</span> ret&gt;<span class="number">0</span>:</div><div class="line">    print(<span class="string">"---父进程--%d-"</span>%os.getpid())</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    print(<span class="string">"---子进程---%d-%d-"</span>%(os.getpid(),os.getppid()))</div><div class="line">print(<span class="string">"----over---"</span>)</div><div class="line"></div><div class="line"><span class="comment"># 13854</span></div><div class="line"><span class="comment"># ---父进程--13748-</span></div><div class="line"><span class="comment"># ----over---</span></div><div class="line"><span class="comment"># 0</span></div><div class="line"><span class="comment"># ---子进程---13846-13748-</span></div><div class="line"><span class="comment"># ----over---</span></div></pre></td></tr></table></figure>
+<h4 id="多次fork的进程数-2的-fork次数的增长-所以要防止fork炸弹"><a href="#多次fork的进程数-2的-fork次数的增长-所以要防止fork炸弹" class="headerlink" title="多次fork的进程数 =  2的^fork次数的增长,所以要防止fork炸弹"></a>多次fork的进程数 =  2的^fork次数的增长,所以要防止fork炸弹</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="keyword">import</span> time</div><div class="line"></div><div class="line"><span class="comment">#父进程</span></div><div class="line">ret = os.fork()</div><div class="line"></div><div class="line"><span class="keyword">if</span> ret==<span class="number">0</span>:</div><div class="line">    <span class="comment">#子进程</span></div><div class="line">    print(<span class="string">"--1--"</span>)</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    <span class="comment">#父进程</span></div><div class="line">    print(<span class="string">"--2--"</span>)</div><div class="line"></div><div class="line"><span class="comment">#父子进程</span></div><div class="line">ret = os.fork()</div><div class="line"><span class="keyword">if</span> ret==<span class="number">0</span>:</div><div class="line">    <span class="comment">#孙子</span></div><div class="line">    <span class="comment">#儿子</span></div><div class="line">    print(<span class="string">"--11--"</span>)</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    <span class="comment">#儿子</span></div><div class="line">    <span class="comment">#父进程</span></div><div class="line">    print(<span class="string">"--22--"</span>)</div><div class="line"><span class="comment"># --2--</span></div><div class="line"><span class="comment"># --22--</span></div><div class="line"><span class="comment"># --11--</span></div><div class="line"><span class="comment"># --1--</span></div><div class="line"><span class="comment"># --11--</span></div><div class="line"><span class="comment"># --22--</span></div></pre></td></tr></table></figure>
+<h4 id="跨平台创建进程"><a href="#跨平台创建进程" class="headerlink" title="跨平台创建进程"></a>跨平台创建进程</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Process</div><div class="line"><span class="keyword">import</span> time</div><div class="line"><span class="comment"># 用Process创建的子进程,会保证所有的子进程运行完成</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">5</span>):</div><div class="line">        print(<span class="string">"---test---"</span>)</div><div class="line">        time.sleep(<span class="number">1</span>)</div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    p = Process(target=test)</div><div class="line">    p.start() <span class="comment">#让这个进程开始执行test函数里的代码</span></div><div class="line">    <span class="comment"># p.join()# 堵塞住进程,保证先完成子进程的代码</span></div><div class="line">    p.join(<span class="number">1</span>) <span class="comment"># 表示主进程愿意等待子进程完成的时间,到了这个时间之后,</span></div><div class="line">    <span class="comment"># 不管子进程有没有完成自己的代码,父进程都会去执行了</span></div><div class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">3</span>):</div><div class="line">        print(<span class="string">"---main---"</span>)</div><div class="line">        time.sleep(<span class="number">1</span>)</div><div class="line"><span class="comment"># ---test---</span></div><div class="line"><span class="comment"># ---main---</span></div><div class="line"><span class="comment"># ---main------test---</span></div><div class="line"><span class="comment"># ---test---</span></div><div class="line"><span class="comment"># </span></div><div class="line"><span class="comment"># ---main------test---</span></div><div class="line"><span class="comment"># </span></div><div class="line"><span class="comment"># ---test---</span></div></pre></td></tr></table></figure>
+<h4 id="进程池"><a href="#进程池" class="headerlink" title="进程池"></a>进程池</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Pool</div><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="keyword">import</span> time</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">worker</span><span class="params">(num)</span>:</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>):</div><div class="line">        print(<span class="string">"===pid=%d==num=%d="</span>%(os.getpid(), num))</div><div class="line">        time.sleep(<span class="number">1</span>)</div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line"></div><div class="line">    <span class="comment"># 进程池中对最多保存3个进程</span></div><div class="line">    pool = Pool(<span class="number">3</span>)</div><div class="line"></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</div><div class="line">        print(<span class="string">"---%d---"</span>%i)</div><div class="line">        <span class="comment"># 向进程池中添加任务</span></div><div class="line">        <span class="comment"># 注意:如果添加的任务数量超过了　进程池中进程的个数的话,那么不会导致添加不进入</span></div><div class="line">        <span class="comment"># 添加到进程中的任务　如果还没有被执行的话,那么此时　他们会等待进程池中的</span></div><div class="line">        <span class="comment"># 进程完成一个任务之后,会自动的去用刚刚的那个进程　完成当前的新任务</span></div><div class="line">        pool.apply_async(worker, (i,))<span class="comment"># 非阻塞子进程,使用进程池的所有进程</span></div><div class="line"></div><div class="line">        <span class="comment">#　pool.apply 主进程使用进程池中的一个进程,</span></div><div class="line">        <span class="comment"># 要等到这个进程工作完成之后才运行另一个进程,也就失去了多进程的意义</span></div><div class="line"></div><div class="line"></div><div class="line">    pool.close()<span class="comment">#关闭进程池,相当于不能够再次添加新任务了</span></div><div class="line"></div><div class="line">    pool.join()<span class="comment"># 主进程 创建/添加任务后,主进程默认不会等待进程池中的任务执行完后才结束</span></div><div class="line">                <span class="comment"># 而是当主进程的任务做完之后立马结束,如果这个地方没join,会导致</span></div><div class="line">                <span class="comment"># 进程池中的任务不会执行</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># ---0---</span></div><div class="line"><span class="comment"># ---1---</span></div><div class="line"><span class="comment"># ---2---</span></div><div class="line"><span class="comment"># ---3---</span></div><div class="line"><span class="comment"># ---4---</span></div><div class="line"><span class="comment"># ===pid=15225==num=1=</span></div><div class="line"><span class="comment"># ===pid=15224==num=2=</span></div><div class="line"><span class="comment"># ===pid=15223==num=0=</span></div><div class="line"><span class="comment"># ===pid=15225==num=1====pid=15224==num=2====pid=15223==num=0=</span></div><div class="line"><span class="comment"># </span></div><div class="line"><span class="comment"># </span></div><div class="line"><span class="comment"># ===pid=15224==num=3====pid=15223==num=4=</span></div><div class="line"><span class="comment"># </span></div><div class="line"><span class="comment"># ===pid=15223==num=4====pid=15224==num=3=</span></div></pre></td></tr></table></figure>
+<h4 id="进程间通信Queue-队列-先进先出"><a href="#进程间通信Queue-队列-先进先出" class="headerlink" title="进程间通信Queue(队列:先进先出)"></a>进程间通信Queue(队列:先进先出)</h4><p>想要完成进程间的数据共享,需要一些方法:命名管道(pipe)/信号(sign)/无名管道/共享内存/消息队列(缓存)/网络(socket)等</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">#修改import中的Queue为Manager</span></div><div class="line"><span class="keyword">import</span>	os</div><div class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span>	Manager,Pool</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span>	<span class="title">writer</span><span class="params">(q)</span>:</span></div><div class="line">    print(<span class="string">"writer启动(%s),⽗进程为(%s)"</span>%(os.getpid(),os.getppid()))</div><div class="line">    <span class="keyword">for</span>	i <span class="keyword">in</span> <span class="string">"dongGe"</span>:</div><div class="line">        q.put(i)</div><div class="line">        </div><div class="line"><span class="function"><span class="keyword">def</span>	<span class="title">reader</span><span class="params">(q)</span>:</span></div><div class="line">    print(<span class="string">"reader启动(%s),⽗进程为(%s)"</span>%(os.getpid(),os.getppid()))</div><div class="line">    <span class="keyword">for</span>	i <span class="keyword">in</span> range(q.qsize()):</div><div class="line">        print(<span class="string">"reader从Queue获取到消息:%s"</span>%q.get(<span class="keyword">True</span>))</div><div class="line">        </div><div class="line"><span class="keyword">if</span>	__name__==<span class="string">"__main__"</span>:</div><div class="line">    print(<span class="string">"(%s)	start"</span>%os.getpid())</div><div class="line">    q=Manager().Queue()	<span class="comment"># 使⽤Manager中的Queue来初始化</span></div><div class="line">    po=Pool()</div><div class="line">    </div><div class="line">    <span class="comment"># 使⽤阻塞模式创建进程</span></div><div class="line">    <span class="comment"># 这样就不需要在reader中使⽤死循环了,可以让writer完全执⾏完成后,再⽤reader去读取</span></div><div class="line">    po.apply(writer, (q,))</div><div class="line">    po.apply(reader, (q,))</div><div class="line">    </div><div class="line">    po.close()</div><div class="line">    po.join()</div><div class="line">    print(<span class="string">"(%s)	End"</span> % os.getpid())</div><div class="line"><span class="comment"># (13748)start</span></div><div class="line"><span class="comment"># (13748)End</span></div><div class="line"><span class="comment"># writer启动(15731),⽗进程为(13748)</span></div><div class="line"><span class="comment"># reader启动(15733),⽗进程为(13748)</span></div><div class="line"><span class="comment"># reader从Queue获取到消息:d</span></div><div class="line"><span class="comment"># reader从Queue获取到消息:o</span></div><div class="line"><span class="comment"># reader从Queue获取到消息:n</span></div><div class="line"><span class="comment"># reader从Queue获取到消息:g</span></div><div class="line"><span class="comment"># reader从Queue获取到消息:G</span></div><div class="line"><span class="comment"># reader从Queue获取到消息:e</span></div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/11/python-process/" data-id="cjitxf3ia003t0ekzcd8t09y0" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/11/python-process/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-process/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-python-copy" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/11/python-copy/">深浅拷贝</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/11/python-copy/">
+            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h4 id="is-是⽐较两个引⽤是否指向了同⼀个对象-引⽤⽐较"><a href="#is-是⽐较两个引⽤是否指向了同⼀个对象-引⽤⽐较" class="headerlink" title="is    是⽐较两个引⽤是否指向了同⼀个对象(引⽤⽐较)"></a>is    是⽐较两个引⽤是否指向了同⼀个对象(引⽤⽐较)</h4><h4 id="是⽐较两个对象内容是否相等"><a href="#是⽐较两个对象内容是否相等" class="headerlink" title="==    是⽐较两个对象内容是否相等"></a>==    是⽐较两个对象内容是否相等</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line">b = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line">a == b  <span class="comment"># True</span></div><div class="line">a <span class="keyword">is</span> b <span class="comment"># Flase</span></div><div class="line">c = copy.deepcopy(a)<span class="comment">#　深拷贝</span></div><div class="line">a == c  <span class="comment"># True</span></div><div class="line">a <span class="keyword">is</span> c <span class="comment"># Flase</span></div><div class="line">id(a) <span class="comment"># 指向a的内存地址</span></div><div class="line">d = a <span class="comment">#　id(d)和id(a)值相等 浅拷贝</span></div><div class="line">a <span class="keyword">is</span> d <span class="comment">#　True</span></div></pre></td></tr></table></figure>
+<h4 id="拷贝-一个变量引用另外一个变量"><a href="#拷贝-一个变量引用另外一个变量" class="headerlink" title="拷贝:一个变量引用另外一个变量"></a>拷贝:一个变量引用另外一个变量</h4><p>深拷⻉是对于⼀个对象所有层次的拷⻉(递归)<br><img src="/2017/08/11/python-copy/1.jpg" alt="深拷贝" title="深拷贝"></p>
+<p>浅拷⻉是对于⼀个对象的顶层拷⻉,只是拷⻉了引⽤,并没有拷⻉内容(没重新生成新的内存地址)<br><img src="/2017/08/11/python-copy/2.jpg" alt="浅拷贝列表" title="浅拷贝列表"><br>浅拷⻉对不可变类型和可变类型的copy不同<br><img src="/2017/08/11/python-copy/3.jpg" alt="浅拷贝元组" title="浅拷贝元组"></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/11/python-copy/" data-id="cjitxf3hj003e0ekzx8goygeq" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/11/python-copy/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-copy/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-python-builtins" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/11/python-builtins/">python内建属性</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/11/python-builtins/">
+            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>Python在启动的时候会⾃动为我们载⼊很多内建的函数,类,属性,⽐如dict,list,type,print,这些都位于<strong>builtin</strong>    模块中,可以使⽤dir(<strong>builtin</strong>)来查看.<br>这也是为什么我们在没有import任何模块的情况下,就能使⽤这么多丰富的函数和功能了.</p>
+<p>在Python中,有⼀个内建模块,该模块中有⼀些常⽤函数;在Python启动后,且没有执⾏程序员所写的任何代码前,Python会⾸先加载该内建函数到内存.</p>
+<p>另外,该内建模块中的功能可以直接使⽤,不⽤在其前添加内建模块前缀</p>
+<img src="/2017/08/11/python-builtins/1.jpg" alt="常见的内建属性" title="常见的内建属性">
+<p>对象的内建属性<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Itcast</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,subject1)</span>:</span></div><div class="line">        self.subject1 = subject1</div><div class="line">        self.subject2 = <span class="string">'cpp'</span></div><div class="line"></div><div class="line">    <span class="comment">#属性访问时拦截器,只要访问属性就必须先调用此方法(包括方法(方法也是对象))</span></div><div class="line">    <span class="comment"># 所以此方法中,不能包含访问属性的语句:比如self.subject1</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattribute__</span><span class="params">(self,obj)</span>:</span></div><div class="line">        print(<span class="string">"====1&gt;%s"</span>%obj)</div><div class="line">        <span class="keyword">if</span> obj == <span class="string">'subject1'</span>:</div><div class="line">            print(<span class="string">'log subject1'</span>)</div><div class="line">            <span class="keyword">return</span> <span class="string">'redirect python'</span></div><div class="line">        <span class="keyword">else</span>:   </div><div class="line">            temp = object.__getattribute__(self,obj)</div><div class="line">            print(<span class="string">"====2&gt;%s"</span>%str(temp))</div><div class="line">            <span class="keyword">return</span> temp</div><div class="line">    </div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">'this is Itcast'</span>)</div><div class="line"></div><div class="line">s = Itcast(<span class="string">"python"</span>)</div><div class="line">print(s.subject1)</div><div class="line">print(s.subject2)</div><div class="line"></div><div class="line"><span class="comment">#1. 先获取show属性对应的结果,,,,应该是一个方法</span></div><div class="line"><span class="comment">#2. 再调用方法show()</span></div><div class="line">s.show()</div><div class="line"><span class="comment"># import types</span></div><div class="line"><span class="comment"># p1.eat = types.MethodType(eat, p1)</span></div><div class="line"></div><div class="line"><span class="comment"># ====1&gt;subject1</span></div><div class="line"><span class="comment"># log subject1</span></div><div class="line"><span class="comment"># redirect python</span></div><div class="line"><span class="comment"># ====1&gt;subject2</span></div><div class="line"><span class="comment"># ====2&gt;cpp</span></div><div class="line"><span class="comment"># cpp</span></div><div class="line"><span class="comment"># ====1&gt;show</span></div><div class="line"><span class="comment"># ====2&gt;&lt;bound method Itcast.show of &lt;__main__.Itcast object at 0x0&gt;&gt;</span></div><div class="line"><span class="comment"># this is Itcast</span></div></pre></td></tr></table></figure></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/11/python-builtins/" data-id="cjitxf3hc003c0ekz8y342aox" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/11/python-builtins/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-builtins/">Comments</a>
     
 
         </footer>
@@ -1284,7 +1558,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/python-GC/" data-id="cjipt540m003b07mvf0a2ccqt" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/python-GC/" data-id="cjitxf3h9003a0ekzdj6do24e" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1353,280 +1627,6 @@
             
     
         <a href="https://www.femn.me/2017/08/11/python-GC/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-GC/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-closure" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/11/closure/">闭包</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/11/closure/">
-            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/python3/">python3</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p> 在python中,不管是定义变量还是方法,还是类,实际上你定义的时候,分配了内存空间,仅仅是使用一个变量名指向了这一块的内存空间而已.<br><img src="/2017/08/11/closure/rep.png" alt="变量名引用值和函数" title="变量名引用值和函数"><br><img src="/2017/08/11/closure/rep1.png" alt="重名方法导致代码无效" title="重名方法导致代码无效"></p>
-<h3 id="闭包-Closure-又称函数闭包-function-closures-内部函数对外部函数作⽤域⾥变量的引⽤-⾮全局变量-则称内部函数为闭包"><a href="#闭包-Closure-又称函数闭包-function-closures-内部函数对外部函数作⽤域⾥变量的引⽤-⾮全局变量-则称内部函数为闭包" class="headerlink" title="闭包(Closure)又称函数闭包(function closures):内部函数对外部函数作⽤域⾥变量的引⽤(⾮全局变量),则称内部函数为闭包"></a>闭包(Closure)又称函数闭包(function closures):内部函数对外部函数作⽤域⾥变量的引⽤(⾮全局变量),则称内部函数为闭包</h3><p>引用了自由变量的函数.这个被引用的自由变量将和这个函数一同存在,即使已经离开了创造它的环境也不例外.所以,有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体.闭包在运行时可以有多个实例,不同的引用环境和相同的函数组合可以产生不同的实例</p>
-<p>在一些语言中,在函数中可以(嵌套)定义另一个函数时,如果内部的函数引用了外部的函数的变量,则可能产生闭包.运行时,一旦外部的 函数被执行,一个闭包就形成了,闭包中包含了内部函数的代码,以及所需外部函数中的变量的引用.</p>
-<p>闭包被广泛使用于函数式编程语言</p>
-<p>闭包可以形象的把它理解为一个封闭的包裹(封闭作用域),这个包裹就是一个函数,当然还有函数内部对应的逻辑,包裹里面的东西就是自由变量,自由变量可以在随着包裹到处游荡.当然还得有个前提,这个包裹是被创建出来的.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(name)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner_func</span><span class="params">(age)</span>:</span> <span class="comment"># 闭包</span></div><div class="line">        <span class="comment"># name为自由变量</span></div><div class="line">        print( <span class="string">'name:'</span>, name, <span class="string">'age:'</span>, age)</div><div class="line">    <span class="keyword">return</span> inner_func</div><div class="line">bb = func(<span class="string">'the5fire'</span>)</div><div class="line">bb(<span class="number">26</span>)</div><div class="line"><span class="comment"># name: the5fire age: 26</span></div></pre></td></tr></table></figure>
-<p>这里面调用func的时候就产生了一个闭包——inner_func,并且该闭包持有自由变量——name,因此这也意味着,当函数func的生命周期结束之后,name这个变量依然存在,因为它被闭包引用了,所以不会被回收</p>
-<h4 id="nonlocal访问外部函数的局部变量"><a href="#nonlocal访问外部函数的局部变量" class="headerlink" title="nonlocal访问外部函数的局部变量:"></a>nonlocal访问外部函数的局部变量:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">counter</span><span class="params">(start=<span class="number">0</span>)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">incr</span><span class="params">()</span>:</span></div><div class="line">        <span class="keyword">nonlocal</span> start</div><div class="line">        start += <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> start</div><div class="line">    <span class="keyword">return</span> incr</div><div class="line">c1 = counter(<span class="number">5</span>) </div><div class="line">print(c1()) <span class="comment"># 6</span></div><div class="line">print(c1()) <span class="comment"># 7</span></div><div class="line">c2 = counter(<span class="number">50</span>)</div><div class="line">print(c2()) <span class="comment"># 51</span></div><div class="line">print(c2()) <span class="comment"># 52</span></div><div class="line">print(c1()) <span class="comment"># 8</span></div><div class="line">print(c1()) <span class="comment"># 9</span></div></pre></td></tr></table></figure>
-<h4 id="闭包思考"><a href="#闭包思考" class="headerlink" title="闭包思考:"></a>闭包思考:</h4><p>1.闭包似优化了变量,原来需要类对象完成的⼯作,闭包也可以完成 2.由于闭包引⽤了外部函数的局部变量,则外部函数的局部变量没有及时释放,消耗内存</p>
-<img src="/2017/08/11/closure/rep2.png" alt="闭包减少参数传递,同时增加代码的可移植性" title="闭包减少参数传递,同时增加代码的可移植性">
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/11/closure/" data-id="cjipt53vb000x07mvxptzxw73" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/11/closure/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/closure/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-python-process" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/11/python-process/">多任务实现之进程-process</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/11/python-process/">
-            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/python3/">python3</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>单核CPU多任务实现的原理,是由操作系统中的调度算法:</p>
-<ol>
-<li>时间片轮转</li>
-<li>优先级调度<br>并发:看着像一起执行</li>
-</ol>
-<p>多核才有并行</p>
-<h4 id="fork-创建新进程"><a href="#fork-创建新进程" class="headerlink" title="fork()创建新进程"></a>fork()创建新进程</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> os</div><div class="line"></div><div class="line">ret = os.fork()<span class="comment">#　创建一个新进程,父子进程都从这里开始</span></div><div class="line"><span class="comment"># 父进程的返回值会大于0(子进程ID),而子进程的返回值为0</span></div><div class="line">print(ret)</div><div class="line"><span class="comment"># 父进程返回的是子进程ID,子进程中返回的是0</span></div><div class="line"><span class="keyword">if</span> ret&gt;<span class="number">0</span>:</div><div class="line">    print(<span class="string">"---父进程--%d-"</span>%os.getpid())</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    print(<span class="string">"---子进程---%d-%d-"</span>%(os.getpid(),os.getppid()))</div><div class="line">print(<span class="string">"----over---"</span>)</div><div class="line"></div><div class="line"><span class="comment"># 13854</span></div><div class="line"><span class="comment"># ---父进程--13748-</span></div><div class="line"><span class="comment"># ----over---</span></div><div class="line"><span class="comment"># 0</span></div><div class="line"><span class="comment"># ---子进程---13846-13748-</span></div><div class="line"><span class="comment"># ----over---</span></div></pre></td></tr></table></figure>
-<h4 id="多次fork的进程数-2的-fork次数的增长-所以要防止fork炸弹"><a href="#多次fork的进程数-2的-fork次数的增长-所以要防止fork炸弹" class="headerlink" title="多次fork的进程数 =  2的^fork次数的增长,所以要防止fork炸弹"></a>多次fork的进程数 =  2的^fork次数的增长,所以要防止fork炸弹</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="keyword">import</span> time</div><div class="line"></div><div class="line"><span class="comment">#父进程</span></div><div class="line">ret = os.fork()</div><div class="line"></div><div class="line"><span class="keyword">if</span> ret==<span class="number">0</span>:</div><div class="line">    <span class="comment">#子进程</span></div><div class="line">    print(<span class="string">"--1--"</span>)</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    <span class="comment">#父进程</span></div><div class="line">    print(<span class="string">"--2--"</span>)</div><div class="line"></div><div class="line"><span class="comment">#父子进程</span></div><div class="line">ret = os.fork()</div><div class="line"><span class="keyword">if</span> ret==<span class="number">0</span>:</div><div class="line">    <span class="comment">#孙子</span></div><div class="line">    <span class="comment">#儿子</span></div><div class="line">    print(<span class="string">"--11--"</span>)</div><div class="line"><span class="keyword">else</span>:</div><div class="line">    <span class="comment">#儿子</span></div><div class="line">    <span class="comment">#父进程</span></div><div class="line">    print(<span class="string">"--22--"</span>)</div><div class="line"><span class="comment"># --2--</span></div><div class="line"><span class="comment"># --22--</span></div><div class="line"><span class="comment"># --11--</span></div><div class="line"><span class="comment"># --1--</span></div><div class="line"><span class="comment"># --11--</span></div><div class="line"><span class="comment"># --22--</span></div></pre></td></tr></table></figure>
-<h4 id="跨平台创建进程"><a href="#跨平台创建进程" class="headerlink" title="跨平台创建进程"></a>跨平台创建进程</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Process</div><div class="line"><span class="keyword">import</span> time</div><div class="line"><span class="comment"># 用Process创建的子进程,会保证所有的子进程运行完成</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">5</span>):</div><div class="line">        print(<span class="string">"---test---"</span>)</div><div class="line">        time.sleep(<span class="number">1</span>)</div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    p = Process(target=test)</div><div class="line">    p.start() <span class="comment">#让这个进程开始执行test函数里的代码</span></div><div class="line">    <span class="comment"># p.join()# 堵塞住进程,保证先完成子进程的代码</span></div><div class="line">    p.join(<span class="number">1</span>) <span class="comment"># 表示主进程愿意等待子进程完成的时间,到了这个时间之后,</span></div><div class="line">    <span class="comment"># 不管子进程有没有完成自己的代码,父进程都会去执行了</span></div><div class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">3</span>):</div><div class="line">        print(<span class="string">"---main---"</span>)</div><div class="line">        time.sleep(<span class="number">1</span>)</div><div class="line"><span class="comment"># ---test---</span></div><div class="line"><span class="comment"># ---main---</span></div><div class="line"><span class="comment"># ---main------test---</span></div><div class="line"><span class="comment"># ---test---</span></div><div class="line"><span class="comment"># </span></div><div class="line"><span class="comment"># ---main------test---</span></div><div class="line"><span class="comment"># </span></div><div class="line"><span class="comment"># ---test---</span></div></pre></td></tr></table></figure>
-<h4 id="进程池"><a href="#进程池" class="headerlink" title="进程池"></a>进程池</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Pool</div><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="keyword">import</span> time</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">worker</span><span class="params">(num)</span>:</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>):</div><div class="line">        print(<span class="string">"===pid=%d==num=%d="</span>%(os.getpid(), num))</div><div class="line">        time.sleep(<span class="number">1</span>)</div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line"></div><div class="line">    <span class="comment"># 进程池中对最多保存3个进程</span></div><div class="line">    pool = Pool(<span class="number">3</span>)</div><div class="line"></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</div><div class="line">        print(<span class="string">"---%d---"</span>%i)</div><div class="line">        <span class="comment"># 向进程池中添加任务</span></div><div class="line">        <span class="comment"># 注意:如果添加的任务数量超过了　进程池中进程的个数的话,那么不会导致添加不进入</span></div><div class="line">        <span class="comment"># 添加到进程中的任务　如果还没有被执行的话,那么此时　他们会等待进程池中的</span></div><div class="line">        <span class="comment"># 进程完成一个任务之后,会自动的去用刚刚的那个进程　完成当前的新任务</span></div><div class="line">        pool.apply_async(worker, (i,))<span class="comment"># 非阻塞子进程,使用进程池的所有进程</span></div><div class="line"></div><div class="line">        <span class="comment">#　pool.apply 主进程使用进程池中的一个进程,</span></div><div class="line">        <span class="comment"># 要等到这个进程工作完成之后才运行另一个进程,也就失去了多进程的意义</span></div><div class="line"></div><div class="line"></div><div class="line">    pool.close()<span class="comment">#关闭进程池,相当于不能够再次添加新任务了</span></div><div class="line"></div><div class="line">    pool.join()<span class="comment"># 主进程 创建/添加任务后,主进程默认不会等待进程池中的任务执行完后才结束</span></div><div class="line">                <span class="comment"># 而是当主进程的任务做完之后立马结束,如果这个地方没join,会导致</span></div><div class="line">                <span class="comment"># 进程池中的任务不会执行</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># ---0---</span></div><div class="line"><span class="comment"># ---1---</span></div><div class="line"><span class="comment"># ---2---</span></div><div class="line"><span class="comment"># ---3---</span></div><div class="line"><span class="comment"># ---4---</span></div><div class="line"><span class="comment"># ===pid=15225==num=1=</span></div><div class="line"><span class="comment"># ===pid=15224==num=2=</span></div><div class="line"><span class="comment"># ===pid=15223==num=0=</span></div><div class="line"><span class="comment"># ===pid=15225==num=1====pid=15224==num=2====pid=15223==num=0=</span></div><div class="line"><span class="comment"># </span></div><div class="line"><span class="comment"># </span></div><div class="line"><span class="comment"># ===pid=15224==num=3====pid=15223==num=4=</span></div><div class="line"><span class="comment"># </span></div><div class="line"><span class="comment"># ===pid=15223==num=4====pid=15224==num=3=</span></div></pre></td></tr></table></figure>
-<h4 id="进程间通信Queue-队列-先进先出"><a href="#进程间通信Queue-队列-先进先出" class="headerlink" title="进程间通信Queue(队列:先进先出)"></a>进程间通信Queue(队列:先进先出)</h4><p>想要完成进程间的数据共享,需要一些方法:命名管道(pipe)/信号(sign)/无名管道/共享内存/消息队列(缓存)/网络(socket)等</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">#修改import中的Queue为Manager</span></div><div class="line"><span class="keyword">import</span>	os</div><div class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span>	Manager,Pool</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span>	<span class="title">writer</span><span class="params">(q)</span>:</span></div><div class="line">    print(<span class="string">"writer启动(%s),⽗进程为(%s)"</span>%(os.getpid(),os.getppid()))</div><div class="line">    <span class="keyword">for</span>	i <span class="keyword">in</span> <span class="string">"dongGe"</span>:</div><div class="line">        q.put(i)</div><div class="line">        </div><div class="line"><span class="function"><span class="keyword">def</span>	<span class="title">reader</span><span class="params">(q)</span>:</span></div><div class="line">    print(<span class="string">"reader启动(%s),⽗进程为(%s)"</span>%(os.getpid(),os.getppid()))</div><div class="line">    <span class="keyword">for</span>	i <span class="keyword">in</span> range(q.qsize()):</div><div class="line">        print(<span class="string">"reader从Queue获取到消息:%s"</span>%q.get(<span class="keyword">True</span>))</div><div class="line">        </div><div class="line"><span class="keyword">if</span>	__name__==<span class="string">"__main__"</span>:</div><div class="line">    print(<span class="string">"(%s)	start"</span>%os.getpid())</div><div class="line">    q=Manager().Queue()	<span class="comment"># 使⽤Manager中的Queue来初始化</span></div><div class="line">    po=Pool()</div><div class="line">    </div><div class="line">    <span class="comment"># 使⽤阻塞模式创建进程</span></div><div class="line">    <span class="comment"># 这样就不需要在reader中使⽤死循环了,可以让writer完全执⾏完成后,再⽤reader去读取</span></div><div class="line">    po.apply(writer, (q,))</div><div class="line">    po.apply(reader, (q,))</div><div class="line">    </div><div class="line">    po.close()</div><div class="line">    po.join()</div><div class="line">    print(<span class="string">"(%s)	End"</span> % os.getpid())</div><div class="line"><span class="comment"># (13748)start</span></div><div class="line"><span class="comment"># (13748)End</span></div><div class="line"><span class="comment"># writer启动(15731),⽗进程为(13748)</span></div><div class="line"><span class="comment"># reader启动(15733),⽗进程为(13748)</span></div><div class="line"><span class="comment"># reader从Queue获取到消息:d</span></div><div class="line"><span class="comment"># reader从Queue获取到消息:o</span></div><div class="line"><span class="comment"># reader从Queue获取到消息:n</span></div><div class="line"><span class="comment"># reader从Queue获取到消息:g</span></div><div class="line"><span class="comment"># reader从Queue获取到消息:G</span></div><div class="line"><span class="comment"># reader从Queue获取到消息:e</span></div></pre></td></tr></table></figure>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/11/python-process/" data-id="cjipt541i003u07mvdnu4uhhz" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/11/python-process/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-process/">Comments</a>
     
 
         </footer>

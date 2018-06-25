@@ -309,7 +309,7 @@
 </tbody>
 </table>
 <h4 id="设置静态资源的过期时间"><a href="#设置静态资源的过期时间" class="headerlink" title="设置静态资源的过期时间"></a>设置静态资源的过期时间</h4><ul>
-<li><p>服务器缓存启用是存在两个判断机制的：</p>
+<li><p>服务器静态资源是否过期 存在两个判断机制的：</p>
 <ul>
 <li>新鲜度检测阶段:需要依赖响应头的Cache-Control/Expires，通过才会返回200(from cache)</li>
 <li>资源二次校验阶段:校验资源一致性,Last-Modified/ETag 这两个数据用于确定数据是否改变.如果一致返回304,如果不一致返回200,当然，如果没有找到返回404</li>
@@ -381,7 +381,7 @@ Cache-Control: max-age=2592000
 <li><p>解决的方法:原因居然是server_name 没有加0.0.0.0(在命令行和浏览器中测试都是使用0.0.0.0)</p>
 </li>
 </ul>
-<h4 id="缓存设置-配置proxy-cahe"><a href="#缓存设置-配置proxy-cahe" class="headerlink" title="缓存设置(配置proxy_cahe)"></a>缓存设置(配置proxy_cahe)</h4><ul>
+<h4 id="缓存服务器设置-配置proxy-cahe-只是针对API后端-所以才需要-proxy-pass或者-uwsgi-pass配置才生效"><a href="#缓存服务器设置-配置proxy-cahe-只是针对API后端-所以才需要-proxy-pass或者-uwsgi-pass配置才生效" class="headerlink" title="缓存服务器设置(配置proxy_cahe):只是针对API后端,所以才需要 proxy_pass或者 uwsgi_pass配置才生效"></a>缓存服务器设置(配置proxy_cahe):只是针对API后端,所以才需要 proxy_pass或者 uwsgi_pass配置才生效</h4><ul>
 <li>参数说明:</li>
 </ul>
 <table>
@@ -453,7 +453,7 @@ Cache-Control: max-age=2592000
 <ul>
 <li><p>遇到的坑(也一直没有效果)</p>
 <ul>
-<li>proxy_pass <a href="http://0.0.0.0/" target="_blank" rel="external">http://0.0.0.0/</a>; # 一定要加这个,而且连uwsgi_pass都不行</li>
+<li>proxy_pass <a href="http://0.0.0.0/" target="_blank" rel="external">http://0.0.0.0/</a>; # uwsgi启动的话,则将对应的proxy设置换成uwsgi即可</li>
 </ul>
 </li>
 <li><p>查看是否生效</p>
@@ -527,6 +527,75 @@ server {
         add_header X-Cache &apos;$upstream_cache_status&apos;;
     }
 }
+</code></pre><h4 id="缓存服务器设置发生在-API后端和Nginx静态文件分离情况的配置文件"><a href="#缓存服务器设置发生在-API后端和Nginx静态文件分离情况的配置文件" class="headerlink" title="缓存服务器设置发生在:API后端和Nginx静态文件分离情况的配置文件"></a>缓存服务器设置发生在:API后端和Nginx静态文件分离情况的配置文件</h4><pre><code>uwsgi_cache_path /tmp/nginx_cache/ levels=1:2 keys_zone=mycache:10m max_size=10g inactive=10m use_temp_path=off;
+
+# the upstream component nginx needs to connect to
+upstream uwsgi {
+    server unix:/code/app.sock; # for a file socket
+}
+
+# configuration of the server
+server {
+    # the port your site will be served on
+    listen    80;
+    server_name  0.0.0.0;
+    charset     utf-8;
+    # add_header Accept-Ranges bytes;
+    # add_header Content-Encoding identity;
+    # add_header Accept-Encoding identity;
+    # add_header Range bytes=0-;
+
+    client_max_body_size 75M;   # adjust to taste
+
+
+    # Django media
+    location /media  {
+        alias /code/media;  # your Django project&apos;s media files - amend as required
+        if ($request_uri ~* &quot;\.(ico|gif|jpe?g|png|woff|woff2|eot|svg|ttf|mp4)$&quot;) {
+            expires 3d;
+            access_log off;
+            add_header Cache-Control &quot;public&quot;;
+
+        }
+
+    }
+
+    location /static {
+        alias /code/static; # your Django project&apos;s static files - amend as required
+
+        if ($request_uri ~* &quot;\.(css|js)$&quot;) {
+            expires 1d;
+            access_log off;
+            add_header Cache-Control &quot;public&quot;;
+        }
+    }
+
+    location /favicon.ico {
+        alias /code/media/logo.png; # your Django project&apos;s static files - amend as required
+    }
+
+    # / 必须放在最后,不能覆盖静态url配置
+    location / {
+
+        add_header      X-uWSGI-Cache $upstream_cache_status;
+
+        # server cache
+        uwsgi_cache  mycache;
+        uwsgi_cache_valid  200 301 1m;
+        slice 1m;
+        proxy_set_header Range $slice_range;
+        proxy_set_header Range $http_range;
+        # proxy_cache_valid 200 301 304 30m;
+
+        uwsgi_cache_key  $request_uri;
+
+        # client cache
+        expires 3d;
+
+        uwsgi_pass  uwsgi;
+        include     /etc/nginx/uwsgi_params; # the uwsgi_params file you installed
+    }
+}
 </code></pre>
         
         </div>
@@ -537,7 +606,7 @@ server {
 
 </div>
 
-    <a data-url="https://www.femn.me/2018/05/17/nginx/" data-id="cjipt5400002v07mv9b5w9lqy" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2018/05/17/nginx/" data-id="cjitxf3gy00300ekzkapese9u" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1053,7 +1122,7 @@ killall http* 它支持通过进程名而不是进程号来结束进程,也支�
 
 </div>
 
-    <a data-url="https://www.femn.me/2018/05/16/ab/" data-id="cjipt53xj001e07mvz7s4wz2v" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2018/05/16/ab/" data-id="cjitxf3ez001g0ekzssm39zda" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1195,7 +1264,7 @@ killall http* 它支持通过进程名而不是进程号来结束进程,也支�
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/28/storm/" data-id="cjipt5425004907mvqebunmg4" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/28/storm/" data-id="cjitxf3j000470ekzqul9z6e1" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1339,7 +1408,7 @@ killall http* 它支持通过进程名而不是进程号来结束进程,也支�
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/28/hbase/" data-id="cjipt53z4002307mv06z10f9y" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/28/hbase/" data-id="cjitxf3g000290ekzhn36s103" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1526,7 +1595,7 @@ killall http* 它支持通过进程名而不是进程号来结束进程,也支�
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/27/hadoop_cluster/" data-id="cjipt53ys001v07mv9gs53d8l" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/27/hadoop_cluster/" data-id="cjitxf3f9001q0ekzattzj21o" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1675,7 +1744,7 @@ killall http* 它支持通过进程名而不是进程号来结束进程,也支�
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/27/hadoop_hive/" data-id="cjipt53yp001s07mv7t8zjxiv" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/27/hadoop_hive/" data-id="cjitxf3fs00220ekztx9sq94t" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1817,7 +1886,7 @@ killall http* 它支持通过进程名而不是进程号来结束进程,也支�
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/25/zookeeper/" data-id="cjipt542w004p07mvqwxui5ah" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/25/zookeeper/" data-id="cjitxf3jk004m0ekzutkjw3lm" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1984,7 +2053,7 @@ killall http* 它支持通过进程名而不是进程号来结束进程,也支�
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/23/hadoop_mapreduce/" data-id="cjipt53z7002707mvvirwe0bl" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/23/hadoop_mapreduce/" data-id="cjitxf3fb001s0ekzmo9jcgfa" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -2126,7 +2195,7 @@ killall http* 它支持通过进程名而不是进程号来结束进程,也支�
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/23/hadoop_RPC/" data-id="cjipt53yf001k07mvcwhnu8wd" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/23/hadoop_RPC/" data-id="cjitxf3f5001n0ekzb6b6luyi" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -2270,7 +2339,7 @@ killall http* 它支持通过进程名而不是进程号来结束进程,也支�
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/09/23/hadoop_hdfs/" data-id="cjipt53ym001q07mvsg7vu912" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/09/23/hadoop_hdfs/" data-id="cjitxf3fn001z0ekz06p6j51e" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding

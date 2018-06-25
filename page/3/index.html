@@ -214,7 +214,7 @@
 
             
             <section id="main">
-    <article id="post-mongodb" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-mysql" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -222,7 +222,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/18/mongodb/">mongodb基本命令</a>
+            <a class="article-title" href="/2017/08/18/mysql/">mysql基本命令</a>
         </h1>
     
 
@@ -231,7 +231,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/18/mongodb/">
+        <a href="/2017/08/18/mysql/">
             <time datetime="2017-08-18T11:56:18.000Z" itemprop="datePublished">2017-08-18</time>
         </a>
     </div>
@@ -252,34 +252,12 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>先去<a href="https://www.mongodb.com/" target="_blank" rel="external">mongodb官网</a>下载mongod,配置好环境变量.最好也再下个<a href="https://robomongo.org/" target="_blank" rel="external">robomongo</a>,进行更好的图形界面管理</p>
-<p><a href="https://docs.mongodb.com/manual/" target="_blank" rel="external">mongodb官方文档</a>    </p>
-<p><a href="http://docs.mongoing.com/manual-zh/" target="_blank" rel="external">mongodb中文文档</a></p>
-<h4 id="启动Mongod"><a href="#启动Mongod" class="headerlink" title="启动Mongod:"></a>启动Mongod:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mongod --dbpath /home/python/data/mongodb  --logpath /home/python/data/<span class="built_in">log</span> --auth</div></pre></td></tr></table></figure>
-<p>或者用配置文件的方式启动:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">mongod -f ./mongod.conf</div><div class="line">vim ./mongod.conf</div><div class="line">    dbpath = /home/python/data/mongodb/</div><div class="line">    logpath = /home/python/data/<span class="built_in">log</span></div><div class="line">    port = 27017</div><div class="line">    auth = <span class="literal">true</span></div></pre></td></tr></table></figure></p>
-<h4 id="进入Mongo的CLI"><a href="#进入Mongo的CLI" class="headerlink" title="进入Mongo的CLI:"></a>进入Mongo的CLI:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">monogo -uusername -ppasswd 192.168.0.197:27017/db </div><div class="line"><span class="comment"># 如果有语言上的错误</span></div><div class="line"><span class="built_in">export</span> LC_ALL=C</div></pre></td></tr></table></figure>
-<h4 id="选择admin数据库-并认证"><a href="#选择admin数据库-并认证" class="headerlink" title="选择admin数据库,并认证:"></a>选择admin数据库,并认证:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">use admin</div><div class="line">db.auth(<span class="string">'username'</span>,<span class="string">'password'</span>)</div></pre></td></tr></table></figure>
-<p>指定好当前数据库后,用db命令查看,之后用密码登陆.</p>
-<p><em>查看所有的数据库</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">show dbs</div></pre></td></tr></table></figure>
-<h3 id="创建或选定数据库"><a href="#创建或选定数据库" class="headerlink" title="创建或选定数据库"></a>创建或选定数据库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">use 1 <span class="comment"># 该命令将创建一个新的数据库,如果它不存在,否则将返回现有的数据库.</span></div><div class="line">db.dropDatabase(<span class="string">'1'</span>)  <span class="comment"># 删除数据库</span></div></pre></td></tr></table></figure>
-<p><em>创建集合(表),删除表,显示所有表</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">db.createCollection(<span class="string">'test'</span>)</div><div class="line">db.test.drop()</div><div class="line">show collections</div></pre></td></tr></table></figure>
-<p><em>创建文档(记录)</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.test_table.insert(&#123;<span class="string">'1'</span>:1&#125;)</div></pre></td></tr></table></figure>
-<p><em>指定数据库,一定要先选定再创建,创建用户角色</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">use <span class="built_in">test</span></div><div class="line">db.createUser( &#123;</div><div class="line">user: <span class="string">"femn2014"</span>,</div><div class="line"><span class="built_in">pwd</span>: <span class="string">"femn2014"</span>,</div><div class="line">roles: [ &#123; role : <span class="string">"readWrite"</span>, db: <span class="string">"test"</span> &#125; ]</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p>role:”sysadmin”,”read”,”readWrite”,”sysadmin”和”root”角色只能在第一次创建一次,之后创建的必须是其它的角色,同时也要注意db:’xxx’要改变,如果指定的是admin数据库,则此用户可以看到所有的数据库,并只是针对db:’test’这个数据库有读写操作.</p>
-<p><em>指定数据库之后,查看用户</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">use <span class="built_in">test</span></div><div class="line">db.getUsers()</div></pre></td></tr></table></figure></p>
-<h3 id="一旦创建好用户之后-就必须要切换到admin数据库中-才能进行对用户角色的管理"><a href="#一旦创建好用户之后-就必须要切换到admin数据库中-才能进行对用户角色的管理" class="headerlink" title="一旦创建好用户之后,就必须要切换到admin数据库中,才能进行对用户角色的管理"></a>一旦创建好用户之后,就必须要切换到admin数据库中,才能进行对用户角色的管理</h3><p><em>用admin数据库,查看,管理所有数据库中的所有用户</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">use admin</div><div class="line">db.system.users.find()</div><div class="line">db.system.users.remove(&#123;user:<span class="string">'femn2014'</span>&#125;) 删除用户</div></pre></td></tr></table></figure></p>
-<h4 id="得到test表的索引"><a href="#得到test表的索引" class="headerlink" title="得到test表的索引"></a>得到test表的索引</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.test.getIndexes()</div></pre></td></tr></table></figure>
-<p><em>创建新的索引,此命令不会覆盖掉之前的索引</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.test.ensureIndex(&#123;<span class="string">'mobile'</span>:1&#125;)</div></pre></td></tr></table></figure>
-<p><em>创建二维索引,通过查询location这个数组,来得到文档</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">db.test.ensureIndex(&#123;<span class="string">"location"</span> : <span class="string">"2d"</span>&#125;,&#123;<span class="string">"background"</span> : <span class="literal">true</span>&#125;,</div><div class="line">    &#123;min:-180,max:180&#125;)</div></pre></td></tr></table></figure>
-<p>MongoDB的Geospatial Indexing 2d默认取值范围[-179,-179]到[180,180] 包含这两个点,超出范围将报错</p>
-<h4 id="备份Mongo"><a href="#备份Mongo" class="headerlink" title="备份Mongo:"></a>备份Mongo:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mongodump --host=192.168.1.217 --port=27017 --username=username \</div><div class="line">    --password=passwd --authenticationDatabase admin -dMongodb \</div><div class="line">    -cfemn -o /home/python/nosql_dump</div></pre></td></tr></table></figure>
-<h4 id="恢复Mongo"><a href="#恢复Mongo" class="headerlink" title="恢复Mongo:"></a>恢复Mongo:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">mongorestore -udba -pdba --host=60.205.140.13 --port=27017 \ </div><div class="line">    --authenticationDatabase admin -dbozhongboyue -cvideo \ </div><div class="line">    --drop /home/python/nosql_dump/1-5/bozhongboyue/video.bson</div><div class="line"><span class="comment"># 不经常使用如下命令</span></div><div class="line">mongoexport --host=192.168.1.217 --port=27017 --username=username \ </div><div class="line">    --password=passwd --authenticationDatabase admin -dMongodb -cfemn -o femn.json</div></pre></td></tr></table></figure>
+            <h3 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a>安装mysql</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># https://dev.mysql.com/downloads/repo/yum/ 查看对应版本</span></div><div class="line">wget https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm</div><div class="line">rpm -ivh mysql57-community-release-el7-9.noarch.rpm</div><div class="line">yum install -y mysql-server</div><div class="line"><span class="built_in">echo</span> <span class="string">"skip-grant-tables"</span> &gt;&gt; /etc/my.cnf </div><div class="line">systemctl start mysqld</div><div class="line">mysql -uroot -proot</div><div class="line">    flush privileges;</div><div class="line">    ALTER USER <span class="string">'root'</span>@<span class="string">'localhost'</span> IDENTIFIED BY <span class="string">'root'</span>;</div><div class="line">sed -i -e <span class="string">'/^skip-grant-tables/d'</span> /etc/my.cnf </div><div class="line">systemctl restart mysqld</div><div class="line">mysql -uroot -proot</div><div class="line">    CREATE DATABASE `hive` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;</div><div class="line">    grant all privileges on *.* to root@localhost identified by <span class="string">'root'</span>;</div><div class="line">    flush privileges;</div></pre></td></tr></table></figure>
+<h3 id="权限和修改配置文件问题"><a href="#权限和修改配置文件问题" class="headerlink" title="权限和修改配置文件问题"></a>权限和修改配置文件问题</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># ubuntu的配置文件和docker mysql:5.7一样</span></div><div class="line">vim /etc/mysql/my.cnf</div><div class="line">	!includedir /etc/mysql/conf.d/</div><div class="line">	!includedir /etc/mysql/mysql.conf.d/</div><div class="line"><span class="comment"># 可以在上面两个目录下,创建*.conf来为启动mysql增加参数</span></div><div class="line"></div><div class="line"><span class="comment"># 默认使用到的是/etc/mysql/mysql.conf.d/mysqld.cnf</span></div><div class="line">sudo vim /etc/mysql/mysql.conf.d/mysqld.cnf</div><div class="line">    [mysqld]</div><div class="line">    skip-grant-tables </div><div class="line">    <span class="comment"># bind-address      = 127.0.0.1  #注释掉就可以远程访问了</span></div><div class="line">	<span class="built_in">bind</span>-address	= 0.0.0.0  <span class="comment"># 或者这样</span></div><div class="line"></div><div class="line"><span class="comment"># 允许本地ip的blog用户,使用blog密码访问blog数据库</span></div><div class="line">GRANT ALL PRIVILEGES ON blog.* TO <span class="string">'blog'</span>@<span class="string">'localhost'</span> IDENTIFIED BY <span class="string">'blog'</span>;</div><div class="line"></div><div class="line"><span class="comment"># 允许远程的任何ip的root用户 使用root密码 访问所有数据库</span></div><div class="line">grant all privileges on *.* to <span class="string">'root'</span>@<span class="string">'%'</span> identified by <span class="string">'root'</span> with grant option;</div><div class="line"></div><div class="line"><span class="comment"># 不用密码登录</span></div><div class="line">grant all privileges on *.* to root@localhost identified by <span class="string">''</span> with grant option;</div><div class="line"></div><div class="line"><span class="comment"># 刷新权限</span></div><div class="line">FLUSH PRIVILEGES;</div></pre></td></tr></table></figure>
+<h3 id="字符集问题"><a href="#字符集问题" class="headerlink" title="字符集问题"></a>字符集问题</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 查看字符集的设置</span></div><div class="line">show variables like <span class="string">'character_set%'</span>;</div><div class="line">+--------------------------+----------------------------------+</div><div class="line">| Variable_name            | Value                            |</div><div class="line">+--------------------------+----------------------------------+</div><div class="line">| character_set_client     | utf8    <span class="comment">#客户端来源数据使用的字符集                       </span></div><div class="line">| character_set_connection | utf8    <span class="comment"># 连接层字符集</span></div><div class="line">| character_set_database   | utf8       <span class="comment">#当前选中数据库的默认字符集                        </span></div><div class="line">| character_set_filesystem | binary                  </div><div class="line">| character_set_results    | utf8    <span class="comment">#查询结果字符集   |</span></div><div class="line">| character_set_server     | utf8       <span class="comment">#默认的内部操作字符集 |</span></div><div class="line">| character_set_system     | utf8      <span class="comment">#系统元数据(字段名等)字符集                                 </span></div><div class="line">| character_sets_dir       | /usr/<span class="built_in">local</span>/mysql/share/charsets/ |</div><div class="line">+--------------------------+----------------------------------+</div><div class="line"><span class="comment"># 或者使用 status 命令</span></div><div class="line"></div><div class="line"><span class="comment"># 一般情况下,只需要设置如下两个选项,就会得到上面的结果</span></div><div class="line"><span class="built_in">set</span> character_set_server=<span class="string">'utf8'</span>;</div><div class="line"><span class="built_in">set</span> character_set_database=<span class="string">'utf8'</span>;</div><div class="line"></div><div class="line"><span class="comment"># 如果还是有中文乱码问题,则是在创建数据库时,没有设置默认字符集</span></div><div class="line">CREATE DATABASE `hive` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;</div><div class="line">alter database hive default character <span class="built_in">set</span> utf8;</div></pre></td></tr></table></figure>
+<h3 id="导出导入"><a href="#导出导入" class="headerlink" title="导出导入"></a>导出导入</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 将数据库hive所有表导出(导入的时候就会导出所有的表)</span></div><div class="line">mysqldump -uroot -proot hive &gt;hive.sql</div><div class="line"></div><div class="line"><span class="comment"># 只导出 某些表(导入时只导入这些表)</span></div><div class="line">mysqldump -hxx -uroot -proot --databases qhh --tables goods_goodscategory goods_banner goods_goods goods_goodsimage &gt;db1.sql</div><div class="line"></div><div class="line"><span class="comment"># 导入</span></div><div class="line">mysql -h0.0.0.0 -uroot -proot hive &lt; hive.sql</div></pre></td></tr></table></figure>
+<h3 id="连接mysql"><a href="#连接mysql" class="headerlink" title="连接mysql"></a>连接mysql</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># mysqladmin修改密码</span></div><div class="line">mysqladmin -u root -p password <span class="string">'root'</span></div><div class="line"></div><div class="line"><span class="comment"># mysqladmin创建/删除数据库</span></div><div class="line">msyqladmin -uroot -p craete/drop hive</div></pre></td></tr></table></figure>
+<h3 id="mysql基本命令"><a href="#mysql基本命令" class="headerlink" title="mysql基本命令"></a>mysql基本命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div></pre></td><td class="code"><pre><div class="line">1. SELECT user();  -- 查看当前哪个用户登录到数据库</div><div class="line">2. SHOW DATABASES; -- 查看DBMS中有哪些数据库</div><div class="line">3. USE 数据库名 --更换要使用的数据库</div><div class="line">4. SELECT database();  -- 查看当前正在使用哪个数据库</div><div class="line">5. CREATE DATABASE 数据库名; -- 建立一个数据库</div><div class="line">6. CREATE USER &apos;用户名&apos;@&apos;%&apos; IDENTIFIED BY &apos;密码&apos;;</div><div class="line">C:\Program Files\MySQL\MySQL Server 5.7\bin</div><div class="line">mysql -u tom -p</div><div class="line">FLUSH PRIVILEGES</div><div class="line"></div><div class="line">7. GRANT ALL ON world.* to &apos;tom&apos;@&apos;%&apos;;  -- 授予tom用户在world数据库中所有的权限</div><div class="line">8. REVOKE ALL ON world.* from &apos;tom&apos;@&apos;%&apos;; -- 回收tom用户在world数据库中所有的权限</div><div class="line">9. SELECT &quot;Hello, World!&quot; AS &quot;String&quot;;</div><div class="line">10. SELECT &quot;Hello, World!&quot; AS &quot;String&quot; FROM dual;</div><div class="line">11. SELECT now(); -- 显示当前数据库系统中的日期</div><div class="line">12. SELECT code, name, gnp FROM world.country; -- 选择world数据库中country表格中code, name, gnp三列的内容进行显示</div><div class="line"></div><div class="line">13. SHOW TABLES; -- 当前数据库中存在哪些表格</div><div class="line"></div><div class="line">14. \g可以替代分号作为结尾</div><div class="line">15. \G 将表格中的数据纵向排列显示</div><div class="line">16. DELIMITER $$ -- 改变结束符号</div><div class="line">DELIMITER ;</div><div class="line">17. status -- 查看一些基本信息</div><div class="line">18. \c -- 放弃当前语句</div><div class="line">19. SOURCE c:\789.txt -- 执行789.txt文件中的内容</div><div class="line">\. c:\789.txt -- 同上句,意思完全相同</div><div class="line"></div><div class="line">20. TEE /home/name/111.txt -- 打开记录日志功能</div><div class="line">NOTEE; -- 关闭日志记录功能</div><div class="line"></div><div class="line"></div><div class="line">insert into test(id, name) values(1, &apos;Tom&apos;);</div><div class="line">update test set name=&apos;XX&apos;;</div><div class="line">select * from test where name=&apos;Tom&apos; and (age &gt; 4 or hige like &apos;%0&apos; or sex in (&apos;男&apos;,&apos;女&apos;)) order by id asc/desc; --%就相当于正则中的*</div><div class="line">SELECT coalesce(name, &apos;总数&apos;), SUM(singin) as singin_count FROM  employee_tbl GROUP BY name WITH ROLLUP;</div><div class="line">delete from test where id=1; --清空表中的内容</div><div class="line"></div><div class="line">21. </div><div class="line">CREATE TABLE new_table1(</div><div class="line">  id int NOT NULL AUTO_INCREMENT,</div><div class="line">  name varchar(20) default femn,</div><div class="line">  birthday date,</div><div class="line">  salary double,</div><div class="line">  sex boolean,</div><div class="line">  primary key (id) --constraint pk_id primary key (id)</div><div class="line">)ENGINE=InnoDB DEFAULT CHARSET=utf8;  -- 建立表innodb才支持事务</div><div class="line"></div><div class="line"></div><div class="line">SHOW CREATE TABLE table_name \G;</div><div class="line">22. DESC new_table1; -- 查看表结构</div><div class="line">23. INSERT INTO new_table1(id, name, birthday, salary, sex) VALUES (1, &apos;Tom&apos;, DATE&apos;1982-05-17&apos;, 5000.0, true); -- 插入一行数据</div><div class="line">24. SELECT * FROM new_table1; -- 查看表中内容</div><div class="line"></div><div class="line">25. TRUNCATE TABLE new_table1; -- 清除表中内容</div><div class="line">26. DROP TABLE new_table1; -- 删除表</div><div class="line"></div><div class="line"></div><div class="line">27.  ALTER TABLE new_table1 modify id long; -- 修改列</div><div class="line">28.  ALTER TABLE new_table1 add xxx integer; -- 添加列</div><div class="line">29.  ALTER TABLE new_table1 drop xxx; -- 删除列</div><div class="line">ALTER TABLE table_name CHANGE id id1 INT </div><div class="line">ALTER TABLE testalter_tbl RENAME TO alter_tbl; --修改表名</div><div class="line"></div><div class="line">主键约束=唯一性约束+非空约束</div><div class="line">alter table test </div><div class="line">add constraint pk_id primary key(id);   主键约束</div><div class="line"></div><div class="line">alter table test </div><div class="line">add constraint un_name unique(name);  唯一性约束:唯一但是允许非空</div><div class="line"></div><div class="line">alter table test </div><div class="line">add constraint ck_id check id &gt;=1; 检查性约束</div><div class="line"></div><div class="line">alter table emp</div><div class="line">add constraint fk_deptno</div><div class="line">foreign key(deptno) references dept(deptno);</div><div class="line"></div><div class="line">外键就是另外一张表中的主键</div><div class="line"></div><div class="line">alter table test</div><div class="line">drop constraint `ck_id`;</div><div class="line"></div><div class="line"></div><div class="line">select count(*) from test;</div><div class="line">select max(id) from test;</div><div class="line">select min(id) from test;</div><div class="line">select avg(id) from test;</div><div class="line">select sum(id) from test;</div><div class="line"></div><div class="line">子查询 一个查询语句里面还套有一个查询语句.</div><div class="line">select deptno from emp where ename=&apos;SCOTT&apos;;</div><div class="line">select empno, ename, deptno from emp where deptno=20;</div><div class="line"></div><div class="line">select empno, ename, deptno from emp </div><div class="line">where deptno = (select deptno from emp where ename=&apos;SCOTT&apos;);</div><div class="line"></div><div class="line">select empno, ename, deptno from emp as e1</div><div class="line">where sal&gt; (select avg(sal) from emp as e2 where e1.deptno=e2.deptno);--</div><div class="line">-- 各部门有多少人高于本部门平均工资</div><div class="line"></div><div class="line"></div><div class="line">select empno, ename, deptno from emp as e1</div><div class="line">where sal&lt;ANY(select sal from emp where deptno=30 ) AND deptno&lt;&gt;30;--</div></pre></td></tr></table></figure>
 
         
         </div>
@@ -290,7 +268,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/18/mongodb/" data-id="cjipt540a003107mvt0cyv63v" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/18/mysql/" data-id="cjitxf3gu002x0ekz5dognto2" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -358,7 +336,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/08/18/mongodb/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/18/mongodb/">Comments</a>
+        <a href="https://www.femn.me/2017/08/18/mysql/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/18/mysql/">Comments</a>
     
 
         </footer>
@@ -449,7 +427,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/18/ghost/" data-id="cjipt53xe001c07mv5evbw98g" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/18/ghost/" data-id="cjitxf3ew001e0ekzv6o1a8v2" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -895,7 +873,7 @@ g&lt;ctrl-]&gt;
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/17/vim_grammar/" data-id="cjipt542s004n07mvgjfgyjz0" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/17/vim_grammar/" data-id="cjitxf3jg004i0ekzzciegtmm" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1041,7 +1019,7 @@ g&lt;ctrl-]&gt;
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/17/git/" data-id="cjipt53ye001i07mvbeo7vid2" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/17/git/" data-id="cjitxf3f1001i0ekzklhf4gfn" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1110,140 +1088,6 @@ g&lt;ctrl-]&gt;
             
     
         <a href="https://www.femn.me/2017/08/17/git/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/git/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-linux_gcc" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/17/linux_gcc/">编译工具</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/17/linux_gcc/">
-            <time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/linux/">linux</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim bar.c</div></pre></td></tr></table></figure>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">foo</span><span class="params">(<span class="keyword">int</span> n)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">bar</span><span class="params">(<span class="keyword">int</span> m)</span></span>;</div><div class="line"></div><div class="line"><span class="keyword">int</span> </div><div class="line">main(<span class="keyword">void</span>)&#123;</div><div class="line">    <span class="keyword">int</span> a;</div><div class="line">    <span class="keyword">char</span> *s = <span class="string">"hello, world"</span>;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%s\n"</span>,&amp;s[<span class="number">7</span>]);</div><div class="line">    a = <span class="number">5</span>;</div><div class="line">    foo(a);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">int</span> </div><div class="line">foo(<span class="keyword">int</span> n)&#123;</div><div class="line">    <span class="keyword">int</span> b;</div><div class="line">    b = n;</div><div class="line">    b *=<span class="number">2</span>;</div><div class="line">    bar(b);</div><div class="line">    <span class="keyword">return</span> b;</div><div class="line">&#125;</div><div class="line"><span class="keyword">void</span> </div><div class="line">bar(<span class="keyword">int</span> m)&#123;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"hi,i am bar!\n"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="gcc程序编译"><a href="#gcc程序编译" class="headerlink" title="gcc程序编译"></a>gcc程序编译</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gcc -g -Wall bar.c -o bar</div></pre></td></tr></table></figure>
-<p>编译可分为四个阶段:<br>1.预处理:宏定义,头文件<br>2.编译:c–&gt;汇编语言<br>3.汇编:汇编成目标文件 .o (二进制文件)<br>4.链接:把所有的目标文件和库文件链接成一个可执行的文件</p>
-<h4 id="gcc-参数"><a href="#gcc-参数" class="headerlink" title="gcc 参数"></a>gcc 参数</h4><p>-I /home/include:指定头文件路径,先找预设路径<br>-L /usr/lib:库文件路径,先找指定目录,再找系统预设路径<br>-lfun:库文件中指定函数库 libfun.a<br>-static:静态链接库文件 .a为后缀,将所需要的函数copy到执行文件中<br>而动态链接库以 .so为后缀 指明当程序执行时,首先必须载入这个库,缺省操作<br>-Wall:生成所有的警告信息<br>-g:产生调试工具所必须的<br>-c:只生成一个.o后缀的目标文件</p>
-<h4 id="gdb程序调试"><a href="#gdb程序调试" class="headerlink" title="gdb程序调试"></a>gdb程序调试</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gdb bar</div></pre></td></tr></table></figure>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">break</span> main <span class="comment">//内存中main函数的入口地址 b 行号 ,b 文件名:行号</span></div><div class="line">run   <span class="comment">//r</span></div><div class="line"><span class="built_in">list</span>  <span class="comment">//l</span></div><div class="line">print a  <span class="comment">//殘值而已,不是我们赋的值  p</span></div><div class="line">print s <span class="comment">//也是殘值  print &amp;a next next next step next print &amp;b</span></div><div class="line">print s+<span class="number">90</span> <span class="comment">//通过gdb 可以在内存中任意跳转</span></div><div class="line">next   <span class="comment">//n</span></div><div class="line">print s</div><div class="line">next</div><div class="line">print s[<span class="number">7</span>]</div><div class="line">print &amp;s[<span class="number">7</span>]</div><div class="line">print a <span class="comment">//残值</span></div><div class="line">next</div><div class="line">print a</div><div class="line">step  <span class="comment">//进入foo子函数  s</span></div><div class="line">next</div><div class="line">next </div><div class="line">print n</div><div class="line">print b</div><div class="line">step <span class="comment">//进入bar函数</span></div><div class="line">print m</div><div class="line"><span class="keyword">continue</span> <span class="comment">//返回0 正常退出  c继续运行程序</span></div><div class="line">b <span class="number">5</span> <span class="keyword">if</span> i=<span class="number">10</span> 当i等于<span class="number">10</span>时第<span class="number">5</span>行断点生效</div><div class="line"><span class="keyword">delete</span> 断点编号 :删除断点</div><div class="line">quit <span class="comment">//q</span></div></pre></td></tr></table></figure>
-<h4 id="Makefile工程管理"><a href="#Makefile工程管理" class="headerlink" title="Makefile工程管理"></a>Makefile工程管理</h4><p>当有很多个文件都需要编译时,不可能一个一个的去gcc吧<br>通过make命令就能够使整个软件工程完成编译和链接<br>make在执行行,需要一个命名为Makefile的文件,它描述了整个工程的编译,链接等规则</p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/17/linux_gcc/" data-id="cjipt53zx002t07mv9c2n4vvn" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/17/linux_gcc/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/linux_gcc/">Comments</a>
     
 
         </footer>
@@ -1333,7 +1177,7 @@ g&lt;ctrl-]&gt;
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/17/linux-server-process/" data-id="cjipt53zm002n07mv7zcaxclq" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/17/linux-server-process/" data-id="cjitxf3gb002j0ekzhrmrmjhu" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1411,6 +1255,140 @@ g&lt;ctrl-]&gt;
 
 
 
+    <article id="post-linux_gcc" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/17/linux_gcc/">编译工具</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/17/linux_gcc/">
+            <time datetime="2017-08-17T15:44:24.000Z" itemprop="datePublished">2017-08-17</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/linux/">linux</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim bar.c</div></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">foo</span><span class="params">(<span class="keyword">int</span> n)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">bar</span><span class="params">(<span class="keyword">int</span> m)</span></span>;</div><div class="line"></div><div class="line"><span class="keyword">int</span> </div><div class="line">main(<span class="keyword">void</span>)&#123;</div><div class="line">    <span class="keyword">int</span> a;</div><div class="line">    <span class="keyword">char</span> *s = <span class="string">"hello, world"</span>;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%s\n"</span>,&amp;s[<span class="number">7</span>]);</div><div class="line">    a = <span class="number">5</span>;</div><div class="line">    foo(a);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">int</span> </div><div class="line">foo(<span class="keyword">int</span> n)&#123;</div><div class="line">    <span class="keyword">int</span> b;</div><div class="line">    b = n;</div><div class="line">    b *=<span class="number">2</span>;</div><div class="line">    bar(b);</div><div class="line">    <span class="keyword">return</span> b;</div><div class="line">&#125;</div><div class="line"><span class="keyword">void</span> </div><div class="line">bar(<span class="keyword">int</span> m)&#123;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"hi,i am bar!\n"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="gcc程序编译"><a href="#gcc程序编译" class="headerlink" title="gcc程序编译"></a>gcc程序编译</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gcc -g -Wall bar.c -o bar</div></pre></td></tr></table></figure>
+<p>编译可分为四个阶段:<br>1.预处理:宏定义,头文件<br>2.编译:c–&gt;汇编语言<br>3.汇编:汇编成目标文件 .o (二进制文件)<br>4.链接:把所有的目标文件和库文件链接成一个可执行的文件</p>
+<h4 id="gcc-参数"><a href="#gcc-参数" class="headerlink" title="gcc 参数"></a>gcc 参数</h4><p>-I /home/include:指定头文件路径,先找预设路径<br>-L /usr/lib:库文件路径,先找指定目录,再找系统预设路径<br>-lfun:库文件中指定函数库 libfun.a<br>-static:静态链接库文件 .a为后缀,将所需要的函数copy到执行文件中<br>而动态链接库以 .so为后缀 指明当程序执行时,首先必须载入这个库,缺省操作<br>-Wall:生成所有的警告信息<br>-g:产生调试工具所必须的<br>-c:只生成一个.o后缀的目标文件</p>
+<h4 id="gdb程序调试"><a href="#gdb程序调试" class="headerlink" title="gdb程序调试"></a>gdb程序调试</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gdb bar</div></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">break</span> main <span class="comment">//内存中main函数的入口地址 b 行号 ,b 文件名:行号</span></div><div class="line">run   <span class="comment">//r</span></div><div class="line"><span class="built_in">list</span>  <span class="comment">//l</span></div><div class="line">print a  <span class="comment">//殘值而已,不是我们赋的值  p</span></div><div class="line">print s <span class="comment">//也是殘值  print &amp;a next next next step next print &amp;b</span></div><div class="line">print s+<span class="number">90</span> <span class="comment">//通过gdb 可以在内存中任意跳转</span></div><div class="line">next   <span class="comment">//n</span></div><div class="line">print s</div><div class="line">next</div><div class="line">print s[<span class="number">7</span>]</div><div class="line">print &amp;s[<span class="number">7</span>]</div><div class="line">print a <span class="comment">//残值</span></div><div class="line">next</div><div class="line">print a</div><div class="line">step  <span class="comment">//进入foo子函数  s</span></div><div class="line">next</div><div class="line">next </div><div class="line">print n</div><div class="line">print b</div><div class="line">step <span class="comment">//进入bar函数</span></div><div class="line">print m</div><div class="line"><span class="keyword">continue</span> <span class="comment">//返回0 正常退出  c继续运行程序</span></div><div class="line">b <span class="number">5</span> <span class="keyword">if</span> i=<span class="number">10</span> 当i等于<span class="number">10</span>时第<span class="number">5</span>行断点生效</div><div class="line"><span class="keyword">delete</span> 断点编号 :删除断点</div><div class="line">quit <span class="comment">//q</span></div></pre></td></tr></table></figure>
+<h4 id="Makefile工程管理"><a href="#Makefile工程管理" class="headerlink" title="Makefile工程管理"></a>Makefile工程管理</h4><p>当有很多个文件都需要编译时,不可能一个一个的去gcc吧<br>通过make命令就能够使整个软件工程完成编译和链接<br>make在执行行,需要一个命名为Makefile的文件,它描述了整个工程的编译,链接等规则</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/17/linux_gcc/" data-id="cjitxf3gl002r0ekzsm74zkfr" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/17/linux_gcc/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/17/linux_gcc/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-sshd-server" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -1462,7 +1440,7 @@ g&lt;ctrl-]&gt;
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/16/sshd-server/" data-id="cjipt5420004707mvtv1y5v8n" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/16/sshd-server/" data-id="cjitxf3ir00430ekzam491ohh" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1531,6 +1509,137 @@ g&lt;ctrl-]&gt;
             
     
         <a href="https://www.femn.me/2017/08/16/sshd-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/sshd-server/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-CDN-server" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/16/CDN-server/">内容分发网络</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/16/CDN-server/">
+            <time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/server/">server</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="CDN"><a href="#CDN" class="headerlink" title="CDN:"></a>CDN:</h3><p>内容分发网络(Content delivery network或Content distribution network,缩写:CDN)是指一种通过互联网互相连接的电脑网络系统,<br>利用最靠近每位用户的服务器,更快、更可靠地将音乐、图片、视频、应用程序及其他文件发送给用户,来提供高性能、可扩展性及低成本的网络内容传递给用户</p>
+<h3 id="CDN的作用"><a href="#CDN的作用" class="headerlink" title="CDN的作用"></a>CDN的作用</h3><h4 id="1-加速您网站的访问"><a href="#1-加速您网站的访问" class="headerlink" title="1.加速您网站的访问:"></a>1.加速您网站的访问:</h4><p>访问者的每个访问请求,都会被自动发送到物理距离最近、速度最快的节点上.<br>将blog内容的所有的东西(图片,文字,视频)都是保存在自己的服务器中,要从自己的服务器中取得,当如果某个页面需要加载很多内容时,速度就会变慢.<br>而cdn就会把所以网址上的东西,全部分送到它们在全世界各地所架设的云端的伺服务器上,也就是说我的网址会被散播(拆解)到全世界的伺服务器上,取最近的.</p>
+<h4 id="2-防骇客-抵御DoS攻击-访问我们的网址-相当于访问到云端的伺服务器上"><a href="#2-防骇客-抵御DoS攻击-访问我们的网址-相当于访问到云端的伺服务器上" class="headerlink" title="2.防骇客,抵御DoS攻击,访问我们的网址,相当于访问到云端的伺服务器上."></a>2.防骇客,抵御DoS攻击,访问我们的网址,相当于访问到云端的伺服务器上.</h4><h4 id="3-可以承受网站的流量-节省您的流量"><a href="#3-可以承受网站的流量-节省您的流量" class="headerlink" title="3.可以承受网站的流量,节省您的流量:"></a>3.可以承受网站的流量,节省您的流量:</h4><p>您的网站内容将被缓存在 CloudFlare 的节点中,访问者并不直接从您的主机获取内容,从而最大限度地节省主机的流量<br>同时网站的下载速度也会比以往的快些.</p>
+<h3 id="使用cloudflare加速"><a href="#使用cloudflare加速" class="headerlink" title="使用cloudflare加速"></a>使用<a href="https://www.cloudflare.com/" target="_blank" rel="external">cloudflare</a>加速</h3><p>cloudflare是一个国外著名的免费CDN网站加速服务公司<br>甚至可以在网站主服务器宕机的情况下,访问者依然可以通过 CloudFlare 的分发服务器访问到您的网站</p>
+<p><a href="http://www.xujiahua.com/4680.html" target="_blank" rel="external">使用cloudflare的教程</a></p>
+<h3 id="但使用了cloudflare之后-就不再支持泛域名的解析了-所以还得多配置nginx"><a href="#但使用了cloudflare之后-就不再支持泛域名的解析了-所以还得多配置nginx" class="headerlink" title="但使用了cloudflare之后,就不再支持泛域名的解析了,所以还得多配置nginx."></a>但使用了cloudflare之后,就不再支持泛域名的解析了,所以还得多配置nginx.</h3>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/16/CDN-server/" data-id="cjitxf3ad00060ekzfracb8a2" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/16/CDN-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/CDN-server/">Comments</a>
     
 
         </footer>
@@ -1650,7 +1759,7 @@ g&lt;ctrl-]&gt;
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/16/shadowsocks-server/" data-id="cjipt541q004107mvrwfp7o31" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/16/shadowsocks-server/" data-id="cjitxf3id003v0ekzzz6rai2y" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1719,137 +1828,6 @@ g&lt;ctrl-]&gt;
             
     
         <a href="https://www.femn.me/2017/08/16/shadowsocks-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/shadowsocks-server/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-CDN-server" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/16/CDN-server/">内容分发网络</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/16/CDN-server/">
-            <time datetime="2017-08-16T15:24:48.000Z" itemprop="datePublished">2017-08-16</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/server/">server</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h3 id="CDN"><a href="#CDN" class="headerlink" title="CDN:"></a>CDN:</h3><p>内容分发网络(Content delivery network或Content distribution network,缩写:CDN)是指一种通过互联网互相连接的电脑网络系统,<br>利用最靠近每位用户的服务器,更快、更可靠地将音乐、图片、视频、应用程序及其他文件发送给用户,来提供高性能、可扩展性及低成本的网络内容传递给用户</p>
-<h3 id="CDN的作用"><a href="#CDN的作用" class="headerlink" title="CDN的作用"></a>CDN的作用</h3><h4 id="1-加速您网站的访问"><a href="#1-加速您网站的访问" class="headerlink" title="1.加速您网站的访问:"></a>1.加速您网站的访问:</h4><p>访问者的每个访问请求,都会被自动发送到物理距离最近、速度最快的节点上.<br>将blog内容的所有的东西(图片,文字,视频)都是保存在自己的服务器中,要从自己的服务器中取得,当如果某个页面需要加载很多内容时,速度就会变慢.<br>而cdn就会把所以网址上的东西,全部分送到它们在全世界各地所架设的云端的伺服务器上,也就是说我的网址会被散播(拆解)到全世界的伺服务器上,取最近的.</p>
-<h4 id="2-防骇客-抵御DoS攻击-访问我们的网址-相当于访问到云端的伺服务器上"><a href="#2-防骇客-抵御DoS攻击-访问我们的网址-相当于访问到云端的伺服务器上" class="headerlink" title="2.防骇客,抵御DoS攻击,访问我们的网址,相当于访问到云端的伺服务器上."></a>2.防骇客,抵御DoS攻击,访问我们的网址,相当于访问到云端的伺服务器上.</h4><h4 id="3-可以承受网站的流量-节省您的流量"><a href="#3-可以承受网站的流量-节省您的流量" class="headerlink" title="3.可以承受网站的流量,节省您的流量:"></a>3.可以承受网站的流量,节省您的流量:</h4><p>您的网站内容将被缓存在 CloudFlare 的节点中,访问者并不直接从您的主机获取内容,从而最大限度地节省主机的流量<br>同时网站的下载速度也会比以往的快些.</p>
-<h3 id="使用cloudflare加速"><a href="#使用cloudflare加速" class="headerlink" title="使用cloudflare加速"></a>使用<a href="https://www.cloudflare.com/" target="_blank" rel="external">cloudflare</a>加速</h3><p>cloudflare是一个国外著名的免费CDN网站加速服务公司<br>甚至可以在网站主服务器宕机的情况下,访问者依然可以通过 CloudFlare 的分发服务器访问到您的网站</p>
-<p><a href="http://www.xujiahua.com/4680.html" target="_blank" rel="external">使用cloudflare的教程</a></p>
-<h3 id="但使用了cloudflare之后-就不再支持泛域名的解析了-所以还得多配置nginx"><a href="#但使用了cloudflare之后-就不再支持泛域名的解析了-所以还得多配置nginx" class="headerlink" title="但使用了cloudflare之后,就不再支持泛域名的解析了,所以还得多配置nginx."></a>但使用了cloudflare之后,就不再支持泛域名的解析了,所以还得多配置nginx.</h3>
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/16/CDN-server/" data-id="cjipt53ra000807mvwwyso7dd" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/16/CDN-server/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/16/CDN-server/">Comments</a>
     
 
         </footer>
@@ -1938,7 +1916,7 @@ g&lt;ctrl-]&gt;
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/15/vps-server/" data-id="cjipt542l004j07mvy1en7glg" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/15/vps-server/" data-id="cjitxf3ji004k0ekz7ipcqe7g" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding

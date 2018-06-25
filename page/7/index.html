@@ -214,6 +214,142 @@
 
             
             <section id="main">
+    <article id="post-WebSocket" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/04/WebSocket/">WebSocket</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/04/WebSocket/">
+            <time datetime="2017-08-04T08:10:53.000Z" itemprop="datePublished">2017-08-04</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>网页的消息推送一般常见的实现方法有轮询,长连接,WebSocket.</p>
+<h4 id="为什么要用-WebSockets？"><a href="#为什么要用-WebSockets？" class="headerlink" title="为什么要用 WebSockets？"></a>为什么要用 WebSockets？</h4><p>一个 WebSocket 连接允许在客户端和服务端之间进行全双工通讯,从而每一端都可以通过建立的连接向另一端推送数据.</p>
+<p>WebSocket,以及与其相关的 服务端发送事件 (SSE) 及 WebRTC 数据通路 等技术之所以重要的原因是:<br>HTTP不能打开并一直保持连接,不能在服务端和 Web 浏览器之间进行频繁的数据推送.在这之前,大多数的 Web 应用会通过频繁的异步 JavaScript 和 XML (AJAX) 请求来实现长轮循</p>
+<p>WebSocket并不限于以Ajax(或XHR)方式通信,因为Ajax技术需要客户端发起请求,而WebSocket服务器和客户端可以彼此相互推送信息;XHR受到域的限制,而WebSocket允许跨域通信.</p>
+<h4 id="实现-WebSocket"><a href="#实现-WebSocket" class="headerlink" title="实现 WebSocket"></a>实现 WebSocket</h4><p>Web 浏览器和服务端都必须要实现 WebSocket 协议,以便建立和维护连接.因为 WebSocket 的连接是持续连通的,不像经典的 HTTP 连接,因此服务器需要做更多工作.</p>
+<p>基于多线程或多进程的服务器不能很好地提供 WebSockets 服务,因为它们的设计是:打开一个连接,尽快处理完请求,然后关闭连接.<br>因此,采用 Tornado 或 打包了 gevent 的 Green Unicorn 等异步服务器,对于实现一个实用的服务端 WebSockets 都是必要的</p>
+<p>而在客户端,使用 WebSocket 并不要求有某个 JavaScript 库.实现了 WebSocket 的 Web 浏览器都会通过 WebSockets 对象 导出所有必要的客户端功能.</p>
+<p><a href="https://github.com/tornadoweb/tornado/tree/master/demos/websocket" target="_blank" rel="external">github中的例子</a></p>
+<p><a href="http://www.jianshu.com/p/6e890428744c" target="_blank" rel="external">对这个例子的的解释</a></p>
+<p><a href="http://fullstackpython.atjiang.com/websockets.html" target="_blank" rel="external">Websocket资源</a></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/04/WebSocket/" data-id="cjitxf3ax000a0ekzh23j22s1" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/04/WebSocket/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/WebSocket/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-basic_sort" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -269,7 +405,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/basic_sort/" data-id="cjipt53tw000q07mvpafso696" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/basic_sort/" data-id="cjitxf3h100320ekz3y0ocwvw" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -347,6 +483,143 @@
 
 
 
+    <article id="post-basic_time" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/04/basic_time/">basic time</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/04/basic_time/">
+            <time datetime="2017-08-04T08:10:53.000Z" itemprop="datePublished">2017-08-04</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>from datetime import date,datetime,timedelta</p>
+<h4 id="datetime类型"><a href="#datetime类型" class="headerlink" title="datetime类型"></a>datetime类型</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">d = datetime.now()   datetime.datetime(2017, 6, 2, 17, 22, 5, 470694)</div><div class="line">datetime(2017,2,3)   datetime.datetime(2017, 2, 3, 0, 0)</div><div class="line">str(d)[:19]</div><div class="line">d.year d.month      (属性,都是int类型)</div><div class="line">current_day,month_days = calendar.monthrange(2017, 2)  (获取某年某月的 当前天数 和  此月共有天)</div></pre></td></tr></table></figure>
+<h4 id="date类型"><a href="#date类型" class="headerlink" title="date类型"></a>date类型</h4><p>datetime.datetime 会精确到 %H%M%S  而datetime.date 不需要<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">date_today = date.today()</div><div class="line">start_date = date(2017,2,6).replace(day=1) </div><div class="line"># 对应月份第一天的日期 datetime.date(2017, 2, 1) 如果输入是一个 datetime 实例,那么你得到的就是一个 datetime 实例</div><div class="line">end_date = start_date + timedelta(days=month_days-1) </div><div class="line"># 第一种获得当月月底的日期 datetime.date(2017, 2, 28)date类型和datetime类型 都可以通过 timedelta 进行前/后几天的计算</div><div class="line"></div><div class="line"># 加月份时</div><div class="line">from dateutil.relativedelta import relativedelta</div><div class="line">six_months = date.today() + relativedelta(months=+6)  datetime.date(2017, 12, 27)</div><div class="line">six_months = datetime.now() + relativedelta(months=+6) datetime.datetime(2017, 12, 27, 16, 2, 5, 260990)</div></pre></td></tr></table></figure></p>
+<h4 id="时间戳类型-timestamp"><a href="#时间戳类型-timestamp" class="headerlink" title="时间戳类型 timestamp"></a>时间戳类型 timestamp</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">time.time()   1483756148.2785556  type:float</div></pre></td></tr></table></figure>
+<h4 id="time-tuple类型"><a href="#time-tuple类型" class="headerlink" title="time tuple类型"></a>time tuple类型</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">time.localtime() time.struct_time(tm_year=2017, tm_mon=1, tm_mday=7, tm_hour=11, tm_min=0, t_m_sec=54, tm_wday=5, tm_yday=7, tm_isdst=0)</div></pre></td></tr></table></figure>
+<h3 id="转换关系"><a href="#转换关系" class="headerlink" title="转换关系"></a>转换关系</h3><h4 id="datetime-datetime-–-gt-str"><a href="#datetime-datetime-–-gt-str" class="headerlink" title="datetime.datetime –&gt; str"></a>datetime.datetime –&gt; str</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">s = d.strftime(&apos;%Y-%m-%d %H:%M:%S.%f&apos;)   (2017-01-07 10:16:12.962917)</div><div class="line">s = date_today.strftime(&apos;%Y-%m-%d&apos;) (2017-01-07)</div></pre></td></tr></table></figure>
+<h4 id="datetime-datetime-–-gt-time-tuple"><a href="#datetime-datetime-–-gt-time-tuple" class="headerlink" title="datetime.datetime –&gt; time tuple"></a>datetime.datetime –&gt; time tuple</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">d.timetuple()</div></pre></td></tr></table></figure>
+<h4 id="str-–-gt-datetime-datetime"><a href="#str-–-gt-datetime-datetime" class="headerlink" title="str –&gt; datetime.datetime"></a>str –&gt; datetime.datetime</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">datetime.strptime(&apos;20170107 10:21:28&apos;,&apos;%Y%m%d %H:%M:%S&apos;)</div></pre></td></tr></table></figure>
+<h4 id="timestamp-–-gt-datetime"><a href="#timestamp-–-gt-datetime" class="headerlink" title="timestamp –&gt; datetime"></a>timestamp –&gt; datetime</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">datetime.fromtimestamp(1483755372.0)</div></pre></td></tr></table></figure>
+<h4 id="str-–-gt-time-tuple"><a href="#str-–-gt-time-tuple" class="headerlink" title="str –&gt; time tuple"></a>str –&gt; time tuple</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tuple = time.strptime(&apos;2017-01-07 10:16:12&apos;, &apos;%Y-%m-%d %H:%M:%S&apos;)</div></pre></td></tr></table></figure>
+<h4 id="time-tuple-–-gt-timestamp"><a href="#time-tuple-–-gt-timestamp" class="headerlink" title="time tuple –&gt;timestamp"></a>time tuple –&gt;timestamp</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">time.mktime(tuple)</div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/04/basic_time/" data-id="cjitxf3cw000s0ekz3y1t8zzj" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/04/basic_time/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/basic_time/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-basic_socket" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -410,7 +683,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/basic_socket/" data-id="cjipt53v5000u07mv20h3j2y8" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/basic_socket/" data-id="cjitxf3bo000m0ekzrokz67d5" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -488,7 +761,7 @@
 
 
 
-    <article id="post-os" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-basic_derivation" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -496,7 +769,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/04/os/">os模块</a>
+            <a class="article-title" href="/2017/08/04/basic_derivation/">推导式(Derivation)</a>
         </h1>
     
 
@@ -505,7 +778,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/os/">
+        <a href="/2017/08/04/basic_derivation/">
             <time datetime="2017-08-04T08:10:53.000Z" itemprop="datePublished">2017-08-04</time>
         </a>
     </div>
@@ -526,10 +799,9 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h3 id="import-os"><a href="#import-os" class="headerlink" title="import os"></a>import os</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">path = <span class="string">r"aa/"</span></div><div class="line">path1 = <span class="string">r'bb/'</span></div><div class="line"><span class="comment"># 如果path路径不加'/'的话,默认是从运行路径再加aa</span></div><div class="line">os.getcwd() </div><div class="line"><span class="comment">#'/home/python'</span></div><div class="line"><span class="comment"># 运行ipython的路径,如果是python3 /home/python/app1.6/runner.py</span></div><div class="line"><span class="comment"># 则是/home/python/app1.6</span></div><div class="line"></div><div class="line">os.path.abspath(path) <span class="comment"># path规范化的绝对路径</span></div><div class="line"><span class="comment">#'/home/python/aa'</span></div><div class="line"></div><div class="line">os.path.join(os.getcwd(),path,path1)</div><div class="line"><span class="comment">#'/home/python/aa/bb/'</span></div><div class="line"></div><div class="line">os.path.normpath(os.path.join(os.getcwd(),path,path1)) </div><div class="line"><span class="comment"># path规范化的绝对路径</span></div><div class="line"><span class="comment">#'/home/python/aa/bb'</span></div><div class="line"></div><div class="line"></div><div class="line">将多个路径组合后返回,第一个绝对路径之前的参数将被忽略</div><div class="line">os.path.join(<span class="string">'/home/python'</span>,<span class="string">'/'</span>,<span class="string">'aa'</span>,<span class="string">'/home/'</span>)</div><div class="line"><span class="comment"># '/home/'</span></div></pre></td></tr></table></figure>
-<h3 id="判断"><a href="#判断" class="headerlink" title="判断"></a>判断</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">os.path.exists(path)<span class="comment"># 如果path存在,返回True;如果path不存在,返回False.</span></div><div class="line">os.path.isabs(os.getcwd()) <span class="comment"># 如果只要path是绝对路径,不管是不是存在,返回True</span></div><div class="line">os.path.isfile(path) </div><div class="line">os.path.isdir(path)</div><div class="line"><span class="string">'1.jpg'</span>.endswith(<span class="string">'.jpng'</span>) <span class="comment"># False</span></div><div class="line"></div><div class="line"><span class="comment"># 计算此文件的大小 </span></div><div class="line">(os.path.getsize(abspath))/<span class="number">1024</span>/<span class="number">1024</span> <span class="comment"># byte/k/M</span></div><div class="line"><span class="comment">#改变一个文件的文件名</span></div><div class="line">os.rename(os.path.join(<span class="string">'abspath'</span>,<span class="string">'filename'</span>), \</div><div class="line">    os.path.join(<span class="string">'abspath'</span>,<span class="string">'new_name'</span>))</div><div class="line"><span class="comment"># 如果没有则创建目录,有的话就没原来的,防止</span></div><div class="line">os.makedirs(<span class="string">'/home/python/1/1/1'</span>,exist_ok=<span class="keyword">True</span>)</div></pre></td></tr></table></figure>
-<h3 id="分割"><a href="#分割" class="headerlink" title="分割"></a>分割</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">os.path.splitext(<span class="string">r'/home/python/22.json'</span>)</div><div class="line"><span class="comment">#('/home/python/22', '.json')</span></div><div class="line">os.path.split(<span class="string">'/home/python/app1.6/1.txt'</span>)</div><div class="line"><span class="comment"># 将path分割成目录和文件名二元组返回</span></div><div class="line"><span class="comment">#('/home/python/app1.6', '1.txt')</span></div><div class="line"></div><div class="line">os.path.dirname(<span class="string">'/home/python/app1.6/1.txt'</span>) </div><div class="line"><span class="comment"># 相当于os.path.split(path)的第一元素</span></div><div class="line"><span class="comment">#'/home/python/app1.6'</span></div><div class="line"></div><div class="line">os.path.basename(<span class="string">'/home/python/app1.6/1.txt'</span>) </div><div class="line"><span class="comment"># 相当于os.path.split(path)的第二元素</span></div><div class="line"><span class="comment">#'1.txt'</span></div></pre></td></tr></table></figure>
-<h3 id="from-urllib-parse-import-urljoin"><a href="#from-urllib-parse-import-urljoin" class="headerlink" title="from urllib.parse import urljoin"></a>from urllib.parse import urljoin</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">urljoin(<span class="string">'https://femnyy.com/'</span>,<span class="string">'VPS/xx'</span>) </div><div class="line"><span class="comment"># 第一个路径必须要有最后一个'/'</span></div></pre></td></tr></table></figure>
+            <p>list derivation(列表推导式)<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">l = [x*x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>)]</div><div class="line"><span class="comment"># [0, 1, 4, 9, 16] 直接返回列表而不是生成器</span></div><div class="line"></div><div class="line">[i+<span class="number">1</span> <span class="keyword">if</span> i&gt;<span class="number">0</span> <span class="keyword">else</span> <span class="number">1</span> <span class="keyword">for</span> i <span class="keyword">in</span> l]</div><div class="line"><span class="comment"># [1, 2, 5, 10, 17]</span></div><div class="line"></div><div class="line">[i+<span class="number">1</span> <span class="keyword">if</span> i&gt;<span class="number">0</span> <span class="keyword">else</span> <span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> l]</div><div class="line"><span class="comment"># [2, 2, 5, 10, 17] # 说明 如果是取else的话,就不再去做更新的操作</span></div><div class="line"></div><div class="line">[i <span class="keyword">for</span> i <span class="keyword">in</span> l <span class="keyword">if</span> i &gt;<span class="number">4</span> <span class="keyword">and</span> i &lt;=<span class="number">16</span>] <span class="comment"># [9,16]</span></div><div class="line"></div><div class="line">vec = [[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>], [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]]</div><div class="line">[num <span class="keyword">for</span> elem <span class="keyword">in</span> vec <span class="keyword">for</span> num <span class="keyword">in</span> elem]</div><div class="line"><span class="comment"># [1, 2, 3, 4, 5, 6, 7, 8, 9]</span></div><div class="line"></div><div class="line">[(x, y) <span class="keyword">for</span> x <span class="keyword">in</span> [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>] <span class="keyword">for</span> y <span class="keyword">in</span> [<span class="number">3</span>,<span class="number">1</span>,<span class="number">4</span>] <span class="keyword">if</span> x != y]</div><div class="line"><span class="comment"># [(1, 3), (1, 4), (2, 3), (2, 1), (2, 4), (3, 1), (3, 4)]</span></div><div class="line">```	</div><div class="line"></div><div class="line">改变字典的值</div><div class="line"></div><div class="line">```python </div><div class="line">l_d = [&#123;<span class="string">'name'</span>:<span class="string">'femn'</span>,<span class="string">'age'</span>:<span class="number">25</span>&#125;,&#123;<span class="string">'name'</span>:<span class="string">'femnyy'</span>,<span class="string">'age'</span>:<span class="number">35</span>&#125;]</div><div class="line">[i <span class="keyword">if</span> i.get(<span class="string">'age'</span>)&gt; <span class="number">25</span> <span class="keyword">else</span> i <span class="keyword">for</span> i <span class="keyword">in</span> l_d]</div><div class="line"></div><div class="line"><span class="comment"># 虽然此时不能得到自己想要的改变 不能用i['name']='femnhh'去做改变</span></div><div class="line">[i.update(&#123;<span class="string">'name'</span>:<span class="string">'femnhh'</span>&#125;) <span class="keyword">if</span> i.get(<span class="string">'age'</span>)&gt; <span class="number">25</span> <span class="keyword">else</span> i <span class="keyword">for</span> i <span class="keyword">in</span> l_d]</div><div class="line"><span class="comment"># [&#123;'age': 25, 'name': 'femn'&#125;, None] # 相当于是匹配没有匹配成功则返回None</span></div><div class="line"></div><div class="line"><span class="comment"># 但此时l_d却已经是改变成想要的了</span></div><div class="line">l_d</div><div class="line"><span class="comment"># [&#123;'age': 25, 'name': 'femn'&#125;, &#123;'age': 35, 'name': 'femnhh'&#125;]</span></div></pre></td></tr></table></figure></p>
+<h3 id="generator-derivation-生成器推导式"><a href="#generator-derivation-生成器推导式" class="headerlink" title="generator derivation(生成器推导式)"></a>generator derivation(生成器推导式)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">g = (x*x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>)) <span class="comment"># 'generator' object</span></div><div class="line">next(g) <span class="comment">#</span></div></pre></td></tr></table></figure>
+<h3 id="dict-derivation-字典推导式"><a href="#dict-derivation-字典推导式" class="headerlink" title="dict derivation (字典推导式)"></a>dict derivation (字典推导式)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">prices = &#123;<span class="string">'ACME'</span>: <span class="number">45.23</span>,<span class="string">'AAPL'</span>: <span class="number">612.78</span>,<span class="string">'IBM'</span>: <span class="number">205.55</span>,\</div><div class="line">        <span class="string">'HPQ'</span>: <span class="number">37.20</span>,<span class="string">'FB'</span>: <span class="number">10.75</span>&#125;</div><div class="line">p1 = &#123;key: value <span class="keyword">for</span> key, value <span class="keyword">in</span> prices.items() <span class="keyword">if</span> value &gt; <span class="number">20</span>&#125;</div><div class="line"><span class="comment"># &#123;'ACME': 45.23, 'IBM': 205.55, 'HPQ': 37.2, 'AAPL': 612.78&#125;</span></div></pre></td></tr></table></figure>
 
         
         </div>
@@ -540,7 +812,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/os/" data-id="cjipt540h003607mvxbef0ayz" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/basic_derivation/" data-id="cjitxf3bd000e0ekzg4u5z5wt" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -608,7 +880,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/08/04/os/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/os/">Comments</a>
+        <a href="https://www.femn.me/2017/08/04/basic_derivation/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/basic_derivation/">Comments</a>
     
 
         </footer>
@@ -724,7 +996,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/shell/" data-id="cjipt541x004507mvycndflz6" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/shell/" data-id="cjitxf3iw00450ekzy5h8dtkj" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -802,302 +1074,6 @@
 
 
 
-    <article id="post-basic_derivation" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/04/basic_derivation/">推导式(Derivation)</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/basic_derivation/">
-            <time datetime="2017-08-04T08:10:53.000Z" itemprop="datePublished">2017-08-04</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/python3/">python3</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>list derivation(列表推导式)<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">l = [x*x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>)]</div><div class="line"><span class="comment"># [0, 1, 4, 9, 16] 直接返回列表而不是生成器</span></div><div class="line"></div><div class="line">[i+<span class="number">1</span> <span class="keyword">if</span> i&gt;<span class="number">0</span> <span class="keyword">else</span> <span class="number">1</span> <span class="keyword">for</span> i <span class="keyword">in</span> l]</div><div class="line"><span class="comment"># [1, 2, 5, 10, 17]</span></div><div class="line"></div><div class="line">[i+<span class="number">1</span> <span class="keyword">if</span> i&gt;<span class="number">0</span> <span class="keyword">else</span> <span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> l]</div><div class="line"><span class="comment"># [2, 2, 5, 10, 17] # 说明 如果是取else的话,就不再去做更新的操作</span></div><div class="line"></div><div class="line">[i <span class="keyword">for</span> i <span class="keyword">in</span> l <span class="keyword">if</span> i &gt;<span class="number">4</span> <span class="keyword">and</span> i &lt;=<span class="number">16</span>] <span class="comment"># [9,16]</span></div><div class="line"></div><div class="line">vec = [[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>], [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]]</div><div class="line">[num <span class="keyword">for</span> elem <span class="keyword">in</span> vec <span class="keyword">for</span> num <span class="keyword">in</span> elem]</div><div class="line"><span class="comment"># [1, 2, 3, 4, 5, 6, 7, 8, 9]</span></div><div class="line"></div><div class="line">[(x, y) <span class="keyword">for</span> x <span class="keyword">in</span> [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>] <span class="keyword">for</span> y <span class="keyword">in</span> [<span class="number">3</span>,<span class="number">1</span>,<span class="number">4</span>] <span class="keyword">if</span> x != y]</div><div class="line"><span class="comment"># [(1, 3), (1, 4), (2, 3), (2, 1), (2, 4), (3, 1), (3, 4)]</span></div><div class="line">```	</div><div class="line"></div><div class="line">改变字典的值</div><div class="line"></div><div class="line">```python </div><div class="line">l_d = [&#123;<span class="string">'name'</span>:<span class="string">'femn'</span>,<span class="string">'age'</span>:<span class="number">25</span>&#125;,&#123;<span class="string">'name'</span>:<span class="string">'femnyy'</span>,<span class="string">'age'</span>:<span class="number">35</span>&#125;]</div><div class="line">[i <span class="keyword">if</span> i.get(<span class="string">'age'</span>)&gt; <span class="number">25</span> <span class="keyword">else</span> i <span class="keyword">for</span> i <span class="keyword">in</span> l_d]</div><div class="line"></div><div class="line"><span class="comment"># 虽然此时不能得到自己想要的改变 不能用i['name']='femnhh'去做改变</span></div><div class="line">[i.update(&#123;<span class="string">'name'</span>:<span class="string">'femnhh'</span>&#125;) <span class="keyword">if</span> i.get(<span class="string">'age'</span>)&gt; <span class="number">25</span> <span class="keyword">else</span> i <span class="keyword">for</span> i <span class="keyword">in</span> l_d]</div><div class="line"><span class="comment"># [&#123;'age': 25, 'name': 'femn'&#125;, None] # 相当于是匹配没有匹配成功则返回None</span></div><div class="line"></div><div class="line"><span class="comment"># 但此时l_d却已经是改变成想要的了</span></div><div class="line">l_d</div><div class="line"><span class="comment"># [&#123;'age': 25, 'name': 'femn'&#125;, &#123;'age': 35, 'name': 'femnhh'&#125;]</span></div></pre></td></tr></table></figure></p>
-<h3 id="generator-derivation-生成器推导式"><a href="#generator-derivation-生成器推导式" class="headerlink" title="generator derivation(生成器推导式)"></a>generator derivation(生成器推导式)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">g = (x*x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">5</span>)) <span class="comment"># 'generator' object</span></div><div class="line">next(g) <span class="comment">#</span></div></pre></td></tr></table></figure>
-<h3 id="dict-derivation-字典推导式"><a href="#dict-derivation-字典推导式" class="headerlink" title="dict derivation (字典推导式)"></a>dict derivation (字典推导式)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">prices = &#123;<span class="string">'ACME'</span>: <span class="number">45.23</span>,<span class="string">'AAPL'</span>: <span class="number">612.78</span>,<span class="string">'IBM'</span>: <span class="number">205.55</span>,\</div><div class="line">        <span class="string">'HPQ'</span>: <span class="number">37.20</span>,<span class="string">'FB'</span>: <span class="number">10.75</span>&#125;</div><div class="line">p1 = &#123;key: value <span class="keyword">for</span> key, value <span class="keyword">in</span> prices.items() <span class="keyword">if</span> value &gt; <span class="number">20</span>&#125;</div><div class="line"><span class="comment"># &#123;'ACME': 45.23, 'IBM': 205.55, 'HPQ': 37.2, 'AAPL': 612.78&#125;</span></div></pre></td></tr></table></figure>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/04/basic_derivation/" data-id="cjipt53sh000f07mvi4pz8chs" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/04/basic_derivation/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/basic_derivation/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-linux_firewall" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/04/linux_firewall/">linux防火墙设置</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/linux_firewall/">
-            <time datetime="2017-08-04T08:10:53.000Z" itemprop="datePublished">2017-08-04</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/linux/">linux</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h4 id="以在Ubuntu-16-04上为Docker-Swarm配置Linux防火墙为例子"><a href="#以在Ubuntu-16-04上为Docker-Swarm配置Linux防火墙为例子" class="headerlink" title="以在Ubuntu 16.04上为Docker Swarm配置Linux防火墙为例子"></a>以在Ubuntu 16.04上为Docker Swarm配置Linux防火墙为例子</h4><pre><code>介绍
-</code></pre><p>DockerSwarm 是Docker的一项功能,可以很容易地大规模投放Docker窗主机和容器. Docker窗群,或码头集群,该功能是由一个或多个主机Dockerized作为经典的节点,任何数量的工作节点组成.设置这样的系统需要仔细操纵Linux防火墙.</p>
-<p>Docker Swarm正常工作所需的网络端口有:</p>
-<p>TCP端口2376进行安全Docker窗客户端通信.此端口是Docker Machine工作所必需的. Docker机器用于编排Docker主机.<br>TCP端口2377 .此端口用于Docker Swarm或群集的节点之间的通信.它只需要在管理器节点上打开.<br>TCP和UDP端口7946的节点之间的通信(容器网络发现).<br>UDP端口4789的覆盖网络通信(容器入口联网).<br>注意:除了这些端口,端口22 (SSH的流量),并在集群上运行需要提供特定服务的其他端口必须是开放.</p>
-<pre><code>预前准备
-</code></pre><p>设置组成集群的主机,包括至少一个群集管理器和一个群组工作者.您可以按照教程如何提供和管理远程Docker在Ubuntu 16.04Docker主机设置这些.<br>注意:您会注意到命令(在这篇文章中所有的命令)不能与前缀sudo .这是因为它假设您正在使用的登录到服务器docker-machine ssh使用Docker窗机设置后命令.</p>
-<p>在本文中,您将学习如何使用所有Linux发行版上提供的不同防火墙管理应用程序在Ubuntu 16.04上配置Linux防火墙.这些防火墙管理应用程序是FirewallD,IPTables工具和UFW,简单的防火墙. .虽然本教程包含三种方法,每种方法都提供相同的结果,因此您可以选择最熟悉的方法.</p>
-<pre><code>UFW
-</code></pre><p>UFW是Ubuntu发行版上的默认防火墙应用程序,包括Ubuntu 16.04<br>如果你只是设置你的Docker主机,UFW已经安装.您只需要启用和配置它</p>
-<p>在将用作Swarm管理器的节点上执行以下命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ufw allow 22/tcp</div><div class="line">ufw allow 2376/tcp</div><div class="line">ufw allow 2377/tcp</div><div class="line">ufw allow 7946/tcp</div><div class="line">ufw allow 7946/udp</div><div class="line">ufw allow 4789/udp</div></pre></td></tr></table></figure></p>
-<p>之后,重新加载并启用UFW:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ufw reload</div><div class="line">ufw <span class="built_in">enable</span></div></pre></td></tr></table></figure>
-<p>这可能不是必需的,但是在任何时候更改并重新启动防火墙时,都不必重新启动Docker守护程序:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">systemctl restart docker</div></pre></td></tr></table></figure>
-<p>然后在将用作工作线程的每个节点上,执行以下命令:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">ufw allow 22/tcp</div><div class="line">ufw allow 2376/tcp</div><div class="line">ufw allow 7946/tcp </div><div class="line">ufw allow 7946/udp </div><div class="line">ufw allow 4789/udp </div><div class="line">ufw reload</div><div class="line">ufw <span class="built_in">enable</span></div><div class="line">systemctl restart docker</div></pre></td></tr></table></figure>
-<p>关闭防火墙<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ufw <span class="built_in">disable</span></div></pre></td></tr></table></figure></p>
-<pre><code>FirewallD
-</code></pre><p>FirewallD是Fedora,CentOS和基于它们的其他Linux发行版上的默认防火墙应用程序.但FirewallD也可用于其他Linux发行版,包括Ubuntu 16.04.</p>
-<p>如果您选择使用FirewallD而不是UFW,请首先卸载UFW:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">apt-get purge ufw</div><div class="line"><span class="comment"># 然后安装FirewallD:</span></div><div class="line">apt-get install firewalld</div><div class="line">systemctl status firewalld</div><div class="line">systemctl start firewalld</div><div class="line">systemctl <span class="built_in">enable</span> firewalld <span class="comment"># 开机启动</span></div></pre></td></tr></table></figure>
-<p>当开机启动时会生成如下文件:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Created symlink from /etc/systemd/system/dbus-org.fedoraproject.FirewallD1.service</div><div class="line">     to /usr/lib/systemd/system/firewalld.service.</div><div class="line">Created symlink from /etc/systemd/system/basic.target.wants/firewalld.service </div><div class="line">    to /usr/lib/systemd/system/firewalld.service.</div></pre></td></tr></table></figure></p>
-<p>在将是Swarm管理器的节点上,使用以下命令打开必要的端口:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">firewall-cmd --add-port=22/tcp --permanent</div><div class="line">firewall-cmd --add-port=2376/tcp --permanent</div><div class="line">firewall-cmd --add-port=2377/tcp --permanent</div><div class="line">firewall-cmd --add-port=7946/tcp --permanent</div><div class="line">firewall-cmd --add-port=7946/udp --permanent</div><div class="line">firewall-cmd --add-port=4789/udp --permanent</div><div class="line"><span class="comment"># firewall-cmd --permanent --add-service=https</span></div></pre></td></tr></table></figure>
-<p>注意 :如果你犯了一个错误,需要删除的条目,输入<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">firewall-cmd --remove-port=port-number/tcp --permanent</div></pre></td></tr></table></figure></p>
-<p>重新加载防火墙:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">firewall-cmd --reload</div><div class="line"><span class="comment"># 查看防火墙</span></div><div class="line">firewall-cmd --list-all</div><div class="line">vim /etc/firewalld/zones/public.xml</div></pre></td></tr></table></figure></p>
-<p>然后重新启动Docker.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">systemctl restart docker</div></pre></td></tr></table></figure></p>
-<p>然后在将用作Swarm工作程序的每个节点上,执行以下命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">firewall-cmd --add-port=22/tcp --permanent</div><div class="line">firewall-cmd --add-port=2376/tcp --permanent</div><div class="line">firewall-cmd --add-port=7946/tcp --permanent</div><div class="line">firewall-cmd --add-port=7946/udp --permanent</div><div class="line">firewall-cmd --add-port=4789/udp --permanent</div><div class="line">firewall-cmd --reload</div><div class="line">systemctl restart docker</div></pre></td></tr></table></figure></p>
-<p>关闭防火墙<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">systemctl stop firewalld</div><div class="line">systemctl <span class="built_in">disable</span> firewalld</div><div class="line"><span class="comment"># 查看</span></div><div class="line">firewall-cmd --zone=public --query-service=ssh</div></pre></td></tr></table></figure></p>
-<pre><code>IPTables
-</code></pre><p>要在任何Linux发行版上使用IPtables,您必须首先卸载任何其他防火墙实用程序.如果您从FirewallD或UFW切换,请先卸载它们.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">apt-get purge ufw firewalld</div><div class="line">apt-get install iptables-persistent</div></pre></td></tr></table></figure>
-<p>接下来,使用此命令清除所有现有规则:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">netfilter-persistent flush</div></pre></td></tr></table></figure>
-<p>现在,您可以添加使用规则, iptables实用程序.第一组命令应该在将用作Swarm管理器的节点上执行.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">iptables -A INPUT -p tcp --dport 22 -j ACCEPT</div><div class="line">iptables -A INPUT -p tcp --dport 2376 -j ACCEPT</div><div class="line">iptables -A INPUT -p tcp --dport 2377 -j ACCEPT</div><div class="line">iptables -A INPUT -p tcp --dport 7946 -j ACCEPT</div><div class="line">iptables -A INPUT -p udp --dport 7946 -j ACCEPT</div><div class="line">iptables -A INPUT -p udp --dport 4789 -j ACCEPT</div><div class="line"><span class="comment"># 输入所有命令后,将规则保存到磁盘:</span></div><div class="line">netfilter-persistent save</div><div class="line"></div><div class="line"><span class="comment"># 然后重新启动Docker.</span></div><div class="line">sudo systemctl restart docker</div></pre></td></tr></table></figure>
-<p>在将用作Swarm工作程序的节点上,执行以下命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">iptables -A INPUT -p tcp --dport 22 -j ACCEPT</div><div class="line">iptables -A INPUT -p tcp --dport 2376 -j ACCEPT</div><div class="line">iptables -A INPUT -p tcp --dport 7946 -j ACCEPT</div><div class="line">iptables -A INPUT -p udp --dport 7946 -j ACCEPT</div><div class="line">iptables -A INPUT -p udp --dport 4789 -j ACCEPT</div><div class="line">netfilter-persistent save</div><div class="line">sudo systemctl restart docker</div></pre></td></tr></table></figure></p>
-<p>如果您希望在使用此方法后切换到FirewallD或UFW,正确的方法是首先停止防火墙:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">sudo netfilter-persistent stop</div><div class="line"></div><div class="line"><span class="comment"># 然后刷新规则:</span></div><div class="line">sudo netfilter-persistent flush</div><div class="line"></div><div class="line"><span class="comment"># 最后,将现在的空表保存到磁盘:</span></div><div class="line">sudo netfilter-persistent save</div><div class="line"></div><div class="line"><span class="comment"># 然后可以切换到UFW或FirewallD.</span></div></pre></td></tr></table></figure>
-<pre><code>查看开启端口
-</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 查看本机的端口开启情况 </span></div><div class="line">sudo nmap -sTU localhost</div><div class="line"><span class="comment"># 查看局域网的端口开启情况</span></div><div class="line">sudo nmap -PS 192.168.1.222</div><div class="line"><span class="comment"># 查看远程服务器的端口开启情况</span></div><div class="line">nc -zv 45.76.0.178 22 22334</div></pre></td></tr></table></figure>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/04/linux_firewall/" data-id="cjipt53zq002q07mvusaex33u" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/04/linux_firewall/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/linux_firewall/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <article id="post-character_and_encode" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -1160,7 +1136,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/character_and_encode/" data-id="cjipt53yb001g07mvn12vasw1" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/character_and_encode/" data-id="cjitxf3dg000x0ekzsonsmjp1" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1322,7 +1298,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/basic_sequence/" data-id="cjipt53sy000i07mv05a9ybtn" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/basic_sequence/" data-id="cjitxf3bi000i0ekzweyruiqd" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1452,7 +1428,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/01/hello-world/" data-id="cjipt53yy001z07mv4d59qo8j" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/01/hello-world/" data-id="cjitxf3fe001v0ekzi100sl42" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
