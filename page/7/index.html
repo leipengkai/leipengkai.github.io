@@ -214,275 +214,6 @@
 
             
             <section id="main">
-    <article id="post-WebSocket" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/04/WebSocket/">WebSocket</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/WebSocket/">
-            <time datetime="2017-08-04T08:10:53.000Z" itemprop="datePublished">2017-08-04</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/python3/">python3</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>网页的消息推送一般常见的实现方法有轮询,长连接,WebSocket.</p>
-<h4 id="为什么要用-WebSockets？"><a href="#为什么要用-WebSockets？" class="headerlink" title="为什么要用 WebSockets？"></a>为什么要用 WebSockets？</h4><p>一个 WebSocket 连接允许在客户端和服务端之间进行全双工通讯,从而每一端都可以通过建立的连接向另一端推送数据.</p>
-<p>WebSocket,以及与其相关的 服务端发送事件 (SSE) 及 WebRTC 数据通路 等技术之所以重要的原因是:<br>HTTP不能打开并一直保持连接,不能在服务端和 Web 浏览器之间进行频繁的数据推送.在这之前,大多数的 Web 应用会通过频繁的异步 JavaScript 和 XML (AJAX) 请求来实现长轮循</p>
-<p>WebSocket并不限于以Ajax(或XHR)方式通信,因为Ajax技术需要客户端发起请求,而WebSocket服务器和客户端可以彼此相互推送信息;XHR受到域的限制,而WebSocket允许跨域通信.</p>
-<h4 id="实现-WebSocket"><a href="#实现-WebSocket" class="headerlink" title="实现 WebSocket"></a>实现 WebSocket</h4><p>Web 浏览器和服务端都必须要实现 WebSocket 协议,以便建立和维护连接.因为 WebSocket 的连接是持续连通的,不像经典的 HTTP 连接,因此服务器需要做更多工作.</p>
-<p>基于多线程或多进程的服务器不能很好地提供 WebSockets 服务,因为它们的设计是:打开一个连接,尽快处理完请求,然后关闭连接.<br>因此,采用 Tornado 或 打包了 gevent 的 Green Unicorn 等异步服务器,对于实现一个实用的服务端 WebSockets 都是必要的</p>
-<p>而在客户端,使用 WebSocket 并不要求有某个 JavaScript 库.实现了 WebSocket 的 Web 浏览器都会通过 WebSockets 对象 导出所有必要的客户端功能.</p>
-<p><a href="https://github.com/tornadoweb/tornado/tree/master/demos/websocket" target="_blank" rel="external">github中的例子</a></p>
-<p><a href="http://www.jianshu.com/p/6e890428744c" target="_blank" rel="external">对这个例子的的解释</a></p>
-<p><a href="http://fullstackpython.atjiang.com/websockets.html" target="_blank" rel="external">Websocket资源</a></p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/04/WebSocket/" data-id="cjitxf3ax000a0ekzh23j22s1" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/04/WebSocket/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/WebSocket/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-basic_sort" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/04/basic_sort/">排序</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/basic_sort/">
-            <time datetime="2017-08-04T08:10:53.000Z" itemprop="datePublished">2017-08-04</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/python3/">python3</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h3 id="items"><a href="#items" class="headerlink" title="items"></a>items</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">d = &#123;<span class="string">'k'</span>:<span class="number">1</span>,<span class="string">'x'</span>:<span class="number">1</span>&#125;</div><div class="line">u.items() <span class="comment"># ==dict_items([('x', 1), ('k', 1)])</span></div></pre></td></tr></table></figure>
-<h3 id="sorted-iterable-key-reverse"><a href="#sorted-iterable-key-reverse" class="headerlink" title="sorted(iterable,key,reverse)"></a>sorted(iterable,key,reverse)</h3><p><em>sorted函数按key本身的值对字典排序</em><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> itemgetter</div><div class="line">d = &#123;<span class="string">'a'</span>:<span class="number">1</span>,<span class="string">'c'</span>:<span class="number">3</span>,<span class="string">'d'</span>:<span class="number">444</span>,<span class="string">'b'</span>:<span class="number">2</span>&#125;</div><div class="line"><span class="comment"># 在签名时挺有用的</span></div><div class="line"><span class="keyword">for</span> k, v <span class="keyword">in</span> sorted(d.items(),key=<span class="keyword">lambda</span> x:x[<span class="number">0</span>]):</div><div class="line">    print(k,v)</div><div class="line"></div><div class="line">sort_d  = sorted(d.items(),key = itemgetter(<span class="number">0</span>),reverse=<span class="keyword">False</span>)</div><div class="line"></div><div class="line">a = &#123;<span class="string">'x'</span>: <span class="number">1</span>,<span class="string">'y'</span>: <span class="number">2</span>,<span class="string">'z'</span>: <span class="number">3</span>&#125;</div><div class="line">b = &#123;<span class="string">'w'</span>: <span class="number">10</span>,<span class="string">'x'</span>: <span class="number">11</span>,<span class="string">'y'</span>: <span class="number">2</span>&#125;</div><div class="line">sorted(zip(a.values(),a.keys()))</div><div class="line"><span class="comment"># [(1, 'x'), (2, 'y'), (3, 'z')]</span></div><div class="line"></div><div class="line">max(zip(a.values(),a.keys()))</div><div class="line"><span class="comment"># (3, 'z')</span></div><div class="line"></div><div class="line">min(zip(a.keys(),a.values()))</div><div class="line"><span class="comment"># ('x',1)</span></div></pre></td></tr></table></figure></p>
-<p><em>对v值的排序</em></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> itemgetter</div><div class="line">rows = [</div><div class="line">    &#123;<span class="string">'address'</span>: <span class="string">'5412 N CLARK'</span>, <span class="string">'date'</span>: <span class="string">'07/01/2012'</span>&#125;,</div><div class="line">    &#123;<span class="string">'address'</span>: <span class="string">'5412 NIKE SHIRT'</span>, <span class="string">'date'</span>: <span class="string">'07/01/2012'</span>&#125;,</div><div class="line">    &#123;<span class="string">'address'</span>: <span class="string">'5148 N CLARK'</span>, <span class="string">'date'</span>: <span class="string">'07/04/2012'</span>&#125;,</div><div class="line">    &#123;<span class="string">'address'</span>: <span class="string">'5800 E 58TH'</span>, <span class="string">'date'</span>: <span class="string">'07/02/2012'</span>&#125;,</div><div class="line">        ]</div><div class="line">rows.sort(key=itemgetter(<span class="string">'date'</span>))</div><div class="line"></div><div class="line">rows = sorted(rows,key=itemgetter(<span class="string">'date'</span>))</div><div class="line"></div><div class="line">rows = sorted(rows, key=<span class="keyword">lambda</span> x: x.get(<span class="string">'date'</span>) \</div><div class="line">    <span class="keyword">if</span> x.get(<span class="string">'date'</span>) <span class="keyword">else</span> <span class="string">'4000'</span>, reverse=<span class="keyword">False</span>)</div><div class="line"><span class="comment"># 必須提供一個在排序过程中使用的函数,为每个元素创建一个key,然后按这个key来排序</span></div><div class="line">a = [<span class="string">'femn'</span>,<span class="string">'femn2014'</span>,<span class="string">'fe'</span>,<span class="string">'femnyy'</span>]</div><div class="line">a.sort(key=len)</div><div class="line"></div><div class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> groupby</div><div class="line"><span class="comment"># 按相同时间的值,进行分组</span></div><div class="line"><span class="keyword">for</span> date, items <span class="keyword">in</span> groupby(rows, key=itemgetter(<span class="string">'date'</span>)):</div><div class="line">    print(date)</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> items:</div><div class="line">        print(<span class="string">' '</span>, i)</div><div class="line"><span class="comment"># 输出如下 </span></div><div class="line"><span class="comment"># 07/01/2012</span></div><div class="line"><span class="comment"># &#123;'address': '5412 N CLARK', 'date': '07/01/2012'&#125;</span></div><div class="line"><span class="comment"># &#123;'address': '5412 NIKE SHIRT', 'date': '07/01/2012'&#125;</span></div><div class="line"><span class="comment"># 07/04/2012</span></div><div class="line"><span class="comment"># &#123;'address': '5148 N CLARK', 'date': '07/04/2012'&#125;</span></div><div class="line"><span class="comment"># 07/02/2012</span></div><div class="line"><span class="comment"># &#123;'address': '5800 E 58TH', 'date': '07/02/2012'&#125;</span></div></pre></td></tr></table></figure>
-<h3 id="join"><a href="#join" class="headerlink" title="join"></a>join</h3><p>如果你想要合并的字符串是在一个序列或者 iterable 中,那么最快的方式就是使用 join() 方法</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">data = [<span class="string">'ACME'</span>, <span class="number">50</span>, <span class="number">91.1</span>]</div><div class="line"><span class="string">','</span>.join(str(d) <span class="keyword">for</span> d <span class="keyword">in</span> data) <span class="comment"># 'ACME,50,91.1'</span></div><div class="line">(str(d) <span class="keyword">for</span> d <span class="keyword">in</span> data)  <span class="comment">#是一个	generator</span></div></pre></td></tr></table></figure>
-<h3 id="random"><a href="#random" class="headerlink" title="random"></a>random</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> random,string</div><div class="line">v = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>] <span class="comment"># 一个序列或者 iterable </span></div><div class="line"><span class="comment"># 随机选择一个,且只能是选一个</span></div><div class="line">random.choice(v)</div><div class="line"></div><div class="line"><span class="comment"># 随机提取N个,保证不重复出现,并且N不能超过v的长度</span></div><div class="line">random.sample(v,<span class="number">3</span>)</div><div class="line"></div><div class="line"><span class="comment"># 只是想打乱序列中的顺序</span></div><div class="line">random.shuffle(v) <span class="comment"># 此时v值的顺序已经被改变</span></div><div class="line"></div><div class="line"><span class="comment"># 生成一个随机的整数</span></div><div class="line">random.randint(<span class="number">0</span>,<span class="number">10</span>)</div><div class="line"></div><div class="line"><span class="string">''</span>.join(random.choice(string.ascii_letters + string.digits) <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">32</span>))</div><div class="line"><span class="string">''</span>.join([random.choice(string.ascii_letters+string.digits) <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">43</span>)])</div><div class="line"><span class="string">''</span>.join(random.sample(string.ascii_letters+string.digits, <span class="number">15</span>))</div></pre></td></tr></table></figure>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/04/basic_sort/" data-id="cjitxf3h100320ekz3y0ocwvw" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/04/basic_sort/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/basic_sort/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <article id="post-basic_time" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -542,7 +273,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/basic_time/" data-id="cjitxf3cw000s0ekz3y1t8zzj" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/basic_time/" data-id="cjj3up480000u06qfkzc8zj30" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -683,7 +414,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/basic_socket/" data-id="cjitxf3bo000m0ekzrokz67d5" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/basic_socket/" data-id="cjj3up47g000s06qfdjxweiey" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -761,6 +492,139 @@
 
 
 
+    <article id="post-basic_sort" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/04/basic_sort/">排序</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/04/basic_sort/">
+            <time datetime="2017-08-04T08:10:53.000Z" itemprop="datePublished">2017-08-04</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="items"><a href="#items" class="headerlink" title="items"></a>items</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">d = &#123;<span class="string">'k'</span>:<span class="number">1</span>,<span class="string">'x'</span>:<span class="number">1</span>&#125;</div><div class="line">u.items() <span class="comment"># ==dict_items([('x', 1), ('k', 1)])</span></div></pre></td></tr></table></figure>
+<h3 id="sorted-iterable-key-reverse"><a href="#sorted-iterable-key-reverse" class="headerlink" title="sorted(iterable,key,reverse)"></a>sorted(iterable,key,reverse)</h3><p><em>sorted函数按key本身的值对字典排序</em><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> itemgetter</div><div class="line">d = &#123;<span class="string">'a'</span>:<span class="number">1</span>,<span class="string">'c'</span>:<span class="number">3</span>,<span class="string">'d'</span>:<span class="number">444</span>,<span class="string">'b'</span>:<span class="number">2</span>&#125;</div><div class="line"><span class="comment"># 在签名时挺有用的</span></div><div class="line"><span class="keyword">for</span> k, v <span class="keyword">in</span> sorted(d.items(),key=<span class="keyword">lambda</span> x:x[<span class="number">0</span>]):</div><div class="line">    print(k,v)</div><div class="line"></div><div class="line">sort_d  = sorted(d.items(),key = itemgetter(<span class="number">0</span>),reverse=<span class="keyword">False</span>)</div><div class="line"></div><div class="line">a = &#123;<span class="string">'x'</span>: <span class="number">1</span>,<span class="string">'y'</span>: <span class="number">2</span>,<span class="string">'z'</span>: <span class="number">3</span>&#125;</div><div class="line">b = &#123;<span class="string">'w'</span>: <span class="number">10</span>,<span class="string">'x'</span>: <span class="number">11</span>,<span class="string">'y'</span>: <span class="number">2</span>&#125;</div><div class="line">sorted(zip(a.values(),a.keys()))</div><div class="line"><span class="comment"># [(1, 'x'), (2, 'y'), (3, 'z')]</span></div><div class="line"></div><div class="line">max(zip(a.values(),a.keys()))</div><div class="line"><span class="comment"># (3, 'z')</span></div><div class="line"></div><div class="line">min(zip(a.keys(),a.values()))</div><div class="line"><span class="comment"># ('x',1)</span></div></pre></td></tr></table></figure></p>
+<p><em>对v值的排序</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> itemgetter</div><div class="line">rows = [</div><div class="line">    &#123;<span class="string">'address'</span>: <span class="string">'5412 N CLARK'</span>, <span class="string">'date'</span>: <span class="string">'07/01/2012'</span>&#125;,</div><div class="line">    &#123;<span class="string">'address'</span>: <span class="string">'5412 NIKE SHIRT'</span>, <span class="string">'date'</span>: <span class="string">'07/01/2012'</span>&#125;,</div><div class="line">    &#123;<span class="string">'address'</span>: <span class="string">'5148 N CLARK'</span>, <span class="string">'date'</span>: <span class="string">'07/04/2012'</span>&#125;,</div><div class="line">    &#123;<span class="string">'address'</span>: <span class="string">'5800 E 58TH'</span>, <span class="string">'date'</span>: <span class="string">'07/02/2012'</span>&#125;,</div><div class="line">        ]</div><div class="line">rows.sort(key=itemgetter(<span class="string">'date'</span>))</div><div class="line"></div><div class="line">rows = sorted(rows,key=itemgetter(<span class="string">'date'</span>))</div><div class="line"></div><div class="line">rows = sorted(rows, key=<span class="keyword">lambda</span> x: x.get(<span class="string">'date'</span>) \</div><div class="line">    <span class="keyword">if</span> x.get(<span class="string">'date'</span>) <span class="keyword">else</span> <span class="string">'4000'</span>, reverse=<span class="keyword">False</span>)</div><div class="line"><span class="comment"># 必須提供一個在排序过程中使用的函数,为每个元素创建一个key,然后按这个key来排序</span></div><div class="line">a = [<span class="string">'femn'</span>,<span class="string">'femn2014'</span>,<span class="string">'fe'</span>,<span class="string">'femnyy'</span>]</div><div class="line">a.sort(key=len)</div><div class="line"></div><div class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> groupby</div><div class="line"><span class="comment"># 按相同时间的值,进行分组</span></div><div class="line"><span class="keyword">for</span> date, items <span class="keyword">in</span> groupby(rows, key=itemgetter(<span class="string">'date'</span>)):</div><div class="line">    print(date)</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> items:</div><div class="line">        print(<span class="string">' '</span>, i)</div><div class="line"><span class="comment"># 输出如下 </span></div><div class="line"><span class="comment"># 07/01/2012</span></div><div class="line"><span class="comment"># &#123;'address': '5412 N CLARK', 'date': '07/01/2012'&#125;</span></div><div class="line"><span class="comment"># &#123;'address': '5412 NIKE SHIRT', 'date': '07/01/2012'&#125;</span></div><div class="line"><span class="comment"># 07/04/2012</span></div><div class="line"><span class="comment"># &#123;'address': '5148 N CLARK', 'date': '07/04/2012'&#125;</span></div><div class="line"><span class="comment"># 07/02/2012</span></div><div class="line"><span class="comment"># &#123;'address': '5800 E 58TH', 'date': '07/02/2012'&#125;</span></div></pre></td></tr></table></figure>
+<h3 id="join"><a href="#join" class="headerlink" title="join"></a>join</h3><p>如果你想要合并的字符串是在一个序列或者 iterable 中,那么最快的方式就是使用 join() 方法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">data = [<span class="string">'ACME'</span>, <span class="number">50</span>, <span class="number">91.1</span>]</div><div class="line"><span class="string">','</span>.join(str(d) <span class="keyword">for</span> d <span class="keyword">in</span> data) <span class="comment"># 'ACME,50,91.1'</span></div><div class="line">(str(d) <span class="keyword">for</span> d <span class="keyword">in</span> data)  <span class="comment">#是一个	generator</span></div></pre></td></tr></table></figure>
+<h3 id="random"><a href="#random" class="headerlink" title="random"></a>random</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> random,string</div><div class="line">v = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>] <span class="comment"># 一个序列或者 iterable </span></div><div class="line"><span class="comment"># 随机选择一个,且只能是选一个</span></div><div class="line">random.choice(v)</div><div class="line"></div><div class="line"><span class="comment"># 随机提取N个,保证不重复出现,并且N不能超过v的长度</span></div><div class="line">random.sample(v,<span class="number">3</span>)</div><div class="line"></div><div class="line"><span class="comment"># 只是想打乱序列中的顺序</span></div><div class="line">random.shuffle(v) <span class="comment"># 此时v值的顺序已经被改变</span></div><div class="line"></div><div class="line"><span class="comment"># 生成一个随机的整数</span></div><div class="line">random.randint(<span class="number">0</span>,<span class="number">10</span>)</div><div class="line"></div><div class="line"><span class="string">''</span>.join(random.choice(string.ascii_letters + string.digits) <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">32</span>))</div><div class="line"><span class="string">''</span>.join([random.choice(string.ascii_letters+string.digits) <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">43</span>)])</div><div class="line"><span class="string">''</span>.join(random.sample(string.ascii_letters+string.digits, <span class="number">15</span>))</div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/04/basic_sort/" data-id="cjj3up474000q06qfn08fac5a" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/04/basic_sort/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/basic_sort/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-basic_derivation" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -812,7 +676,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/basic_derivation/" data-id="cjitxf3bd000e0ekzg4u5z5wt" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/basic_derivation/" data-id="cjj3up463000n06qf0e64xfrd" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -890,7 +754,7 @@
 
 
 
-    <article id="post-shell" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-WebSocket" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -898,7 +762,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/04/shell/">Shell基本</a>
+            <a class="article-title" href="/2017/08/04/WebSocket/">WebSocket</a>
         </h1>
     
 
@@ -907,7 +771,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/04/shell/">
+        <a href="/2017/08/04/WebSocket/">
             <time datetime="2017-08-04T08:10:53.000Z" itemprop="datePublished">2017-08-04</time>
         </a>
     </div>
@@ -916,7 +780,7 @@
                         
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/shell/">shell</a>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
     </div>
 
                         
@@ -928,64 +792,16 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>shell:是一种命令解释器还是一种编程语言(shell脚本,shell编程),擅长处理文本类型的数据,所以Shell脚本在管理Linux系统中发挥了巨大作用<br>备份文件、安装软件、下载数据之类的事情,学着使用sh,bash会是一个好主意.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="comment"># "#!"是一个约定的标记,它告诉系统这个脚本需要什么解释器来执行</span></div><div class="line"><span class="comment"># shell脚本会被分解成一行一行的依次执行.</span></div><div class="line"><span class="comment"># bash shell会将空格,制表符,换行符当作字段分隔符</span></div><div class="line">IFS=$<span class="string">'\n'</span> <span class="comment"># 只识别换行符</span></div><div class="line">IFS=$<span class="string">'\n:;"'</span> <span class="comment"># 将换行,冒号,分号和双引号作为字段分隔符</span></div></pre></td></tr></table></figure>
-<h3 id="脚本文件没有可执行权限时"><a href="#脚本文件没有可执行权限时" class="headerlink" title="脚本文件没有可执行权限时"></a>脚本文件没有可执行权限时</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sh test.sh</div></pre></td></tr></table></figure>
-<h3 id="脚本有可执行权限"><a href="#脚本有可执行权限" class="headerlink" title="脚本有可执行权限"></a>脚本有可执行权限</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">./test.sh</div><div class="line"><span class="comment"># 注意,一定要写成./test.sh,而不是test.sh,运行其它二进制的程序也一样,</span></div><div class="line"><span class="comment"># 直接写test.sh,linux系统会去PATH里寻找有没有叫test.sh的,</span></div><div class="line"><span class="comment"># 而只有/bin, /sbin, /usr/bin,/usr/sbin等在PATH里,你的当前目录通常不在PATH里</span></div><div class="line"><span class="comment"># 所以写成test.sh是会找不到命令的,要用./test.sh告诉系统说,就在当前目录找</span></div><div class="line"></div><div class="line"><span class="built_in">source</span> 或. </div><div class="line"><span class="comment"># 命令执行与上面执行不同,上面执行 shell 都会分配一个子进程来进行</span></div><div class="line"><span class="comment"># source 或. 命令就在本进程执行,也就是说一些非环境变量也能读取到</span></div></pre></td></tr></table></figure>
-<h3 id="重定向输入和输出-将某个命令的输出重定向到另一个位置-文件-或者命令"><a href="#重定向输入和输出-将某个命令的输出重定向到另一个位置-文件-或者命令" class="headerlink" title="重定向输入和输出:将某个命令的输出重定向到另一个位置(文件,或者命令)"></a>重定向输入和输出:将某个命令的输出重定向到另一个位置(文件,或者命令)</h3><p>命令行的数据流定义:STDIN(0),STDOUT(1),STDERR(2),用来管理SHELL中的信息流的分流.</p>
-<h4 id="重定向输出-将命令的输出发到一个文件中"><a href="#重定向输出-将命令的输出发到一个文件中" class="headerlink" title="重定向输出:将命令的输出发到一个文件中"></a>重定向输出:将命令的输出发到一个文件中</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">STDOUT: &gt;(覆盖) &gt;&gt;(追加) 重定向到文件</div><div class="line">STDERR: 2&gt;</div><div class="line">STDOUT STDERR: 2&gt;&amp;1 </div><div class="line">ehco <span class="string">"alias ll='ls -alF'"</span> &gt;&gt; test.txt</div><div class="line">date &gt; test.txt</div></pre></td></tr></table></figure>
-<h4 id="重定向输入-将文件的内容重定向到命令中"><a href="#重定向输入-将文件的内容重定向到命令中" class="headerlink" title="重定向输入:将文件的内容重定向到命令中"></a>重定向输入:将文件的内容重定向到命令中</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">grep femn &lt; /etc/passwd          </div><div class="line">grep femn &lt; /etc/passwd</div><div class="line"><span class="built_in">echo</span> `grep femn &lt; /etc/passwd`</div></pre></td></tr></table></figure>
-<h4 id="管道命令-将一个集合的输出做会一个命令的输入-STDOUT-STDERR-STDIN"><a href="#管道命令-将一个集合的输出做会一个命令的输入-STDOUT-STDERR-STDIN" class="headerlink" title="管道命令:将一个集合的输出做会一个命令的输入  STDOUT,STDERR | STDIN"></a>管道命令:将一个集合的输出做会一个命令的输入  STDOUT,STDERR | STDIN</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rpm -qa | sort | more</div></pre></td></tr></table></figure>
-<p> 生成已安装包的列表,经过管理排序,再经过管理传给More命令显示</p>
-<h3 id="Shell基本类型"><a href="#Shell基本类型" class="headerlink" title="Shell基本类型"></a>Shell基本类型</h3><p>赋值与引用:<br>脚本编程中的一个主要构件  反引号 ( `` ) 它允许你将shell命令的输出赋给变量<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">testing=`date +%y%m%d`  <span class="comment">#你必须用把整个命令行命令圈起来 </span></div><div class="line"><span class="variable">$HOME</span> <span class="variable">$&#123;HOME&#125;</span></div><div class="line"><span class="built_in">echo</span> <span class="comment"># -n 在同一行显示一个文本字符串作为命令输出.</span></div><div class="line"><span class="built_in">echo</span> -e <span class="string">"OK! \n"</span> <span class="comment"># -e 开启转义</span></div><div class="line">/<span class="variable">$15</span> <span class="comment"># 转义符</span></div></pre></td></tr></table></figure></p>
-<h4 id="变量类型只能为Int-str-数组-而且等于两边不能有空格"><a href="#变量类型只能为Int-str-数组-而且等于两边不能有空格" class="headerlink" title="变量类型只能为Int,str,数组,而且等于两边不能有空格"></a>变量类型只能为Int,str,数组,而且等于两边不能有空格</h4><p><em>数字</em><br>在将一个数学运算结果赋值给一个变量时,你可以用美元符和方括号将数字表达式圈起来<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$[option]</div><div class="line">$(())</div></pre></td></tr></table></figure></p>
-<p>注意只支持整数运算<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var=1 </div><div class="line">var1=$[2 * 5]</div><div class="line">var1=$((<span class="variable">$var</span>*5))</div></pre></td></tr></table></figure></p>
-<p><em>字符串</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">var=femn</div><div class="line">greeting=<span class="string">"hello, <span class="variable">$&#123;var&#125;</span> !"</span> </div><div class="line">var=<span class="string">"my name"</span></div><div class="line"><span class="built_in">echo</span> <span class="variable">$&#123;#var&#125;</span> <span class="comment">#获取字符串长度</span></div><div class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var:1:4&#125;</span> <span class="comment">#字符串分片</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [-z str 为0 ]  </div><div class="line"><span class="comment"># -z 字符串的长度为零则为真,退出状态为0.</span></div><div class="line"><span class="keyword">if</span> [-n str 非0]</div><div class="line"><span class="comment"># -n str 字符串的长度不为零则为真</span></div><div class="line"></div><div class="line">var=http://www.aaa.com/123.htm </div><div class="line">1. <span class="comment"># 号截取,删除左边字符,保留右边字符.</span></div><div class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var#*//&#125;</span> <span class="comment"># www.aaa.com/123.htm </span></div><div class="line">2. <span class="comment">## 号截取,删除左边字符,保留右边字符</span></div><div class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var##*/&#125;</span> <span class="comment"># 123.htm </span></div><div class="line">3. %号截取,删除右边字符,保留左边字符</div><div class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var%/*&#125;</span> <span class="comment"># http://www.aaa.com</span></div><div class="line">4. %% 号截取,删除右边字符,保留左边字符</div><div class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var%%/*&#125;</span> <span class="comment"># http:</span></div><div class="line">5. 从左边第几个字符开始,及字符的个数</div><div class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var:0:5&#125;</span> <span class="comment"># http: </span></div><div class="line">6. 从左边第几个字符开始,一直到结束</div><div class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var:7&#125;</span> <span class="comment"># www.aaa.com/123.htm</span></div><div class="line">7. 从右边第几个字符开始,及字符的个数</div><div class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var:0-7:3&#125;</span> <span class="comment">#  123</span></div><div class="line">8. 从右边第几个字符开始,一直到结束</div><div class="line"><span class="built_in">echo</span> <span class="variable">$&#123;var:0-7&#125;</span> <span class="comment">#123.htm</span></div></pre></td></tr></table></figure></p>
-<p><em>数组</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">list=(1 2 3 4)</div><div class="line"><span class="built_in">echo</span> <span class="variable">$&#123;list[0]&#125;</span> <span class="comment"># </span></div><div class="line"><span class="built_in">echo</span> <span class="variable">$&#123;list[@]&#125;</span> <span class="comment">#获取数组中所有的元素</span></div><div class="line"><span class="built_in">echo</span> <span class="variable">$&#123;#list[@]&#125;</span> <span class="comment"># 计算数组个数</span></div></pre></td></tr></table></figure></p>
-<h3 id="shell语法"><a href="#shell语法" class="headerlink" title="shell语法"></a>shell语法</h3><h4 id="结构化命令允许你改变程序执行的顺序-在某些条件下执行一些命令而在其它条件下跳过另一些命令"><a href="#结构化命令允许你改变程序执行的顺序-在某些条件下执行一些命令而在其它条件下跳过另一些命令" class="headerlink" title="结构化命令允许你改变程序执行的顺序,在某些条件下执行一些命令而在其它条件下跳过另一些命令."></a>结构化命令允许你改变程序执行的顺序,在某些条件下执行一些命令而在其它条件下跳过另一些命令.</h4><p>if-then语句,只能测试跟命令的退出状态码有关的条件.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">1.if <span class="built_in">command</span>:<span class="keyword">then</span></div><div class="line">    commands </div><div class="line"><span class="keyword">fi</span> </div><div class="line"><span class="comment"># 使用一行,多用于终端</span></div><div class="line"><span class="keyword">if</span> [ $(ps -ef | grep -c <span class="string">"ssh"</span>) -gt 1 ]; <span class="keyword">then</span> <span class="built_in">echo</span> <span class="string">"true"</span>; <span class="keyword">fi</span> </div><div class="line"></div><div class="line"><span class="comment"># 如果else分支没有语句执行,就不要写这个else.</span></div><div class="line">2.if command1</div><div class="line"><span class="keyword">then</span></div><div class="line">    commands</div><div class="line"><span class="keyword">else</span></div><div class="line">    commands</div><div class="line"><span class="keyword">fi</span></div><div class="line"><span class="comment"># 使用一行,多用于终端</span></div><div class="line"><span class="keyword">if</span> [ $(ps -ef | grep -c <span class="string">"ssh"</span>) -gt 1 ]; <span class="keyword">then</span> <span class="built_in">echo</span> <span class="string">"true"</span>; \</div><div class="line">    <span class="keyword">else</span> <span class="built_in">echo</span> <span class="string">'false'</span>; <span class="keyword">fi</span> </div><div class="line"></div><div class="line">3.if command1 </div><div class="line"><span class="keyword">then</span></div><div class="line">    commands </div><div class="line"><span class="keyword">elif</span> command2 </div><div class="line"><span class="keyword">then</span></div><div class="line">    commands </div><div class="line"><span class="keyword">fi</span></div></pre></td></tr></table></figure></p>
-<h4 id="case命令-替代elif语句来不断检查相同变量值-case命令提供了一个更清晰的方法来为变量每个可以的值指定不同的选项"><a href="#case命令-替代elif语句来不断检查相同变量值-case命令提供了一个更清晰的方法来为变量每个可以的值指定不同的选项" class="headerlink" title="case命令,替代elif语句来不断检查相同变量值.case命令提供了一个更清晰的方法来为变量每个可以的值指定不同的选项."></a>case命令,替代elif语句来不断检查相同变量值.case命令提供了一个更清晰的方法来为变量每个可以的值指定不同的选项.</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">case</span> <span class="variable">$USER</span> <span class="keyword">in</span></div><div class="line">femn | pattern2 )</div><div class="line">    commands1;;</div><div class="line">parrent3)</div><div class="line">    commands2;;</div><div class="line">*)</div><div class="line">    commands;;</div><div class="line"><span class="keyword">esac</span></div></pre></td></tr></table></figure>
-<h4 id="test命令会将所有的标点和大小写也考虑在内"><a href="#test命令会将所有的标点和大小写也考虑在内" class="headerlink" title="test命令会将所有的标点和大小写也考虑在内"></a>test命令会将所有的标点和大小写也考虑在内</h4><p>在其它编程语言中,if语句之后的对象是一个等式来测试是 true or false .bash shell并不是这样工作的.</p>
-<h4 id="当command1命令退出状态码是0-位于then部分的命令就会被执行-如果是非0则执行else命令块"><a href="#当command1命令退出状态码是0-位于then部分的命令就会被执行-如果是非0则执行else命令块" class="headerlink" title="当command1命令退出状态码是0,位于then部分的命令就会被执行.如果是非0则执行else命令块."></a>当command1命令退出状态码是0,位于then部分的命令就会被执行.如果是非0则执行else命令块.</h4><p>test命令提供了在if-then语句中测试不同条件的途径.<br>test命令格式:test condition(要测试的一系列参数和值)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># test condition==[ condition ] </span></div><div class="line"><span class="comment"># 你必须在左括号右侧和右括号左侧各加一个空格,否则会报错.</span></div><div class="line"><span class="keyword">if</span> <span class="built_in">test</span> <span class="variable">$&#123;num1&#125;</span> -eq <span class="variable">$&#123;num2&#125;</span></div><div class="line"><span class="keyword">if</span> [ <span class="variable">$&#123;num1&#125;</span> -eq <span class="variable">$&#123;num2&#125;</span> ]</div><div class="line"><span class="comment"># 复合条件测试</span></div><div class="line">[ condition1 ] &amp;&amp; [ condition2 ]</div><div class="line">               ||</div></pre></td></tr></table></figure></p>
-<p>test可以判断3类条件:1.数值比较,2.字符串比较,3.文件比较<br><em>数值比较:</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">-gt: 大于(-g)</div><div class="line">-lt: 小于(-l)</div><div class="line">-eq: 等于(-e)</div><div class="line">-ne: 不等于</div><div class="line">-ge: 大于等于 </div><div class="line">-le: 小于等于</div></pre></td></tr></table></figure></p>
-<p>bash shell能处理的数仅有整数.使用bash计算器时,你可以让shell将浮点值作为字符串值存储进一个变量,如果你只是要通过echo语句来显示这个结果,那它能很好地工作,便它无法在基于数字的函数中工作.</p>
-<p><em>字符串比较:</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;</div><div class="line">&gt;</div><div class="line">=</div><div class="line">!=</div><div class="line">-z</div><div class="line">-n</div></pre></td></tr></table></figure></p>
-<p>字符串顺序:要测试一个字符串要比另一个字符串大就开始变得烦琐了,大于小于符号必须转义,否则shell会把它们当做重写向符号而把字符串值当做文件名.而且大于小于顺序和sort命令所采用的不同.test命令中大写字母会被当成小于小写字母.<br>if [Test \&lt; test]</p>
-<p><em>文件比较:</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 检查new.sh文件是否比old.sh新,在此之前要先确认文件是否存在.</span></div><div class="line"><span class="keyword">if</span> [ ./new.sh -nt ./old.sh ] </div><div class="line"><span class="keyword">if</span> [ ./old.sh -ot ./new.sh ] <span class="comment">#</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ -e <span class="variable">$HOME</span> ] <span class="comment">#检查文件是否存在 下面的所有检查都要满足这个前提条件</span></div><div class="line"><span class="keyword">if</span> [ -d <span class="variable">$HOME</span> ] <span class="comment"># 检查文件是否存在并是个目录</span></div><div class="line"><span class="keyword">if</span> [ -f <span class="variable">$HOME</span>/.vimrc ] <span class="comment"># 并是个文件</span></div><div class="line"><span class="keyword">if</span> [ ! -f <span class="variable">$HOME</span>/.vimrc ] <span class="comment"># 如果不是文件则执行</span></div><div class="line"><span class="keyword">if</span> [ -r <span class="variable">$HOME</span> ] <span class="comment"># 并是可读</span></div><div class="line"><span class="keyword">if</span> [ -w <span class="variable">$HOME</span>/.vimrc ] <span class="comment"># 并是可写</span></div><div class="line"><span class="keyword">if</span> [ -x <span class="variable">$HOME</span>/.vimrc ] <span class="comment"># 并是可执行</span></div><div class="line"><span class="keyword">if</span> [ -O <span class="variable">$HOME</span>/.vimrc ] <span class="comment"># 并是 属于当前用户所有</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ -s <span class="variable">$HOME</span>/.vimrc ] <span class="comment"># 并是不为空,说明有数据,删除时就小心了.</span></div></pre></td></tr></table></figure></p>
-<p>if-then的高级特征:</p>
-<p>双圆括号命令允许你将高级数学表达式放入比较中<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(( expression ))</div></pre></td></tr></table></figure></p>
-<p>test命令只允许在比较中进行简单的算术操作.双圆括号命令提供了更多的为用过其它编程语言的程序员所熟悉的数学符号.你不需要将圆括号中表达式里的大于号转义,这是双圆括号命令提供的另一个高级特性.</p>
-<p>用于高级字符串处理功能的双方括号.   [[ expression ]]<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (( <span class="variable">$var1</span> ** 2 &gt; 90 )) || [[ <span class="variable">$USER</span> == f* ]]</div><div class="line"><span class="comment"># 幂运算之后比较大小</span></div><div class="line"><span class="comment"># 匹配$USER是否以f字母开头</span></div><div class="line"><span class="comment"># 模式匹配中,你可以定义一个正则表达式来匹配字符串值.</span></div></pre></td></tr></table></figure></p>
-<h4 id="循环中定义的test命令和if-then语句中定义的是一样的格式"><a href="#循环中定义的test命令和if-then语句中定义的是一样的格式" class="headerlink" title="循环中定义的test命令和if-then语句中定义的是一样的格式."></a>循环中定义的test命令和if-then语句中定义的是一样的格式.</h4><p>你需要重复一组命令直到达到某个特定条件.for, while, until<br><em>for循环假定每个值都是用空格分割的</em><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> var <span class="keyword">in</span> list</div><div class="line"><span class="keyword">do</span></div><div class="line">	commands</div><div class="line"><span class="keyword">done</span></div><div class="line"></div><div class="line"><span class="keyword">for</span> file <span class="keyword">in</span> `ls /etc`</div><div class="line"><span class="keyword">for</span> loop <span class="keyword">in</span> 1 2 3 4 5</div><div class="line"><span class="keyword">for</span> var <span class="keyword">in</span> item1 item2 ... itemN; <span class="keyword">do</span> command1; command2… <span class="keyword">done</span>;</div><div class="line"><span class="keyword">for</span> <span class="built_in">test</span> <span class="keyword">in</span> I don\<span class="string">'t know if "this'</span>ll <span class="string">" work</span></div></pre></td></tr></table></figure></p>
-<p>用通配符读取目录:你可以你for命令来自动遍历满是文件的目录.进行操作时,你必须在文件名或路径名使用通配符.它会强制shell命令使用文件扩展匹配(file globbing):它是生成匹配指定的通配符的文件名或路径外的过程.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> file <span class="keyword">in</span> <span class="variable">$HOME</span>/*</div><div class="line"><span class="keyword">do</span></div><div class="line">	<span class="keyword">if</span> [-d <span class="string">"<span class="variable">$file</span>"</span>]</div><div class="line">    <span class="comment"># 为了解决含有空格的目录名或文件名,将$file变量用双引号圈起来</span></div><div class="line">	<span class="keyword">then</span></div><div class="line">		<span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span> is a directory"</span></div><div class="line">	<span class="keyword">elif</span> [-f <span class="string">"<span class="variable">$file</span>"</span>]</div><div class="line">	<span class="keyword">then</span> </div><div class="line">		<span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span> is a file"</span></div><div class="line">	<span class="keyword">else</span></div><div class="line">		<span class="built_in">echo</span> <span class="string">"<span class="variable">$file</span> is doesn't exist"</span></div><div class="line">	<span class="keyword">fi</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure></p>
-<p>C语言的for命令:通常会定义一个变量,然后这个变量会在每次迭代时自动改变.程序员会将这个变量当作计数器,并在每次迭代中让计数器增一或减一.<br>这是bash中C语言风格的for循环的基本格式:for((variable assignment;condition;iteration process))<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (i=0;i&lt;10;i++)</div><div class="line">&#123;</div><div class="line">    <span class="built_in">print</span>(<span class="string">"the next number is %d\n"</span>,i)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">for</span> ((a=1,b=10;a&lt;10;a++,b--))</div><div class="line"><span class="keyword">do</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">"<span class="variable">$a</span> -  <span class="variable">$b</span>"</span></div><div class="line"><span class="keyword">done</span> </div><div class="line"><span class="comment">#  使用多个变量时,循环会单独处理每个变量,</span></div><div class="line"><span class="comment"># 允许你为每个变量定义不同的迭代过程,但只能定义一种条件.</span></div></pre></td></tr></table></figure></p>
-<p><em>while</em><br>while命令在某种意义上是if-then语句和for循环的混杂体.它会在每个迭代的一开始测试test命令.只有测试条件成立,while命令才会继续遍历执行定义好的命令.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">while</span> <span class="built_in">test</span> <span class="built_in">command</span>				</div><div class="line"><span class="keyword">do</span></div><div class="line">    other <span class="built_in">command</span></div><div class="line"><span class="keyword">done</span></div><div class="line"></div><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line">int=1</div><div class="line"><span class="keyword">while</span>(( <span class="variable">$int</span>&lt;=5 ))</div><div class="line"><span class="keyword">do</span></div><div class="line">        <span class="built_in">echo</span> <span class="variable">$int</span></div><div class="line">        <span class="built_in">let</span> <span class="string">"int++"</span></div><div class="line"><span class="keyword">done</span> ))</div></pre></td></tr></table></figure></p>
-<p>break终止执行后面的所有循环<br>continue命令类似,只有一点差别,它不会跳出所有循环,仅仅跳出当前循环</p>
-<p>until命令和while命令工作的方式完全相反<br>测试条件中用到的变量必须被修改,否则会进入一个无限循环.<br>嵌套循环nested loop:可以在循环内使用任何类型的命令,自然也包括其它循环命令.在使用nested loop时,你是在迭代中使用迭代,命令运行的次数是乘积关系.内部循环会有外部循环的每次迭代中遍历一遍它所有的值.<br>以两个for命令写个nested loop</p>
-<h3 id="shell变量"><a href="#shell变量" class="headerlink" title="shell变量"></a>shell变量</h3><p>bash shell提供了不同的方法从用户处获得数据,包括命令行参数,命令行选项以及直接从键盘读取输入的能力.</p>
-<h5 id="命令行参数-添加在命令后的数据值"><a href="#命令行参数-添加在命令后的数据值" class="headerlink" title="命令行参数(添加在命令后的数据值)"></a>命令行参数(添加在命令后的数据值)</h5><ol>
-<li><p>$?专属变量来保存上个执行命令的退出状态码(0:命令成功结束,126:没有执行权限,1:无效参数等通用未知错误)</p>
-</li>
-<li><p>$1-$9 第一到第九个命令行参数</p>
-</li>
-<li><p>${10} # 第十个命令行参数的读取方式</p>
-</li>
-</ol>
-<p>当传给$0变量的真实字符串是整个脚本路径时,程序中就会使用整个路径,而不仅仅是程序名.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">vim tesh.sh </div><div class="line">    <span class="comment">#!/bin/bash</span></div><div class="line">    name=`basename <span class="variable">$0</span>`</div><div class="line">    <span class="comment"># basename命令仅仅会返回程序名</span></div><div class="line">    <span class="built_in">echo</span> the <span class="built_in">command</span> entered is <span class="variable">$name</span></div><div class="line">    <span class="built_in">echo</span> the <span class="built_in">command</span> entered is <span class="variable">$0</span></div><div class="line">sh ./test.sh </div><div class="line"><span class="comment"># the command entered is test.sh</span></div><div class="line"><span class="comment"># the command entered is ./test.sh</span></div><div class="line">sh ~/test.sh </div><div class="line"><span class="comment"># the command entered is test.sh</span></div><div class="line"><span class="comment"># the command entered is /home/femn/test.sh</span></div><div class="line"></div><div class="line"><span class="comment"># 检查命令行参数中是否有数据,有的话就执行then语句</span></div><div class="line"><span class="keyword">if</span> [ -n <span class="string">"<span class="variable">$1</span>"</span> ] </div><div class="line"><span class="comment"># 所有命令行参数的个数 </span></div><div class="line"><span class="keyword">if</span> [ <span class="variable">$#</span> -ne 2 ]</div><div class="line"><span class="comment"># $*和$@变量提供了对所有参数的快速访问</span></div><div class="line"><span class="comment"># $*变量将会把所有参数当成单个参数</span></div><div class="line"><span class="keyword">for</span> param <span class="keyword">in</span> <span class="string">"$*"</span></div><div class="line"><span class="comment"># $@变量会单独处理每个参数</span></div><div class="line"><span class="keyword">for</span> param <span class="keyword">in</span> <span class="string">"<span class="variable">$@</span>"</span></div></pre></td></tr></table></figure></p>
-<h4 id="shell-命令"><a href="#shell-命令" class="headerlink" title="shell 命令"></a>shell 命令</h4><p>bash shell工具链中另一个工具是shift命令.bash shell提供了shell命令来帮助操作命令行参数.<br>默认情况下,shell命令会将参数变量减一,所以变量$2会移到$1,而变量$1的值会被删除并且无法恢复<br>变量$0是程序名不会改变.这是遍历命令行参数的另一个绝妙方法,尤其是你不知道有多少参数时.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">vim test1.sh </div><div class="line">    <span class="comment">#!/bin/bash </span></div><div class="line">    <span class="comment"># demonstration the shift command</span></div><div class="line">    count=1</div><div class="line">    <span class="keyword">while</span> [ -n <span class="string">"<span class="variable">$1</span>"</span> ]</div><div class="line">    <span class="keyword">do</span></div><div class="line">        <span class="built_in">echo</span> <span class="string">"Parameter #<span class="variable">$count</span> = <span class="variable">$1</span>"</span></div><div class="line">        count=$(( <span class="variable">$count</span>+1 ))</div><div class="line">        <span class="built_in">shift</span></div><div class="line">    <span class="keyword">done</span></div><div class="line">sh ./test1.sh femn leipengkai yuyu</div><div class="line"><span class="comment"># Parameter #1 = femn</span></div><div class="line"><span class="comment"># Parameter #2 = leipengkai</span></div><div class="line"><span class="comment"># Parameter #3 = yuyu</span></div></pre></td></tr></table></figure></p>
-<h5 id="命令行选项-是跟在单破折线后面的单个字母-可以修改命令行为的单字母值"><a href="#命令行选项-是跟在单破折线后面的单个字母-可以修改命令行为的单字母值" class="headerlink" title="命令行选项(是跟在单破折线后面的单个字母,可以修改命令行为的单字母值)"></a>命令行选项(是跟在单破折线后面的单个字母,可以修改命令行为的单字母值)</h5><p>当脚本看到”–” ,脚本会安全地将剩下的命令行参数当做参数来处理而不是选项.<br>你可以像处理命令行参数一样处理命令行选项<br>你经常遇到想在脚本中同时使用选项和参数的情况.<br>Linux处理这个问题的标准方式是用特殊的字符将二者分开,该字符(–双破折线)会告诉脚本选项何时结束,以及普通参数何时开始.</p>
-<h4 id="getopt命令"><a href="#getopt命令" class="headerlink" title="getopt命令"></a>getopt命令</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">getopt -q ab:<span class="built_in">cd</span> -a -b test1 -cde test2 test3</div><div class="line"><span class="comment"># 用getopt 命令生成的格式化后的版本来替换已有的命令行选项和参数</span></div><div class="line"><span class="comment"># -a -b 'test1' -c -d -- 'test2' 'test3'</span></div><div class="line">vim test2.sh </div><div class="line">    <span class="comment">#!/bin/bash </span></div><div class="line">    <span class="comment"># extraction command line options and values.</span></div><div class="line"></div><div class="line">    <span class="keyword">while</span> [ -n <span class="string">"<span class="variable">$1</span>"</span> ]</div><div class="line">    <span class="keyword">do</span></div><div class="line">        <span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span></div><div class="line">        -a)</div><div class="line">            <span class="built_in">echo</span> <span class="string">"Found the -a options"</span>;;</div><div class="line">        -b) param=<span class="string">"<span class="variable">$2</span>"</span></div><div class="line">            <span class="built_in">echo</span> <span class="string">"Found the -b options,with parameter value <span class="variable">$param</span>"</span></div><div class="line">            <span class="built_in">shift</span>;;</div><div class="line">        -c)</div><div class="line">            <span class="built_in">echo</span> <span class="string">"Found the -c options"</span>;;</div><div class="line">        --) <span class="built_in">shift</span></div><div class="line">            <span class="built_in">break</span>;;</div><div class="line">        *) <span class="built_in">echo</span> <span class="string">"<span class="variable">$1</span> is not an optionso"</span>;;</div><div class="line">        <span class="keyword">esac</span></div><div class="line">        <span class="built_in">shift</span></div><div class="line">    <span class="keyword">done</span></div><div class="line"></div><div class="line">    count=1</div><div class="line">    <span class="keyword">for</span> param <span class="keyword">in</span> <span class="string">"<span class="variable">$@</span>"</span></div><div class="line">    <span class="keyword">do</span></div><div class="line">        <span class="built_in">echo</span> <span class="string">"Parameter #<span class="variable">$count</span>: <span class="variable">$param</span>"</span></div><div class="line">        count=$(( <span class="variable">$count</span> +1 ))</div><div class="line">    <span class="keyword">done</span></div><div class="line"></div><div class="line">sh ./test2.sh -b test2 -a -d </div><div class="line"><span class="comment"># Found the -b options,with parameter value test2</span></div><div class="line"><span class="comment"># Found the -a options</span></div><div class="line"><span class="comment"># -d is not an optionso</span></div><div class="line"></div><div class="line">sh ./test2.sh -b test2 -a -b </div><div class="line"><span class="comment"># Found the -b options,with parameter value test2</span></div><div class="line"><span class="comment"># Found the -a options</span></div><div class="line"><span class="comment"># Found the -b options,with parameter value </span></div><div class="line"><span class="comment"># ./test2.sh: 18: shift: can't shift that many</span></div></pre></td></tr></table></figure>
-<p>你可以在脚本中使用getopt命令来格式化输入脚本的任何命令行选项和参数,但用起来略微复杂.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">set</span> -- `getopt -q ab:<span class="built_in">cd</span> <span class="string">"<span class="variable">$@</span>"</span> `    options parameters用<span class="string">"<span class="variable">$@</span>"</span></div></pre></td></tr></table></figure>
-<p>该方法将原本的脚本的命令行参数传给getopt命令,之后再将getopt的输出传给set命令,用getopt命令格式化后的命令行参数来替换原始命令行参数.</p>
-<p>set 命令的选项之一是双破折线,它会将命令行参数替换成set命令的命令行的值.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">sh ./test2.sh -ac</div><div class="line">    <span class="comment"># 合并选项 增加下面这句</span></div><div class="line">    <span class="built_in">set</span> -- `getopt -q ab:c <span class="string">"<span class="variable">$@</span>"</span>`</div><div class="line">    <span class="keyword">while</span> [ -n <span class="string">"<span class="variable">$1</span>"</span> ]</div><div class="line"><span class="comment"># Found the -a options</span></div><div class="line"><span class="comment"># Found the -c options</span></div><div class="line"></div><div class="line">sh ./test2.sh -a -b test1 -<span class="built_in">cd</span> test2 test3</div><div class="line"><span class="comment"># Found the -a options</span></div><div class="line"><span class="comment"># Found the -b options,with parameter value 'test1'</span></div><div class="line"><span class="comment"># Found the -c options</span></div><div class="line"><span class="comment"># Parameter #1: 'test2'</span></div><div class="line"><span class="comment"># Parameter #2: 'test3'</span></div></pre></td></tr></table></figure>
-<p>但getopt命令并不擅长处理带空格的参数值,它会将空格当做参数分隔符,而不是根据双引号将二者当作一个参数.</p>
-<p>getopts命令扩展了getopt命令的功能:getopts optstring variable</p>
-<p>与getopt命令将命令行上找到的选项和参数处理后只生成一个输出不同,getopts命令能够和已有的shell参数变量对应地顺序工作.</p>
-<p>getopts命令将当前参数保存在命令行中定义的variable中.它会用到两个环境变量,如果选项需要参数值,OPTARG环境变量就会保存这个值.OPTIND环境变量保存了参数列表中getopts正在处理的参数位置.</p>
-<h4 id="获得用户输入"><a href="#获得用户输入" class="headerlink" title="获得用户输入"></a>获得用户输入</h4><p>你想在运行脚本时,问一个问题,并等运行脚本的人来回答.bash shell为此提供了read命令.<br>read命令接受从标准输入(键盘)或另一个文件描述符的输入.<br>echo -n -n会移除字符串末尾的换行符,允许脚本用户紧跟其后输入数据,而不是下一行<br>read -n1 -t 5 -p 接受单个字符后退出而不必回车,超时,直接在read命令行提示符<br>read -s隐藏方式读取,实际上数据会被显示,只是read命令会将文本颜色设成跟背景色一样.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">vim test.sh </div><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="comment"># echo -n "ENter your name:"</span></div><div class="line"><span class="comment"># read name </span></div><div class="line"><span class="built_in">read</span> -p <span class="string">"ENter your name:"</span> name</div><div class="line"><span class="built_in">echo</span> <span class="string">"Hello <span class="variable">$name</span>, Welcome"</span></div></pre></td></tr></table></figure>
-<h4 id="从文件中读取-每次调用read命令会从文件中读取一行文本-当文件没能内容时-read命令会退出并返回一个非零的状态码"><a href="#从文件中读取-每次调用read命令会从文件中读取一行文本-当文件没能内容时-read命令会退出并返回一个非零的状态码" class="headerlink" title="从文件中读取.每次调用read命令会从文件中读取一行文本,当文件没能内容时,read命令会退出并返回一个非零的状态码."></a>从文件中读取.每次调用read命令会从文件中读取一行文本,当文件没能内容时,read命令会退出并返回一个非零的状态码.</h4><p>最常见的方法是将文件通过cat命令后的输出通过管道直接传给含有read命令的while命令.cat test |while read line</p>
+            <p>网页的消息推送一般常见的实现方法有轮询,长连接,WebSocket.</p>
+<h4 id="为什么要用-WebSockets？"><a href="#为什么要用-WebSockets？" class="headerlink" title="为什么要用 WebSockets？"></a>为什么要用 WebSockets？</h4><p>一个 WebSocket 连接允许在客户端和服务端之间进行全双工通讯,从而每一端都可以通过建立的连接向另一端推送数据.</p>
+<p>WebSocket,以及与其相关的 服务端发送事件 (SSE) 及 WebRTC 数据通路 等技术之所以重要的原因是:<br>HTTP不能打开并一直保持连接,不能在服务端和 Web 浏览器之间进行频繁的数据推送.在这之前,大多数的 Web 应用会通过频繁的异步 JavaScript 和 XML (AJAX) 请求来实现长轮循</p>
+<p>WebSocket并不限于以Ajax(或XHR)方式通信,因为Ajax技术需要客户端发起请求,而WebSocket服务器和客户端可以彼此相互推送信息;XHR受到域的限制,而WebSocket允许跨域通信.</p>
+<h4 id="实现-WebSocket"><a href="#实现-WebSocket" class="headerlink" title="实现 WebSocket"></a>实现 WebSocket</h4><p>Web 浏览器和服务端都必须要实现 WebSocket 协议,以便建立和维护连接.因为 WebSocket 的连接是持续连通的,不像经典的 HTTP 连接,因此服务器需要做更多工作.</p>
+<p>基于多线程或多进程的服务器不能很好地提供 WebSockets 服务,因为它们的设计是:打开一个连接,尽快处理完请求,然后关闭连接.<br>因此,采用 Tornado 或 打包了 gevent 的 Green Unicorn 等异步服务器,对于实现一个实用的服务端 WebSockets 都是必要的</p>
+<p>而在客户端,使用 WebSocket 并不要求有某个 JavaScript 库.实现了 WebSocket 的 Web 浏览器都会通过 WebSockets 对象 导出所有必要的客户端功能.</p>
+<p><a href="https://github.com/tornadoweb/tornado/tree/master/demos/websocket" target="_blank" rel="external">github中的例子</a></p>
+<p><a href="http://www.jianshu.com/p/6e890428744c" target="_blank" rel="external">对这个例子的的解释</a></p>
+<p><a href="http://fullstackpython.atjiang.com/websockets.html" target="_blank" rel="external">Websocket资源</a></p>
 
         
         </div>
@@ -996,7 +812,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/shell/" data-id="cjitxf3iw00450ekzy5h8dtkj" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/WebSocket/" data-id="cjj3up455000b06qfhn8i1h72" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1064,7 +880,174 @@
 
             
     
-        <a href="https://www.femn.me/2017/08/04/shell/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/shell/">Comments</a>
+        <a href="https://www.femn.me/2017/08/04/WebSocket/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/WebSocket/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-linux_firewall" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/04/linux_firewall/">linux防火墙设置</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/04/linux_firewall/">
+            <time datetime="2017-08-04T08:10:53.000Z" itemprop="datePublished">2017-08-04</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/linux/">linux</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h4 id="以在Ubuntu-16-04上为Docker-Swarm配置Linux防火墙为例子"><a href="#以在Ubuntu-16-04上为Docker-Swarm配置Linux防火墙为例子" class="headerlink" title="以在Ubuntu 16.04上为Docker Swarm配置Linux防火墙为例子"></a>以在Ubuntu 16.04上为Docker Swarm配置Linux防火墙为例子</h4><pre><code>介绍
+</code></pre><p>DockerSwarm 是Docker的一项功能,可以很容易地大规模投放Docker窗主机和容器. Docker窗群,或码头集群,该功能是由一个或多个主机Dockerized作为经典的节点,任何数量的工作节点组成.设置这样的系统需要仔细操纵Linux防火墙.</p>
+<p>Docker Swarm正常工作所需的网络端口有:</p>
+<p>TCP端口2376进行安全Docker窗客户端通信.此端口是Docker Machine工作所必需的. Docker机器用于编排Docker主机.<br>TCP端口2377 .此端口用于Docker Swarm或群集的节点之间的通信.它只需要在管理器节点上打开.<br>TCP和UDP端口7946的节点之间的通信(容器网络发现).<br>UDP端口4789的覆盖网络通信(容器入口联网).<br>注意:除了这些端口,端口22 (SSH的流量),并在集群上运行需要提供特定服务的其他端口必须是开放.</p>
+<pre><code>预前准备
+</code></pre><p>设置组成集群的主机,包括至少一个群集管理器和一个群组工作者.您可以按照教程如何提供和管理远程Docker在Ubuntu 16.04Docker主机设置这些.<br>注意:您会注意到命令(在这篇文章中所有的命令)不能与前缀sudo .这是因为它假设您正在使用的登录到服务器docker-machine ssh使用Docker窗机设置后命令.</p>
+<p>在本文中,您将学习如何使用所有Linux发行版上提供的不同防火墙管理应用程序在Ubuntu 16.04上配置Linux防火墙.这些防火墙管理应用程序是FirewallD,IPTables工具和UFW,简单的防火墙. .虽然本教程包含三种方法,每种方法都提供相同的结果,因此您可以选择最熟悉的方法.</p>
+<pre><code>UFW
+</code></pre><p>UFW是Ubuntu发行版上的默认防火墙应用程序,包括Ubuntu 16.04<br>如果你只是设置你的Docker主机,UFW已经安装.您只需要启用和配置它</p>
+<p>在将用作Swarm管理器的节点上执行以下命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ufw allow 22/tcp</div><div class="line">ufw allow 2376/tcp</div><div class="line">ufw allow 2377/tcp</div><div class="line">ufw allow 7946/tcp</div><div class="line">ufw allow 7946/udp</div><div class="line">ufw allow 4789/udp</div></pre></td></tr></table></figure></p>
+<p>之后,重新加载并启用UFW:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ufw reload</div><div class="line">ufw <span class="built_in">enable</span></div></pre></td></tr></table></figure>
+<p>这可能不是必需的,但是在任何时候更改并重新启动防火墙时,都不必重新启动Docker守护程序:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">systemctl restart docker</div></pre></td></tr></table></figure>
+<p>然后在将用作工作线程的每个节点上,执行以下命令:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">ufw allow 22/tcp</div><div class="line">ufw allow 2376/tcp</div><div class="line">ufw allow 7946/tcp </div><div class="line">ufw allow 7946/udp </div><div class="line">ufw allow 4789/udp </div><div class="line">ufw reload</div><div class="line">ufw <span class="built_in">enable</span></div><div class="line">systemctl restart docker</div></pre></td></tr></table></figure>
+<p>关闭防火墙<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ufw <span class="built_in">disable</span></div></pre></td></tr></table></figure></p>
+<pre><code>FirewallD
+</code></pre><p>FirewallD是Fedora,CentOS和基于它们的其他Linux发行版上的默认防火墙应用程序.但FirewallD也可用于其他Linux发行版,包括Ubuntu 16.04.</p>
+<p>如果您选择使用FirewallD而不是UFW,请首先卸载UFW:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">apt-get purge ufw</div><div class="line"><span class="comment"># 然后安装FirewallD:</span></div><div class="line">apt-get install firewalld</div><div class="line">systemctl status firewalld</div><div class="line">systemctl start firewalld</div><div class="line">systemctl <span class="built_in">enable</span> firewalld <span class="comment"># 开机启动</span></div></pre></td></tr></table></figure>
+<p>当开机启动时会生成如下文件:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Created symlink from /etc/systemd/system/dbus-org.fedoraproject.FirewallD1.service</div><div class="line">     to /usr/lib/systemd/system/firewalld.service.</div><div class="line">Created symlink from /etc/systemd/system/basic.target.wants/firewalld.service </div><div class="line">    to /usr/lib/systemd/system/firewalld.service.</div></pre></td></tr></table></figure></p>
+<p>在将是Swarm管理器的节点上,使用以下命令打开必要的端口:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">firewall-cmd --add-port=22/tcp --permanent</div><div class="line">firewall-cmd --add-port=2376/tcp --permanent</div><div class="line">firewall-cmd --add-port=2377/tcp --permanent</div><div class="line">firewall-cmd --add-port=7946/tcp --permanent</div><div class="line">firewall-cmd --add-port=7946/udp --permanent</div><div class="line">firewall-cmd --add-port=4789/udp --permanent</div><div class="line"><span class="comment"># firewall-cmd --permanent --add-service=https</span></div></pre></td></tr></table></figure>
+<p>注意 :如果你犯了一个错误,需要删除的条目,输入<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">firewall-cmd --remove-port=port-number/tcp --permanent</div></pre></td></tr></table></figure></p>
+<p>重新加载防火墙:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">firewall-cmd --reload</div><div class="line"><span class="comment"># 查看防火墙</span></div><div class="line">firewall-cmd --list-all</div><div class="line">vim /etc/firewalld/zones/public.xml</div></pre></td></tr></table></figure></p>
+<p>然后重新启动Docker.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">systemctl restart docker</div></pre></td></tr></table></figure></p>
+<p>然后在将用作Swarm工作程序的每个节点上,执行以下命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">firewall-cmd --add-port=22/tcp --permanent</div><div class="line">firewall-cmd --add-port=2376/tcp --permanent</div><div class="line">firewall-cmd --add-port=7946/tcp --permanent</div><div class="line">firewall-cmd --add-port=7946/udp --permanent</div><div class="line">firewall-cmd --add-port=4789/udp --permanent</div><div class="line">firewall-cmd --reload</div><div class="line">systemctl restart docker</div></pre></td></tr></table></figure></p>
+<p>关闭防火墙<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">systemctl stop firewalld</div><div class="line">systemctl <span class="built_in">disable</span> firewalld</div><div class="line"><span class="comment"># 查看</span></div><div class="line">firewall-cmd --zone=public --query-service=ssh</div></pre></td></tr></table></figure></p>
+<pre><code>IPTables
+</code></pre><p>要在任何Linux发行版上使用IPtables,您必须首先卸载任何其他防火墙实用程序.如果您从FirewallD或UFW切换,请先卸载它们.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">apt-get purge ufw firewalld</div><div class="line">apt-get install iptables-persistent</div></pre></td></tr></table></figure>
+<p>接下来,使用此命令清除所有现有规则:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">netfilter-persistent flush</div></pre></td></tr></table></figure>
+<p>现在,您可以添加使用规则, iptables实用程序.第一组命令应该在将用作Swarm管理器的节点上执行.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">iptables -A INPUT -p tcp --dport 22 -j ACCEPT</div><div class="line">iptables -A INPUT -p tcp --dport 2376 -j ACCEPT</div><div class="line">iptables -A INPUT -p tcp --dport 2377 -j ACCEPT</div><div class="line">iptables -A INPUT -p tcp --dport 7946 -j ACCEPT</div><div class="line">iptables -A INPUT -p udp --dport 7946 -j ACCEPT</div><div class="line">iptables -A INPUT -p udp --dport 4789 -j ACCEPT</div><div class="line"><span class="comment"># 输入所有命令后,将规则保存到磁盘:</span></div><div class="line">netfilter-persistent save</div><div class="line"></div><div class="line"><span class="comment"># 然后重新启动Docker.</span></div><div class="line">sudo systemctl restart docker</div></pre></td></tr></table></figure>
+<p>在将用作Swarm工作程序的节点上,执行以下命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">iptables -A INPUT -p tcp --dport 22 -j ACCEPT</div><div class="line">iptables -A INPUT -p tcp --dport 2376 -j ACCEPT</div><div class="line">iptables -A INPUT -p tcp --dport 7946 -j ACCEPT</div><div class="line">iptables -A INPUT -p udp --dport 7946 -j ACCEPT</div><div class="line">iptables -A INPUT -p udp --dport 4789 -j ACCEPT</div><div class="line">netfilter-persistent save</div><div class="line">sudo systemctl restart docker</div></pre></td></tr></table></figure></p>
+<p>如果您希望在使用此方法后切换到FirewallD或UFW,正确的方法是首先停止防火墙:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">sudo netfilter-persistent stop</div><div class="line"></div><div class="line"><span class="comment"># 然后刷新规则:</span></div><div class="line">sudo netfilter-persistent flush</div><div class="line"></div><div class="line"><span class="comment"># 最后,将现在的空表保存到磁盘:</span></div><div class="line">sudo netfilter-persistent save</div><div class="line"></div><div class="line"><span class="comment"># 然后可以切换到UFW或FirewallD.</span></div></pre></td></tr></table></figure>
+<pre><code>查看开启端口
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 查看本机的端口开启情况 </span></div><div class="line">sudo nmap -sTU localhost</div><div class="line"><span class="comment"># 查看局域网的端口开启情况</span></div><div class="line">sudo nmap -PS 192.168.1.222</div><div class="line"><span class="comment"># 查看远程服务器的端口开启情况</span></div><div class="line">nc -zv 45.76.0.178 22 22334</div></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/04/linux_firewall/" data-id="cjj3up4bc002l06qfj46dmhr0" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/04/linux_firewall/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/04/linux_firewall/">Comments</a>
     
 
         </footer>
@@ -1136,7 +1119,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/character_and_encode/" data-id="cjitxf3dg000x0ekzsonsmjp1" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/character_and_encode/" data-id="cjj3up48e000w06qfrgqdrm9t" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1298,7 +1281,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/basic_sequence/" data-id="cjitxf3bi000i0ekzweyruiqd" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/basic_sequence/" data-id="cjj3up45l000j06qf2d22hhrg" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1428,7 +1411,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/01/hello-world/" data-id="cjitxf3fe001v0ekzi100sl42" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/01/hello-world/" data-id="cjj3up4ak002006qft681dtte" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding

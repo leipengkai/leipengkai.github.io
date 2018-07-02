@@ -296,7 +296,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/10/python-decorator/" data-id="cjitxf3ho003g0ekzq9s427s2" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/10/python-decorator/" data-id="cjj3up4da003b06qfjby9487i" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -374,6 +374,147 @@
 
 
 
+    <article id="post-linux_install" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/08/linux_install/">常用软件安装</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/08/linux_install/">
+            <time datetime="2017-08-08T16:05:43.000Z" itemprop="datePublished">2017-08-08</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/linux/">linux</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h4 id="install-python"><a href="#install-python" class="headerlink" title="install python"></a>install <a href="https://www.python.org/downloads" target="_blank" rel="external">python</a></h4><p>win:选择Windows x86-64 executable installer(带有pip)<br>linux<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install -y python3-pip</div></pre></td></tr></table></figure></p>
+<p>mac<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 先安装homebrew工具,就像Ubuntu的apt-get一样</span></div><div class="line">brew install python3</div></pre></td></tr></table></figure></p>
+<h4 id="install-mongodb"><a href="#install-mongodb" class="headerlink" title="install mongodb"></a>install mongodb</h4><p>win: 选择<a href="https://www.mongodb.com/dr/fastdl.mongodb.org/win32/mongodb-win32-x86_64-2008plus-ssl-3.4.9-signed.msi/download" target="_blank" rel="external">https://www.mongodb.com/dr/fastdl.mongodb.org/win32/mongodb-win32-x86_64-2008plus-ssl-3.4.9-signed.msi/download</a><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 用系统命令运行,再以服务的方式运行</span></div><div class="line">mongod  --bind_ip 0.0.0.0 --logpath D:\data\<span class="built_in">log</span>\mongo.log --logappend --dbpath D:\data --port 27017 --serviceName <span class="string">"MongoDB"</span> --serviceDisplayName <span class="string">"MongoDB"</span> --install</div><div class="line"></div><div class="line">mongo</div></pre></td></tr></table></figure></p>
+<p>linux<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install -y mongodb</div><div class="line">mongo</div></pre></td></tr></table></figure></p>
+<p>mac<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">brew install mongodb</div><div class="line">mongod</div><div class="line">mongo</div></pre></td></tr></table></figure></p>
+<p><a href="https://robomongo.org/download" target="_blank" rel="external">mongodb图形界面</a></p>
+<h4 id="install-redis"><a href="#install-redis" class="headerlink" title="install redis"></a>install redis</h4><p>win:选择 <a href="https://github.com/MicrosoftArchive/redis/releases" target="_blank" rel="external">https://github.com/MicrosoftArchive/redis/releases</a><br>linux<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install -y redis-server</div><div class="line">redis-cli</div><div class="line">vim /etc/redis/redis.conf</div><div class="line"><span class="comment"># bind 127.0.0.1 #远程可以访问redis,不然就只能本地访问</span></div><div class="line">requirepass passwd <span class="comment"># 设置密码</span></div><div class="line">sudo service redis restart</div><div class="line">redis-cli -a passwd</div></pre></td></tr></table></figure></p>
+<p>mac<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">brew install redis</div><div class="line">redis-cli</div><div class="line">vim /usr/<span class="built_in">local</span>/etc/redis.conf</div><div class="line"><span class="comment"># bind 127.0.0.1 </span></div><div class="line">requirepass passwd </div><div class="line">brew services start redis</div><div class="line">brew services restart redis</div></pre></td></tr></table></figure></p>
+<p><a href="https://github.com/uglide/RedisDesktopManager/releases/download/0.8.8/redis-desktop-manager-0.8.8.384.exe" target="_blank" rel="external">win install redis desktop</a></p>
+<h4 id="install-mysql"><a href="#install-mysql" class="headerlink" title="install mysql"></a>install mysql</h4><p>win(32/64一样): <a href="https://dev.mysql.com/downloads/installer/" target="_blank" rel="external">https://dev.mysql.com/downloads/installer/</a><br>mysql-front(mysql可视化客户端)</p>
+<p>linux<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install -y mysql-server mysql-client</div><div class="line">mysql -uroot -p</div><div class="line">vim /etc/mysql/mysql.conf.d/mysql.conf</div><div class="line"><span class="comment"># bind-address      = 127.0.0.1  #注释掉就可以远程访问了</span></div><div class="line">sudo service mysql restart</div></pre></td></tr></table></figure></p>
+<p>mac<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install mysql</div></pre></td></tr></table></figure></p>
+<h4 id="install-anaconda"><a href="#install-anaconda" class="headerlink" title="install anaconda"></a>install <a href="https://www.anaconda.com/download/#linux" target="_blank" rel="external">anaconda</a></h4><p>安装好了Anaconda就相当于安装好了python和pip,并且里面还集成了很多关于python科学计算的第三方库 </p>
+<p>Anaconda 安装包可以到 <a href="https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/" target="_blank" rel="external">https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/</a> 下载<br>安装好Anaconda之后,可以用conda install numpy来管理python包,就像pip一样</p>
+<p>python多版本共存配置<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ln -s /usr/bin/python3.5 /usr/bin/python3</div></pre></td></tr></table></figure></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/08/linux_install/" data-id="cjj3up4bh002n06qf48qbinqo" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/08/linux_install/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/08/linux_install/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-linux_basic" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -427,7 +568,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/08/linux_basic/" data-id="cjitxf3g8002g0ekzp78hlp9j" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/08/linux_basic/" data-id="cjj3up4b8002h06qf1pdjemjb" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -582,7 +723,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/08/linux-common-commands/" data-id="cjitxf3k0004x0ekzuyoo9t9p" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/08/linux-common-commands/" data-id="cjj3up4hh004t06qfq5ra50y9" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -651,147 +792,6 @@
             
     
         <a href="https://www.femn.me/2017/08/08/linux-common-commands/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/08/linux-common-commands/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-linux_install" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/08/linux_install/">常用软件安装</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/08/linux_install/">
-            <time datetime="2017-08-08T16:05:43.000Z" itemprop="datePublished">2017-08-08</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/linux/">linux</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <h4 id="install-python"><a href="#install-python" class="headerlink" title="install python"></a>install <a href="https://www.python.org/downloads" target="_blank" rel="external">python</a></h4><p>win:选择Windows x86-64 executable installer(带有pip)<br>linux<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install -y python3-pip</div></pre></td></tr></table></figure></p>
-<p>mac<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 先安装homebrew工具,就像Ubuntu的apt-get一样</span></div><div class="line">brew install python3</div></pre></td></tr></table></figure></p>
-<h4 id="install-mongodb"><a href="#install-mongodb" class="headerlink" title="install mongodb"></a>install mongodb</h4><p>win: 选择<a href="https://www.mongodb.com/dr/fastdl.mongodb.org/win32/mongodb-win32-x86_64-2008plus-ssl-3.4.9-signed.msi/download" target="_blank" rel="external">https://www.mongodb.com/dr/fastdl.mongodb.org/win32/mongodb-win32-x86_64-2008plus-ssl-3.4.9-signed.msi/download</a><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 用系统命令运行,再以服务的方式运行</span></div><div class="line">mongod  --bind_ip 0.0.0.0 --logpath D:\data\<span class="built_in">log</span>\mongo.log --logappend --dbpath D:\data --port 27017 --serviceName <span class="string">"MongoDB"</span> --serviceDisplayName <span class="string">"MongoDB"</span> --install</div><div class="line"></div><div class="line">mongo</div></pre></td></tr></table></figure></p>
-<p>linux<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install -y mongodb</div><div class="line">mongo</div></pre></td></tr></table></figure></p>
-<p>mac<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">brew install mongodb</div><div class="line">mongod</div><div class="line">mongo</div></pre></td></tr></table></figure></p>
-<p><a href="https://robomongo.org/download" target="_blank" rel="external">mongodb图形界面</a></p>
-<h4 id="install-redis"><a href="#install-redis" class="headerlink" title="install redis"></a>install redis</h4><p>win:选择 <a href="https://github.com/MicrosoftArchive/redis/releases" target="_blank" rel="external">https://github.com/MicrosoftArchive/redis/releases</a><br>linux<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install -y redis-server</div><div class="line">redis-cli</div><div class="line">vim /etc/redis/redis.conf</div><div class="line"><span class="comment"># bind 127.0.0.1 #远程可以访问redis,不然就只能本地访问</span></div><div class="line">requirepass passwd <span class="comment"># 设置密码</span></div><div class="line">sudo service redis restart</div><div class="line">redis-cli -a passwd</div></pre></td></tr></table></figure></p>
-<p>mac<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">brew install redis</div><div class="line">redis-cli</div><div class="line">vim /usr/<span class="built_in">local</span>/etc/redis.conf</div><div class="line"><span class="comment"># bind 127.0.0.1 </span></div><div class="line">requirepass passwd </div><div class="line">brew services start redis</div><div class="line">brew services restart redis</div></pre></td></tr></table></figure></p>
-<p><a href="https://github.com/uglide/RedisDesktopManager/releases/download/0.8.8/redis-desktop-manager-0.8.8.384.exe" target="_blank" rel="external">win install redis desktop</a></p>
-<h4 id="install-mysql"><a href="#install-mysql" class="headerlink" title="install mysql"></a>install mysql</h4><p>win(32/64一样): <a href="https://dev.mysql.com/downloads/installer/" target="_blank" rel="external">https://dev.mysql.com/downloads/installer/</a><br>mysql-front(mysql可视化客户端)</p>
-<p>linux<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install -y mysql-server mysql-client</div><div class="line">mysql -uroot -p</div><div class="line">vim /etc/mysql/mysql.conf.d/mysql.conf</div><div class="line"><span class="comment"># bind-address      = 127.0.0.1  #注释掉就可以远程访问了</span></div><div class="line">sudo service mysql restart</div></pre></td></tr></table></figure></p>
-<p>mac<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install mysql</div></pre></td></tr></table></figure></p>
-<h4 id="install-anaconda"><a href="#install-anaconda" class="headerlink" title="install anaconda"></a>install <a href="https://www.anaconda.com/download/#linux" target="_blank" rel="external">anaconda</a></h4><p>安装好了Anaconda就相当于安装好了python和pip,并且里面还集成了很多关于python科学计算的第三方库 </p>
-<p>Anaconda 安装包可以到 <a href="https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/" target="_blank" rel="external">https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/</a> 下载<br>安装好Anaconda之后,可以用conda install numpy来管理python包,就像pip一样</p>
-<p>python多版本共存配置<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ln -s /usr/bin/python3.5 /usr/bin/python3</div></pre></td></tr></table></figure></p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/08/linux_install/" data-id="cjitxf3gg002p0ekzb7pokwat" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/08/linux_install/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/08/linux_install/">Comments</a>
     
 
         </footer>
@@ -919,7 +919,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/06/python-object/" data-id="cjitxf3hv003m0ekzw5cilapy" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/06/python-object/" data-id="cjj3up4dy003l06qfgrm3lf63" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1061,7 +1061,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/05/python-threads/" data-id="cjitxf3im00400ekzgfpeybdr" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/05/python-threads/" data-id="cjj3up4e9003q06qf1myyabxz" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1241,7 +1241,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/05/threads/" data-id="cjitxf3jc004g0ekza62akijv" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/05/threads/" data-id="cjj3up4fs004806qfbooepigb" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1395,7 +1395,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/05/python-generator/" data-id="cjitxf3i2003o0ekzb2c3xm69" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/05/python-generator/" data-id="cjj3up4dm003h06qfgfy5n5l9" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1536,7 +1536,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/05/iterable-iterator/" data-id="cjitxf3fv00250ekz1knrjw8t" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/05/iterable-iterator/" data-id="cjj3up4b0002c06qfz8hmf010" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1684,7 +1684,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/04/docker-RUN-ENTRYPOINT-CMD/" data-id="cjitxf3dr000z0ekzgwhdh0q1" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/04/docker-RUN-ENTRYPOINT-CMD/" data-id="cjj3up495001006qf4kpj7jbl" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding

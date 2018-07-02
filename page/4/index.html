@@ -265,7 +265,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/14/python-fun-program/" data-id="cjitxf3ht003k0ekzj2a3dcfy" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/14/python-fun-program/" data-id="cjj3up4dg003f06qfjv3pt9j6" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -398,7 +398,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/14/进程间通信/" data-id="cjitxf3jq004r0ekzc127x0p4" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/14/进程间通信/" data-id="cjj3up4gx004n06qf25t14xeb" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -614,7 +614,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/tornado/" data-id="cjitxf3j9004e0ekzusq4hljb" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/tornado/" data-id="cjj3up4fw004a06qfzrbledgv" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -692,142 +692,6 @@
 
 
 
-    <article id="post-closure" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/11/closure/">闭包</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/11/closure/">
-            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/python3/">python3</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p> 在python中,不管是定义变量还是方法,还是类,实际上你定义的时候,分配了内存空间,仅仅是使用一个变量名指向了这一块的内存空间而已.<br><img src="/2017/08/11/closure/rep.png" alt="变量名引用值和函数" title="变量名引用值和函数"><br><img src="/2017/08/11/closure/rep1.png" alt="重名方法导致代码无效" title="重名方法导致代码无效"></p>
-<h3 id="闭包-Closure-又称函数闭包-function-closures-内部函数对外部函数作⽤域⾥变量的引⽤-⾮全局变量-则称内部函数为闭包"><a href="#闭包-Closure-又称函数闭包-function-closures-内部函数对外部函数作⽤域⾥变量的引⽤-⾮全局变量-则称内部函数为闭包" class="headerlink" title="闭包(Closure)又称函数闭包(function closures):内部函数对外部函数作⽤域⾥变量的引⽤(⾮全局变量),则称内部函数为闭包"></a>闭包(Closure)又称函数闭包(function closures):内部函数对外部函数作⽤域⾥变量的引⽤(⾮全局变量),则称内部函数为闭包</h3><p>引用了自由变量的函数.这个被引用的自由变量将和这个函数一同存在,即使已经离开了创造它的环境也不例外.所以,有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体.闭包在运行时可以有多个实例,不同的引用环境和相同的函数组合可以产生不同的实例</p>
-<p>在一些语言中,在函数中可以(嵌套)定义另一个函数时,如果内部的函数引用了外部的函数的变量,则可能产生闭包.运行时,一旦外部的 函数被执行,一个闭包就形成了,闭包中包含了内部函数的代码,以及所需外部函数中的变量的引用.</p>
-<p>闭包被广泛使用于函数式编程语言</p>
-<p>闭包可以形象的把它理解为一个封闭的包裹(封闭作用域),这个包裹就是一个函数,当然还有函数内部对应的逻辑,包裹里面的东西就是自由变量,自由变量可以在随着包裹到处游荡.当然还得有个前提,这个包裹是被创建出来的.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(name)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner_func</span><span class="params">(age)</span>:</span> <span class="comment"># 闭包</span></div><div class="line">        <span class="comment"># name为自由变量</span></div><div class="line">        print( <span class="string">'name:'</span>, name, <span class="string">'age:'</span>, age)</div><div class="line">    <span class="keyword">return</span> inner_func</div><div class="line">bb = func(<span class="string">'the5fire'</span>)</div><div class="line">bb(<span class="number">26</span>)</div><div class="line"><span class="comment"># name: the5fire age: 26</span></div></pre></td></tr></table></figure>
-<p>这里面调用func的时候就产生了一个闭包——inner_func,并且该闭包持有自由变量——name,因此这也意味着,当函数func的生命周期结束之后,name这个变量依然存在,因为它被闭包引用了,所以不会被回收</p>
-<h4 id="nonlocal访问外部函数的局部变量"><a href="#nonlocal访问外部函数的局部变量" class="headerlink" title="nonlocal访问外部函数的局部变量:"></a>nonlocal访问外部函数的局部变量:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">counter</span><span class="params">(start=<span class="number">0</span>)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">incr</span><span class="params">()</span>:</span></div><div class="line">        <span class="keyword">nonlocal</span> start</div><div class="line">        start += <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> start</div><div class="line">    <span class="keyword">return</span> incr</div><div class="line">c1 = counter(<span class="number">5</span>) </div><div class="line">print(c1()) <span class="comment"># 6</span></div><div class="line">print(c1()) <span class="comment"># 7</span></div><div class="line">c2 = counter(<span class="number">50</span>)</div><div class="line">print(c2()) <span class="comment"># 51</span></div><div class="line">print(c2()) <span class="comment"># 52</span></div><div class="line">print(c1()) <span class="comment"># 8</span></div><div class="line">print(c1()) <span class="comment"># 9</span></div></pre></td></tr></table></figure>
-<h4 id="闭包思考"><a href="#闭包思考" class="headerlink" title="闭包思考:"></a>闭包思考:</h4><p>1.闭包似优化了变量,原来需要类对象完成的⼯作,闭包也可以完成 2.由于闭包引⽤了外部函数的局部变量,则外部函数的局部变量没有及时释放,消耗内存</p>
-<img src="/2017/08/11/closure/rep2.png" alt="闭包减少参数传递,同时增加代码的可移植性" title="闭包减少参数传递,同时增加代码的可移植性">
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/11/closure/" data-id="cjitxf3e300110ekzzcctsf96" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/11/closure/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/closure/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <article id="post-python-mateclass" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -881,7 +745,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/python-mateclass/" data-id="cjitxf3i8003r0ekz10f46a0n" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/python-mateclass/" data-id="cjj3up4dr003j06qf6xllxtpw" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -959,136 +823,6 @@
 
 
 
-    <article id="post-python-dynamic" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/11/python-dynamic/">python的动态性</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2017/08/11/python-dynamic/">
-            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/python3/">python3</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>动态语⾔:可以在运⾏的过程中,修改代码<br>静态语⾔:运行前必须先编,译编译时已经确定好代码,运⾏过程中不能修改</p>
-<p>python是动态语⾔:它是⼀类在运⾏时可以改变其结构的语⾔:例如新的函数、对象、 甚⾄代码可以被引进,已有的函数可以被删除或是其他结构上的变化.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, newName, newAge)</span>:</span></div><div class="line">        self.name = newName</div><div class="line">        self.age = newAge</div><div class="line">        <span class="comment"># 	__slots__	=	("name",	"age")</span></div><div class="line">        <span class="comment"># 为了达到限制的⽬的,Python允许在定义class的时候</span></div><div class="line">        <span class="comment"># 定义⼀个特殊的 __slots__变量,来限制该class实例能添加的属性</span></div><div class="line"></div><div class="line"><span class="meta">@staticmethod</span></div><div class="line">def test();</div><div class="line">    <span class="keyword">pass</span></div><div class="line"><span class="meta">@classmethod</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">testclass</span><span class="params">(cls)</span>:</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line"></div><div class="line">laowang = Person(<span class="string">"老王"</span>, <span class="number">10000</span>)</div><div class="line">print(laowang.name)</div><div class="line">print(laowang.age)</div><div class="line"><span class="comment"># 可以添加其它属性和方法,即使在类只没有定义</span></div><div class="line">laowang.addr = <span class="string">"北京...."</span></div><div class="line">print(laowang.addr)</div><div class="line"></div><div class="line"><span class="comment">#　给对象和类添加属性</span></div><div class="line">laozhao = Person(<span class="string">"老赵"</span>, <span class="number">18</span>)</div><div class="line"><span class="comment">#print(laozhao.addr)</span></div><div class="line"></div><div class="line">Person.num = <span class="number">100</span></div><div class="line">print(laowang.num)</div><div class="line">print(laozhao.num)</div><div class="line"></div><div class="line"><span class="comment">#　添加静态方法</span></div><div class="line">Persion.test = test</div><div class="line">Persion.testclass = testclass</div></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 添加方法</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, newName, newAge)</span>:</span></div><div class="line">        self.name = newName</div><div class="line">        self.age = newAge</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">"-----%s正在吃----"</span>%self.name)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></div><div class="line">    print(<span class="string">"-----%s正在跑----"</span>%self.name)</div><div class="line"></div><div class="line"></div><div class="line">p1 = Person(<span class="string">"p1"</span>, <span class="number">10</span>)</div><div class="line">p1.eat()</div><div class="line">p1.run = run</div><div class="line"><span class="comment"># p1.run()#虽然p1对象中 run属性已经指向了函数,但是这句代码还不正确</span></div><div class="line">        <span class="comment">#因为run属性指向的函数 是后来添加的,p1.run()的时候,并没有把p1当做第</span></div><div class="line">        <span class="comment">#1个参数,导致了第10行的函数调用的时候, 出现缺少参数的问题</span></div><div class="line"><span class="keyword">import</span> types</div><div class="line">p1.run = types.MethodType(run, p1)</div><div class="line">p1.run()</div></pre></td></tr></table></figure>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="https://www.femn.me/2017/08/11/python-dynamic/" data-id="cjitxf3hq003i0ekzwv786jts" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="https://www.femn.me/2017/08/11/python-dynamic/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-dynamic/">Comments</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <article id="post-python-process" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -1149,7 +883,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/python-process/" data-id="cjitxf3ia003t0ekzcd8t09y0" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/python-process/" data-id="cjj3up4e4003n06qfcc76n446" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1278,7 +1012,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/python-copy/" data-id="cjitxf3hj003e0ekzx8goygeq" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/python-copy/" data-id="cjj3up4d5003906qf5vnk6szz" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1356,7 +1090,7 @@
 
 
 
-    <article id="post-python-builtins" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-python-dynamic" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -1364,7 +1098,7 @@
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2017/08/11/python-builtins/">python内建属性</a>
+            <a class="article-title" href="/2017/08/11/python-dynamic/">python的动态性</a>
         </h1>
     
 
@@ -1373,7 +1107,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2017/08/11/python-builtins/">
+        <a href="/2017/08/11/python-dynamic/">
             <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
         </a>
     </div>
@@ -1394,11 +1128,10 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>Python在启动的时候会⾃动为我们载⼊很多内建的函数,类,属性,⽐如dict,list,type,print,这些都位于<strong>builtin</strong>    模块中,可以使⽤dir(<strong>builtin</strong>)来查看.<br>这也是为什么我们在没有import任何模块的情况下,就能使⽤这么多丰富的函数和功能了.</p>
-<p>在Python中,有⼀个内建模块,该模块中有⼀些常⽤函数;在Python启动后,且没有执⾏程序员所写的任何代码前,Python会⾸先加载该内建函数到内存.</p>
-<p>另外,该内建模块中的功能可以直接使⽤,不⽤在其前添加内建模块前缀</p>
-<img src="/2017/08/11/python-builtins/1.jpg" alt="常见的内建属性" title="常见的内建属性">
-<p>对象的内建属性<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Itcast</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,subject1)</span>:</span></div><div class="line">        self.subject1 = subject1</div><div class="line">        self.subject2 = <span class="string">'cpp'</span></div><div class="line"></div><div class="line">    <span class="comment">#属性访问时拦截器,只要访问属性就必须先调用此方法(包括方法(方法也是对象))</span></div><div class="line">    <span class="comment"># 所以此方法中,不能包含访问属性的语句:比如self.subject1</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattribute__</span><span class="params">(self,obj)</span>:</span></div><div class="line">        print(<span class="string">"====1&gt;%s"</span>%obj)</div><div class="line">        <span class="keyword">if</span> obj == <span class="string">'subject1'</span>:</div><div class="line">            print(<span class="string">'log subject1'</span>)</div><div class="line">            <span class="keyword">return</span> <span class="string">'redirect python'</span></div><div class="line">        <span class="keyword">else</span>:   </div><div class="line">            temp = object.__getattribute__(self,obj)</div><div class="line">            print(<span class="string">"====2&gt;%s"</span>%str(temp))</div><div class="line">            <span class="keyword">return</span> temp</div><div class="line">    </div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">'this is Itcast'</span>)</div><div class="line"></div><div class="line">s = Itcast(<span class="string">"python"</span>)</div><div class="line">print(s.subject1)</div><div class="line">print(s.subject2)</div><div class="line"></div><div class="line"><span class="comment">#1. 先获取show属性对应的结果,,,,应该是一个方法</span></div><div class="line"><span class="comment">#2. 再调用方法show()</span></div><div class="line">s.show()</div><div class="line"><span class="comment"># import types</span></div><div class="line"><span class="comment"># p1.eat = types.MethodType(eat, p1)</span></div><div class="line"></div><div class="line"><span class="comment"># ====1&gt;subject1</span></div><div class="line"><span class="comment"># log subject1</span></div><div class="line"><span class="comment"># redirect python</span></div><div class="line"><span class="comment"># ====1&gt;subject2</span></div><div class="line"><span class="comment"># ====2&gt;cpp</span></div><div class="line"><span class="comment"># cpp</span></div><div class="line"><span class="comment"># ====1&gt;show</span></div><div class="line"><span class="comment"># ====2&gt;&lt;bound method Itcast.show of &lt;__main__.Itcast object at 0x0&gt;&gt;</span></div><div class="line"><span class="comment"># this is Itcast</span></div></pre></td></tr></table></figure></p>
+            <p>动态语⾔:可以在运⾏的过程中,修改代码<br>静态语⾔:运行前必须先编,译编译时已经确定好代码,运⾏过程中不能修改</p>
+<p>python是动态语⾔:它是⼀类在运⾏时可以改变其结构的语⾔:例如新的函数、对象、 甚⾄代码可以被引进,已有的函数可以被删除或是其他结构上的变化.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, newName, newAge)</span>:</span></div><div class="line">        self.name = newName</div><div class="line">        self.age = newAge</div><div class="line">        <span class="comment"># 	__slots__	=	("name",	"age")</span></div><div class="line">        <span class="comment"># 为了达到限制的⽬的,Python允许在定义class的时候</span></div><div class="line">        <span class="comment"># 定义⼀个特殊的 __slots__变量,来限制该class实例能添加的属性</span></div><div class="line"></div><div class="line"><span class="meta">@staticmethod</span></div><div class="line">def test();</div><div class="line">    <span class="keyword">pass</span></div><div class="line"><span class="meta">@classmethod</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">testclass</span><span class="params">(cls)</span>:</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line"></div><div class="line">laowang = Person(<span class="string">"老王"</span>, <span class="number">10000</span>)</div><div class="line">print(laowang.name)</div><div class="line">print(laowang.age)</div><div class="line"><span class="comment"># 可以添加其它属性和方法,即使在类只没有定义</span></div><div class="line">laowang.addr = <span class="string">"北京...."</span></div><div class="line">print(laowang.addr)</div><div class="line"></div><div class="line"><span class="comment">#　给对象和类添加属性</span></div><div class="line">laozhao = Person(<span class="string">"老赵"</span>, <span class="number">18</span>)</div><div class="line"><span class="comment">#print(laozhao.addr)</span></div><div class="line"></div><div class="line">Person.num = <span class="number">100</span></div><div class="line">print(laowang.num)</div><div class="line">print(laozhao.num)</div><div class="line"></div><div class="line"><span class="comment">#　添加静态方法</span></div><div class="line">Persion.test = test</div><div class="line">Persion.testclass = testclass</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 添加方法</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, newName, newAge)</span>:</span></div><div class="line">        self.name = newName</div><div class="line">        self.age = newAge</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">"-----%s正在吃----"</span>%self.name)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></div><div class="line">    print(<span class="string">"-----%s正在跑----"</span>%self.name)</div><div class="line"></div><div class="line"></div><div class="line">p1 = Person(<span class="string">"p1"</span>, <span class="number">10</span>)</div><div class="line">p1.eat()</div><div class="line">p1.run = run</div><div class="line"><span class="comment"># p1.run()#虽然p1对象中 run属性已经指向了函数,但是这句代码还不正确</span></div><div class="line">        <span class="comment">#因为run属性指向的函数 是后来添加的,p1.run()的时候,并没有把p1当做第</span></div><div class="line">        <span class="comment">#1个参数,导致了第10行的函数调用的时候, 出现缺少参数的问题</span></div><div class="line"><span class="keyword">import</span> types</div><div class="line">p1.run = types.MethodType(run, p1)</div><div class="line">p1.run()</div></pre></td></tr></table></figure>
 
         
         </div>
@@ -1409,7 +1142,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/python-builtins/" data-id="cjitxf3hc003c0ekz8y342aox" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/python-dynamic/" data-id="cjj3up4dd003d06qfpz5k0a4k" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1477,7 +1210,7 @@
 
             
     
-        <a href="https://www.femn.me/2017/08/11/python-builtins/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-builtins/">Comments</a>
+        <a href="https://www.femn.me/2017/08/11/python-dynamic/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-dynamic/">Comments</a>
     
 
         </footer>
@@ -1558,7 +1291,7 @@
 
 </div>
 
-    <a data-url="https://www.femn.me/2017/08/11/python-GC/" data-id="cjitxf3h9003a0ekzdj6do24e" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="https://www.femn.me/2017/08/11/python-GC/" data-id="cjj3up4c8002z06qf5ovf9cdr" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1627,6 +1360,273 @@
             
     
         <a href="https://www.femn.me/2017/08/11/python-GC/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-GC/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-python-builtins" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/11/python-builtins/">python内建属性</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/11/python-builtins/">
+            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>Python在启动的时候会⾃动为我们载⼊很多内建的函数,类,属性,⽐如dict,list,type,print,这些都位于<strong>builtin</strong>    模块中,可以使⽤dir(<strong>builtin</strong>)来查看.<br>这也是为什么我们在没有import任何模块的情况下,就能使⽤这么多丰富的函数和功能了.</p>
+<p>在Python中,有⼀个内建模块,该模块中有⼀些常⽤函数;在Python启动后,且没有执⾏程序员所写的任何代码前,Python会⾸先加载该内建函数到内存.</p>
+<p>另外,该内建模块中的功能可以直接使⽤,不⽤在其前添加内建模块前缀</p>
+<img src="/2017/08/11/python-builtins/1.jpg" alt="常见的内建属性" title="常见的内建属性">
+<p>对象的内建属性<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Itcast</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,subject1)</span>:</span></div><div class="line">        self.subject1 = subject1</div><div class="line">        self.subject2 = <span class="string">'cpp'</span></div><div class="line"></div><div class="line">    <span class="comment">#属性访问时拦截器,只要访问属性就必须先调用此方法(包括方法(方法也是对象))</span></div><div class="line">    <span class="comment"># 所以此方法中,不能包含访问属性的语句:比如self.subject1</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattribute__</span><span class="params">(self,obj)</span>:</span></div><div class="line">        print(<span class="string">"====1&gt;%s"</span>%obj)</div><div class="line">        <span class="keyword">if</span> obj == <span class="string">'subject1'</span>:</div><div class="line">            print(<span class="string">'log subject1'</span>)</div><div class="line">            <span class="keyword">return</span> <span class="string">'redirect python'</span></div><div class="line">        <span class="keyword">else</span>:   </div><div class="line">            temp = object.__getattribute__(self,obj)</div><div class="line">            print(<span class="string">"====2&gt;%s"</span>%str(temp))</div><div class="line">            <span class="keyword">return</span> temp</div><div class="line">    </div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(self)</span>:</span></div><div class="line">        print(<span class="string">'this is Itcast'</span>)</div><div class="line"></div><div class="line">s = Itcast(<span class="string">"python"</span>)</div><div class="line">print(s.subject1)</div><div class="line">print(s.subject2)</div><div class="line"></div><div class="line"><span class="comment">#1. 先获取show属性对应的结果,,,,应该是一个方法</span></div><div class="line"><span class="comment">#2. 再调用方法show()</span></div><div class="line">s.show()</div><div class="line"><span class="comment"># import types</span></div><div class="line"><span class="comment"># p1.eat = types.MethodType(eat, p1)</span></div><div class="line"></div><div class="line"><span class="comment"># ====1&gt;subject1</span></div><div class="line"><span class="comment"># log subject1</span></div><div class="line"><span class="comment"># redirect python</span></div><div class="line"><span class="comment"># ====1&gt;subject2</span></div><div class="line"><span class="comment"># ====2&gt;cpp</span></div><div class="line"><span class="comment"># cpp</span></div><div class="line"><span class="comment"># ====1&gt;show</span></div><div class="line"><span class="comment"># ====2&gt;&lt;bound method Itcast.show of &lt;__main__.Itcast object at 0x0&gt;&gt;</span></div><div class="line"><span class="comment"># this is Itcast</span></div></pre></td></tr></table></figure></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/11/python-builtins/" data-id="cjj3up4cp003206qfv7n7gh5j" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/11/python-builtins/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/python-builtins/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
+    <article id="post-closure" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/08/11/closure/">闭包</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/08/11/closure/">
+            <time datetime="2017-08-11T11:27:40.000Z" itemprop="datePublished">2017-08-11</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python3/">python3</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p> 在python中,不管是定义变量还是方法,还是类,实际上你定义的时候,分配了内存空间,仅仅是使用一个变量名指向了这一块的内存空间而已.<br><img src="/2017/08/11/closure/rep.png" alt="变量名引用值和函数" title="变量名引用值和函数"><br><img src="/2017/08/11/closure/rep1.png" alt="重名方法导致代码无效" title="重名方法导致代码无效"></p>
+<h3 id="闭包-Closure-又称函数闭包-function-closures-内部函数对外部函数作⽤域⾥变量的引⽤-⾮全局变量-则称内部函数为闭包"><a href="#闭包-Closure-又称函数闭包-function-closures-内部函数对外部函数作⽤域⾥变量的引⽤-⾮全局变量-则称内部函数为闭包" class="headerlink" title="闭包(Closure)又称函数闭包(function closures):内部函数对外部函数作⽤域⾥变量的引⽤(⾮全局变量),则称内部函数为闭包"></a>闭包(Closure)又称函数闭包(function closures):内部函数对外部函数作⽤域⾥变量的引⽤(⾮全局变量),则称内部函数为闭包</h3><p>引用了自由变量的函数.这个被引用的自由变量将和这个函数一同存在,即使已经离开了创造它的环境也不例外.所以,有另一种说法认为闭包是由函数和与其相关的引用环境组合而成的实体.闭包在运行时可以有多个实例,不同的引用环境和相同的函数组合可以产生不同的实例</p>
+<p>在一些语言中,在函数中可以(嵌套)定义另一个函数时,如果内部的函数引用了外部的函数的变量,则可能产生闭包.运行时,一旦外部的 函数被执行,一个闭包就形成了,闭包中包含了内部函数的代码,以及所需外部函数中的变量的引用.</p>
+<p>闭包被广泛使用于函数式编程语言</p>
+<p>闭包可以形象的把它理解为一个封闭的包裹(封闭作用域),这个包裹就是一个函数,当然还有函数内部对应的逻辑,包裹里面的东西就是自由变量,自由变量可以在随着包裹到处游荡.当然还得有个前提,这个包裹是被创建出来的.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(name)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner_func</span><span class="params">(age)</span>:</span> <span class="comment"># 闭包</span></div><div class="line">        <span class="comment"># name为自由变量</span></div><div class="line">        print( <span class="string">'name:'</span>, name, <span class="string">'age:'</span>, age)</div><div class="line">    <span class="keyword">return</span> inner_func</div><div class="line">bb = func(<span class="string">'the5fire'</span>)</div><div class="line">bb(<span class="number">26</span>)</div><div class="line"><span class="comment"># name: the5fire age: 26</span></div></pre></td></tr></table></figure>
+<p>这里面调用func的时候就产生了一个闭包——inner_func,并且该闭包持有自由变量——name,因此这也意味着,当函数func的生命周期结束之后,name这个变量依然存在,因为它被闭包引用了,所以不会被回收</p>
+<h4 id="nonlocal访问外部函数的局部变量"><a href="#nonlocal访问外部函数的局部变量" class="headerlink" title="nonlocal访问外部函数的局部变量:"></a>nonlocal访问外部函数的局部变量:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">counter</span><span class="params">(start=<span class="number">0</span>)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">incr</span><span class="params">()</span>:</span></div><div class="line">        <span class="keyword">nonlocal</span> start</div><div class="line">        start += <span class="number">1</span></div><div class="line">        <span class="keyword">return</span> start</div><div class="line">    <span class="keyword">return</span> incr</div><div class="line">c1 = counter(<span class="number">5</span>) </div><div class="line">print(c1()) <span class="comment"># 6</span></div><div class="line">print(c1()) <span class="comment"># 7</span></div><div class="line">c2 = counter(<span class="number">50</span>)</div><div class="line">print(c2()) <span class="comment"># 51</span></div><div class="line">print(c2()) <span class="comment"># 52</span></div><div class="line">print(c1()) <span class="comment"># 8</span></div><div class="line">print(c1()) <span class="comment"># 9</span></div></pre></td></tr></table></figure>
+<h4 id="闭包思考"><a href="#闭包思考" class="headerlink" title="闭包思考:"></a>闭包思考:</h4><p>1.闭包似优化了变量,原来需要类对象完成的⼯作,闭包也可以完成 2.由于闭包引⽤了外部函数的局部变量,则外部函数的局部变量没有及时释放,消耗内存</p>
+<img src="/2017/08/11/closure/rep2.png" alt="闭包减少参数传递,同时增加代码的可移植性" title="闭包减少参数传递,同时增加代码的可移植性">
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="https://www.femn.me/2017/08/11/closure/" data-id="cjj3up48q000y06qfnobcn1b9" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="https://www.femn.me/2017/08/11/closure/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="https://www.femn.me/2017/08/11/closure/">Comments</a>
     
 
         </footer>
